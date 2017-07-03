@@ -1,0 +1,9 @@
+CSCore
+
+- Source code	https://github.com/filoe/cscore
+- Samples		https://github.com/filoe/cscore/tree/master/Samples
+- Docs			http://filoe.github.io/cscore/sharpDox/1.2.0-release/#article/home
+
+NAudio
+
+- Source code	https://github.com/naudio/NAudio

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ReactivePlayer.Core.Entities.Album">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAABAAAAAAAQAAAAAAAAAAAAAAAAIAAE=</HashCode>
+      <FileName>Entities\Album.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.AlbumAuthor">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAEAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\AlbumAuthor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.Artist">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Artist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.Track">
+    <Position X="0.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAIAABACgAIACAAAIACAQAAAAAA=</HashCode>
+      <FileName>Entities\Track.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.TrackArtwork">
+    <Position X="6" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAEAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TrackArtwork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.TrackComposer">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TrackComposer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.TrackPerformer">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TrackPerformer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.TrackPlayTimestamp">
+    <Position X="2.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TrackPlayTimestamp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.TrackStats">
+    <Position X="4.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\TrackStats.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Entities.Contracts.Artwork">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Artwork.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReactivePlayer.Core.Services.SQLiteNetPclLibraryRepositoryAsync" BaseTypeListCollapsed="true">
+    <Position X="2.5" Y="4.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQCAAAAABSAEIAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Services\SQLiteNetPclLibraryRepositoryAsync.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ReactivePlayer.Core.Services.ILibraryRepositoryAsync">
+    <Position X="5.5" Y="4.75" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,14 @@
+xUnit
+
+- Commands
+
+	- The PowerShell way
+
+		- navigate to solution folder:			SHIFT + Right Click on folder > Open in PowerShell
+		- Run xUnit.Runner.Console:				packages\xunit.runner.console.2.2.0\tools\xunit.console <test.dll current directory relative path>
+			- ReactivePlayer.Core.Tests.dll:	packages\xunit.runner.console.2.2.0\tools\xunit.console "tests\ReactivePlayer.Core.Tests\bin\Debug\ReactivePlayer.Core.Tests.dll"
+
+	- Visual Studio insider
+
+		- Install NuGet package:		xunit.runner.visualstudio
+		- Open Test Explorer window:	Visual Studio menu > Test > Windows > Test Explorer

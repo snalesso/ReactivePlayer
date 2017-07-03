@@ -1,0 +1,69 @@
+FUNCTIONALITIES:
+- when a file change/move is detected listen to the preview to check if the tags correspond to the file data
+- add speakers/headphones and more generically "playback device selection"
+- preload the filestream for the next track to be played, so there is not delay between the playbacks
+- save to 2nd file, and replace the current one at the end in order to prevent data loss
+- white noise generator
+- adjustable playback gap
+- total time played calculator
+- refresh tags
+- cut audio
+- optimize SQLite3
+	- https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
+	- Connection strings: https://www.connectionstrings.com/sqlite/
+	- check info strane
+		- track.disc# > album.discscount
+	- improve bulk insert: https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
+		- file saved here in docs folder: SQLiteBulkInsert.cs
+	- ROWID: https://www.sqlitetutorial.net/sqlite-autoincrement/
+- taskbar playback progress
+- shutdown/hibernate/sleep on timeout
+- screensaver
+- waveform seekbar
+- skip &
+	- remove from playlist
+	- remove from library
+	- move to bin
+- tracks bin that moves to recycle bin on app close but allows restore
+- take a look @ Foobar2000's TagBox features
+- tag sanitizer (configurable)
+- stop after (shedule stop)
+	- current
+	- current queue
+	- timeout
+- schedule (double seekbar with countdown?)
+	- stop
+	- app close
+	- PC power action
+- pause on PC account lock
+- file integrity verifier
+- tag charset converter (take a look @ Foobar200's Chacon)
+- online tag calculator: gathers info, for each tag lists found options sorted by value's frequency
+	- https://www.discogs.com
+	- https://last.fm
+	- https://musicbrainz.org/
+- binary track comparison
+- loadable modules to add playlist filters/smart playlists/etc
+- keyboard media keys
+
+- benchmark DTOs creation using:
+	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
+	- JOINed SELECT on all needed Entities (gathering only needed fields) -> Direct DTOs creation
+- how to organize:
+	- lives (might add a tag entry, and specify in config a format to rename the file)
+	- covers
+	- both
+
+- alternative repository implementations
+	- Microsoft.Bond
+	- Protobuf
+	- JSON.NET
+	- SQL Server LocalDB
+	- System.Data.SQLite
+	- VelocityDB: https://blog.velocitydb.com/
+	- Wire: https://github.com/rogeralsing/Wire, https://rogerjohansson.blog/2016/08/16/wire-writing-one-of-the-fastest-net-serializers/
+	- Jil: https://github.com/kevin-montrose/Jil
+	- Hyperion: https://github.com/akkadotnet/Hyperion
+	- ServiceStack.Text: https://servicestack.net/text
+	- Marc Gravell's thoughts on serialization versioning: https://blog.marcgravell.com/2014/06/snk-we-need-to-talk.html
+- interesting 2016 comparative: https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/

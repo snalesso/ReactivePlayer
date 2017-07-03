@@ -1,0 +1,9 @@
+OFFICIAL API PAGE: https://developer.spotify.com/web-api/endpoint-reference/
+
+OBJECT MODEL: https://developer.spotify.com/web-api/object-model/
+
+GitHub API Libraries:
+- https://github.com/kipwoker/SoundCloud.API.Client
+- https://github.com/Haythem/SoundCloud.NET
+- https://github.com/hywelandrews/SoundCloud.Api.Net
+- https://spotifywebapi.codeplex.com/

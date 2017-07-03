@@ -1,0 +1,13 @@
+REPOSITORIES
+
+- zkavtaskin/Domain-Driven-Design-Example	https://github.com/zkavtaskin/Domain-Driven-Design-Example
+- aspnetboilerplate/aspnetboilerplate		https://github.com/aspnetboilerplate/aspnetboilerplate
+- osoykan/Stove								https://github.com/osoykan/Stove
+- tipo base per le entities interessante	https://github.com/osoykan/Stove/blob/dev/src/Stove/Domain/Entities/Entity.cs
+- dddlib/dddlib								https://github.com/dddlib/dddlib
+- elbandit/PPPDDD							https://github.com/elbandit/PPPDDD
+- 
+
+BOOKS
+
+- Patterns, Principles, and Practices of Domain-Driven Design	https://www.amazon.com/Patterns-Principles-Practices-Domain-Driven-Design-ebook/dp/B00XLYUA0W/ref=mt_kindle?_encoding=UTF8&me=

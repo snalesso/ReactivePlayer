@@ -1,0 +1,9 @@
+Caliburn.Micro
+
+- Source code	https://github.com/Caliburn-Micro/Caliburn.Micro
+
+Prism
+
+- Source code	https://github.com/PrismLibrary/Prism
+- Samples		https://github.com/PrismLibrary/Prism-Samples-Wpf
+- Docs			http://prismlibrary.readthedocs.io/en/latest/WPF/01-Introduction/

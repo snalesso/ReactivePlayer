@@ -1,0 +1,102 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1CCA9496-A979-4E3B-850F-38E5B8B31942}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0CB099FF-6084-4AAA-916C-8380649EE3F0}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Core players.txt = docs\Core players.txt
+		docs\DDD.txt = docs\DDD.txt
+		docs\Ideas.txt = docs\Ideas.txt
+		docs\MVVM.txt = docs\MVVM.txt
+		docs\Open source players.txt = docs\Open source players.txt
+		docs\Reactive.txt = docs\Reactive.txt
+		docs\SoundCloud API.txt = docs\SoundCloud API.txt
+		docs\Spotify API.txt = docs\Spotify API.txt
+		docs\SQLite.txt = docs\SQLite.txt
+		docs\Unit test.txt = docs\Unit test.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core", "src\ReactivePlayer.Core\ReactivePlayer.Core.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Benchmarks", "bench\ReactivePlayer.Benchmarks\ReactivePlayer.Benchmarks.csproj", "{3CC7B7E4-B7D5-47EE-908E-B16038729920}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{2BD86662-209A-4CC6-A324-5F99B023F6E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.ArtworksExtractor", "tools\ReactivePlayer.Tools.ArtworksExtractor\ReactivePlayer.Tools.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.iTunes", "src\ReactivePlayer.iTunes\ReactivePlayer.iTunes.csproj", "{A45E3C4D-550F-4187-863D-C6F67E734162}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.iTunesXMLLibraryConverter", "tools\ReactivePlayer.Tools.iTunesXMLLibraryConverter\ReactivePlayer.Tools.iTunesXMLLibraryConverter.csproj", "{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Tests", "tests\ReactivePlayer.Core.Tests\ReactivePlayer.Core.Tests.csproj", "{03FA41AC-D148-47AF-839F-3A0584CEEE3B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1089CAEB-54BD-47A7-A5A9-006A15C7DE55}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.Desktop.Core", "src\ReactivePlayer.UI.Desktop.Core\ReactivePlayer.UI.Desktop.Core.csproj", "{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.Desktop.Application", "src\ReactivePlayer.UI.Desktop.Application\ReactivePlayer.UI.Desktop.Application.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F17AA7E-9965-4000-8446-9BC315F17C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F17AA7E-9965-4000-8446-9BC315F17C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F17AA7E-9965-4000-8446-9BC315F17C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F17AA7E-9965-4000-8446-9BC315F17C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45E3C4D-550F-4187-863D-C6F67E734162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45E3C4D-550F-4187-863D-C6F67E734162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45E3C4D-550F-4187-863D-C6F67E734162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45E3C4D-550F-4187-863D-C6F67E734162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03FA41AC-D148-47AF-839F-3A0584CEEE3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03FA41AC-D148-47AF-839F-3A0584CEEE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03FA41AC-D148-47AF-839F-3A0584CEEE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03FA41AC-D148-47AF-839F-3A0584CEEE3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3F17AA7E-9965-4000-8446-9BC315F17C57} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{3CC7B7E4-B7D5-47EE-908E-B16038729920} = {F6A61F07-3C72-430F-9B74-499883A301E5}
+		{86A58024-565B-40D6-826F-EC973694ECFF} = {2BD86662-209A-4CC6-A324-5F99B023F6E2}
+		{A45E3C4D-550F-4187-863D-C6F67E734162} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{BD005F06-2547-4891-AEE0-A6A6D18DDB0C} = {2BD86662-209A-4CC6-A324-5F99B023F6E2}
+		{03FA41AC-D148-47AF-839F-3A0584CEEE3B} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
+		{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+	EndGlobalSection
+EndGlobal
