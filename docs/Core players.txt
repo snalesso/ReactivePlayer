@@ -7,3 +7,4 @@ CSCore
 NAudio
 
 - Source code	https://github.com/naudio/NAudio
+- Ideas & tips	http://markheath.net/

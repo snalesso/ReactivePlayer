@@ -22,7 +22,7 @@ namespace ReactivePlayer.Tools.ArtworksExtractor
 
         static void ExtractArtworks(string sourceDirectoryPath, string destinationDirectoryPath)
         {
-            var tagsManager = new ReactivePlayer.Core.Services.TagLibTrackProfiler();
+            var tagsManager = new ReactivePlayer.App.TagLibSharpTrackProfiler();
 
             Directory
                 .GetFiles(sourceDirectoryPath, "*", SearchOption.AllDirectories)

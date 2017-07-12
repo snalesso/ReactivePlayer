@@ -7,15 +7,7 @@ FUNCTIONALITIES:
 - adjustable playback gap
 - total time played calculator
 - refresh tags
-- cut audio
-- optimize SQLite3
-	- https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
-	- Connection strings: https://www.connectionstrings.com/sqlite/
-	- check info strane
-		- track.disc# > album.discscount
-	- improve bulk insert: https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
-		- file saved here in docs folder: SQLiteBulkInsert.cs
-	- ROWID: https://www.sqlitetutorial.net/sqlite-autoincrement/
+- audio editor (cut, insert silence, etc.)
 - taskbar playback progress
 - shutdown/hibernate/sleep on timeout
 - screensaver
@@ -45,6 +37,13 @@ FUNCTIONALITIES:
 - binary track comparison
 - loadable modules to add playlist filters/smart playlists/etc
 - keyboard media keys
+- manage keywords: { remix, live, cover, location, ... }
+	- cover ?= performer != composers && !performers.Any(p => album.authors.contains(p))
+- check info contrastanti/mancanti
+	- track.disc# > album.discscount
+	- album con: stessi nome, artista, tracce, etc. ma ad es. anno diverso
+	- tracce senza titolo/artista/album/artwork
+	- Artwork data[] == Artwork.MimeType
 
 - benchmark DTOs creation using:
 	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
@@ -53,8 +52,19 @@ FUNCTIONALITIES:
 	- lives (might add a tag entry, and specify in config a format to rename the file)
 	- covers
 	- both
+- purge/sanitize tags (to remove custom 3rd party trackers, e.g. Amazon Music, iTunes custom tags, etc.)
+- FluentValidation
+- setup different builds for x86 & x64
+- UI
+	- 2 colori per lista e sidebar: es. grgio medio sidebar, scuro lista cosi sembra più profonda/incavata, elementi lista via di mezzo
 
 - alternative repository implementations
+	- SQLite3
+		- optimizations
+			- https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
+			- Connection strings: https://www.connectionstrings.com/sqlite/
+			- bulk insert: https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
+			- ROWID: https://www.sqlitetutorial.net/sqlite-autoincrement/
 	- Microsoft.Bond
 	- Protobuf
 	- JSON.NET

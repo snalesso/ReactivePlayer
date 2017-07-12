@@ -1,0 +1,4 @@
+Visual Studio documentation comments
+
+- Microsoft official docs	https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments
+- Unofficial VS XML Docs	http://web.archive.org/web/20080623060531/http://thoughtpad.net/alan-dean/cs-xml-documentation.html

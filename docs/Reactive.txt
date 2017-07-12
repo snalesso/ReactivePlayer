@@ -7,3 +7,5 @@ ReactiveUI
 Reactive in general
 
 - Hot and Cold observables	http://www.introtorx.com/content/v1.0.10621.0/14_HotAndColdObservables.html
+
+- RxDave/Qactive	https://github.com/RxDave/Qactive

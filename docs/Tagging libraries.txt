@@ -1,0 +1,5 @@
+Tagging libraries
+
+- Taglib-Sharp		https://github.com/mono/taglib-sharp
+- NTagLite			https://bitbucket.org/orthoprog/ntaglite/wiki/Home
+- IdSharp			https://github.com/judwhite/IdSharp

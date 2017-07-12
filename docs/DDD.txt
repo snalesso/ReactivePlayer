@@ -4,9 +4,15 @@ REPOSITORIES
 - aspnetboilerplate/aspnetboilerplate		https://github.com/aspnetboilerplate/aspnetboilerplate
 - osoykan/Stove								https://github.com/osoykan/Stove
 - tipo base per le entities interessante	https://github.com/osoykan/Stove/blob/dev/src/Stove/Domain/Entities/Entity.cs
-- dddlib/dddlib								https://github.com/dddlib/dddlib
 - elbandit/PPPDDD							https://github.com/elbandit/PPPDDD
-- 
+- travel-cloud/Cheddar						https://github.com/travel-cloud/Cheddar
+- tugrulelmas/AbiokaApi						https://github.com/tugrulelmas/AbiokaApi
+
+- Selected repos
+	- IvanZheng/IFramework			https://github.com/IvanZheng/IFramework
+	- straightcore/Straight.Core	https://github.com/straightcore/Straight.Core
+	- draphyz/DDD					https://github.com/draphyz/DDD
+	- dddlib/dddlib					https://github.com/dddlib/dddlib
 
 BOOKS
 

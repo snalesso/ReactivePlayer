@@ -1,0 +1,11 @@
+.NET Framework references
+
+- Uri (.NET Perls)	https://www.dotnetperls.com/uri
+
+- GetHashCode
+	- Marc Gravell	https://stackoverflow.com/a/371348
+	- Jon Skeet		https://stackoverflow.com/a/8094931/1790497
+					https://stackoverflow.com/a/263416/1790497
+	- Official MS guidelines	https://blogs.msdn.microsoft.com/ericlippert/2011/02/28/guidelines-and-rules-for-gethashcode/
+
+- System.StringComparison	https://docs.microsoft.com/en-us/dotnet/api/system.stringcomparison?view=netframework-4.7

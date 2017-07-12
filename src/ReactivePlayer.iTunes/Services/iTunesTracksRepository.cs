@@ -6,12 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using ReactivePlayer.Core.DTOs;
-using ReactivePlayer.Core.Model;
+using ReactivePlayer.Domain.Model;
+using ReactivePlayer.Core.Domain.Services;
 
-namespace ReactivePlayer.Core.Services
+namespace ReactivePlayer.Domain.Services
 {
-    public sealed class iTunesTracksRepository : ITracksRepositoryAsync
+    public sealed class iTunesTracksRepository : ITracksRepository
     {
         private readonly string _xmlItmlFilePath;
 
@@ -23,19 +23,19 @@ namespace ReactivePlayer.Core.Services
             this._xmlItmlFilePath = xmlItlFilePath;
         }
 
-        public Task<ServiceResponse<TrackDto>> AddTrack(TrackDto track) => throw new NotSupportedException();
+        public Task<Track> AddTrack(Track track) => throw new NotSupportedException();
 
-        public Task<MultipleServiceResponse<TrackDto>> AddTracks(IEnumerable<TrackDto> track) => throw new NotSupportedException();
+        public Task<Track> AddTracks(IEnumerable<Track> track) => throw new NotSupportedException();
 
-        public Task<ServiceResponse<bool>> AnyAsync(TrackCriteria critieria) => throw new NotImplementedException();
+        public Task<bool> AnyAsync(TrackCriteria critieria) => throw new NotImplementedException();
 
-        public Task<ServiceResponse<bool>> DeleteTrack(TrackDto track) => throw new NotSupportedException();
+        public Task<bool> DeleteTrack(Track track) => throw new NotSupportedException();
 
-        public async Task<ServiceResponse<IEnumerable<TrackDto>>> GetTracks(TrackCriteria criteria = null)
+        public async Task<IEnumerable<Track>> GetTracks(TrackCriteria criteria = null)
         {
             return await Task.Run(() =>
             {
-                IEnumerable<TrackDto> tracks = null;
+                IEnumerable<Track> tracks = null;
 
                 try
                 {
@@ -117,14 +117,10 @@ namespace ReactivePlayer.Core.Services
                             });
 
                     tracks = itTracks
-                        .Select(t =>
+                        .Select(t => new Track(new Uri(t.Location))
                         {
-                            var track = new TrackDto(new Uri(t.Location));
-                            track.Duration = t.TotalTime;
-                            track.Tags = new TagsDto();
-                            track.Tags.Album = t.Album;
-
-                            return track;
+                            Duration = t.TotalTime,
+                            Album = t.Album
                         })
                         .Where(t => true) // TODO: add criteria support
                         .ToArray();
@@ -135,7 +131,7 @@ namespace ReactivePlayer.Core.Services
                     throw;
                 }
 
-                return new ServiceResponse<IEnumerable<TrackDto>>(tracks);
+                return tracks;
             });
         }
     }

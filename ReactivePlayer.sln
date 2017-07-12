@@ -1,27 +1,30 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1CCA9496-A979-4E3B-850F-38E5B8B31942}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0CB099FF-6084-4AAA-916C-8380649EE3F0}"
 	ProjectSection(SolutionItems) = preProject
+		docs\.NET docs.txt = docs\.NET docs.txt
 		docs\Core players.txt = docs\Core players.txt
 		docs\DDD.txt = docs\DDD.txt
 		docs\Ideas.txt = docs\Ideas.txt
 		docs\MVVM.txt = docs\MVVM.txt
 		docs\Open source players.txt = docs\Open source players.txt
 		docs\Reactive.txt = docs\Reactive.txt
+		docs\Rx Design Guidelines.pdf = docs\Rx Design Guidelines.pdf
 		docs\SoundCloud API.txt = docs\SoundCloud API.txt
 		docs\Spotify API.txt = docs\Spotify API.txt
 		docs\SQLite.txt = docs\SQLite.txt
+		docs\Tagging libraries.txt = docs\Tagging libraries.txt
 		docs\Unit test.txt = docs\Unit test.txt
+		docs\Visual Studio doc comments.txt = docs\Visual Studio doc comments.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core", "src\ReactivePlayer.Core\ReactivePlayer.Core.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App", "src\ReactivePlayer.App\ReactivePlayer.App.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
 EndProject
@@ -35,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.iTunes", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.iTunesXMLLibraryConverter", "tools\ReactivePlayer.Tools.iTunesXMLLibraryConverter\ReactivePlayer.Tools.iTunesXMLLibraryConverter.csproj", "{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Tests", "tests\ReactivePlayer.Core.Tests\ReactivePlayer.Core.Tests.csproj", "{03FA41AC-D148-47AF-839F-3A0584CEEE3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain.Tests", "tests\ReactivePlayer.Domain.Tests\ReactivePlayer.Domain.Tests.csproj", "{03FA41AC-D148-47AF-839F-3A0584CEEE3B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1089CAEB-54BD-47A7-A5A9-006A15C7DE55}"
 	ProjectSection(SolutionItems) = preProject
@@ -43,9 +46,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.Desktop.Core", "src\ReactivePlayer.UI.Desktop.Core\ReactivePlayer.UI.Desktop.Core.csproj", "{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Desktop", "src\ReactivePlayer.App.Desktop\ReactivePlayer.App.Desktop.csproj", "{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.Desktop.Application", "src\ReactivePlayer.UI.Desktop.Application\ReactivePlayer.UI.Desktop.Application.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Desktop.UI", "src\ReactivePlayer.App.Desktop.UI\ReactivePlayer.App.Desktop.UI.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain", "src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj", "{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain.SQLiteNetPcl", "src\ReactivePlayer.Domain.SQLiteNetPcl\ReactivePlayer.Domain.SQLiteNetPcl.csproj", "{6733DBE2-4756-45DA-A460-2F9FFC726CC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain.Json", "src\ReactivePlayer.Domain.Json\ReactivePlayer.Domain.Json.csproj", "{3348376F-332F-471D-A613-09700A0E0CBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Tests", "tests\ReactivePlayer.App.Tests\ReactivePlayer.App.Tests.csproj", "{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Akavache", "src\ReactivePlayer.Akavache\ReactivePlayer.Akavache.csproj", "{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +98,26 @@ Global
 		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6733DBE2-4756-45DA-A460-2F9FFC726CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6733DBE2-4756-45DA-A460-2F9FFC726CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6733DBE2-4756-45DA-A460-2F9FFC726CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6733DBE2-4756-45DA-A460-2F9FFC726CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3348376F-332F-471D-A613-09700A0E0CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3348376F-332F-471D-A613-09700A0E0CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3348376F-332F-471D-A613-09700A0E0CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3348376F-332F-471D-A613-09700A0E0CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,5 +131,10 @@ Global
 		{03FA41AC-D148-47AF-839F-3A0584CEEE3B} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
 		{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{6733DBE2-4756-45DA-A460-2F9FFC726CC0} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{3348376F-332F-471D-A613-09700A0E0CBE} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
+		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 	EndGlobalSection
 EndGlobal
