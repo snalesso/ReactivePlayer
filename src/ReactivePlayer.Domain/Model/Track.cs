@@ -54,23 +54,25 @@ namespace ReactivePlayer.Domain.Model
 
         #endregion
 
-        #region methods
-
-        public void UpdateTags(Tags newTags) { }
-
-        public void ChangeArtworks(IEnumerable<Artwork> newArtworks) { }
-
-        public void UpdateRelationship(bool isLoved) { }
-
-        public void MoveFile(TrackFileInfo newFileInfo) { }
-
-        public void LogPlayed(DateTime playedDateTime) { }
-
-        protected override void EnsureIsValidId(Guid id)
+        protected override void EnsureIsWellFormattedId(Guid id)
         {
             if (id == null) throw new ArgumentNullException(nameof(id)); // TODO: localize
             if (id == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(id)); // TODO: localize
         }
+
+        #region methods
+
+        public void UpdateTags(Tags newTags) { }
+
+        public void PurgeTags() { }
+
+        public void ChangeArtworks(IEnumerable<Artwork> newArtworks) { }
+
+        public void DeleteArtworks() { }
+
+        public void UpdateRelationship(bool isLoved) { }
+
+        public void LogPlayed(DateTime playedDateTime) { }
 
         #endregion
     }

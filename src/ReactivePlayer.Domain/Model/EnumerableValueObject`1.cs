@@ -62,9 +62,8 @@ namespace ReactivePlayer.Domain.Model
 
         #region ValueObject
 
-        public override bool Equals(EnumerableValueObject<T> other) =>
-            other != null
-            && this.Count.Equals(other.Count)
+        protected override bool EqualsCore(EnumerableValueObject<T> other) =>
+            this.Count.Equals(other.Count)
             && this.SequenceEqual(other);
 
         protected override IEnumerable<object> GetHashCodeIngredients()

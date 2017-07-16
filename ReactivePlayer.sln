@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1CCA9496-A979-4E3B-850F-38E5B8B31942}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{1CCA9496-A979-4E3B-850F-38E5B8B31942}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0CB099FF-6084-4AAA-916C-8380649EE3F0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0CB099FF-6084-4AAA-916C-8380649EE3F0}"
 	ProjectSection(SolutionItems) = preProject
 		docs\.NET docs.txt = docs\.NET docs.txt
 		docs\Core players.txt = docs\Core players.txt
@@ -22,15 +22,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{0CB099FF-6
 		docs\Visual Studio doc comments.txt = docs\Visual Studio doc comments.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App", "src\ReactivePlayer.App\ReactivePlayer.App.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bench", "bench", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bench", "Bench", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Benchmarks", "bench\ReactivePlayer.Benchmarks\ReactivePlayer.Benchmarks.csproj", "{3CC7B7E4-B7D5-47EE-908E-B16038729920}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{2BD86662-209A-4CC6-A324-5F99B023F6E2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{2BD86662-209A-4CC6-A324-5F99B023F6E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.ArtworksExtractor", "tools\ReactivePlayer.Tools.ArtworksExtractor\ReactivePlayer.Tools.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
 EndProject
@@ -59,6 +59,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Tests", "tests\ReactivePlayer.App.Tests\ReactivePlayer.App.Tests.csproj", "{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Akavache", "src\ReactivePlayer.Akavache\ReactivePlayer.Akavache.csproj", "{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exps", "Exps", "{DCA2872A-CCDE-44AA-8EDF-208E572F02B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.WPF", "Exps\ReactivePlayer.Exps.WPF\ReactivePlayer.Exps.WPF.csproj", "{7942537A-2991-4EF9-8242-CE5513770823}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,6 +122,10 @@ Global
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7942537A-2991-4EF9-8242-CE5513770823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7942537A-2991-4EF9-8242-CE5513770823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7942537A-2991-4EF9-8242-CE5513770823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7942537A-2991-4EF9-8242-CE5513770823}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,5 +144,6 @@ Global
 		{3348376F-332F-471D-A613-09700A0E0CBE} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{7942537A-2991-4EF9-8242-CE5513770823} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -41,11 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DictionaryExtensions.cs" />
-    <Compile Include="Entities\iTunesTrack.cs" />
+    <Compile Include="Domain\Entities\iTunesTrack.cs" />
     <Compile Include="iTunesDateTimeHelper.cs" />
     <Compile Include="XElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\iTunesTracksRepository.cs" />
+    <Compile Include="Domain\Repositories\iTunesTracksRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="iTunesLib">

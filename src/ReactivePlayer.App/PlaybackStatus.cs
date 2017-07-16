@@ -3,12 +3,12 @@
     // TODO: review use cases (KISS principle)
     public enum PlaybackStatus
     {
-        None,
+        NaturallyEnded = 0,
+        Loading,
+        Loaded,
         Playing,
         Paused,
-        Buffering, // TODO: add support in observable in player implementation
-        Stoppped,
-        Ended,
-        Errored
+        ManuallyStopped,
+        Exploded
     }
 }

@@ -3,14 +3,14 @@ using ReactiveUI;
 
 namespace ReactivePlayer.App.Desktop.ViewModels
 {
-    public sealed class TrackInfoViewModel : ReactiveObject
+    public sealed class TrackViewModel : ReactiveObject
     {
         #region constants & fields
         #endregion
 
         #region constructors
 
-        public TrackInfoViewModel(Track track)
+        public TrackViewModel(Track track)
         {
 
         }

@@ -12,7 +12,7 @@ namespace ReactivePlayer.Domain.Model
         {
         }
 
-        protected override void EnsureIsValidId(Guid id)
+        protected override void EnsureIsWellFormattedId(Guid id)
         {
             throw new NotImplementedException();
         }

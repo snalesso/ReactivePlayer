@@ -19,9 +19,8 @@ namespace ReactivePlayer.Domain.Model
 
         #region ValueObject
 
-        public override bool Equals(Artwork other) =>
-            other != null
-            && this.Data.Equals(other.Data)
+        protected override bool EqualsCore(Artwork other) =>
+            this.Data.Equals(other.Data)
             && this.Type.Equals(other.Type);
 
         protected override IEnumerable<object> GetHashCodeIngredients()

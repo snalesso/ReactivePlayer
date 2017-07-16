@@ -52,7 +52,7 @@ namespace ReactivePlayer.App
                 .DistinctUntilChanged(p => p.Ticks)
                 .StartWith(TimeSpan.Zero);
 
-            this.WhenStatusChanged = (this._whenStatusChangedSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.None).DisposeWith(this._disposables))
+            this.WhenStatusChanged = (this._whenStatusChangedSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.NaturallyEnded).DisposeWith(this._disposables))
                 .AsObservable()
                 .DistinctUntilChanged();
 
@@ -67,8 +67,8 @@ namespace ReactivePlayer.App
 
                     this._whenStatusChangedSubject.OnNext(
                         eventPattern.EventArgs.Exception == null ?
-                        PlaybackStatus.Ended :
-                        PlaybackStatus.Errored);
+                        PlaybackStatus.NaturallyEnded :
+                        PlaybackStatus.Exploded);
                 })
                 .DisposeWith(this._disposables);
         }
@@ -82,14 +82,14 @@ namespace ReactivePlayer.App
 
         public TimeSpan Position
         {
-            get { return _audioFileReader?.CurrentTime ?? TimeSpan.Zero; }
+            get { return this._audioFileReader?.CurrentTime ?? TimeSpan.Zero; }
             set { this._audioFileReader.CurrentTime = value; }
         }
 
         private float _volumeCache = 0.5f; // TODO: review name
         public float Volume
         {
-            get { return _audioFileReader?.Volume ?? this._volumeCache; }
+            get { return this._audioFileReader?.Volume ?? this._volumeCache; }
             set
             {
                 this._volumeCache = value;
@@ -103,7 +103,7 @@ namespace ReactivePlayer.App
 
         #region methods
 
-        public async Task PlayAsync(Uri trackLocation)
+        public async Task PlayNewAsync(Uri trackLocation)
         {
             await this.StopAsync();
 
@@ -122,7 +122,7 @@ namespace ReactivePlayer.App
 
             this._wavePlayer.Init(this._audioFileReader);
 
-            await this.ResumeAsync().ConfigureAwait(false); // TODO: verify
+            await this.ResumeAsync().ConfigureAwait(false); // TODO: ensure this is a best practice and not a wrong use of ConfigureAwait(false), how does it relate to Task.CompletedTask?
         }
 
         public async Task ResumeAsync()
@@ -134,7 +134,7 @@ namespace ReactivePlayer.App
 
             this._whenStatusChangedSubject.OnNext(PlaybackStatus.Playing);
 
-            await Task.CompletedTask; // TODO: test with ConfigureAwait(false)           
+            await Task.CompletedTask; // TODO: investigate if ConfigureAwait(false) can be used
         }
 
         public async Task PauseAsync()
@@ -145,7 +145,7 @@ namespace ReactivePlayer.App
 
             this._whenStatusChangedSubject.OnNext(PlaybackStatus.Paused);
 
-            await Task.CompletedTask; // TODO: test with ConfigureAwait(false)  
+            await Task.CompletedTask; // TODO: investigate if ConfigureAwait(false) can be used
         }
 
         public async Task StopAsync()
@@ -157,7 +157,7 @@ namespace ReactivePlayer.App
             this._audioFileReader?.Dispose();
             this._audioFileReader = null;
             this._trackLocation = null;
-            this._whenStatusChangedSubject.OnNext(PlaybackStatus.Stoppped);
+            this._whenStatusChangedSubject.OnNext(PlaybackStatus.NaturallyEnded);
 
             await Task.CompletedTask; // TODO: test with ConfigureAwait(false)  
         }
@@ -176,13 +176,19 @@ namespace ReactivePlayer.App
         private readonly ISubject<PlaybackStatus> _whenStatusChangedSubject;
         public IObservable<PlaybackStatus> WhenStatusChanged { get; }
 
-        public IObservable<bool> WhenCanPlayhanged => throw new NotImplementedException();
+        public IObservable<bool> WhenCanResumeChanged => throw new NotImplementedException();
 
         public IObservable<bool> WhenCanPausehanged => throw new NotImplementedException();
 
         public IObservable<bool> WhenCanStophanged => throw new NotImplementedException();
 
         public IObservable<bool> WhenCanSeekChanged => throw new NotImplementedException();
+
+        IObservable<TimeSpan?> IObservableAudioPlayer.WhenPositionChanged => throw new NotImplementedException();
+
+        public IObservable<bool> WhenSomethingGoesWrong => throw new NotImplementedException();
+
+        public IObservable<bool> WhenCanPlayNewChanged => throw new NotImplementedException();
 
         #endregion
 
@@ -207,6 +213,11 @@ namespace ReactivePlayer.App
             catch (MmException)
             {
             }
+        }
+
+        public Task SeekTo(TimeSpan position)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Domain.Repositories
 {
-    public interface IArtistsRepository : IEntityRepository<Artist>
+    public interface IArtistsRepository : IValueObjectRepository<Artist, Track>
     {
     }
 }

@@ -1,0 +1,87 @@
+﻿<Window x:Class="ReactivePlayer.Exps.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReactivePlayer.Exps.WPF"
+        mc:Ignorable="d"
+        xmlns:ViewModels="clr-namespace:ReactivePlayer.Exps.WPF.ViewModels"
+        Title="MainWindow"
+        d:DataContext="{Binding Source={d:DesignInstance Type=ViewModels:MainWindowViewModel, IsDesignTimeCreatable=True}}"
+        SizeToContent="WidthAndHeight"
+        MinWidth="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="499*" />
+            <ColumnDefinition Width="9*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Select audio" />
+            <TextBox x:Name="textBox"
+                     Text="D:\Dev\Repos\Visual Studio Online\ReactivePlayer\Library\TagLib\sample.flac"
+                     Grid.Column="2" />
+
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding CurrentTrackLocation}" />
+
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="{Binding Position}" />
+                <Slider Value="{Binding PositionMilliseconds}" Minimum="0" Maximum="{Binding DurationMilliseconds}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal">
+                <Button Content="Play"
+                        Command="{Binding PlayNew}"
+                        CommandParameter="{Binding Text, ElementName=textBox}" />
+                <Button Content="Pause"
+                        Margin="8 0 0 0"
+                        Command="{Binding Pause, Mode=OneWay}" />
+                <Button Content="Resume"
+                        Margin="8 0 0 0"
+                        Command="{Binding Resume, Mode=OneWay}" />
+                <Button Content="Stop"
+                        Margin="8 0 0 0" />
+            </StackPanel>
+
+        </Grid>
+
+        <ListBox ItemsSource="{Binding PlayerEvents}" Grid.Column="1" Grid.Row="5">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</Window>

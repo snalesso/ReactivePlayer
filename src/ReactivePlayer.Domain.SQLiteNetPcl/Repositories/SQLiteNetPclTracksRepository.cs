@@ -1,4 +1,5 @@
 ﻿using ReactivePlayer.Domain.Model;
+using ReactivePlayer.Domain.Repositories;
 using ReactivePlayer.Domain.Services;
 using System;
 using System.Collections.Generic;
@@ -10,32 +11,52 @@ namespace ReactivePlayer.Domain.SQLiteNetPcl.Repositories
 {
     public sealed class SQLiteNetPclTracksRepository : ITracksRepository
     {
-        public Task<Track> AddTrack(Track track)
+        public Task<Track> AddAsync(Track entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Track> AddTracks(IEnumerable<Track> track)
+        public Task<bool> AnyAsync(Func<Track, bool> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AnyAsync(TrackCriteria critieria)
+        public Task<IEnumerable<Track>> BulkAddAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> GetTracks(TrackCriteria criteria = null)
+        public Task<IEnumerable<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveTrack(Track track)
+        public Task<IEnumerable<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveTracks(Track track)
+        public Task<ulong> CountAsync(Func<Track, bool> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Track> FirstAsync(Func<Track, bool> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Track> RemoveAsync(Track entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Track> UpdateAsync(Track entity)
         {
             throw new NotImplementedException();
         }

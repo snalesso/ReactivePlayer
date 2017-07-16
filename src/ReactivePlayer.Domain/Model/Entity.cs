@@ -10,10 +10,13 @@ namespace ReactivePlayer.Domain.Model
     public abstract class Entity : IEquatable<Entity>
     {
         protected abstract bool EqualsCore(Entity other);
-        public bool Equals(Entity other) =>
-            other != null
-            && this.GetType() == other.GetType() // TODO: does this work if I pass an inheriting class instance??
-            && this.EqualsCore(other);
+        public bool Equals(Entity other)
+        {
+            return
+              other != null
+              && this.GetType() == other.GetType() // TODO: does this work if I pass an inheriting class instance??
+              && this.EqualsCore(other);
+        }
         public override bool Equals(object obj) => this.Equals(obj as Entity);
 
         protected abstract IEnumerable<object> GetHashCodeComponents();
@@ -37,13 +40,13 @@ namespace ReactivePlayer.Domain.Model
 
         protected Entity(TIdentity id)
         {
-            this.EnsureIsValidId(id);
+            this.EnsureIsWellFormattedId(id);
 
             this.Id = id;
         }
 
         public TIdentity Id { get; }
-        protected abstract void EnsureIsValidId(TIdentity id);
+        protected abstract void EnsureIsWellFormattedId(TIdentity id);
 
         #endregion
 

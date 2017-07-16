@@ -38,9 +38,8 @@ namespace ReactivePlayer.Domain.Model
 
         #region ValueObject
 
-        public override bool Equals(Tags other) =>
-            other != null
-            && this.Title.Equals(other.Title)
+        protected override bool EqualsCore(Tags other) =>
+            this.Title.Equals(other.Title)
             && this.Performers.SequenceEqual(other.Performers)
             && this.Composers.SequenceEqual(other.Composers)
             && this.Album.Equals(other.Album)

@@ -11,6 +11,7 @@
     <AssemblyName>ReactivePlayer.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,6 +79,9 @@
     <Compile Include="Model\Track.cs" />
     <Compile Include="Model\TrackStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IRenameArtistService.cs" />
+    <Compile Include="Services\IImageDataAnalyzer.cs" />
+    <Compile Include="Services\IMoveTrackService.cs" />
     <Compile Include="Services\INonCryptoHashingService.cs" />
   </ItemGroup>
   <ItemGroup>

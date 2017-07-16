@@ -23,7 +23,7 @@ namespace ReactivePlayer.Domain.Model
         public string Hash { get; }
         //public ImageMimeType MimeType { get; }
 
-        protected override void EnsureIsValidId(string id)
+        protected override void EnsureIsWellFormattedId(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id)); // TODO: localize
         }

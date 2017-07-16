@@ -22,25 +22,25 @@ namespace ReactivePlayer.Tools.ArtworksExtractor
 
         static void ExtractArtworks(string sourceDirectoryPath, string destinationDirectoryPath)
         {
-            var tagsManager = new ReactivePlayer.App.TagLibSharpTrackProfiler();
+            //var tagsManager = new ReactivePlayer.App.TagLibSharpTrackProfiler();
 
-            Directory
-                .GetFiles(sourceDirectoryPath, "*", SearchOption.AllDirectories)
-                .Select(path => tagsManager.GetTrack(new Uri(path)))
-                .Where(t => t != null)
-                .ToList()
-                .ForEach(track =>
-                {
-                    var artworks = track.Tags.Artworks.ToList();
-                    artworks.ForEach(artwork =>
-                    {
-                        var artworkPath = Path.Combine(destinationDirectoryPath, $"{Path.GetFileNameWithoutExtension(track.Location.LocalPath)} - {artworks.IndexOf(artwork)}.png");
-                        using (var fs = new FileStream(artworkPath, FileMode.Create))
-                        {
-                            fs.Write(artwork.Data.ToArray(), 0, artwork.Data.Count());
-                        }
-                    });
-                });
+            //Directory
+            //    .GetFiles(sourceDirectoryPath, "*", SearchOption.AllDirectories)
+            //    .Select(path => tagsManager.GetTrack(new Uri(path)))
+            //    .Where(t => t != null)
+            //    .ToList()
+            //    .ForEach(track =>
+            //    {
+            //        var artworks = track.Tags.Artworks.ToList();
+            //        artworks.ForEach(artwork =>
+            //        {
+            //            var artworkPath = Path.Combine(destinationDirectoryPath, $"{Path.GetFileNameWithoutExtension(track.Location.LocalPath)} - {artworks.IndexOf(artwork)}.png");
+            //            using (var fs = new FileStream(artworkPath, FileMode.Create))
+            //            {
+            //                fs.Write(artwork.Data.ToArray(), 0, artwork.Data.Count());
+            //            }
+            //        });
+            //    });
         }
     }
 }

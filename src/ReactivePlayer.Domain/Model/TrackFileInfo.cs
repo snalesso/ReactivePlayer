@@ -24,9 +24,8 @@ namespace ReactivePlayer.Domain.Model
 
         #region ValueObject
 
-        public override bool Equals(TrackFileInfo other) =>
-            other != null
-            && this.Location.Equals(other.Location)
+        protected override bool EqualsCore(TrackFileInfo other) =>
+            this.Location.Equals(other.Location)
             && this.Duration.Equals(other.Duration)
             && this.LastModified.Equals(other.LastModified);
 

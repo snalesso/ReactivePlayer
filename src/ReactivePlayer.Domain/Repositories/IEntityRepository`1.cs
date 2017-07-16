@@ -14,6 +14,8 @@ namespace ReactivePlayer.Domain.Repositories
         Task<IEnumerable<TEntity>> GetAllAsync(Func<TEntity, bool> filter = null);
 
         Task<TEntity> FirstAsync(Func<TEntity, bool> filter);
+        Task<bool> AnyAsync(Func<TEntity, bool> filter = null);
+        Task<ulong> CountAsync(Func<TEntity, bool> filter = null);
 
         Task<TEntity> AddAsync(TEntity entity);
         Task<IEnumerable<TEntity>> BulkAddAsync(IEnumerable<TEntity> entities);

@@ -5,25 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ReactivePlayer.Core.Entities
+namespace ReactivePlayer.Domain.Entities
 {
     internal sealed class iTunesTrack
     {
+        public const char iTunesFeaturingArtistsSplitter = '/';
+
         public iTunesTrack()
         {
         }
 
         public string Album { get; set; }
         public string AlbumArtist { get; set; }
+        public IEnumerable<string> AlbumArtistNames => this.AlbumArtist?.Split(iTunesFeaturingArtistsSplitter).ToArray();
         public bool AlbumLoved { get; set; }
         public uint? AlbumRating { get; set; }
         public bool AlbumRatingComputed { get; set; }
         public string Artist { get; set; }
+        public IEnumerable<string> ArtistNames => this.Artist?.Split(iTunesFeaturingArtistsSplitter).ToArray();
         public uint? ArtworkCount { get; set; }
         public uint? BitRate { get; set; }
         public string Comments { get; set; }
         public string Compilation { get; set; }
         public string Composer { get; set; }
+        public IEnumerable<string> ComposerNames => this.Composer?.Split(iTunesFeaturingArtistsSplitter).ToArray();
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
         public uint? DiscCount { get; set; }

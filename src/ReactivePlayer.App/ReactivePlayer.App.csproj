@@ -101,11 +101,12 @@
     <Compile Include="ObservableObjectBase.cs" />
     <Compile Include="FSWDirectoryWatcher.cs" />
     <Compile Include="IDirectoryWatcher.cs" />
-    <Compile Include="Services\AlbumCriteria.cs" />
-    <Compile Include="Services\ArtistCriteria.cs" />
-    <Compile Include="Services\ArtworkCriteria.cs" />
-    <Compile Include="Services\Criteria.cs" />
-    <Compile Include="Services\TrackCriteria.cs" />
+    <Compile Include="Services\IArtistsService.cs" />
+    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IFileSystemService.cs" />
+    <Compile Include="Services\INotificationService.cs" />
+    <Compile Include="Services\IPlaybackService.cs" />
+    <Compile Include="Services\ITracksService.cs" />
     <Compile Include="ShellObjectHelper.cs" />
     <Compile Include="TagLibSharpTrackProfiler.cs" />
     <Compile Include="ITrackProfiler.cs" />

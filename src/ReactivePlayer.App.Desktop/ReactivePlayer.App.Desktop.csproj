@@ -63,10 +63,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\LibraryTracksViewModel.cs" />
+    <Compile Include="Services\ITaskbarService.cs" />
+    <Compile Include="ViewModels\AddTracksViewModel.cs" />
+    <Compile Include="ViewModels\LibraryBrowserViewModel.cs" />
+    <Compile Include="ViewModels\LibraryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TrackInfoViewModel.cs" />
+    <Compile Include="ViewModels\TrackEditViewModel.cs" />
+    <Compile Include="ViewModels\TracksViewModel.cs" />
+    <Compile Include="ViewModels\TrackViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">

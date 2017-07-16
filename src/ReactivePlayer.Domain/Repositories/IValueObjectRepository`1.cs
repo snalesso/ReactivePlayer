@@ -13,5 +13,6 @@ namespace ReactivePlayer.Domain.Repositories
     {
         Task<TValueObject> GetByParentAsync(TEntityParent entityParent);
         Task<TValueObject> AddForParentAsync(TEntityParent entityParent, TValueObject valueObject);
+        Task<TValueObject> RemoveForParentAsync(TEntityParent entityParent, TValueObject valueObject);
     }
 }

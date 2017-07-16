@@ -8,44 +8,43 @@ namespace ReactivePlayer.App
     {
         #region properties
 
-        IReadOnlyList<string> SupportedExtensions { get; }
-
-        TimeSpan Position { get; set; } // TODO: use Nullable<TimeSpan>? Makes sense TimeSpan.Zero when nothing's playing?
-
+        IReadOnlyList<string> SupportedExtensions { get; } // TODO: remove, just accept a source, try locate a codec, at worst throw some sort of UnsupportAudioFormatException
         float Volume { get; set; }
-
-        //AudioTrack NextPreload { get; set; }
 
         #endregion
 
         #region methods
 
-        Task PlayAsync(Uri trackLocation);
+        Task PlayNewAsync(Uri trackLocation);
+        IObservable<bool> WhenCanPlayNewChanged { get; }
 
         Task ResumeAsync();
+        IObservable<bool> WhenCanResumeChanged { get; }
 
         Task PauseAsync();
+        IObservable<bool> WhenCanPausehanged { get; }
 
         Task StopAsync();
+        IObservable<bool> WhenCanStophanged { get; }
+
+        Task SeekTo(TimeSpan position);
+        IObservable<bool> WhenCanSeekChanged { get; }
 
         #endregion
 
         #region observable events
 
         IObservable<Uri> WhenTrackLocationChanged { get; }
-        //IObservable<TimeSpan> WhenDurationChanged { get; }
-        IObservable<TimeSpan> WhenPositionChanged { get; }
+        IObservable<TimeSpan?> WhenPositionChanged { get; }
         IObservable<PlaybackStatus> WhenStatusChanged { get; }
-        IObservable<bool> WhenCanPlayhanged { get; }
-        IObservable<bool> WhenCanPausehanged { get; }
-        IObservable<bool> WhenCanStophanged { get; }
-        IObservable<bool> WhenCanSeekChanged { get; }
+
+        //IObservable<bool> WhenSomethingGoesWrong { get; } // TODO: is this enough? Use FailedEventArgs? How are exceptions handled in iobservables?
 
         #endregion
 
-        //bool IsDeviceSwitchingSupported { get; }
+        //IObservable<bool> WhenCanSwitchOutputDeviceChanged { get; }
 
-        //IObservable<IEnumerable<DirectSoundDeviceInfo>> AvailableDevices { get; }
+        //IObservable<IReadOnlyList<DirectSoundDeviceInfo>> WhenAvailableDevicesChanged { get; }
 
         //Task<bool> SwitchToDevice(DirectSoundDeviceInfo device);
     }

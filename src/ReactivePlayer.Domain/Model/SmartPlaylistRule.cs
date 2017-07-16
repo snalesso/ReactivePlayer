@@ -87,7 +87,7 @@ namespace ReactivePlayer.Domain.Model
         {
         }
 
-        public override bool Equals(SmartPlaylistRule<string> other)
+        protected override bool EqualsCore(SmartPlaylistRule<string> other)
         {
             throw new NotImplementedException();
         }
@@ -113,7 +113,7 @@ namespace ReactivePlayer.Domain.Model
         {
         }
 
-        public override bool Equals(SmartPlaylistRule<string> other)
+        protected override bool EqualsCore(SmartPlaylistRule<string> other)
         {
             throw new NotImplementedException();
         }

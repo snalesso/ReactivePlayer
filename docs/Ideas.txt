@@ -2,14 +2,13 @@ FUNCTIONALITIES:
 - when a file change/move is detected listen to the preview to check if the tags correspond to the file data
 - add speakers/headphones and more generically "playback device selection"
 - preload the filestream for the next track to be played, so there is not delay between the playbacks
-- save to 2nd file, and replace the current one at the end in order to prevent data loss
+- save to 2nd file (in %temp%, plus for coincidental SSD speed), and replace the current one at the end in order to prevent data loss
 - white noise generator
 - adjustable playback gap
 - total time played calculator
 - refresh tags
 - audio editor (cut, insert silence, etc.)
 - taskbar playback progress
-- shutdown/hibernate/sleep on timeout
 - screensaver
 - waveform seekbar
 - skip &
@@ -17,9 +16,8 @@ FUNCTIONALITIES:
 	- remove from library
 	- move to bin
 - tracks bin that moves to recycle bin on app close but allows restore
-- take a look @ Foobar2000's TagBox features
 - tag sanitizer (configurable)
-- stop after (shedule stop)
+- stop after (shedule stop, without emptying the queue)
 	- current
 	- current queue
 	- timeout
@@ -43,7 +41,12 @@ FUNCTIONALITIES:
 	- track.disc# > album.discscount
 	- album con: stessi nome, artista, tracce, etc. ma ad es. anno diverso
 	- tracce senza titolo/artista/album/artwork
-	- Artwork data[] == Artwork.MimeType
+	- Artwork data[] != Artwork.MimeType
+	- Artwork.Size >= threshold
+	- file name == artist(s) - title.ext
+- add tags
+	- author page (youtube channel)
+	- publish URL (youtube/spotify/etc. video/audio URL)
 
 - benchmark DTOs creation using:
 	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
@@ -57,6 +60,9 @@ FUNCTIONALITIES:
 - setup different builds for x86 & x64
 - UI
 	- 2 colori per lista e sidebar: es. grgio medio sidebar, scuro lista cosi sembra più profonda/incavata, elementi lista via di mezzo
+- colonna laterale che in base al sorting corrente mostra l'indice, es. canzoni sono ordinate per
+	- artista/titolo -> lettere
+	- data aggiunta -> anno
 
 - alternative repository implementations
 	- SQLite3
@@ -77,3 +83,5 @@ FUNCTIONALITIES:
 	- ServiceStack.Text: https://servicestack.net/text
 	- Marc Gravell's thoughts on serialization versioning: https://blog.marcgravell.com/2014/06/snk-we-need-to-talk.html
 - interesting 2016 comparative: https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/
+
+- Fody per INPC

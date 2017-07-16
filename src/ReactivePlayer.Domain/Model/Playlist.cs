@@ -35,14 +35,14 @@ namespace ReactivePlayer.Domain.Model
 
         public void AddTracks(IEnumerable<Track> tracks) { }
 
-        protected override void EnsureIsValidId(Guid id)
+        protected override void EnsureIsWellFormattedId(Guid id)
         {
             throw new NotImplementedException();
         }
 
         public class PlaylistId : ValueObject<PlaylistId>
         {
-            public override bool Equals(PlaylistId other)
+            protected override bool EqualsCore(PlaylistId other)
             {
                 throw new NotImplementedException();
             }

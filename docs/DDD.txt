@@ -14,6 +14,12 @@ REPOSITORIES
 	- draphyz/DDD					https://github.com/draphyz/DDD
 	- dddlib/dddlib					https://github.com/dddlib/dddlib
 
+
+SPECIFICATION PATTERN
+	- Article	http://enterprisecraftsmanship.com/2016/02/08/specification-pattern-c-implementation/
+	- Code		https://github.com/vkhorikov/SpecificationPattern
+	
+
 BOOKS
 
 - Patterns, Principles, and Practices of Domain-Driven Design	https://www.amazon.com/Patterns-Principles-Practices-Domain-Driven-Design-ebook/dp/B00XLYUA0W/ref=mt_kindle?_encoding=UTF8&me=

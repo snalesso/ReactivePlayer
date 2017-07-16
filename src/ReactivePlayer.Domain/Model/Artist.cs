@@ -4,60 +4,31 @@ using System.Collections.Generic;
 
 namespace ReactivePlayer.Domain.Model
 {
-    public class Artist : Entity<Guid>
+    public class Artist : ValueObject<Artist>
     {
         #region ctor
 
-        public Artist(Guid id, string name)
-            : base(id)
+        public Artist(string name)
         {
             this.Name = name.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(name)); // TODO: localize
-        }
-
-        public Artist(string name) : this(Guid.NewGuid(), name)
-        {
         }
 
         #endregion
 
         public string Name { get; }
 
-        protected override void EnsureIsValidId(Guid id)
+        #region ValueObject
+
+        protected override bool EqualsCore(Artist other)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id)); // TODO: localize
-            if (id == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(id)); // TODO: localize
+            return this.Name.Equals(other.Name);
         }
 
-        public class ArtistId : ValueObject<ArtistId>
+        protected override IEnumerable<object> GetHashCodeIngredients()
         {
-            public ArtistId(string name)
-            {
-                this.Name = name.TrimmedOrNull() ?? throw new ArgumentNullException();
-            }
-
-            public string Name { get; }
-
-            public override bool Equals(ArtistId other) =>
-                other != null
-                && this.Name.Equals(other.Name);
-
-            protected override IEnumerable<object> GetHashCodeIngredients()
-            {
-                yield return this.Name;
-            }
+            yield return this.Name;
         }
 
-        //#region ValueObject
-
-        //public override bool Equals(Artist other) =>
-        //    other != null
-        //    && this.Name.Equals(other.Name);
-
-        //protected override IEnumerable<object> GetHashCodeIngredients()
-        //{
-        //    yield return this.Name;
-        //}
-
-        //#endregion
+        #endregion
     }
 }

@@ -17,52 +17,26 @@ namespace ReactivePlayer.Domain.Model
             uint? tracksCount,
             uint? discsCount)
         {
-            this.Name = name;
+            this.Name = name.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
             this.Authors = authors.ToList().AsReadOnly();
-            this.ReleaseDate = releaseDate;
-            this.TracksCount = tracksCount;
-            this.DiscsCount = discsCount;
+            this.ReleaseDate =
+                !releaseDate.HasValue || releaseDate.Value <= DateTime.Now
+                ? releaseDate
+                : throw new ArgumentOutOfRangeException(nameof(releaseDate), releaseDate, $"{this.GetType().Name}'s {nameof(ReleaseDate)} cannot be in the future."); // TODO: localize;
+            this.TracksCount = tracksCount.HasValue && tracksCount.Value > 0 ? tracksCount : null;
+            this.DiscsCount = discsCount.HasValue && discsCount.Value > 0 ? discsCount : null;
         }
 
         #endregion
 
         #region properties
 
-        private string _name;
-        public string Name
-        {
-            get => this._name;
-            private set
-            {
-                this._name =
-                    (this._name != value && string.IsNullOrWhiteSpace(value))
-                    ? value
-                    : throw new ArgumentNullException(
-                        nameof(value),
-                        $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize
-            }
-        }
+        public string Name { get; }
 
         public IReadOnlyList<Artist> Authors { get; }
 
         // TODO: use year instead? or a new "DateAndTime" type?
-        private DateTime? releaseDate;
-        public DateTime? ReleaseDate
-        {
-            get => this.releaseDate;
-            set
-            {
-                this.releaseDate =
-                    (value != this.releaseDate
-                    && (value == null
-                        || value <= DateTime.Now))
-                    ? value
-                    : throw new ArgumentOutOfRangeException(
-                        nameof(value),
-                        value,
-                        $"An {this.GetType().Name}'s {nameof(ReleaseDate)} cannot be in the future."); // TODO: localize
-            }
-        }
+        public DateTime? ReleaseDate { get; }
 
         public uint? TracksCount { get; }
 
@@ -72,9 +46,8 @@ namespace ReactivePlayer.Domain.Model
 
         #region ValueObject
 
-        public override bool Equals(Album other) =>
-            other != null
-            && this.Name.Equals(other.Name)
+        protected override bool EqualsCore(Album other) =>
+            this.Name.Equals(other.Name)
             && this.Authors.SequenceEqual(other.Authors)
             && this.ReleaseDate.Equals(other.ReleaseDate)
             && this.TracksCount.Equals(other.TracksCount)
