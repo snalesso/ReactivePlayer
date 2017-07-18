@@ -4,12 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReactivePlayer.Exps.WPF"
+        xmlns:Daedalus.UI.Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
         mc:Ignorable="d"
         xmlns:ViewModels="clr-namespace:ReactivePlayer.Exps.WPF.ViewModels"
         Title="MainWindow"
         d:DataContext="{Binding Source={d:DesignInstance Type=ViewModels:MainWindowViewModel, IsDesignTimeCreatable=True}}"
         SizeToContent="WidthAndHeight"
         MinWidth="500">
+
+    <Window.Resources>
+        <Daedalus.UI.Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="8" />
@@ -53,10 +59,23 @@
 
             <TextBlock Text="{Binding CurrentTrackLocation}" />
 
-            <StackPanel Grid.Row="2">
-                <TextBlock Text="{Binding DurationMilliseconds}" />
-                <Slider Value="{Binding PositionMilliseconds}" Minimum="0" Maximum="{Binding DurationMilliseconds}" />
-            </StackPanel>
+            <Grid Grid.Row="2"
+                  Visibility="{Binding IsTrackbarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Position}" />
+                <Slider Value="{Binding PositionMilliseconds}"
+                        Grid.Column="2"
+                        Minimum="0" IsEnabled="{Binding IsTrackbarVisible}"
+                        Maximum="{Binding DurationMilliseconds}" />
+                <TextBlock Text="{Binding Duration}"
+                           Grid.Column="4" />
+            </Grid>
 
             <StackPanel Grid.Row="4"
                         Orientation="Horizontal">
@@ -69,13 +88,16 @@
                 <Button Content="Resume"
                         Margin="8 0 0 0"
                         Command="{Binding Resume, Mode=OneWay}" />
-                <Button Content="Stop" Command="{Binding Stop}"
+                <Button Content="Stop"
+                        Command="{Binding Stop}"
                         Margin="8 0 0 0" />
             </StackPanel>
 
         </Grid>
 
-        <ListBox ItemsSource="{Binding PlayerEvents}" Grid.Column="1" Grid.Row="5">
+        <ListBox ItemsSource="{Binding PlayerEvents}"
+                 Grid.Column="1"
+                 Grid.Row="5">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" />

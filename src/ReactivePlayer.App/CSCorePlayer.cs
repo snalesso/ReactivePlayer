@@ -54,48 +54,59 @@ namespace ReactivePlayer.App
             this.__playerDisposables = new CompositeDisposable();
             this._playbackDisposables = new CompositeDisposable().DisposeWith(this.__playerDisposables);
 
+            // TrackLocation
+            this.__trackLocationSubject = new BehaviorSubject<Uri>(null).DisposeWith(this.__playerDisposables);
+            this.WhenTrackLocationChanged = this.__trackLocationSubject
+                .AsObservable()
+                .DistinctUntilChanged();
+
+            // Position
+            this.__positionSubject = new BehaviorSubject<TimeSpan?>(null);
+            this.WhenPositionChanged = this.__positionSubject
+                .AsObservable()
+                .DistinctUntilChanged();
+            // Status
+            this.__playbackStatusSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.None).DisposeWith(this.__playerDisposables);
+            this.WhenPlaybackStatusChanged = this.__playbackStatusSubject
+                .AsObservable()
+                .DistinctUntilChanged();
+            // Duration
+            this.WhenDurationChanged = this.WhenPlaybackStatusChanged
+                .Where(status =>
+                    status == PlaybackStatus.Loaded
+                    || status == PlaybackStatus.Ended
+                    || status == PlaybackStatus.Interrupted
+                    || status == PlaybackStatus.Exploded)
+                .Select(status => (status == PlaybackStatus.Loaded) ? this._soundOut?.WaveSource?.GetLength() : null)
+                .DistinctUntilChanged();
+
             // SoundOut & SoundOut.WaveSource
             //this.__whenSundOutChanged = this.WhenAnyValue(_ => _._soundOut).DistinctUntilChanged();
             //this.__whenWaveSourceChanged = this.WhenAnyValue(_ => _._soundOut.WaveSource).DistinctUntilChanged();
 
-            // Track Location
-            this.__trackLocationSubject = new BehaviorSubject<Uri>(null).DisposeWith(this.__playerDisposables);
-            this.WhenTrackLocationChanged = this.__trackLocationSubject
-                .AsObservable()
-                .DistinctUntilChanged()
-                // logs to the debug console Track Location changes
-                .Do(tl => Debug.WriteLine($"Track.Location\t\t=\t{tl?.ToString() ?? "null"}"));
+            // Track Location change log
+            this.WhenTrackLocationChanged.Subscribe(tl => Debug.WriteLine($"Track.Location\t\t=\t{tl?.ToString() ?? "null"}")).DisposeWith(this.__playerDisposables);
+            // position change log
+            this.WhenPositionChanged.Subscribe(pos => Debug.WriteLine($"Playback.Position\t=\t{pos?.ToString() ?? "null"}")).DisposeWith(this.__playerDisposables);
+            // status change log
+            this.WhenPlaybackStatusChanged.Subscribe(status => Debug.WriteLine($"Playback.Status\t\t=\t{Enum.GetName(typeof(PlaybackStatus), status)}")).DisposeWith(this.__playerDisposables);
+            // duration chage log
+            this.WhenDurationChanged.Subscribe(duration => Debug.WriteLine($"Playback.Duration\t=\t{duration?.ToString() ?? "null"}")).DisposeWith(this.__playerDisposables);
 
-            // Playback Position
-            this.__positionSubject = new BehaviorSubject<TimeSpan?>(null);
-            this.WhenPositionChanged = this.__positionSubject
-                .AsObservable()
-                .DistinctUntilChanged()
-                // logs to the debug console position changes
-                .Do(pos => Debug.WriteLine($"Playback.Position\t=\t{pos?.ToString() ?? "null"}"));
+            // position updater
             this.__whenPositionChangedConnectable = Observable
                   .Interval(CSCorePlayer.PositionUpdatesInterval, RxApp.TaskpoolScheduler) // TODO: learn about thread pools
                   .Select(_ => this._soundOut?.WaveSource?.GetPosition())
                   .DistinctUntilChanged()
                   .Publish();
             this.__whenPositionChangedConnectable.Subscribe(this.__positionSubject.OnNext).DisposeWith(this.__playerDisposables);
-
-            // Playback Status
-            this.__playbackStatusSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.None).DisposeWith(this.__playerDisposables);
-            this.WhenPlaybackStatusChanged = this.__playbackStatusSubject
-                .AsObservable()
-                .DistinctUntilChanged();
-            // Playback Status - Subscriptions
-            // logs to the debug console status changes
-            this.WhenPlaybackStatusChanged
-                .Subscribe(status => Debug.WriteLine($"Playback.Status\t\t=\t{Enum.GetName(typeof(PlaybackStatus), status)}"))
-                .DisposeWith(this.__playerDisposables);
-            // Playback Status - Subscriptions
+            
             // when track loaded -> set position to zero
             this.WhenPlaybackStatusChanged
                 .Where(status => status == PlaybackStatus.Loaded)
                 .Subscribe(status => this.__positionSubject.OnNext(TimeSpan.Zero))
                 .DisposeWith(this.__playerDisposables);
+
             // when started/resumed -> start updating position
             this.WhenPlaybackStatusChanged
                 .Where(status => status == PlaybackStatus.Playing)
@@ -104,11 +115,13 @@ namespace ReactivePlayer.App
                         .Connect()
                         .DisposeWith(this._playbackDisposables))
                 .DisposeWith(this.__playerDisposables);
+
             // when getting into a non-playing status -> stop updating position
             this.WhenPlaybackStatusChanged
                 .Where(status => status != PlaybackStatus.Playing)
                 .Subscribe(status => this._whenPositionChangedSubscription?.Dispose())
                 .DisposeWith(this.__playerDisposables);
+
             // when the playback stops (not paused) for any reason -> set position to null
             this.WhenPlaybackStatusChanged
                 .Where(status =>
@@ -118,18 +131,6 @@ namespace ReactivePlayer.App
                     || status == PlaybackStatus.None)
                 .Subscribe(status => this.__positionSubject.OnNext(null))
                 .DisposeWith(this.__playerDisposables);
-
-            // Playback Duration
-            this.WhenDurationChanged = this.WhenPlaybackStatusChanged
-                .Where(status =>
-                    status == PlaybackStatus.Loaded
-                    || status == PlaybackStatus.Ended
-                    || status == PlaybackStatus.Interrupted
-                    || status == PlaybackStatus.Exploded)
-                .Select(status => (status == PlaybackStatus.Loaded) ? this._soundOut?.WaveSource?.GetLength() : null)
-                .DistinctUntilChanged();
-            this.WhenDurationChanged
-                .Subscribe(duration => Debug.WriteLine($"Playback.Duration\t=\t{duration?.ToString() ?? "null"}"));
 
             #region CAN's
 
