@@ -15,7 +15,7 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private IObservableAudioPlayer _player = new CSCorePlayer();
+        private CSCorePlayer _player = new CSCorePlayer();
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         public MainWindowViewModel()
@@ -65,5 +65,14 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
         public ReactiveCommand Pause { get; }
         public ReactiveCommand Resume { get; }
         public ReactiveCommand Stop { get; }
+
+        #region View
+
+        public void Close()
+        {
+            //this._player.Dispose();
+        }
+
+        #endregion
     }
 }

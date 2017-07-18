@@ -1,5 +1,6 @@
 ﻿using ReactivePlayer.Exps.WPF.ViewModels;
 using System.Windows;
+using System;
 
 namespace ReactivePlayer.Exps.WPF
 {
@@ -13,6 +14,13 @@ namespace ReactivePlayer.Exps.WPF
             InitializeComponent();
 
             this.DataContext = new MainWindowViewModel();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            (this.DataContext as MainWindowViewModel)?.Close();
+
+            base.OnClosed(e);
         }
     }
 }
