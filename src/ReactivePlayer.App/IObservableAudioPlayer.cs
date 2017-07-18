@@ -35,8 +35,9 @@ namespace ReactivePlayer.App
         #region observable events
 
         IObservable<Uri> WhenTrackLocationChanged { get; }
+        IObservable<TimeSpan?> WhenDurationChanged { get; }
         IObservable<TimeSpan?> WhenPositionChanged { get; }
-        IObservable<PlaybackStatus> WhenStatusChanged { get; }
+        IObservable<PlaybackStatus> WhenPlaybackStatusChanged { get; }
 
         //IObservable<bool> WhenSomethingGoesWrong { get; } // TODO: is this enough? Use FailedEventArgs? How are exceptions handled in iobservables?
 

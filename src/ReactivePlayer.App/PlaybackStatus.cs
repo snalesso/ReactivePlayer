@@ -3,12 +3,13 @@
     // TODO: review use cases (KISS principle)
     public enum PlaybackStatus
     {
-        NaturallyEnded = 0,
+        None = 0,
         Loading,
         Loaded,
         Playing,
         Paused,
-        ManuallyStopped,
+        Interrupted,
+        Ended,
         Exploded
     }
 }

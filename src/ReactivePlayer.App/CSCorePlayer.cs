@@ -1,8 +1,22 @@
 ﻿using CSCore;
+using CSCore.Codecs;
+using CSCore.CoreAudioAPI;
+using CSCore.MediaFoundation;
+using CSCore.Streams;
+using CSCore.Streams.Effects;
+using CSCore.Streams.SampleConverter;
+using CSCore.Utils;
+using CSCore.Utils.Buffer;
+using CSCore.Win32;
+using CSCore.DSP;
+using CSCore.DMO;
+using CSCore.DMO.Effects;
+using CSCore.DirectSound;
 using CSCore.SoundOut;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -13,26 +27,23 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.App
 {
+    // TODO: annotate class behavior
     // TODO: investigate IWaveSource.AppendSource
     // TODO: investigate IWaveSource.GetLength: how does it calculates duration? How accurate is it guaranteed to be?
     public class CSCorePlayer : IObservableAudioPlayer, IDisposable // TODO: learn how to handle IDisposable from outside and in general how to handle interfaces which implementations may or may not be IDisposable
     {
         #region constants & fields
 
-        private static readonly TimeSpan PositionPollingFrequency = TimeSpan.FromMilliseconds(250); // TODO: benchmark update frequency
-
-        private readonly CompositeDisposable _disposables; // TODO: consider SerialDisposable to handle SoundOut creations/destructions
+        private static readonly TimeSpan PositionUpdatesInterval = TimeSpan.FromMilliseconds(333); // TODO: benchmark update frequency
         // SemaphoreSlim                https://docs.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=netframework-4.7
         // Semaphore vs SemaphoreSlim   https://docs.microsoft.com/en-us/dotnet/standard/threading/semaphore-and-semaphoreslim
-        private readonly SemaphoreSlim _playbackActionsSemaphore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim __playbackActionsSemaphore = new SemaphoreSlim(1, 1);
 
-        private IObservable<ISoundOut> _whenSoundOutChanged;
-        private IObservable<EventPattern<PlaybackStoppedEventArgs>> _whenSoundOutStopped;
-        private IDisposable _whenSoundOutStoppedSubscription;
-
-        private Uri _trackLocation;
         private ISoundOut _soundOut;
-        private bool _isManuallyStopping = false;
+        private bool? _isManuallyStopping = null; // Note: used to (and ONLY to) mark the stop event to be handled as manually stopped, set on manual stopping, unset on new playback setup
+
+        //private IObservable<ISoundOut> __whenSundOutChanged;
+        //private IObservable<IWaveSource> __whenWaveSourceChanged;
 
         #endregion
 
@@ -40,52 +51,133 @@ namespace ReactivePlayer.App
 
         public CSCorePlayer()
         {
-            this._disposables = new CompositeDisposable();
-            this._disposables.Add(this._playbackActionsSemaphore);
-            this._disposables.Add(this._playbackActionsSemaphore);
+            this.__playerDisposables = new CompositeDisposable();
+            this._playbackDisposables = new CompositeDisposable().DisposeWith(this.__playerDisposables);
 
-            this._whenSoundOutChanged = this.WhenAnyValue(@this => @this._soundOut).DistinctUntilChanged();
-            this._trackLocationSubject = new BehaviorSubject<Uri>(this._trackLocation).DisposeWith(this._disposables);
+            // SoundOut & SoundOut.WaveSource
+            //this.__whenSundOutChanged = this.WhenAnyValue(_ => _._soundOut).DistinctUntilChanged();
+            //this.__whenWaveSourceChanged = this.WhenAnyValue(_ => _._soundOut.WaveSource).DistinctUntilChanged();
 
-            this.WhenTrackLocationChanged = this._trackLocationSubject.AsObservable().DistinctUntilChanged();
-
-            // check position on interval reading from this.Position
-            this.WhenPositionChanged = Observable
-                .Interval(CSCorePlayer.PositionPollingFrequency, RxApp.TaskpoolScheduler)
-                .Select(_ => this._soundOut?.WaveSource?.GetPosition())
-                .TakeWhile(position => position.HasValue)
-                .DistinctUntilChanged(p => p)
-                .StartWith(null as TimeSpan?);
-
-            // the behavior that holds and publishes the current PlaybackStatus to the outside
-            this._playbackStatusSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.NaturallyEnded).DisposeWith(this._disposables); // TODO: use ManuallyStopped? If at startup listeners read
-            this.WhenStatusChanged = this._playbackStatusSubject
+            // Track Location
+            this.__trackLocationSubject = new BehaviorSubject<Uri>(null).DisposeWith(this.__playerDisposables);
+            this.WhenTrackLocationChanged = this.__trackLocationSubject
                 .AsObservable()
-                .DistinctUntilChanged();
+                .DistinctUntilChanged()
+                // logs to the debug console Track Location changes
+                .Do(tl => Debug.WriteLine($"Track.Location\t=\t{tl?.ToString() ?? "null"}"));
 
-            // Can[X]
+            // Playback Position
+            this.__positionSubject = new BehaviorSubject<TimeSpan?>(null);
+            this.WhenPositionChanged = this.__positionSubject.AsObservable().DistinctUntilChanged();
+            this.__whenPositionChangedConnectable = Observable
+                .Interval(CSCorePlayer.PositionUpdatesInterval, RxApp.TaskpoolScheduler) // TODO: learn about thread pools
+                .Select(_ => this._soundOut?.WaveSource?.GetPosition())
+                .DistinctUntilChanged()
+                // logs to the debug console position changes
+                .Do(pos => Debug.WriteLine($"Playback.Position\t=\t{pos?.ToString() ?? "null"}"))
+                .Publish();
+            this.__whenPositionChangedConnectable.Subscribe(this.__positionSubject.OnNext).DisposeWith(this.__playerDisposables);
 
-            //this.WhenCanResumeChanged = this.WhenStatusChanged
-            //    .Select(status => status == PlaybackStatus.Paused)
-            //    .DistinctUntilChanged();
+            // Playback Status
+            this.__playbackStatusSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.None).DisposeWith(this.__playerDisposables);
+            this.WhenPlaybackStatusChanged = this.__playbackStatusSubject
+                .AsObservable()
+                .DistinctUntilChanged()
+                // logs to the debug console status changes
+                .Do(status => Debug.WriteLine($"Playback.Status\t=\t{Enum.GetName(typeof(PlaybackStatus), status)}"));
+            // Playback Status - Subscriptions - 
+            // Playback Status - Subscriptions - Playback Duration
+            this.WhenDurationChanged = this.WhenPlaybackStatusChanged
+                .Where(status =>
+                    status == PlaybackStatus.Loaded
+                    || status == PlaybackStatus.Ended
+                    || status == PlaybackStatus.Interrupted
+                    || status == PlaybackStatus.Exploded)
+                .Select(status => (status == PlaybackStatus.Loaded) ? this._soundOut?.WaveSource?.GetLength() : null)
+                .DistinctUntilChanged()
+                // Duration subscriptions (duration is subscribed under WhenPlaybackStatusChanged)
+                .Do(duration => Debug.WriteLine($"Playback.Duration\t=\t{duration?.ToString() ?? "null"}"));
+            // Playback Status - Subscriptions - When track loaded -> set position to zero
+            this.WhenPlaybackStatusChanged
+                .Where(status => status == PlaybackStatus.Loaded)
+                .Subscribe(status => this.__positionSubject.OnNext(TimeSpan.Zero))
+                .DisposeWith(this.__playerDisposables);
+            // Playback Status - Subscriptions - When started/resumed -> start updating position
+            this.WhenPlaybackStatusChanged
+                .Where(status => status == PlaybackStatus.Playing)
+                .Subscribe(status =>
+                    this._whenPositionChangedSubscription = this.__whenPositionChangedConnectable
+                        .Connect()
+                        .DisposeWith(this._playbackDisposables))
+                .DisposeWith(this.__playerDisposables);
+            // Playback Status - Subscriptions - When getting into a non-playing status -> stop updating position
+            this.WhenPlaybackStatusChanged
+                .Where(status => status != PlaybackStatus.Playing)
+                .Subscribe(status => this._whenPositionChangedSubscription?.Dispose())
+                .DisposeWith(this.__playerDisposables);
+            // Playback Status - Subscriptions - When the playback stops (not paused) for any reason -> set position to null
+            this.WhenPlaybackStatusChanged
+                .Where(status =>
+                    status == PlaybackStatus.Ended
+                    || status == PlaybackStatus.Interrupted
+                    || status == PlaybackStatus.Exploded
+                    || status == PlaybackStatus.None)
+                .Subscribe(status => this.__positionSubject.OnNext(null))
+                .DisposeWith(this.__playerDisposables);
+            
+            #region CAN's
 
-            //this.WhenCanPausehanged = this.WhenStatusChanged
-            //    .Select(status => status == PlaybackStatus.Playing)
-            //    .DistinctUntilChanged();
+            // Can - PlayNew
+            this.__canPlayNewSubject = new BehaviorSubject<bool>(CSCorePlayer.CanPlayNewPlaybackStatuses.Contains(this.__playbackStatusSubject.Value));
+            this.WhenCanPlayNewChanged = this.__canPlayNewSubject.AsObservable().DistinctUntilChanged();
+            this.WhenPlaybackStatusChanged
+                .Select(status => CSCorePlayer.CanPlayNewPlaybackStatuses.Contains(status))
+                .Subscribe(can => this.__canPlayNewSubject.OnNext(can))
+                .DisposeWith(this.__playerDisposables);
 
-            //this.WhenCanPausehanged = this.WhenStatusChanged
-            //    .Select(status => status == PlaybackStatus.Playing)
-            //    .DistinctUntilChanged();
+            // Can - Pause
+            this.__canPauseSubject = new BehaviorSubject<bool>(false);
+            this.WhenCanPausehanged = this.__canPauseSubject.AsObservable().DistinctUntilChanged();
+            this.WhenPlaybackStatusChanged
+                .Select(status => CSCorePlayer.CanPausePlaybackStatuses.Contains(status))
+                .Subscribe(can => this.__canPauseSubject.OnNext(can))
+                .DisposeWith(this.__playerDisposables);
 
-            //this.WhenCanStophanged = this.WhenStatusChanged
-            //    .Select(status =>
-            //        status == PlaybackStatus.Loading
-            //        || status == PlaybackStatus.Playing
-            //        || status == PlaybackStatus.Paused)
-            //    .DistinctUntilChanged();
+            // Can - Resume
+            this.__canResumeSubject = new BehaviorSubject<bool>(false);
+            this.WhenCanResumeChanged = this.__canResumeSubject.AsObservable().DistinctUntilChanged();
+            this.WhenPlaybackStatusChanged
+                .Select(status => CSCorePlayer.CanResumePlaybackStatuses.Contains(status))
+                .Subscribe(can => this.__canResumeSubject.OnNext(can))
+                .DisposeWith(this.__playerDisposables);
 
-            //this.WhenCanSeekChanged = this.WhenAnyValue(@this =>this._soundOut != null);
+            // Can - Stop
+            this.__canStopSubject = new BehaviorSubject<bool>(false);
+            this.WhenCanStophanged = this.__canStopSubject.AsObservable().DistinctUntilChanged();
+            this.WhenPlaybackStatusChanged
+                .Select(status => CSCorePlayer.CanStopPlaybackStatuses.Contains(status))
+                .Subscribe(can => this.__canStopSubject.OnNext(can))
+                .DisposeWith(this.__playerDisposables);
+
+            // Can - Seek
+            //this._canSeekSubject = new BehaviorSubject<bool>(false);
+            //this.WhenCanSeekChanged = this._canSeekSubject.AsObservable().DistinctUntilChanged();
+            //Observable
+            //    .CombineLatest(
+            //        this.WhenPlaybackStatusChanged,
+            //        this._whenWaveSourceChanged, // TODO: if this is null, the exception is raised in MainWindow ctor, ask on SO how to localize the exception
+            //        (status, waveSource) =>
+            //            waveSource != null
+            //            && waveSource.CanSeek
+            //            && CSCorePlayer.CanSeekPlaybackStatuses.Contains(status))
+            //    .Subscribe(can => this._canSeekSubject.OnNext(can))
+            //    .DisposeWith(this._disposables);
+
+            #endregion
         }
+
+        private IConnectableObservable<TimeSpan?> __whenPositionChangedConnectable;
+        private IDisposable _whenPositionChangedSubscription;
 
         #endregion
 
@@ -111,64 +203,19 @@ namespace ReactivePlayer.App
         {
             try
             {
-                if (this._soundOut != null)
-                {
-                    if (this._soundOut.PlaybackState == PlaybackState.Playing
-                        || this._soundOut.PlaybackState == PlaybackState.Paused)
-                    {
-                        // TODO: check if new track is the same as the currently loaded we can just reposition it to the start
-                        await this.StopAsync();
-                    }
+                await this.StopAsync();
+                await this.__playbackActionsSemaphore.WaitAsync();
 
-                    await this.DisposeSoundOutAndWaveSource();
-                }
+                this._playbackDisposables.Clear();
 
-                await this._playbackActionsSemaphore.WaitAsync();
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Loading); // TODO: notify Loading before or after checking for trackLocation validity?
+                this.InitializeTrack(trackLocation);
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Loaded);
 
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Loading); // TODO: think: should notify loading before or after checking for trackLocation validity?
-
-                this._trackLocation = trackLocation ?? throw new ArgumentNullException(nameof(trackLocation)); // TODO: localize
-                                                                                                               // TODO: add Uri location type (local, online, etc...)
-                var audioSource = CSCore.Codecs.CodecFactory.Instance.GetCodec(this._trackLocation);
-                if (this._soundOut == null)
-                {
-                    this._soundOut = new WasapiOut(true, CSCore.CoreAudioAPI.AudioClientShareMode.Shared, 100);
-                    Observable
-                           .FromEventPattern<PlaybackStoppedEventArgs>(
-                               h => this._soundOut.Stopped += h,
-                               h => this._soundOut.Stopped -= h)
-                        .Take(1)
-                        .Subscribe(eventPattern =>
-                        {
-                            // TODO: check if really needed: the event should be raised when the state has already changed
-                            SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Stopped);
-
-                            PlaybackStatus status = PlaybackStatus.NaturallyEnded;
-
-                            if (eventPattern.EventArgs.HasError == false)
-                            {
-                                if (this._isManuallyStopping == false)
-                                    status = PlaybackStatus.NaturallyEnded;
-                                else
-                                    status = PlaybackStatus.ManuallyStopped;
-                            }
-                            else // implosion driven stop
-                            {
-                                status = PlaybackStatus.Exploded;
-                            }
-
-                            this._playbackStatusSubject.OnNext(status);
-                        })
-                        .DisposeWith(this._disposables);
-                }
-                this._soundOut.Initialize(audioSource); // TODO: check CSCore source code and check if .Initialize can be called multiple times or should be called only once per ISoundOut allocation
-
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Loaded);
-                this._trackLocationSubject.OnNext(this._trackLocation);
-
-                this._soundOut.Play(); // TODO: ensure this is the right usage for .ConfigureAwait(false)
+                // start playback and update status
+                this._soundOut.Play();
                 SpinWait.SpinUntil(() => this._soundOut?.PlaybackState == PlaybackState.Playing);
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Playing);
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Playing);
             }
             catch (Exception ex)
             {
@@ -176,15 +223,17 @@ namespace ReactivePlayer.App
                 {
                     case NotSupportedException nse:
                         break;
+                    case ArgumentNullException ane:
+                        break;
                 }
 
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Exploded);
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Exploded);
 
-                throw ex;
+                //throw ex;
             }
             finally
             {
-                this._playbackActionsSemaphore.Release();
+                this.__playbackActionsSemaphore.Release();
             }
         }
 
@@ -192,10 +241,10 @@ namespace ReactivePlayer.App
         {
             if (this._soundOut != null && this._soundOut.PlaybackState == PlaybackState.Paused)
             {
-                this._soundOut?.Resume(); // TODO: check what happens if ISoundOut.Play() when there's no WaveSource
+                this._soundOut?.Resume();
 
                 SpinWait.SpinUntil(() => this._soundOut?.PlaybackState == PlaybackState.Playing);
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Playing);
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Playing);
             }
 
             return Task.CompletedTask; // TODO: ensure this is a best practice and not a wrong use of ConfigureAwait(false), how does it relate to Task.CompletedTask?
@@ -203,22 +252,22 @@ namespace ReactivePlayer.App
 
         public async Task PauseAsync()
         {
-            await this._playbackActionsSemaphore.WaitAsync();
+            await this.__playbackActionsSemaphore.WaitAsync();
 
             if (this._soundOut != null && this._soundOut.PlaybackState == PlaybackState.Playing)
             {
                 this._soundOut?.Pause();
 
                 SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Paused);
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Paused);
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Paused);
             }
 
-            this._playbackActionsSemaphore.Release();
+            this.__playbackActionsSemaphore.Release();
         }
 
         public async Task StopAsync()
         {
-            await this._playbackActionsSemaphore.WaitAsync();
+            await this.__playbackActionsSemaphore.WaitAsync();
 
             try
             {
@@ -231,20 +280,20 @@ namespace ReactivePlayer.App
 
                         this._soundOut?.Stop();
                         this._soundOut?.WaitForStopped(); // TODO: consider adding the WaitForStopped( timeout )
-                                                          // TODO: compare WaitForStopped which uses a WaitHandle (https://github.com/filoe/cscore/blob/29410b12ae35321c4556b072c0711a8f289c0544/CSCore/Extensions.cs#L410) vs SpinWait.SpinUntil
-
-                        this._isManuallyStopping = false;
+                                                          // TODO: compare WaitForStopped which uses a WaitHandle https://github.com/filoe/cscore/blob/29410b12ae35321c4556b072c0711a8f289c0544/CSCore/Extensions.cs#L410 vs SpinWait.SpinUntil
+                        SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Stopped);
                     }
                 }
             }
             catch (ArgumentNullException)
             {
-                this._playbackStatusSubject.OnNext(PlaybackStatus.Exploded);
-                throw;
+                this.__playbackStatusSubject.OnNext(PlaybackStatus.Exploded);
+                //throw;
             }
             finally
             {
-                this._playbackActionsSemaphore.Release();
+                this._isManuallyStopping = false;
+                this.__playbackActionsSemaphore.Release();
             }
         }
 
@@ -255,45 +304,85 @@ namespace ReactivePlayer.App
 
         #endregion
 
-        #region private          
+        #region private
 
-        private Task DisposeSoundOutAndWaveSource()
+        private ISubject<TimeSpan?> __positionSubject;
+        private ISoundOut GetNewSoundOut()
+        {
+            ISoundOut soundOut;
+            if (WasapiOut.IsSupportedOnCurrentPlatform)
+                soundOut = new WasapiOut();
+            else
+                soundOut = new DirectSoundOut(100);
+
+            soundOut.DisposeWith(this._playbackDisposables);
+
+            return soundOut;
+        }
+
+        private void DisposeSoundOutAndWaveSource()
         {
             if (this._soundOut != null)
             {
-                if (this._whenSoundOutStoppedSubscription != null)
-                {
-                    this._disposables.Remove(this._whenSoundOutStoppedSubscription);
-                    this._whenSoundOutStoppedSubscription = null;
-                    this._whenSoundOutStopped = null;
-                }
-
                 if (this._soundOut.WaveSource != null
-                    && this._disposables.Contains(this._soundOut.WaveSource))
+                    && this.__playerDisposables.Contains(this._soundOut.WaveSource))
                 {
-                    this._disposables.Remove(this._soundOut.WaveSource); // TODO: can this be called without checking the contains?
+                    this.__playerDisposables.Remove(this._soundOut.WaveSource); // TODO: can this be called without checking the contains?
                 }
 
-                if (this._disposables.Contains(this._soundOut)) // TODO: what happens if not contained
-                                                                // TODO: what happens if already disposed
+                if (this.__playerDisposables.Contains(this._soundOut)) // TODO: what happens if not contained
+                                                                       // TODO: what happens if already disposed
                 {
-                    this._disposables.Remove(this._soundOut); // TODO: what happens if already disposed
-                                                              // TODO: what does the description mean by "removed and disposes the FIRST occurence" :O
+                    this.__playerDisposables.Remove(this._soundOut); // TODO: what happens if already disposed
+                                                                     // TODO: what does the description mean by "removed and disposes the FIRST occurence" :O
                     this._soundOut = null;
                 }
             }
-
-            return Task.CompletedTask;
         }
 
-        private object _disposingLock = new object();
-        public void Dispose() // TODO: review implementation, also consider if there's some Interlocked way to do it
+        private void DisposeAndRecreateSoundOut(ref ISoundOut soundOut)
         {
-            lock (this._disposingLock)
-            {
-                if (!this._disposables.IsDisposed)
-                    this._disposables.Dispose();
-            }
+            this.DisposeSoundOutAndWaveSource();
+            soundOut = this.GetNewSoundOut();
+        }
+
+        private void InitializeTrack(Uri trackLocation)
+        {
+            if (WasapiOut.IsSupportedOnCurrentPlatform)
+                this._soundOut = new WasapiOut();
+            else
+                this._soundOut = new DirectSoundOut(100);
+
+            this._soundOut.DisposeWith(this._playbackDisposables);
+
+            var waveSource = CodecFactory.Instance.GetCodec(trackLocation);
+            waveSource.DisposeWith(this._playbackDisposables);
+            this._soundOut.Initialize(waveSource);
+            this._soundOut.WaveSource.DisposeWith(this._playbackDisposables);
+
+            Observable
+                .FromEventPattern<PlaybackStoppedEventArgs>(
+                    h => this._soundOut.Stopped += h,
+                    h => this._soundOut.Stopped -= h)
+                .FirstAsync()
+                .Subscribe(e =>
+                {
+                    PlaybackStatus newStatus;
+
+                    if (e.EventArgs.HasError)
+                    {
+                        newStatus = PlaybackStatus.Exploded;
+                    }
+                    else
+                    {
+                        newStatus = this._isManuallyStopping.HasValue && this._isManuallyStopping.Value ? PlaybackStatus.Interrupted : PlaybackStatus.Ended;
+                    }
+
+                    this.__playbackStatusSubject.OnNext(newStatus);
+                })
+                .DisposeWith(this._playbackDisposables);
+
+            this._isManuallyStopping = null;
         }
 
         #endregion
@@ -302,24 +391,59 @@ namespace ReactivePlayer.App
 
         #region observable events
 
-        private readonly BehaviorSubject<Uri> _trackLocationSubject;
+        private readonly BehaviorSubject<Uri> __trackLocationSubject;
         public IObservable<Uri> WhenTrackLocationChanged { get; } // TODO: investigate whether .AsObservable().DistinctUntilChanged() creates a new observable every time someone subscribes
 
         public IObservable<TimeSpan?> WhenPositionChanged { get; }
+        public IObservable<TimeSpan?> WhenDurationChanged { get; }
 
-        private readonly BehaviorSubject<PlaybackStatus> _playbackStatusSubject;
-        public IObservable<PlaybackStatus> WhenStatusChanged { get; }
+        private readonly BehaviorSubject<PlaybackStatus> __playbackStatusSubject;
+        public IObservable<PlaybackStatus> WhenPlaybackStatusChanged { get; }
 
+        private static readonly PlaybackStatus[] CanPlayNewPlaybackStatuses =
+            {
+                PlaybackStatus.None,
+                PlaybackStatus.Playing,
+                PlaybackStatus.Paused,
+                PlaybackStatus.Ended,
+                PlaybackStatus.Interrupted,
+                PlaybackStatus.Exploded
+            };
+        private readonly BehaviorSubject<bool> __canPlayNewSubject;
         public IObservable<bool> WhenCanPlayNewChanged { get; }
 
-        public IObservable<bool> WhenCanResumeChanged { get; }
-
+        private static readonly PlaybackStatus[] CanPausePlaybackStatuses = { PlaybackStatus.Playing };
+        private readonly BehaviorSubject<bool> __canPauseSubject;
         public IObservable<bool> WhenCanPausehanged { get; }
 
-        //private readonly ISubject<bool> _canStopSubject;
+        private static readonly PlaybackStatus[] CanResumePlaybackStatuses = { PlaybackStatus.Paused };
+        private readonly BehaviorSubject<bool> __canResumeSubject;
+        public IObservable<bool> WhenCanResumeChanged { get; }
+
+        private static readonly PlaybackStatus[] CanStopPlaybackStatuses = { PlaybackStatus.Playing, PlaybackStatus.Paused };
+        private readonly BehaviorSubject<bool> __canStopSubject;
         public IObservable<bool> WhenCanStophanged { get; } //  => this._canStopSubject.AsObservable();
 
+        private static readonly PlaybackStatus[] CanSeekPlaybackStatuses = { PlaybackStatus.Playing, PlaybackStatus.Paused };
+        private readonly BehaviorSubject<bool> __canSeekSubject;
         public IObservable<bool> WhenCanSeekChanged { get; }
+
+        #endregion
+
+        #region IDisposable
+
+        private readonly CompositeDisposable __playerDisposables; // TODO: consider SerialDisposable to handle SoundOut creations/destructions
+        private readonly CompositeDisposable _playbackDisposables;
+        private object __disposingLock = new object();
+
+        public void Dispose() // TODO: review implementation, also consider if there's some Interlocked way to do it
+        {
+            lock (this.__disposingLock)
+            {
+                if (!this.__playerDisposables.IsDisposed)
+                    this.__playerDisposables.Dispose();
+            }
+        }
 
         #endregion
     }

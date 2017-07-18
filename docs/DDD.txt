@@ -18,7 +18,10 @@ REPOSITORIES
 SPECIFICATION PATTERN
 	- Article	http://enterprisecraftsmanship.com/2016/02/08/specification-pattern-c-implementation/
 	- Code		https://github.com/vkhorikov/SpecificationPattern
-	
+				https://github.com/vkhorikov/CSharpFunctionalExtensions
+
+PARAMETER ATTRIBUTES
+	- Null-checks	https://github.com/Fody/NullGuard
 
 BOOKS
 

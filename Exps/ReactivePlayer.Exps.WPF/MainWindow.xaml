@@ -54,7 +54,7 @@
             <TextBlock Text="{Binding CurrentTrackLocation}" />
 
             <StackPanel Grid.Row="2">
-                <TextBlock Text="{Binding Position}" />
+                <TextBlock Text="{Binding DurationMilliseconds}" />
                 <Slider Value="{Binding PositionMilliseconds}" Minimum="0" Maximum="{Binding DurationMilliseconds}" />
             </StackPanel>
 
@@ -69,7 +69,7 @@
                 <Button Content="Resume"
                         Margin="8 0 0 0"
                         Command="{Binding Resume, Mode=OneWay}" />
-                <Button Content="Stop"
+                <Button Content="Stop" Command="{Binding Stop}"
                         Margin="8 0 0 0" />
             </StackPanel>
 

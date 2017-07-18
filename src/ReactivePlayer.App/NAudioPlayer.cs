@@ -52,7 +52,7 @@ namespace ReactivePlayer.App
                 .DistinctUntilChanged(p => p.Ticks)
                 .StartWith(TimeSpan.Zero);
 
-            this.WhenStatusChanged = (this._whenStatusChangedSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.NaturallyEnded).DisposeWith(this._disposables))
+            this.WhenPlaybackStatusChanged = (this._whenStatusChangedSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.Ended).DisposeWith(this._disposables))
                 .AsObservable()
                 .DistinctUntilChanged();
 
@@ -67,7 +67,7 @@ namespace ReactivePlayer.App
 
                     this._whenStatusChangedSubject.OnNext(
                         eventPattern.EventArgs.Exception == null ?
-                        PlaybackStatus.NaturallyEnded :
+                        PlaybackStatus.Ended :
                         PlaybackStatus.Exploded);
                 })
                 .DisposeWith(this._disposables);
@@ -157,7 +157,7 @@ namespace ReactivePlayer.App
             this._audioFileReader?.Dispose();
             this._audioFileReader = null;
             this._trackLocation = null;
-            this._whenStatusChangedSubject.OnNext(PlaybackStatus.NaturallyEnded);
+            this._whenStatusChangedSubject.OnNext(PlaybackStatus.Ended);
 
             await Task.CompletedTask; // TODO: test with ConfigureAwait(false)  
         }
@@ -174,7 +174,7 @@ namespace ReactivePlayer.App
         public IObservable<TimeSpan> WhenPositionChanged { get; }
 
         private readonly ISubject<PlaybackStatus> _whenStatusChangedSubject;
-        public IObservable<PlaybackStatus> WhenStatusChanged { get; }
+        public IObservable<PlaybackStatus> WhenPlaybackStatusChanged { get; }
 
         public IObservable<bool> WhenCanResumeChanged => throw new NotImplementedException();
 
@@ -189,6 +189,8 @@ namespace ReactivePlayer.App
         public IObservable<bool> WhenSomethingGoesWrong => throw new NotImplementedException();
 
         public IObservable<bool> WhenCanPlayNewChanged => throw new NotImplementedException();
+
+        IObservable<TimeSpan?> IObservableAudioPlayer.WhenDurationChanged => throw new NotImplementedException();
 
         #endregion
 
