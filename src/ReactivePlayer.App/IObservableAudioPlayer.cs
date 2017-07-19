@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.App
 {
-    public interface IObservableAudioPlayer
+    public interface IObservableAudioPlayer: IDisposable
     {
         #region properties
 
         IReadOnlyList<string> SupportedExtensions { get; } // TODO: remove, just accept a source, try locate a codec, at worst throw some sort of UnsupportAudioFormatException
-        float Volume { get; set; }
 
         #endregion
 
@@ -29,6 +28,9 @@ namespace ReactivePlayer.App
 
         Task SeekTo(TimeSpan position);
         IObservable<bool> WhenCanSeekChanged { get; }
+
+        void SetVolume(float volume);
+        IObservable<float> WhenVolumeChanged { get; }
 
         #endregion
 

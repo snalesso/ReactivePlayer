@@ -7,6 +7,7 @@ REPOSITORIES
 - elbandit/PPPDDD							https://github.com/elbandit/PPPDDD
 - travel-cloud/Cheddar						https://github.com/travel-cloud/Cheddar
 - tugrulelmas/AbiokaApi						https://github.com/tugrulelmas/AbiokaApi
+- Value Object								https://github.com/tpierrain/Value
 
 - Selected repos
 	- IvanZheng/IFramework			https://github.com/IvanZheng/IFramework

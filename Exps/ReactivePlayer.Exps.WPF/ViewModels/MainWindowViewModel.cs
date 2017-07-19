@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
+using System.IO;
 
 namespace ReactivePlayer.Exps.WPF.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private CSCorePlayer _player = new CSCorePlayer();
+        private IObservableAudioPlayer _player = new CSCorePlayer();
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         public MainWindowViewModel()
@@ -28,7 +30,8 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
             this.PlayNew = ReactiveCommand.CreateFromTask(async (string path) =>
             {
                 this.PlayerEvents.Clear();
-                await this._player.PlayNewAsync(new Uri(path));
+                var loc  = new Uri(Path.Combine(Assembly.GetEntryAssembly().Location, path));
+                await this._player.PlayNewAsync(loc);
             }, this._player.WhenCanPlayNewChanged).DisposeWith(this._disposables);
             this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPausehanged).DisposeWith(this._disposables);
             this.Resume = ReactiveCommand.CreateFromTask(() => this._player.ResumeAsync(), this._player.WhenCanResumeChanged).DisposeWith(this._disposables);
@@ -38,16 +41,17 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
             this._positionOAPH = this._player.WhenPositionChanged.ToProperty(this, @this => @this.Position).DisposeWith(this._disposables);
             this._durationOAPH = this._player.WhenDurationChanged.ToProperty(this, @this => @this.Duration).DisposeWith(this._disposables);
             // milliseconds
-            this._positionMillisecondsOAPH = this._player.WhenPositionChanged.Select(p => p.HasValue ? p.Value.TotalMilliseconds : 0d).ToProperty(this, @this => @this.PositionMilliseconds).DisposeWith(this._disposables);
-            this._durationMillisecondsOAPH = this._player.WhenDurationChanged.Select(p => p.HasValue ? p.Value.TotalMilliseconds : 0d).ToProperty(this, @this => @this.DurationMilliseconds).DisposeWith(this._disposables);
+            this._positionMillisecondsOAPH = this._player.WhenPositionChanged.Select(p => p != null && p.HasValue ? p.Value.TotalMilliseconds : 0d).ToProperty(this, @this => @this.PositionMilliseconds).DisposeWith(this._disposables);
+            this._durationMillisecondsOAPH = this._player.WhenDurationChanged.Select(p => p != null && p.HasValue ? p.Value.TotalMilliseconds : 0d).ToProperty(this, @this => @this.DurationMilliseconds).DisposeWith(this._disposables);
 
             this._player.WhenPlaybackStatusChanged.Subscribe(status => this.PlayerEvents.Add(Enum.GetName(typeof(PlaybackStatus), status))).DisposeWith(this._disposables);
             this._currentTrackLocationOAPH = this._player.WhenTrackLocationChanged.Select(l => l?.ToString()).ToProperty(this, @this => @this.CurrentTrackLocation).DisposeWith(this._disposables);
             this._isTrackbarVisibleOAPH = this._player.WhenDurationChanged.Select(duration => duration != null ? duration.HasValue : false).ToProperty(this, @this => @this.IsTrackbarVisible).DisposeWith(this._disposables);
+            this._volumeOAPH = this._player.WhenVolumeChanged.ToProperty(this, @this => @this.Volume).DisposeWith(this._disposables);
         }
 
         private ObservableAsPropertyHelper<string> _currentTrackLocationOAPH;
-        public string CurrentTrackLocation => _currentTrackLocationOAPH.Value;
+        public string CurrentTrackLocation => this._currentTrackLocationOAPH.Value;
 
         private ObservableAsPropertyHelper<bool> _canPlayNewOAPH;
         public bool CanPlayNew => this._canPlayNewOAPH.Value;
@@ -64,7 +68,7 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
         public double DurationMilliseconds => this._durationMillisecondsOAPH.Value;
 
         private ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
-        public TimeSpan? Position { get => this._positionOAPH.Value; set { } }
+        public TimeSpan? Position { get => this._positionOAPH.Value; }
         private ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
         public TimeSpan? Duration => this._durationOAPH.Value;
 
@@ -72,6 +76,13 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
         public bool IsTrackbarVisible => this._isTrackbarVisibleOAPH.Value;
 
         public ObservableCollection<string> PlayerEvents { get; } = new ObservableCollection<string>();
+
+        private ObservableAsPropertyHelper<float> _volumeOAPH;
+        public float Volume
+        {
+            get => this._volumeOAPH.Value;
+            set => this._player.SetVolume(value);
+        }
 
         public ReactiveCommand<string, Unit> PlayNew { get; }
         public ReactiveCommand Pause { get; }

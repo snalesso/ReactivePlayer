@@ -192,6 +192,8 @@ namespace ReactivePlayer.App
 
         IObservable<TimeSpan?> IObservableAudioPlayer.WhenDurationChanged => throw new NotImplementedException();
 
+        public IObservable<float> WhenVolumeChanged => throw new NotImplementedException();
+
         #endregion
 
         #region IDisposable
@@ -218,6 +220,11 @@ namespace ReactivePlayer.App
         }
 
         public Task SeekTo(TimeSpan position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetVolume(float volume)
         {
             throw new NotImplementedException();
         }

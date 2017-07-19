@@ -3,17 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReactivePlayer.Exps.WPF"
-        xmlns:Daedalus.UI.Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
+        xmlns:Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
         mc:Ignorable="d"
         xmlns:ViewModels="clr-namespace:ReactivePlayer.Exps.WPF.ViewModels"
         Title="MainWindow"
         d:DataContext="{Binding Source={d:DesignInstance Type=ViewModels:MainWindowViewModel, IsDesignTimeCreatable=True}}"
         SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
         MinWidth="500">
 
     <Window.Resources>
-        <Daedalus.UI.Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
     </Window.Resources>
 
     <Grid>
@@ -27,9 +29,9 @@
             <RowDefinition Height="8" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*" />
-            <ColumnDefinition Width="499*" />
-            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="1"
@@ -42,7 +44,7 @@
 
             <Button Content="Select audio" />
             <TextBox x:Name="textBox"
-                     Text="D:\Dev\Repos\Visual Studio Online\ReactivePlayer\Library\TagLib\sample.flac"
+                     Text="..\..\..\..\..\Library\this\Brownian noise - short.flac"
                      Grid.Column="2" />
 
         </Grid>
@@ -53,14 +55,10 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="8" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="8" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding CurrentTrackLocation}" />
-
-            <Grid Grid.Row="2"
-                  Visibility="{Binding IsTrackbarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid Grid.Row="0"
+                  IsEnabled="{Binding IsTrackbarVisible}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="8" />
@@ -68,30 +66,50 @@
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
+
                 <TextBlock Text="{Binding Position}" />
                 <Slider Value="{Binding PositionMilliseconds}"
                         Grid.Column="2"
-                        Minimum="0" IsEnabled="{Binding IsTrackbarVisible}"
+                        Minimum="0"
+                        IsEnabled="{Binding IsTrackbarVisible}"
                         Maximum="{Binding DurationMilliseconds}" />
                 <TextBlock Text="{Binding Duration}"
                            Grid.Column="4" />
             </Grid>
 
-            <StackPanel Grid.Row="4"
-                        Orientation="Horizontal">
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
                 <Button Content="Play"
                         Command="{Binding PlayNew}"
                         CommandParameter="{Binding Text, ElementName=textBox}" />
                 <Button Content="Pause"
-                        Margin="8 0 0 0"
+                        Grid.Column="2"
                         Command="{Binding Pause, Mode=OneWay}" />
                 <Button Content="Resume"
-                        Margin="8 0 0 0"
+                        Grid.Column="4"
                         Command="{Binding Resume, Mode=OneWay}" />
                 <Button Content="Stop"
-                        Command="{Binding Stop}"
-                        Margin="8 0 0 0" />
-            </StackPanel>
+                        Grid.Column="6"
+                        Command="{Binding Stop}" />
+
+                <Slider Width="100"
+                        Minimum="0"
+                        Maximum="1"
+                        Value="{Binding Volume}"
+                        Grid.Column="8" />
+
+            </Grid>
 
         </Grid>
 

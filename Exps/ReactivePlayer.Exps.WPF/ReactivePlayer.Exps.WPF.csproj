@@ -120,7 +120,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ReactivePlayer.App\ReactivePlayer.App.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.App.Desktop.UI\ReactivePlayer.App.Desktop.UI.csproj">
+      <Project>{3127f9b6-3a88-4c5c-8ae5-f6f42fc0f016}</Project>
+      <Name>ReactivePlayer.App.Desktop.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.App\ReactivePlayer.App.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
       <Name>ReactivePlayer.App</Name>
     </ProjectReference>

@@ -18,9 +18,8 @@ namespace ReactivePlayer.Exps.WPF
 
         protected override void OnClosed(EventArgs e)
         {
-            (this.DataContext as MainWindowViewModel)?.Close();
-
             base.OnClosed(e);
+            (this.DataContext as MainWindowViewModel)?.Close();
         }
     }
 }
