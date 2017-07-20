@@ -75,7 +75,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
       <Name>ReactivePlayer.Domain</Name>
     </ProjectReference>
