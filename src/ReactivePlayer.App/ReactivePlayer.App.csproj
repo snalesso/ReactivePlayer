@@ -98,6 +98,7 @@
     <Compile Include="ObservableObjectBase.cs" />
     <Compile Include="FSWDirectoryWatcher.cs" />
     <Compile Include="IDirectoryWatcher.cs" />
+    <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="Services\IArtistsService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFileSystemService.cs" />

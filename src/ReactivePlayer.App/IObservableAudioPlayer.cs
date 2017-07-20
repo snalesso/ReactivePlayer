@@ -4,14 +4,8 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.App
 {
-    public interface IObservableAudioPlayer: IDisposable
+    public interface IObservableAudioPlayer : IDisposable
     {
-        #region properties
-
-        IReadOnlyList<string> SupportedExtensions { get; } // TODO: remove, just accept a source, try locate a codec, at worst throw some sort of UnsupportAudioFormatException
-
-        #endregion
-
         #region methods
 
         Task PlayNewAsync(Uri trackLocation);
@@ -26,7 +20,7 @@ namespace ReactivePlayer.App
         Task StopAsync();
         IObservable<bool> WhenCanStophanged { get; }
 
-        Task SeekTo(TimeSpan position);
+        Task SeekToAsync(TimeSpan position); // TODO: make SeekTo void? Or SetVolume Task? What if concurrent SetVolume's?
         IObservable<bool> WhenCanSeekChanged { get; }
 
         void SetVolume(float volume);
@@ -37,9 +31,9 @@ namespace ReactivePlayer.App
         #region observable events
 
         IObservable<Uri> WhenTrackLocationChanged { get; }
-        IObservable<TimeSpan?> WhenDurationChanged { get; }
         IObservable<TimeSpan?> WhenPositionChanged { get; }
-        IObservable<PlaybackStatus> WhenPlaybackStatusChanged { get; }
+        IObservable<TimeSpan?> WhenDurationChanged { get; }
+        IObservable<PlaybackStatus> WhenStatusChanged { get; }
 
         //IObservable<bool> WhenSomethingGoesWrong { get; } // TODO: is this enough? Use FailedEventArgs? How are exceptions handled in iobservables?
 
