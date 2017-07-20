@@ -8,8 +8,12 @@ namespace ReactivePlayer.App
     {
         #region methods
 
-        Task PlayNewAsync(Uri trackLocation);
-        IObservable<bool> WhenCanPlayNewChanged { get; }
+        Task LoadTrackAsync(Uri trackLocation);
+        IObservable<bool> WhenCanLoadChanged { get; }
+        IObservable<Uri> WhenTrackLocationChanged { get; }
+
+        Task PlayAsync();
+        IObservable<bool> WhenCanPlayChanged { get; }
 
         Task ResumeAsync();
         IObservable<bool> WhenCanResumeChanged { get; }
@@ -30,7 +34,6 @@ namespace ReactivePlayer.App
 
         #region observable events
 
-        IObservable<Uri> WhenTrackLocationChanged { get; }
         IObservable<TimeSpan?> WhenPositionChanged { get; }
         IObservable<TimeSpan?> WhenDurationChanged { get; }
         IObservable<PlaybackStatus> WhenStatusChanged { get; }

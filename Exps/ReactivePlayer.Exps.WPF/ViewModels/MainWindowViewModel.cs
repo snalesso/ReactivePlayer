@@ -19,23 +19,16 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
 
         public MainWindowViewModel()
         {
-            //this._canPlayNewOAPH = this._player.WhenCanPlayNewChanged.ToProperty(this, @this => @this.CanPlayNew).DisposeWith(this._disposables);
-            //this._canPauseOAPH = this._player.WhenCanPausehanged.ToProperty(this, @this => @this.CanPause).DisposeWith(this._disposables);
-            //this._canResumeOAPH = this._player.WhenCanResumeChanged.ToProperty(this, @this => @this.CanResume).DisposeWith(this._disposables);
-            //this._canStopOAPH = this._player.WhenCanStophanged.ToProperty(this, @this => @this.CanStop).DisposeWith(this._disposables);
-            //this._canSeekOAPH = this._player.WhenCanSeekChanged.ToProperty(this, @this => @this.CanSeek).DisposeWith(this._disposables);
-
-            this.PlayNew = ReactiveCommand.CreateFromTask(async (string path) =>
-            {
-                var loc = new Uri(Path.Combine(Assembly.GetEntryAssembly().Location, path));
-                await this._player.PlayNewAsync(loc);
-            }, this._player.WhenCanPlayNewChanged).DisposeWith(this._disposables);
+            this.Load = ReactiveCommand.CreateFromTask((string path) => this._player.LoadTrackAsync(new Uri(Path.Combine(Assembly.GetEntryAssembly().Location, path))), this._player.WhenCanLoadChanged).DisposeWith(this._disposables);
+            this.Play = ReactiveCommand.CreateFromTask(() => this._player.PlayAsync(), this._player.WhenCanPlayChanged).DisposeWith(this._disposables);
             this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPausehanged).DisposeWith(this._disposables);
             this.Resume = ReactiveCommand.CreateFromTask(() => this._player.ResumeAsync(), this._player.WhenCanResumeChanged).DisposeWith(this._disposables);
             this.Stop = ReactiveCommand.CreateFromTask(() => this._player.StopAsync(), this._player.WhenCanStophanged).DisposeWith(this._disposables);
             this.StartSeeking = ReactiveCommand.Create(() => this._isSeeking = true, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.EndSeeking = ReactiveCommand.Create(() => this._isSeeking = false, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.SeekTo = ReactiveCommand.CreateFromTask<long>(position => this._player.SeekToAsync(TimeSpan.FromTicks(position)), this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
+
+            this._canLoadOAPH = this._player.WhenCanLoadChanged.ToProperty(this, @this => @this.CanLoad).DisposeWith(this._disposables);
 
             // timespans
             this._positionOAPH = this._player.WhenPositionChanged.ToProperty(this, @this => @this.Position).DisposeWith(this._disposables);
@@ -51,9 +44,9 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
                 .DisposeWith(this._disposables);
             this._isSeekableStatusOAPH = this._player
                 .WhenStatusChanged
-                .Select(status => PlaybackStatusHelper.SeekablePlaybackStatuses.Contains(status))
+                .Select(status => PlaybackStatusHelper.CanSeekPlaybackStatuses.Contains(status))
                 .ToProperty(this, @this => @this.IsSeekableStatus).DisposeWith(this._disposables);
-            this._isDurationKnownOPAH = this._player
+            this._isDurationKnownOAPH = this._player
                 .WhenDurationChanged
                 .Select(duration => duration.HasValue)
                 .ToProperty(this, @this => @this.IsDurationKnown)
@@ -70,19 +63,11 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
             this._volumeOAPH = this._player.WhenVolumeChanged.ToProperty(this, @this => @this.Volume).DisposeWith(this._disposables);
         }
 
+        private ObservableAsPropertyHelper<bool> _canLoadOAPH;
+        public bool CanLoad => this._canLoadOAPH.Value;
+
         private ObservableAsPropertyHelper<string> _currentTrackLocationOAPH;
         public string CurrentTrackLocation => this._currentTrackLocationOAPH.Value;
-
-        //private ObservableAsPropertyHelper<bool> _canPlayNewOAPH;
-        //public bool CanPlayNew => this._canPlayNewOAPH.Value;
-        //private ObservableAsPropertyHelper<bool> _canPauseOAPH;
-        //public bool CanPause => this._canPauseOAPH.Value;
-        //private ObservableAsPropertyHelper<bool> _canResumeOAPH;
-        //public bool CanResume => this._canResumeOAPH.Value;
-        //private ObservableAsPropertyHelper<bool> _canStopOAPH;
-        //public bool CanStop => this._canStopOAPH.Value;
-        //private ObservableAsPropertyHelper<bool?> _canSeekOAPH;
-        //public bool? CanSeek => this._canSeekOAPH.Value;
 
         private ObservableAsPropertyHelper<long> _positionAsTickssOAPH;
         public long PositionAsTicks
@@ -98,8 +83,8 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
         private ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
         public TimeSpan? Duration => this._durationOAPH.Value;
 
-        private ObservableAsPropertyHelper<bool> _isDurationKnownOPAH;
-        public bool IsDurationKnown => this._isDurationKnownOPAH.Value;
+        private ObservableAsPropertyHelper<bool> _isDurationKnownOAPH;
+        public bool IsDurationKnown => this._isDurationKnownOAPH.Value;
 
         private ObservableAsPropertyHelper<bool> _isPositionKnownOAPH;
         public bool IsPositionKnown => this._isPositionKnownOAPH.Value;
@@ -117,11 +102,11 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
             set => this._player.SetVolume(value);
         }
 
-        public ReactiveCommand<string, Unit> PlayNew { get; }
+        public ReactiveCommand<string, Unit> Load { get; }
+        public ReactiveCommand Play { get; }
         public ReactiveCommand Pause { get; }
         public ReactiveCommand Resume { get; }
         public ReactiveCommand Stop { get; }
-
         public ReactiveCommand StartSeeking { get; }
         public ReactiveCommand<long, Unit> SeekTo { get; }
         public ReactiveCommand EndSeeking { get; }

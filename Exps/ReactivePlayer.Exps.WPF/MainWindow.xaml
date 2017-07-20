@@ -35,6 +35,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="1"
+              IsEnabled="{Binding CanLoad}"
               Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -42,7 +43,9 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Content="Select audio" />
+            <Button Content="Load"
+                    Command="{Binding Load}"
+                    CommandParameter="{Binding Text, ElementName=textBox}" />
             <TextBox x:Name="textBox"
                      Text="..\..\..\..\..\Library\this\Brownian noise - long.flac"
                      Grid.Column="2" />
@@ -70,8 +73,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Content="Play"
-                        Command="{Binding PlayNew}"
-                        CommandParameter="{Binding Text, ElementName=textBox}" />
+                        Command="{Binding Play, Mode=OneWay}" />
                 <Button Content="Pause"
                         Grid.Column="2"
                         Command="{Binding Pause, Mode=OneWay}" />
@@ -80,7 +82,7 @@
                         Command="{Binding Resume, Mode=OneWay}" />
                 <Button Content="Stop"
                         Grid.Column="6"
-                        Command="{Binding Stop}" />
+                        Command="{Binding Stop, Mode=OneWay}" />
 
                 <Slider Width="100"
                         Minimum="0"
