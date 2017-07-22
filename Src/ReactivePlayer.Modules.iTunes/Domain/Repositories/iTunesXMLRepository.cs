@@ -11,12 +11,12 @@ using System.Xml.Linq;
 namespace ReactivePlayer.Domain.Repositories
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public sealed class iTunesTracksRepository : ITracksRepository
+    public sealed class iTunesXMLRepository : ITracksRepository
 #pragma warning restore IDE1006 // Naming Styles
     {
         private readonly string _xmlItmlFilePath;
 
-        public iTunesTracksRepository(string xmlItlFilePath)
+        public iTunesXMLRepository(string xmlItlFilePath)
         {
             if (!File.Exists(xmlItlFilePath))
                 throw new FileNotFoundException(); // TODO: localize

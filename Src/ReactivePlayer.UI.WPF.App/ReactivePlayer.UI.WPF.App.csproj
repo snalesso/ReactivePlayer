@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -99,7 +99,7 @@
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.UI.WPF.Core\ReactivePlayer.UI.WPF.Core.csproj">
       <Project>{5aaf12fb-ac4b-4c76-a55e-0e9058d4a6b4}</Project>
-      <Name>ReactivePlayer.App.Desktop</Name>
+      <Name>ReactivePlayer.UI.WPF.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

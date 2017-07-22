@@ -32,8 +32,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Benchmarks",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{2BD86662-209A-4CC6-A324-5F99B023F6E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.ArtworksExtractor", "Tools\ReactivePlayer.Tools.ArtworksExtractor\ReactivePlayer.Tools.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.iTunes", "Src\ReactivePlayer.Modules.iTunes\ReactivePlayer.Modules.iTunes.csproj", "{A45E3C4D-550F-4187-863D-C6F67E734162}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.iTunesXMLLibraryConverter", "Tools\ReactivePlayer.Tools.iTunesXMLLibraryConverter\ReactivePlayer.Tools.iTunesXMLLibraryConverter.csproj", "{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}"
@@ -54,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain", "Sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.SQLiteNetPcl", "Src\ReactivePlayer.Modules.SQLiteNetPcl\ReactivePlayer.Modules.SQLiteNetPcl.csproj", "{6733DBE2-4756-45DA-A460-2F9FFC726CC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain.Json", "Src\ReactivePlayer.Domain.Json\ReactivePlayer.Domain.Json.csproj", "{3348376F-332F-471D-A613-09700A0E0CBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.NewtonsoftJson", "Src\ReactivePlayer.Modules.NewtonsoftJson\ReactivePlayer.Modules.NewtonsoftJson.csproj", "{3348376F-332F-471D-A613-09700A0E0CBE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Tests", "Tests\ReactivePlayer.App.Tests\ReactivePlayer.App.Tests.csproj", "{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}"
 EndProject
@@ -63,6 +61,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exps", "Exps", "{DCA2872A-CCDE-44AA-8EDF-208E572F02B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.WPF", "Exps\ReactivePlayer.Exps.WPF\ReactivePlayer.Exps.WPF.csproj", "{7942537A-2991-4EF9-8242-CE5513770823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.ArtworksExtractor", "Exps\ReactivePlayer.Exps.ArtworksExtractor\ReactivePlayer.Exps.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,10 +78,6 @@ Global
 		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CC7B7E4-B7D5-47EE-908E-B16038729920}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A45E3C4D-550F-4187-863D-C6F67E734162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A45E3C4D-550F-4187-863D-C6F67E734162}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A45E3C4D-550F-4187-863D-C6F67E734162}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -126,6 +122,10 @@ Global
 		{7942537A-2991-4EF9-8242-CE5513770823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7942537A-2991-4EF9-8242-CE5513770823}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7942537A-2991-4EF9-8242-CE5513770823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,7 +133,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3F17AA7E-9965-4000-8446-9BC315F17C57} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{3CC7B7E4-B7D5-47EE-908E-B16038729920} = {F6A61F07-3C72-430F-9B74-499883A301E5}
-		{86A58024-565B-40D6-826F-EC973694ECFF} = {2BD86662-209A-4CC6-A324-5F99B023F6E2}
 		{A45E3C4D-550F-4187-863D-C6F67E734162} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{BD005F06-2547-4891-AEE0-A6A6D18DDB0C} = {2BD86662-209A-4CC6-A324-5F99B023F6E2}
 		{03FA41AC-D148-47AF-839F-3A0584CEEE3B} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
@@ -145,5 +144,6 @@ Global
 		{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{7942537A-2991-4EF9-8242-CE5513770823} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{86A58024-565B-40D6-826F-EC973694ECFF} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 	EndGlobalSection
 EndGlobal
