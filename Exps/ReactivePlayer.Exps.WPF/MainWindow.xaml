@@ -113,12 +113,10 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
-                        <Slider Minimum="0"
+                        <Slider Minimum="0" IsMoveToPointEnabled="True"
                                 x:Name="PlaybackPositionSlider"
-                                Thumb.DragStarted="PositionSlider_DragStarted"
-                                Thumb.DragDelta="PositionSlider_DragDelta"
-                                Thumb.DragCompleted="PositionSlider_DragCompleted"
                                 Grid.Column="2"
+                                Value="{Binding PositionAsTicks, Mode=OneWay}"
                                 IsEnabled="{Binding IsPositionSeekable}"
                                 Maximum="{Binding DurationAsTicks}"
                                 TickFrequency="0.5">

@@ -24,6 +24,7 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
             this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPausehanged).DisposeWith(this._disposables);
             this.Resume = ReactiveCommand.CreateFromTask(() => this._player.ResumeAsync(), this._player.WhenCanResumeChanged).DisposeWith(this._disposables);
             this.Stop = ReactiveCommand.CreateFromTask(() => this._player.StopAsync(), this._player.WhenCanStophanged).DisposeWith(this._disposables);
+
             this.StartSeeking = ReactiveCommand.Create(() => this._isSeeking = true, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.EndSeeking = ReactiveCommand.Create(() => this._isSeeking = false, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.SeekTo = ReactiveCommand.CreateFromTask<long>(position => this._player.SeekToAsync(TimeSpan.FromTicks(position)), this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
@@ -34,7 +35,12 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
             this._positionOAPH = this._player.WhenPositionChanged.ToProperty(this, @this => @this.Position).DisposeWith(this._disposables);
             this._durationOAPH = this._player.WhenDurationChanged.ToProperty(this, @this => @this.Duration).DisposeWith(this._disposables);
             // milliseconds
-            this._positionAsTickssOAPH = this._player.WhenPositionChanged.Where(p => !this._isSeeking).Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L).ToProperty(this, @this => @this.PositionAsTicks).DisposeWith(this._disposables);
+            this._positionAsTickssOAPH = this._player
+                .WhenPositionChanged
+                .Where(p => !this._isSeeking)
+                .Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L)
+                .ToProperty(this, @this => @this.PositionAsTicks)
+                .DisposeWith(this._disposables);
             this._durationAsTicksOAPH = this._player.WhenDurationChanged.Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L).ToProperty(this, @this => @this.DurationAsTicks).DisposeWith(this._disposables);
 
             this._currentTrackLocationOAPH = this._player
@@ -70,16 +76,14 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
         public string CurrentTrackLocation => this._currentTrackLocationOAPH.Value;
 
         private ObservableAsPropertyHelper<long> _positionAsTickssOAPH;
-        public long PositionAsTicks
-        {
-            get => this._positionAsTickssOAPH.Value;
-            set => this._player.SeekToAsync(TimeSpan.FromMilliseconds(value));
-        }
+        public long PositionAsTicks => this._positionAsTickssOAPH.Value;
+
         private ObservableAsPropertyHelper<long> _durationAsTicksOAPH;
         public long DurationAsTicks => this._durationAsTicksOAPH.Value;
 
         private ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
-        public TimeSpan? Position { get => this._positionOAPH.Value; }
+        public TimeSpan? Position => this._positionOAPH.Value;
+
         private ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
         public TimeSpan? Duration => this._durationOAPH.Value;
 

@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0CB099FF-6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App", "Src\ReactivePlayer.App\ReactivePlayer.App.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core", "Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bench", "Bench", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
 EndProject
@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{2BD86662
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.ArtworksExtractor", "Tools\ReactivePlayer.Tools.ArtworksExtractor\ReactivePlayer.Tools.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.iTunes", "Src\ReactivePlayer.iTunes\ReactivePlayer.iTunes.csproj", "{A45E3C4D-550F-4187-863D-C6F67E734162}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.iTunes", "Src\ReactivePlayer.Modules.iTunes\ReactivePlayer.Modules.iTunes.csproj", "{A45E3C4D-550F-4187-863D-C6F67E734162}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Tools.iTunesXMLLibraryConverter", "Tools\ReactivePlayer.Tools.iTunesXMLLibraryConverter\ReactivePlayer.Tools.iTunesXMLLibraryConverter.csproj", "{BD005F06-2547-4891-AEE0-A6A6D18DDB0C}"
 EndProject
@@ -46,19 +46,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Desktop", "Src\ReactivePlayer.App.Desktop\ReactivePlayer.App.Desktop.csproj", "{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.WPF.Core", "Src\ReactivePlayer.UI.WPF.Core\ReactivePlayer.UI.WPF.Core.csproj", "{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Desktop.UI", "Src\ReactivePlayer.App.Desktop.UI\ReactivePlayer.App.Desktop.UI.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.WPF.App", "Src\ReactivePlayer.UI.WPF.App\ReactivePlayer.UI.WPF.App.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain", "Src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj", "{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain.SQLiteNetPcl", "Src\ReactivePlayer.Domain.SQLiteNetPcl\ReactivePlayer.Domain.SQLiteNetPcl.csproj", "{6733DBE2-4756-45DA-A460-2F9FFC726CC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.SQLiteNetPcl", "Src\ReactivePlayer.Modules.SQLiteNetPcl\ReactivePlayer.Modules.SQLiteNetPcl.csproj", "{6733DBE2-4756-45DA-A460-2F9FFC726CC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain.Json", "Src\ReactivePlayer.Domain.Json\ReactivePlayer.Domain.Json.csproj", "{3348376F-332F-471D-A613-09700A0E0CBE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.App.Tests", "Tests\ReactivePlayer.App.Tests\ReactivePlayer.App.Tests.csproj", "{A0A1DC37-D84B-4CD6-9EC1-986E3431F80B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Akavache", "Src\ReactivePlayer.Akavache\ReactivePlayer.Akavache.csproj", "{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.Akavache", "Src\ReactivePlayer.Modules.Akavache\ReactivePlayer.Modules.Akavache.csproj", "{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exps", "Exps", "{DCA2872A-CCDE-44AA-8EDF-208E572F02B1}"
 EndProject

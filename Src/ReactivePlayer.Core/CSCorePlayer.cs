@@ -36,7 +36,7 @@ namespace ReactivePlayer.App
     {
         #region constants & fields
 
-        private static readonly TimeSpan PositionUpdatesInterval = TimeSpan.FromMilliseconds(500); // TODO: benchmark update frequency
+        public static readonly TimeSpan DefaultPositionUpdateInterval = TimeSpan.FromMilliseconds(50); // TODO: benchmark impact with high freq. updates
         // SemaphoreSlim                https://docs.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=netframework-4.7
         // Semaphore vs SemaphoreSlim   https://docs.microsoft.com/en-us/dotnet/standard/threading/semaphore-and-semaphoreslim
         private readonly SemaphoreSlim __playbackActionsSemaphore = new SemaphoreSlim(1, 1);
@@ -47,7 +47,7 @@ namespace ReactivePlayer.App
 
         #region ctor
 
-        public CSCorePlayer()
+        public CSCorePlayer(TimeSpan positionUpdateInterval)
         {
             this.__playerScopeDisposables = new CompositeDisposable();
             this._playbackScopeDisposables = new CompositeDisposable().DisposeWith(this.__playerScopeDisposables);
@@ -71,15 +71,9 @@ namespace ReactivePlayer.App
             this.__volumeSubject = new BehaviorSubject<float>(this._volume).DisposeWith(this.__playerScopeDisposables);
             this.WhenVolumeChanged = this.__volumeSubject.AsObservable().DistinctUntilChanged();
 
-            // volume
-            this.WhenVolumeChanged
-                .Throttle(TimeSpan.FromMilliseconds(500)) // only log volume when the new value is maintained for at least 500 ms
-                .Subscribe(volume => Debug.WriteLine($"Volume\t\t=\t{volume}"))
-                .DisposeWith(this.__playerScopeDisposables);
-
             // position updater
             this.__whenPositionChangedSubscriber = Observable
-                  .Interval(CSCorePlayer.PositionUpdatesInterval, RxApp.TaskpoolScheduler) // TODO: learn about thread pools
+                  .Interval(positionUpdateInterval, RxApp.TaskpoolScheduler) // TODO: learn about thread pools
                   .Select(_ => this._soundOut?.WaveSource?.GetPosition())
                   .DistinctUntilChanged()
                   .Publish();
@@ -212,14 +206,20 @@ namespace ReactivePlayer.App
             // track location change log
             this.WhenTrackLocationChanged.Subscribe(tl => Debug.WriteLine($"Track\t\t=\t{tl?.ToString() ?? "null"}")).DisposeWith(this.__playerScopeDisposables);
             // position change log
-            this.WhenPositionChanged.Subscribe(pos => Debug.WriteLine($"Position\t=\t{pos?.ToString() ?? "null"}")).DisposeWith(this.__playerScopeDisposables);
+            this.WhenPositionChanged
+                .Sample(TimeSpan.FromMilliseconds(500))
+                .Subscribe(pos => Debug.WriteLine($"Position\t=\t{pos?.ToString() ?? "null"}")).DisposeWith(this.__playerScopeDisposables);
             // status change log
             this.WhenStatusChanged.Subscribe(status => Debug.WriteLine($"Status\t\t=\t{Enum.GetName(typeof(PlaybackStatus), status)}")).DisposeWith(this.__playerScopeDisposables);
             // duration chage log
             this.WhenDurationChanged.Subscribe(duration => Debug.WriteLine($"Duration\t=\t{duration?.ToString() ?? "null"}")).DisposeWith(this.__playerScopeDisposables);
+            // volume change log
+            this.WhenVolumeChanged.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(volume => Debug.WriteLine($"Volume\t\t=\t{volume}")).DisposeWith(this.__playerScopeDisposables);
 
             #endregion
         }
+
+        public CSCorePlayer() : this(CSCorePlayer.DefaultPositionUpdateInterval) { }
 
         #endregion
 

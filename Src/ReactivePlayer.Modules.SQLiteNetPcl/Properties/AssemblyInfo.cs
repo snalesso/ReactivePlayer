@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ReactivePlayer.App.Desktop")]
+[assembly: AssemblyTitle("ReactivePlayer.Modules.SQLiteNetPcl")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ReactivePlayer.App.Desktop")]
+[assembly: AssemblyProduct("ReactivePlayer.Modules.SQLiteNetPcl")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5aaf12fb-ac4b-4c76-a55e-0e9058d4a6b4")]
+[assembly: Guid("6733dbe2-4756-45da-a460-2f9ffc726cc0")]
 
 // Version information for an assembly consists of the following four values:
 //

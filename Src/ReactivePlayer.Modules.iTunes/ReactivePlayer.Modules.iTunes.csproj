@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6733DBE2-4756-45DA-A460-2F9FFC726CC0}</ProjectGuid>
+    <ProjectGuid>{A45E3C4D-550F-4187-863D-C6F67E734162}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReactivePlayer.Domain.SQLiteNetPcl</RootNamespace>
-    <AssemblyName>ReactivePlayer.Domain.SQLiteNetPcl</AssemblyName>
+    <RootNamespace>ReactivePlayer.Core</RootNamespace>
+    <AssemblyName>ReactivePlayer.Modules.iTunes</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,18 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Album.cs" />
-    <Compile Include="Entities\AlbumAuthor.cs" />
-    <Compile Include="Entities\Artist.cs" />
-    <Compile Include="Entities\Artwork.cs" />
-    <Compile Include="Entities\Track.cs" />
-    <Compile Include="Entities\TrackArtwork.cs" />
-    <Compile Include="Entities\TrackComposer.cs" />
-    <Compile Include="Entities\TrackPerformer.cs" />
-    <Compile Include="Entities\TrackPlayTimestamp.cs" />
-    <Compile Include="Entities\TrackStats.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
+    <Compile Include="Domain\Entities\iTunesTrack.cs" />
+    <Compile Include="iTunesDateTimeHelper.cs" />
+    <Compile Include="XElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\SQLiteNetPclTracksRepository.cs" />
+    <Compile Include="Domain\Repositories\iTunesTracksRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="iTunesLib">
+      <Guid>{9E93C96F-CF0D-43F6-8BA8-B807A3370712}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>13</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
@@ -59,6 +64,5 @@
       <Name>ReactivePlayer.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

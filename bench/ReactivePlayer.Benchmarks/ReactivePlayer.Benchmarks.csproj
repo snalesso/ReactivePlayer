@@ -169,9 +169,9 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ReactivePlayer.App\ReactivePlayer.App.csproj">
+    <ProjectReference Include="..\..\src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
-      <Name>ReactivePlayer.App</Name>
+      <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

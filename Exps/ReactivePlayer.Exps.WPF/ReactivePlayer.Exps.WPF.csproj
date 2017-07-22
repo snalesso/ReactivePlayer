@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -120,13 +120,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.App.Desktop.UI\ReactivePlayer.App.Desktop.UI.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.UI.WPF.App\ReactivePlayer.UI.WPF.App.csproj">
       <Project>{3127f9b6-3a88-4c5c-8ae5-f6f42fc0f016}</Project>
-      <Name>ReactivePlayer.App.Desktop.UI</Name>
+      <Name>ReactivePlayer.UI.WPF.App</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.App\ReactivePlayer.App.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
-      <Name>ReactivePlayer.App</Name>
+      <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
