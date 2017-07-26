@@ -1,7 +1,0 @@
-OFFICIAL API PAGE:
-https://developers.soundcloud.com/docs/api/reference
-
-GitHub API Libraries:
-- https://github.com/kipwoker/SoundCloud.API.Client
-- https://github.com/Haythem/SoundCloud.NET
-- https://github.com/hywelandrews/SoundCloud.Api.Net

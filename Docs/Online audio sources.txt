@@ -1,0 +1,28 @@
+Online audio sources
+
+- SoundCloud
+	OFFICIAL API PAGE:
+	https://developers.soundcloud.com/docs/api/reference
+
+	GitHub API Libraries:
+	- https://github.com/kipwoker/SoundCloud.API.Client
+	- https://github.com/Haythem/SoundCloud.NET
+	- https://github.com/hywelandrews/SoundCloud.Api.Net
+
+- Spotify
+	OFFICIAL API
+	- Docs	https://developer.spotify.com/web-api/endpoint-reference/
+	- RxPlayer WEB API	https://developer.spotify.com/my-applications/#!/applications/13bee020f0444b5585c0ece12b025fc0
+
+	OBJECT MODEL: https://developer.spotify.com/web-api/object-model/
+
+	GitHub API Libraries:
+	- https://github.com/kipwoker/SoundCloud.API.Client
+	- https://github.com/Haythem/SoundCloud.NET
+	- https://github.com/hywelandrews/SoundCloud.Api.Net
+	- https://spotifywebapi.codeplex.com/
+
+- YouTube
+	- BrianAllred/NYoutubeDL	https://github.com/BrianAllred/NYoutubeDL
+	- OneFrameLink/Ofl.YouTube	https://github.com/OneFrameLink/Ofl.YouTube
+	- Sorashi/youtube-play	https://github.com/Sorashi/youtube-play

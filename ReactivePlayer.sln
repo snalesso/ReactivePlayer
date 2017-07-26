@@ -7,20 +7,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0CB099FF-6084-4AAA-916C-8380649EE3F0}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\.NET docs.txt = Docs\.NET docs.txt
-		Docs\Core players.txt = Docs\Core players.txt
+		Docs\Data stores.txt = Docs\Data stores.txt
 		Docs\DDD.txt = Docs\DDD.txt
-		Docs\Ideas.txt = Docs\Ideas.txt
+		Docs\Features.txt = Docs\Features.txt
 		Docs\MVVM.txt = Docs\MVVM.txt
-		Docs\Open source players.txt = Docs\Open source players.txt
+		Docs\Online audio sources.txt = Docs\Online audio sources.txt
+		Docs\Playback.txt = Docs\Playback.txt
 		Docs\Reactive.txt = Docs\Reactive.txt
 		Docs\Rx Design Guidelines.pdf = Docs\Rx Design Guidelines.pdf
-		Docs\SoundCloud API.txt = Docs\SoundCloud API.txt
-		Docs\Spotify API.txt = Docs\Spotify API.txt
-		Docs\SQLite.txt = Docs\SQLite.txt
-		Docs\Tagging libraries.txt = Docs\Tagging libraries.txt
+		Docs\TAGs.txt = Docs\TAGs.txt
 		Docs\Unit test.txt = Docs\Unit test.txt
 		Docs\Visual Studio doc comments.txt = Docs\Visual Studio doc comments.txt
-		Docs\YouTube.txt = Docs\YouTube.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
@@ -64,8 +61,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.WPF", "Exps\ReactivePlayer.Exps.WPF\ReactivePlayer.Exps.WPF.csproj", "{7942537A-2991-4EF9-8242-CE5513770823}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.ArtworksExtractor", "Exps\ReactivePlayer.Exps.ArtworksExtractor\ReactivePlayer.Exps.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Infrastructure", "Src\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj", "{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Dummies", "Src\ReactivePlayer.Dummies\ReactivePlayer.Dummies.csproj", "{39336567-1654-4A8E-B7D1-08C1776FEBBC}"
 EndProject
@@ -153,10 +148,6 @@ Global
 		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -196,7 +187,6 @@ Global
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{7942537A-2991-4EF9-8242-CE5513770823} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 		{86A58024-565B-40D6-826F-EC973694ECFF} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
-		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{DD8359CF-93CF-4A7F-88AF-6839B1970245} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{89B4EA03-F723-435C-9318-6BDF8CAF2835} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}

@@ -8,7 +8,6 @@ REPOSITORIES
 - travel-cloud/Cheddar						https://github.com/travel-cloud/Cheddar
 - tugrulelmas/AbiokaApi						https://github.com/tugrulelmas/AbiokaApi
 - Value Object								https://github.com/tpierrain/Value
-- hhblaze/DBreeze							https://github.com/hhblaze/DBreeze
 
 - Selected repos
 	- IvanZheng/IFramework			https://github.com/IvanZheng/IFramework

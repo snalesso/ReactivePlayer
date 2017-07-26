@@ -1,10 +1,9 @@
 FUNCTIONALITIES:
 - when a file change/move is detected listen to the preview to check if the tags correspond to the file data
 - add speakers/headphones and more generically "playback device selection"
-- preload the filestream for the next track to be played, so there is not delay between the playbacks
 - save to 2nd file (in %temp%, plus for coincidental SSD speed), and replace the current one at the end in order to prevent data loss
 - white noise generator
-- adjustable playback gap
+- adjustable playback gap (gapless supported, settings to automatically disable gap when playing a full album, in native order)
 - total time played calculator
 - refresh tags
 - audio editor (cut, insert silence, etc.)
@@ -47,15 +46,11 @@ FUNCTIONALITIES:
 - add tags
 	- author page (youtube channel)
 	- publish URL (youtube/spotify/etc. video/audio URL)
-
-- benchmark DTOs creation using:
-	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
-	- JOINed SELECT on all needed Entities (gathering only needed fields) -> Direct DTOs creation
+- purge/sanitize tags (to remove custom 3rd party trackers, e.g. Amazon Music, iTunes custom tags, etc.)
 - how to organize:
 	- lives (might add a tag entry, and specify in config a format to rename the file)
 	- covers
 	- both
-- purge/sanitize tags (to remove custom 3rd party trackers, e.g. Amazon Music, iTunes custom tags, etc.)
 - FluentValidation
 - setup different builds for x86 & x64
 - UI
@@ -63,26 +58,12 @@ FUNCTIONALITIES:
 - colonna laterale che in base al sorting corrente mostra l'indice, es. canzoni sono ordinate per
 	- artista/titolo -> lettere
 	- data aggiunta -> anno
+- log criteria to track most used queries and test implementations for best perf in most used scenarios
+
 - MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
-
-- alternative repository implementations
-	- SQLite3
-		- optimizations
-			- https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
-			- Connection strings: https://www.connectionstrings.com/sqlite/
-			- bulk insert: https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
-			- ROWID: https://www.sqlitetutorial.net/sqlite-autoincrement/
-	- Microsoft.Bond
-	- Protobuf
-	- JSON.NET
-	- SQL Server LocalDB
-	- System.Data.SQLite
-	- VelocityDB: https://blog.velocitydb.com/
-	- Wire: https://github.com/rogeralsing/Wire, https://rogerjohansson.blog/2016/08/16/wire-writing-one-of-the-fastest-net-serializers/
-	- Jil: https://github.com/kevin-montrose/Jil
-	- Hyperion: https://github.com/akkadotnet/Hyperion
-	- ServiceStack.Text: https://servicestack.net/text
-	- Marc Gravell's thoughts on serialization versioning: https://blog.marcgravell.com/2014/06/snk-we-need-to-talk.html
-- interesting 2016 comparative: https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/
-
+- Reflection.Emit
 - Fody per INPC
+
+- benchmark DTOs creation using:
+	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
+	- JOINed SELECT on all needed Entities (gathering only needed fields) -> Direct DTOs creation
