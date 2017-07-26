@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace ReactivePlayer.App.Services
+namespace ReactivePlayer.Domain.Services
 {
     public interface IImageAnalyzer
     {

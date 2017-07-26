@@ -1,0 +1,5 @@
+YouTube Libraries:
+
+- BrianAllred/NYoutubeDL	https://github.com/BrianAllred/NYoutubeDL
+- OneFrameLink/Ofl.YouTube	https://github.com/OneFrameLink/Ofl.YouTube
+- Sorashi/youtube-play	https://github.com/Sorashi/youtube-play

@@ -1,12 +1,16 @@
 SQLite 3
 
-- SQLite3 Home - https://sqlite.org/
-- SQLite3 Docs - https://sqlite.org/docs.html
+- SQLite3 Home:	https://sqlite.org/
+- SQLite3 Docs:	https://sqlite.org/docs.html
 
 SQLite 4
 
-- SQLite 4 Home - https://sqlite.org/src4/doc/trunk/www/index.wiki
+- SQLite 4 Home:	https://sqlite.org/src4/doc/trunk/www/index.wiki
 
 .NET
 
-- System.Data.Sqlite - https://System.Data.Sqlite.org/
+- System.Data.Sqlite:	https://System.Data.Sqlite.org/
+
+SQLite.NET-PCL
+
+- Source:	https://github.com/praeclarum/sqlite-net

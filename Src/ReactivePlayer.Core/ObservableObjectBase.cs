@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ReactivePlayer.App
+namespace ReactivePlayer.Core
 {
     public abstract class ObservableObjectBase : INotifyPropertyChanged
     {

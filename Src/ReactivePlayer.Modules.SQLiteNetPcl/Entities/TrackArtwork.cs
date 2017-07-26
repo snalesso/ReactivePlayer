@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 
 namespace ReactivePlayer.Domain.SQLiteNetPcl.Entities
 {

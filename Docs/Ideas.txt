@@ -63,6 +63,7 @@ FUNCTIONALITIES:
 - colonna laterale che in base al sorting corrente mostra l'indice, es. canzoni sono ordinate per
 	- artista/titolo -> lettere
 	- data aggiunta -> anno
+- MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
 
 - alternative repository implementations
 	- SQLite3

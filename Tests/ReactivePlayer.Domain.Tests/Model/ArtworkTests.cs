@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ReactivePlayer.Domain.Model;
+using ReactivePlayer.Domain.Entities;
 using System;
 using Xunit;
 

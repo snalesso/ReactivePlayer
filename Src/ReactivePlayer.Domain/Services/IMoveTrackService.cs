@@ -1,9 +1,9 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.App.Services
+namespace ReactivePlayer.Domain.Services
 {
     public interface IMoveTrackService
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.App.Desktop.Services
+namespace ReactivePlayer.UI.WPF.Core.Services
 {
     public interface ITaskbarService
     {
@@ -12,5 +12,8 @@ namespace ReactivePlayer.App.Desktop.Services
         // jumplist buttons
         // thumb buttons
         // possible dependencies: IVisualizerService -> show animation in thumbnail
+        void SetTaskbarProgressValue(double value);
+
+        void SetTaskbarProgressStatus();
     }
 }

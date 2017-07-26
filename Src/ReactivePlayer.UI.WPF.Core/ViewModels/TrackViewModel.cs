@@ -1,7 +1,7 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 using ReactiveUI;
 
-namespace ReactivePlayer.App.Desktop.ViewModels
+namespace ReactivePlayer.UI.WPF.Core.ViewModels
 {
     public sealed class TrackViewModel : ReactiveObject
     {

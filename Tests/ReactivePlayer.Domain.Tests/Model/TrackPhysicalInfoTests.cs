@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace ReactivePlayer.Domain.Tests.Model
             var location = Assembly.GetExecutingAssembly().Location;
             var duration = TimeSpan.FromMilliseconds(5 * 60 * 1000 + 3 * 1000 + 197); // 00:05:03.197
             var lastModifiedDateTime = DateTime.Now.Add(duration.Negate());
-            var tpi = new TrackFileInfo(location, duration, lastModifiedDateTime);
+            var tpi = new TrackFileInfo(new Uri(location), duration, lastModifiedDateTime);
 
             Assert.True(tpi.Equals(tpi));
         }
@@ -43,8 +43,8 @@ namespace ReactivePlayer.Domain.Tests.Model
                 ? duration2.HasValue ? DateTime.Parse(lmdtString).Add(duration2.Value.Negate()) : DateTime.Parse(lmdtString)
                 : (null as DateTime?);
 
-            var tpi1 = new TrackFileInfo(location, duration1, lmdt1);
-            var tpi2 = new TrackFileInfo(location, duration2, lmdt2);
+            var tpi1 = new TrackFileInfo(new Uri(location), duration1, lmdt1);
+            var tpi2 = new TrackFileInfo(new Uri(location), duration2, lmdt2);
 
             Assert.True(tpi1 == tpi2);
         }

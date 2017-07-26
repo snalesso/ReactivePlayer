@@ -1,19 +1,30 @@
-﻿using ReactivePlayer.App.Desktop.ViewModels;
+﻿using ReactivePlayer.UI.WPF.Core.ViewModels;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.App.Desktop.ViewModels
+namespace ReactivePlayer.UI.WPF.Core.ViewModels
 {
-    public sealed class ShellViewModel : ReactiveObject
+    public class ShellViewModel : ReactiveObject
     {
-        public PlaybackControlsViewModel PlaybackControls { get; }
+        public ShellViewModel()
+        {
+        }
 
-        public LibraryBrowserViewModel LibraryBrowser { get; }
-        
+        public ShellViewModel(
+            PlaybackControlsViewModel playbackControlsViewModel)
+        {
+            this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel)); // TODO: localize
+        }
+
+        public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
+
+        public LibraryBrowserViewModel LibraryBrowserViewModel { get; }
+
         // visualizer viewmodel
 
         // status bar viewmodel

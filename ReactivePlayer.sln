@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0CB099FF-6
 		Docs\Tagging libraries.txt = Docs\Tagging libraries.txt
 		Docs\Unit test.txt = Docs\Unit test.txt
 		Docs\Visual Studio doc comments.txt = Docs\Visual Studio doc comments.txt
+		Docs\YouTube.txt = Docs\YouTube.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA59A37D-74FD-49BA-8944-175DAEDC08EE}"
@@ -46,7 +47,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.WPF.Core", "Src\ReactivePlayer.UI.WPF.Core\ReactivePlayer.UI.WPF.Core.csproj", "{5AAF12FB-AC4B-4C76-A55E-0E9058D4A6B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.WPF.App", "Src\ReactivePlayer.UI.WPF.App\ReactivePlayer.UI.WPF.App.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.WPF.Application", "Src\ReactivePlayer.UI.WPF.Application\ReactivePlayer.UI.WPF.Application.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Domain", "Src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj", "{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}"
 EndProject
@@ -63,6 +64,32 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.WPF", "Exps\ReactivePlayer.Exps.WPF\ReactivePlayer.Exps.WPF.csproj", "{7942537A-2991-4EF9-8242-CE5513770823}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.ArtworksExtractor", "Exps\ReactivePlayer.Exps.ArtworksExtractor\ReactivePlayer.Exps.ArtworksExtractor.csproj", "{86A58024-565B-40D6-826F-EC973694ECFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Infrastructure", "Src\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj", "{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Dummies", "Src\ReactivePlayer.Dummies\ReactivePlayer.Dummies.csproj", "{39336567-1654-4A8E-B7D1-08C1776FEBBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.LiteDB", "Src\ReactivePlayer.Modules.LiteDB\ReactivePlayer.Modules.LiteDB.csproj", "{DD8359CF-93CF-4A7F-88AF-6839B1970245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Plugins.YouTube", "Src\ReactivePlayer.Plugins.YouTube\ReactivePlayer.Plugins.YouTube.csproj", "{89B4EA03-F723-435C-9318-6BDF8CAF2835}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.YouTube", "Exps\ReactivePlayer.Exps.YouTube\ReactivePlayer.Exps.YouTube.csproj", "{C580D3C7-A1CF-4E42-83D0-CDE4CF965590}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI concepts", "UI concepts", "{DE150901-9776-4B44-BDA8-259ABB38D86D}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\UI concepts\0e05d47485a9361b3c2d6b617bfb9a56--interface-design-user-interface.jpg = Docs\UI concepts\0e05d47485a9361b3c2d6b617bfb9a56--interface-design-user-interface.jpg
+		Docs\UI concepts\1478420.jpg = Docs\UI concepts\1478420.jpg
+		Docs\UI concepts\7624e82d213a4b3e4aa08c5d4ae2ae2b--design-ui-interface-design.jpg = Docs\UI concepts\7624e82d213a4b3e4aa08c5d4ae2ae2b--design-ui-interface-design.jpg
+		Docs\UI concepts\audio-player-02.png = Docs\UI concepts\audio-player-02.png
+		Docs\UI concepts\eIES5wE.jpg = Docs\UI concepts\eIES5wE.jpg
+		Docs\UI concepts\iPhone-6-Music-Player-App.jpg = Docs\UI concepts\iPhone-6-Music-Player-App.jpg
+		Docs\UI concepts\material_player_for_rainmeter_by_sanityvampire-d8mrlm9.png = Docs\UI concepts\material_player_for_rainmeter_by_sanityvampire-d8mrlm9.png
+		Docs\UI concepts\music-player-screen-1024x5761.png = Docs\UI concepts\music-player-screen-1024x5761.png
+		Docs\UI concepts\music_player_app--wip.gif = Docs\UI concepts\music_player_app--wip.gif
+		Docs\UI concepts\par2.png = Docs\UI concepts\par2.png
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.TracksSerialization.LiteDB", "Exps\ReactivePlayer.Exps.TracksSerialization.LiteDB\ReactivePlayer.Exps.TracksSerialization.LiteDB.csproj", "{6DCEB110-1FD0-429A-858F-8F292E5A7642}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +153,30 @@ Global
 		{86A58024-565B-40D6-826F-EC973694ECFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A58024-565B-40D6-826F-EC973694ECFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8359CF-93CF-4A7F-88AF-6839B1970245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8359CF-93CF-4A7F-88AF-6839B1970245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8359CF-93CF-4A7F-88AF-6839B1970245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8359CF-93CF-4A7F-88AF-6839B1970245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89B4EA03-F723-435C-9318-6BDF8CAF2835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89B4EA03-F723-435C-9318-6BDF8CAF2835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89B4EA03-F723-435C-9318-6BDF8CAF2835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89B4EA03-F723-435C-9318-6BDF8CAF2835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C580D3C7-A1CF-4E42-83D0-CDE4CF965590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C580D3C7-A1CF-4E42-83D0-CDE4CF965590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C580D3C7-A1CF-4E42-83D0-CDE4CF965590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C580D3C7-A1CF-4E42-83D0-CDE4CF965590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,5 +196,12 @@ Global
 		{FFC8242F-3404-4BEF-A1B6-ECA0A6C04D33} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{7942537A-2991-4EF9-8242-CE5513770823} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 		{86A58024-565B-40D6-826F-EC973694ECFF} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{7116B607-4F73-42C9-A5B7-2D8959FDF1D6} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{39336567-1654-4A8E-B7D1-08C1776FEBBC} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{DD8359CF-93CF-4A7F-88AF-6839B1970245} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{89B4EA03-F723-435C-9318-6BDF8CAF2835} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{C580D3C7-A1CF-4E42-83D0-CDE4CF965590} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{DE150901-9776-4B44-BDA8-259ABB38D86D} = {0CB099FF-6084-4AAA-916C-8380649EE3F0}
+		{6DCEB110-1FD0-429A-858F-8F292E5A7642} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 	EndGlobalSection
 EndGlobal

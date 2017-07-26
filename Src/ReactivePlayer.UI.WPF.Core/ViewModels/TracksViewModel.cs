@@ -1,15 +1,12 @@
-﻿using ReactivePlayer.App.Services;
-using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Core;
+using ReactivePlayer.Domain.Entities;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ReactivePlayer.App.Desktop.ViewModels
+namespace ReactivePlayer.UI.WPF.Core.ViewModels
 {
     public class TracksViewModel : ReactiveObject
     {

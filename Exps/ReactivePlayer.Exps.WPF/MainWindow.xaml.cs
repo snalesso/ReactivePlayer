@@ -21,11 +21,7 @@ namespace ReactivePlayer.Exps.WPF
         private const bool IsLoggingEnabled = false;
 
         private CompositeDisposable _disposables;
-
-        private IObservable<EventPattern<DragStartedEventArgs>> _whenSliderPositionDragStarted;
-        private IObservable<EventPattern<DragDeltaEventArgs>> _whenSliderPositionDragDelta;
-        private IObservable<EventPattern<DragCompletedEventArgs>> _whenSliderPositionDragCompleted;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -56,14 +52,6 @@ namespace ReactivePlayer.Exps.WPF
 
         private void HookSliderTimeHandler(Slider slider)
         {
-            //Observable
-            //    .FromEventPattern<RoutedPropertyChangedEventHandler<double>, RoutedPropertyChangedEventArgs<double>>(
-            //    h => slider.ValueChanged += h,
-            //    h => slider.ValueChanged -= h)
-            //    .Select(@event => Convert.ToInt64(@event.EventArgs.NewValue))
-            //    .Do(l => Debug.WriteLine($"ValueChanged\tSeekTo({l})"))
-            //    .InvokeCommand(this._viewModel, vm => vm.SeekTo);
-
             var thumb = (slider.Template.FindName("PART_Track", slider) as Track)?.Thumb;
             if (thumb != null)
             {

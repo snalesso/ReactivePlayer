@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="ReactivePlayer.UI.WPF.Application.Views.PlaybackControlsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
+             xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.Core.ViewModels.DesignTime"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimePlaybackControlsViewModel,
+                                              IsDesignTimeCreatable=True}"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Converters:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
+        <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
+        <Converters:BooleanInverter x:Key="BooleanInverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="8" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button Command="{Binding Play, Mode=OneWay}"
+                        Content="Play" />
+                <Button Grid.Column="2"
+                        Command="{Binding Pause, Mode=OneWay}"
+                        Content="Pause" />
+                <Button Grid.Column="4"
+                        Command="{Binding Resume, Mode=OneWay}"
+                        Content="Resume" />
+                <Button Grid.Column="6"
+                        Command="{Binding Stop, Mode=OneWay}"
+                        Content="Stop" />
+
+                <Slider Grid.Column="8"
+                        Width="100"
+                        Maximum="1"
+                        Minimum="0"
+                        Value="{Binding Volume}" />
+
+            </Grid>
+
+            <Grid Grid.Row="2"
+                  IsEnabled="{Binding IsSeekableStatus}"
+                  Visibility="{Binding IsSeekableStatus, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="1">
+
+                    <Grid IsEnabled="{Binding IsPositionKnown}"
+                          Visibility="{Binding IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="8" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
+                        <Slider x:Name="PlaybackPositionSlider"
+                                Grid.Column="2"
+                                IsEnabled="{Binding IsPositionSeekable}"
+                                IsMoveToPointEnabled="True"
+                                Maximum="{Binding DurationAsTicks}"
+                                Minimum="0"
+                                TickFrequency="0.5"
+                                Value="{Binding PositionAsTicks, Mode=OneWay}" />
+                        <TextBlock Grid.Column="4"
+                                   Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
+                    </Grid>
+
+                    <ProgressBar Height="10"
+                                 IsEnabled="{Binding IsPositionKnown, Converter={StaticResource BooleanInverter}}"
+                                 IsIndeterminate="True"
+                                 Visibility="{Binding IsPositionKnown, Converter={StaticResource BooleanToVisibilityInverter}}" />
+
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

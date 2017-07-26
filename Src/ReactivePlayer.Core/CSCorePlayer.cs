@@ -25,7 +25,7 @@ using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.App
+namespace ReactivePlayer.Core
 {
     // TODO: group status events in single subscriptions grouped by status in order to have Status == Loaded => Duration update before Position update & the inverse when Status == Stopped
     // TODO: buffering support, SingleBlockNotificationStream?? Dopamine docet

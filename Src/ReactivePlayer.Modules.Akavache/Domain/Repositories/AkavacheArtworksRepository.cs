@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
-using ReactivePlayer.Domain.Model;
+using ReactivePlayer.Domain.Entities;
 using System.Reactive;
 using System.Reactive.Subjects;
 using System.Reactive.Disposables;

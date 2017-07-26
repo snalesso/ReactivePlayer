@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.App;
+﻿using ReactivePlayer.Core;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;

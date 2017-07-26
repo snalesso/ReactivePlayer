@@ -1,6 +1,6 @@
 ﻿using ReactivePlayer.Core;
 using ReactivePlayer.Domain.Entities;
-using ReactivePlayer.Domain.Model;
+using ReactivePlayer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +10,7 @@ using System.Xml.Linq;
 
 namespace ReactivePlayer.Domain.Repositories
 {
-#pragma warning disable IDE1006 // Naming Styles
     public sealed class iTunesXMLRepository : ITracksRepository
-#pragma warning restore IDE1006 // Naming Styles
     {
         private readonly string _xmlItmlFilePath;
 
@@ -24,9 +22,9 @@ namespace ReactivePlayer.Domain.Repositories
             this._xmlItmlFilePath = xmlItlFilePath;
         }
 
-        public Task<IEnumerable<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
         {
-            IEnumerable<Track> tracks = null;
+            IReadOnlyList<Track> tracks = null;
 
             try
             {
@@ -129,7 +127,7 @@ namespace ReactivePlayer.Domain.Repositories
                     .Select(t =>
                         new Track(
                             new TrackFileInfo(
-                                t.Location,
+                                new Uri(t.Location),
                                 t.TotalTime,
                                 t.DateModified),
                             t.DateAdded,
@@ -163,17 +161,17 @@ namespace ReactivePlayer.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> BulkAddAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Track>> BulkAddAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }

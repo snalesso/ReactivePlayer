@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ReactivePlayer.App.Tests
+namespace ReactivePlayer.Core.Tests
 {
     public class CSCorePlayerTester
     {

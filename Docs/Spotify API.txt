@@ -1,4 +1,6 @@
-OFFICIAL API PAGE: https://developer.spotify.com/web-api/endpoint-reference/
+OFFICIAL API
+- Docs	https://developer.spotify.com/web-api/endpoint-reference/
+- RxPlayer WEB API	https://developer.spotify.com/my-applications/#!/applications/13bee020f0444b5585c0ece12b025fc0
 
 OBJECT MODEL: https://developer.spotify.com/web-api/object-model/
 

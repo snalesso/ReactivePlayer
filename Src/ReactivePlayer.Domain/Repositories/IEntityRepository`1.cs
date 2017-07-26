@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +11,19 @@ namespace ReactivePlayer.Domain.Repositories
         where TEntity : Entity
     {
         // TODO: can return IReadOnlyList??
-        Task<IEnumerable<TEntity>> GetAllAsync(Func<TEntity, bool> filter = null);
+        Task<IReadOnlyList<TEntity>> GetAllAsync(Func<TEntity, bool> filter = null);
 
         Task<TEntity> FirstAsync(Func<TEntity, bool> filter);
         Task<bool> AnyAsync(Func<TEntity, bool> filter = null);
         Task<ulong> CountAsync(Func<TEntity, bool> filter = null);
 
         Task<TEntity> AddAsync(TEntity entity);
-        Task<IEnumerable<TEntity>> BulkAddAsync(IEnumerable<TEntity> entities);
+        Task<IReadOnlyList<TEntity>> BulkAddAsync(IEnumerable<TEntity> entities);
 
         Task<TEntity> RemoveAsync(TEntity entity);
-        Task<IEnumerable<TEntity>> BulkRemoveAsync(IEnumerable<TEntity> entities);
+        Task<IReadOnlyList<TEntity>> BulkRemoveAsync(IEnumerable<TEntity> entities);
 
         Task<TEntity> UpdateAsync(TEntity entity);
-        Task<IEnumerable<TEntity>> BulkUpdateAsync(IEnumerable<TEntity> entities);
+        Task<IReadOnlyList<TEntity>> BulkUpdateAsync(IEnumerable<TEntity> entities);
     }
 }

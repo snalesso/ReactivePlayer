@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Model;
+﻿using ReactivePlayer.Domain.Entities;
 using ReactivePlayer.Domain.Repositories;
 using ReactivePlayer.Domain.Services;
 using System;
@@ -21,17 +21,17 @@ namespace ReactivePlayer.Domain.SQLiteNetPcl.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> BulkAddAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Track>> BulkAddAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace ReactivePlayer.Domain.SQLiteNetPcl.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
         {
             throw new NotImplementedException();
         }
