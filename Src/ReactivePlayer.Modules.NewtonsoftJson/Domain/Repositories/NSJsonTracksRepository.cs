@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Benchmarks
+namespace ReactivePlayer.Domain.Json.Domain.Repositories
 {
-    public sealed class TracksSerialization
+    class NSJsonTracksRepository
     {
     }
 }

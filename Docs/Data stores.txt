@@ -1,43 +1,47 @@
-Databases/Stores/Serializers
+Serializers
 
-- akkadotnet/Hyperion					https://github.com/akkadotnet/Hyperion
-- hhblaze/DBreeze						https://github.com/hhblaze/DBreeze
-- mbdavid/LiteDB						https://github.com/mbdavid/LiteDB
-- warrenfalk/rocksdb-sharp				https://github.com/warrenfalk/rocksdb-sharp
-- VelocityDB/VelocityDB					https://github.com/VelocityDB/VelocityDB
-- SQLite
-	- V3
-		- SQLite.NET-PCL				https://github.com/praeclarum/sqlite-net
-		- System.Data.SQLite			https://www.System.Data.SQLite.org
-			- Articles
-				- Getting started		https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
-				- Connection strings	https://www.connectionstrings.com/sqlite/
-				- Bulk insert			https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
-				- ROWID					https://www.sqlitetutorial.net/sqlite-autoincrement/
-	- V4								https://sqlite.org/src4/doc/trunk/www/index.wiki
-	
-- Microsoft/Bond						https://github.com/Microsoft/bond
-- aspnet/Microsoft.Data.Sqlite			https://github.com/aspnet/Microsoft.Data.Sqlite
-- mgravell/protobuf-net					https://github.com/mgravell/protobuf-net
-- JSON.NET
-- rogeralsing/Wire						https://github.com/rogeralsing/Wire
-										https://rogerjohansson.blog/2016/08/16/wire-writing-one-of-the-fastest-net-serializers/
-- Jil									https://github.com/kevin-montrose/Jil
-- Hyperion								https://github.com/akkadotnet/Hyperion
-- google/leveldb						https://github.com/google/leveldb
-	- ren85/leveldb.net					https://github.com/ren85/leveldb.net
-- mchidk/BinaryRage						https://github.com/mchidk/BinaryRage
-- ravendb/ravendb						https://github.com/ravendb/ravendb
-- markmeeus/MarcelloDB					https://github.com/markmeeus/MarcelloDB
-- JamesNK/Newtonsoft.Json				https://github.com/JamesNK/Newtonsoft.Json
-- ServiceStack.Text						https://github.com/ServiceStack/ServiceStack.Text
-- ServiceStack/ServiceStack.Redis		https://github.com/ServiceStack/ServiceStack.Redis
-- mgholam/RaptorDB-Document				https://github.com/mgholam/RaptorDB-Document
-- rethinkdb/rethinkdb					https://github.com/rethinkdb/rethinkdb
-	- bchavez/RethinkDb.Driver			https://github.com/bchavez/RethinkDb.Driver
+	- akkadotnet/Hyperion					https://github.com/akkadotnet/Hyperion
+	- JamesNK/Newtonsoft.Json				https://github.com/JamesNK/Newtonsoft.Json
+	- kevin-montrose/Jil					https://github.com/kevin-montrose/Jil
+	- mchidk/BinaryRage						https://github.com/mchidk/BinaryRage
+	- mgravell/protobuf-net					https://github.com/mgravell/protobuf-net
+	- Microsoft/Bond						https://github.com/Microsoft/bond
+	- neuecc/ZeroFormatter					https://github.com/neuecc/ZeroFormatter
+	- rogeralsing/Wire						https://github.com/rogeralsing/Wire
+	- ServiceStack.Text						https://github.com/ServiceStack/ServiceStack.Text
+	- tomba/netserializer					https://github.com/tomba/netserializer
+
+Databases
+
+	- hhblaze/DBreeze						https://github.com/hhblaze/DBreeze
+	- mbdavid/LiteDB						https://github.com/mbdavid/LiteDB
+	- warrenfalk/rocksdb-sharp				https://github.com/warrenfalk/rocksdb-sharp
+	- VelocityDB/VelocityDB					https://github.com/VelocityDB/VelocityDB
+	- SQLite
+		- V3
+			- SQLite.NET-PCL				https://github.com/praeclarum/sqlite-net
+			- System.Data.SQLite			https://www.System.Data.SQLite.org
+				- Articles
+					- Getting started		https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
+					- Connection strings	https://www.connectionstrings.com/sqlite/
+					- Bulk insert			https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
+					- ROWID					https://www.sqlitetutorial.net/sqlite-autoincrement/
+		- V4								https://sqlite.org/src4/doc/trunk/www/index.wiki
+
+	- aspnet/Microsoft.Data.Sqlite			https://github.com/aspnet/Microsoft.Data.Sqlite
+											https://rogerjohansson.blog/2016/08/16/wire-writing-one-of-the-fastest-net-serializers/
+	- google/leveldb						https://github.com/google/leveldb
+		- ren85/leveldb.net					https://github.com/ren85/leveldb.net
+	- ravendb/ravendb						https://github.com/ravendb/ravendb
+	- markmeeus/MarcelloDB					https://github.com/markmeeus/MarcelloDB
+	- ServiceStack/ServiceStack.Redis		https://github.com/ServiceStack/ServiceStack.Redis
+	- ServiceStack/ServiceStack.OrmLite		https://github.com/ServiceStack/ServiceStack.OrmLite
+	- mgholam/RaptorDB-Document				https://github.com/mgholam/RaptorDB-Document
+	- rethinkdb/rethinkdb					https://github.com/rethinkdb/rethinkdb
+		- bchavez/RethinkDb.Driver			https://github.com/bchavez/RethinkDb.Driver
 
 Articles
 
-- The Definitive Serialization Performance Guide	https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/
-- interesting 2016 comparative						https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/
-- Marc Gravell on serialization versioning			https://blog.marcgravell.com/2014/06/snk-we-need-to-talk.html
+	- The Definitive Serialization Performance Guide	https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/
+	- interesting 2016 comparative						https://aloiskraus.wordpress.com/2017/04/23/the-definitive-serialization-performance-guide/
+	- Marc Gravell on serialization versioning			https://blog.marcgravell.com/2014/06/snk-we-need-to-talk.html

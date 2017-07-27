@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BenchmarkDotNet, Version=0.10.8.0, Culture=neutral, PublicKeyToken=aa0ca2f9092cefc4, processorArchitecture=MSIL">
@@ -43,6 +45,10 @@
     </Reference>
     <Reference Include="CSCore, Version=1.2.1.1, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CSCore.1.2.1.1\lib\net35-client\CSCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Daedalus.ExtensionMethods, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\bin\Release\Daedalus.ExtensionMethods.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
@@ -158,7 +164,6 @@
     <Compile Include="Id3Tags.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TracksSerialization.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -172,6 +177,14 @@
     <ProjectReference Include="..\..\src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
       <Name>ReactivePlayer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
+      <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
+      <Name>ReactivePlayer.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Modules.NewtonsoftJson\ReactivePlayer.Modules.NewtonsoftJson.csproj">
+      <Project>{3348376f-332f-471d-a613-09700a0e0cbe}</Project>
+      <Name>ReactivePlayer.Modules.NewtonsoftJson</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

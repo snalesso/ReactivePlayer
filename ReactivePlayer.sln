@@ -86,6 +86,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI concepts", "UI concepts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.TracksSerialization.LiteDB", "Exps\ReactivePlayer.Exps.TracksSerialization.LiteDB\ReactivePlayer.Exps.TracksSerialization.LiteDB.csproj", "{6DCEB110-1FD0-429A-858F-8F292E5A7642}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.Jil", "Src\ReactivePlayer.Modules.Jil\ReactivePlayer.Modules.Jil.csproj", "{C941DEEB-4A21-418A-87AB-857D1FBE83C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.ZeroFormatter", "Src\ReactivePlayer.Modules.ZeroFormatter\ReactivePlayer.Modules.ZeroFormatter.csproj", "{C058B1B3-615B-41BD-A80C-47587DA5E7AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.Serialization.Json.Newtonsoft", "Exps\ReactivePlayer.Exps.Serialization.Json.Newtonsoft\ReactivePlayer.Exps.Serialization.Json.Newtonsoft.csproj", "{4793A829-7F40-49E3-8DEC-B70B3A26D432}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.Serialization.Common", "Exps\ReactivePlayer.Exps.Serialization.Common\ReactivePlayer.Exps.Serialization.Common.csproj", "{804E427A-E676-44D4-B1C9-9190788DAFE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,6 +176,22 @@ Global
 		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DCEB110-1FD0-429A-858F-8F292E5A7642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C941DEEB-4A21-418A-87AB-857D1FBE83C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C941DEEB-4A21-418A-87AB-857D1FBE83C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C941DEEB-4A21-418A-87AB-857D1FBE83C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C941DEEB-4A21-418A-87AB-857D1FBE83C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C058B1B3-615B-41BD-A80C-47587DA5E7AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C058B1B3-615B-41BD-A80C-47587DA5E7AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C058B1B3-615B-41BD-A80C-47587DA5E7AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C058B1B3-615B-41BD-A80C-47587DA5E7AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4793A829-7F40-49E3-8DEC-B70B3A26D432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4793A829-7F40-49E3-8DEC-B70B3A26D432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4793A829-7F40-49E3-8DEC-B70B3A26D432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4793A829-7F40-49E3-8DEC-B70B3A26D432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{804E427A-E676-44D4-B1C9-9190788DAFE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{804E427A-E676-44D4-B1C9-9190788DAFE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{804E427A-E676-44D4-B1C9-9190788DAFE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{804E427A-E676-44D4-B1C9-9190788DAFE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,5 +217,9 @@ Global
 		{C580D3C7-A1CF-4E42-83D0-CDE4CF965590} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 		{DE150901-9776-4B44-BDA8-259ABB38D86D} = {0CB099FF-6084-4AAA-916C-8380649EE3F0}
 		{6DCEB110-1FD0-429A-858F-8F292E5A7642} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{C941DEEB-4A21-418A-87AB-857D1FBE83C0} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{C058B1B3-615B-41BD-A80C-47587DA5E7AB} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{4793A829-7F40-49E3-8DEC-B70B3A26D432} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{804E427A-E676-44D4-B1C9-9190788DAFE8} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 	EndGlobalSection
 EndGlobal

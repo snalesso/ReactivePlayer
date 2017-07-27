@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using System;
 
 namespace ReactivePlayer.Benchmarks
 {
@@ -9,7 +10,7 @@ namespace ReactivePlayer.Benchmarks
         static void Main(string[] args)
         {
             //var summary = BenchmarkRunner.Run<Md5VsSha256>();
-            var summary = BenchmarkRunner.Run<Id3Tags>();
+            //var summary = BenchmarkRunner.Run<Id3Tags>();
         }
     }
 }

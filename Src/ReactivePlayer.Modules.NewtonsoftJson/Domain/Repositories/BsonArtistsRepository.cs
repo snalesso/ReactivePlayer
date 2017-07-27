@@ -10,45 +10,46 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Json.Repositories
 {
-    public sealed class BsonTracksRepository : ITracksRepository // TODO: IDisposable to close FileStream????
+    public sealed class BsonArtistsRepository : IArtistsRepository // TODO: IDisposable to close FileStream????
     {
         private readonly Uri _dbFileLocation;
         private FileStream _dbFileStream;
-        private List<Track> _tracks = new List<Track>();
-        //private SortedList<Guid, Track> _tracks = new SortedList<Guid, Track>();
+        private List<Artist> _Artists = new List<Artist>();
+        //private SortedList<Guid, Artist> _Artists = new SortedList<Guid, Artist>();
 
-        public BsonTracksRepository(Uri dbFileLocation)
+        public BsonArtistsRepository(Uri dbFileLocation)
         {
             this._dbFileLocation = (dbFileLocation ?? throw new ArgumentNullException(nameof(dbFileLocation))).IsFile ? dbFileLocation : throw new UriFormatException(); // TODO: maybe it's not the perfect Exception
             this._dbFileStream = File.Open(this._dbFileLocation.LocalPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-            //this._tracks = new List<Track>();
-            ReloadTracksFromBson();
+            //this._Artists = new List<Artist>();
+            
+            ReloadArtistsFromBson();
         }
 
-        #region ITracksRepository
+        #region IArtistsRepository
 
-        public Task<Track> AddAsync(Track entity)
+        public Task<Artist> AddAsync(Artist entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AnyAsync(Func<Track, bool> filter = null)
+        public Task<bool> AnyAsync(Func<Artist, bool> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IReadOnlyList<Track>> BulkAddAsync(IEnumerable<Track> entities)
+        public async Task<IReadOnlyList<Artist>> BulkAddAsync(IEnumerable<Artist> entities)
         {
             bool result;
 
             try
             {
-                if (entities.Any(e => this._tracks.Select(t => t.Id).Contains(e.Id)))
+                if (entities.Any(e => this._Artists.Select(t => t.Name).Contains(e.Name)))
                 {
                     throw new Exception("Duplicate Id");
                 }
 
-                this._tracks.AddRange(entities);
+                this._Artists.AddRange(entities);
 
                 result = await Commit();
             }
@@ -60,37 +61,37 @@ namespace ReactivePlayer.Core.Domain.Json.Repositories
             return result ? entities.ToList().AsReadOnly() : null;
         }
 
-        public Task<IReadOnlyList<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Artist>> BulkRemoveAsync(IEnumerable<Artist> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
+        public Task<IReadOnlyList<Artist>> BulkUpdateAsync(IEnumerable<Artist> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ulong> CountAsync(Func<Track, bool> filter = null)
+        public Task<ulong> CountAsync(Func<Artist, bool> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Track> FirstAsync(Func<Track, bool> filter)
+        public Task<Artist> FirstAsync(Func<Artist, bool> filter)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public Task<IReadOnlyList<Artist>> GetAllAsync(Func<Artist, bool> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Track> RemoveAsync(Track entity)
+        public Task<Artist> RemoveAsync(Artist entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Track> UpdateAsync(Track entity)
+        public Task<Artist> UpdateAsync(Artist entity)
         {
             throw new NotImplementedException();
         }
@@ -99,7 +100,7 @@ namespace ReactivePlayer.Core.Domain.Json.Repositories
 
         #region support methods
 
-        private Task<bool> ReloadTracksFromBson()
+        private Task<bool> ReloadArtistsFromBson()
         {
             bool result;
 
@@ -112,7 +113,7 @@ namespace ReactivePlayer.Core.Domain.Json.Repositories
                 })
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    this._tracks = serializer.Deserialize<List<Track>>(bsonReader);
+                    this._Artists = serializer.Deserialize<List<Artist>>(bsonReader);
                 }
 
                 result = true;
@@ -128,10 +129,10 @@ namespace ReactivePlayer.Core.Domain.Json.Repositories
 
         private Task<bool> Commit()
         {
-            return this.WriteTracksToBson();
+            return this.WriteArtistsToBson();
         }
 
-        private Task<bool> WriteTracksToBson()
+        private Task<bool> WriteArtistsToBson()
         {
             bool result;
 
@@ -143,8 +144,9 @@ namespace ReactivePlayer.Core.Domain.Json.Repositories
                     Formatting = Formatting.None
                 })
                 {
+                    //string json = JsonConvert.SerializeObject(, Formatting.Indented, new KeysJsonConverter(typeof(Employee)));
                     JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(bsonWriter, this._tracks);
+                    serializer.Serialize(bsonWriter, this._Artists);
                 }
 
                 result = true;
@@ -156,6 +158,21 @@ namespace ReactivePlayer.Core.Domain.Json.Repositories
             }
 
             return Task.FromResult(result);
+        }
+
+        public Task<Artist> GetByParentAsync(Track entityParent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Artist> AddForParentAsync(Track entityParent, Artist valueObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Artist> RemoveForParentAsync(Track entityParent, Artist valueObject)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

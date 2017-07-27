@@ -61,9 +61,11 @@ FUNCTIONALITIES:
 - log criteria to track most used queries and test implementations for best perf in most used scenarios
 
 - MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
-- Reflection.Emit
+- Reflection.Emit			http://docs.servicestack.net/reflection-utils
+- Compiled expression trees	http://docs.servicestack.net/reflection-utils
 - Fody per INPC
 
 - benchmark DTOs creation using:
 	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
 	- JOINed SELECT on all needed Entities (gathering only needed fields) -> Direct DTOs creation
+- LINQ Optimizations		http://mattwarren.org/2016/09/29/Optimising-LINQ/
