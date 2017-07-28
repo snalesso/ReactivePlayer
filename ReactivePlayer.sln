@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA59A37D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core", "Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj", "{3F17AA7E-9965-4000-8446-9BC315F17C57}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchs", "Benchs", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bench", "Bench", "{F6A61F07-3C72-430F-9B74-499883A301E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Benchmarks", "Bench\ReactivePlayer.Benchmarks\ReactivePlayer.Benchmarks.csproj", "{3CC7B7E4-B7D5-47EE-908E-B16038729920}"
 EndProject
