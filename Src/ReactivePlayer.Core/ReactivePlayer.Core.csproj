@@ -100,30 +100,39 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AlbumDto.cs" />
+    <Compile Include="Data\ArtistDto.cs" />
+    <Compile Include="Data\ArtworkDto.cs" />
+    <Compile Include="Data\IO\Audio\CSCoreAudioFileDurationCalculator.cs" />
+    <Compile Include="Data\IO\Audio\IAudioFileDurationCalculator.cs" />
+    <Compile Include="Data\IO\Audio\LocalAudioFileDurationCalculator.cs" />
+    <Compile Include="Data\TagsDto.cs" />
+    <Compile Include="Data\TrackDto.cs" />
+    <Compile Include="Data\TrackFileInfoDto.cs" />
+    <Compile Include="Data\TrackStatsDto.cs" />
     <Compile Include="Data\LocalTracksService.cs" />
     <Compile Include="Playback\AudioChannels.cs" />
-    <Compile Include="Playback\CSCore\CustomCodecs\Vorbis\NVorbisWaveSource.cs" />
+    <Compile Include="Playback\CSCore\Codecs\Vorbis\NVorbisWaveSource.cs" />
     <Compile Include="Playback\CSCore\CSCorePlayer.cs" />
-    <Compile Include="Data\SimpleFileInfo.cs" />
-    <Compile Include="Playback\IPlaybackQueue.cs" />
-    <Compile Include="Data\Audio\IAudioFileTagger.cs" />
-    <Compile Include="Data\PlayableFileInfo.cs" />
-    <Compile Include="ObservableObjectBase.cs" />
-    <Compile Include="Data\FSWDirectoryWatcher.cs" />
-    <Compile Include="Data\IDirectoryWatcher.cs" />
+    <Compile Include="Data\IO\SimpleFileInfo.cs" />
+    <Compile Include="Playback\IPlaybackQueueService.cs" />
+    <Compile Include="Data\IO\Audio\IAudioFileTagger.cs" />
+    <Compile Include="Data\IO\PlayableFileInfo.cs" />
+    <Compile Include="Data\IO\FSWDirectoryWatcher.cs" />
+    <Compile Include="Data\IO\IDirectoryWatcher.cs" />
     <Compile Include="Playback\PlaybackStatusHelper.cs" />
-    <Compile Include="Data\ILocalFileSystemService.cs" />
+    <Compile Include="Data\IO\ILocalFileSystemService.cs" />
     <Compile Include="Playback\IPlaybackService.cs" />
     <Compile Include="Data\ITracksService.cs" />
-    <Compile Include="Data\ShellObjectHelper.cs" />
-    <Compile Include="Data\Audio\ShellObjectAudioFileInfoProvider.cs" />
-    <Compile Include="Data\Audio\TagLibSharp\TagLibSharpTagger.cs" />
-    <Compile Include="Data\Audio\IAudioFileInfoExtractor.cs" />
+    <Compile Include="Data\IO\ShellObjectHelper.cs" />
+    <Compile Include="Data\IO\Audio\ShellObjectAudioFileDurationCalculator.cs" />
+    <Compile Include="Data\IO\Audio\TagLibSharp\TagLibSharpTagger.cs" />
+    <Compile Include="Data\IO\Audio\IAudioFileInfoExtractor.cs" />
     <Compile Include="Playback\IObservableAudioPlayer.cs" />
     <Compile Include="Playback\PlaybackStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\Audio\AudioFileTags.cs" />
-    <Compile Include="Data\Audio\AudioFileInfo.cs" />
+    <Compile Include="Data\IO\Audio\AudioFileTags.cs" />
+    <Compile Include="Data\IO\Audio\AudioFileInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

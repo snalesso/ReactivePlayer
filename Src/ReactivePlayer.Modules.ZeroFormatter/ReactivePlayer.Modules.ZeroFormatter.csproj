@@ -7,7 +7,7 @@
     <ProjectGuid>{C058B1B3-615B-41BD-A80C-47587DA5E7AB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReactivePlayer.Modules.ZeroFormatter</RootNamespace>
+    <RootNamespace>ReactivePlayer</RootNamespace>
     <AssemblyName>ReactivePlayer.Modules.ZeroFormatter</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Repositories\ImmutableListFormatter.cs" />
+    <Compile Include="Domain\Repositories\POCOs\AlbumPOCO.cs" />
+    <Compile Include="Domain\Repositories\POCOs\ArtistPOCO.cs" />
+    <Compile Include="Domain\Repositories\POCOs\TagsPOCO.cs" />
+    <Compile Include="Domain\Repositories\POCOs\TrackPOCO.cs" />
     <Compile Include="Domain\Repositories\UriFormatter.cs" />
     <Compile Include="Domain\Repositories\ZeroFormatterTracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

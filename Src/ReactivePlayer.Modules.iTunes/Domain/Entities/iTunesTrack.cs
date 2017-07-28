@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ReactivePlayer.Domain.Entities
+namespace ReactivePlayer.Domain.Models
 {
     internal sealed class iTunesTrack
     {

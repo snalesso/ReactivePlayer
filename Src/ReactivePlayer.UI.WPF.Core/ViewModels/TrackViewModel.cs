@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Entities;
+﻿using ReactivePlayer.Domain.Models;
 using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.Core.ViewModels

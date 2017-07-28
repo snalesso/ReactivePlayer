@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ZeroFormatter;
 using ZeroFormatter.Formatters;
 
-namespace ReactivePlayer.Modules.ZeroFormatter.Domain.Repositories
+namespace ReactivePlayer.Domain.Repositories
 {
     public class UriFormatter<TTypeResolver> : Formatter<TTypeResolver, Uri>
         where TTypeResolver : ITypeResolver, new()

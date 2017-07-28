@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Entities;
+﻿using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

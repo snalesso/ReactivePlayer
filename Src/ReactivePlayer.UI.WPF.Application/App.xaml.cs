@@ -13,6 +13,7 @@ namespace ReactivePlayer.UI.WPF.Application
         public App()
         {
             this._bootstrapper = new AutofacBootstrapper();
+            this._bootstrapper.Initialize();
         }        
     }
 }

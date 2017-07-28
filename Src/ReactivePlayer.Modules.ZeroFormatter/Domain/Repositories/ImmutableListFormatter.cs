@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactivePlayer.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using ZeroFormatter.Internal;
 
 namespace ReactivePlayer.Modules.ZeroFormatter.Domain.Repositories
 {
-    public class ImmutableListFormatter<TTypeResolver, T> : Formatter<TTypeResolver, ImmutableList<T>>
+    public class ArtistFormatter<T> : Formatter<Artist>
         where TTypeResolver : ITypeResolver, new()
     {
         public override int? GetLength()
@@ -17,7 +18,7 @@ namespace ReactivePlayer.Modules.ZeroFormatter.Domain.Repositories
             return null;
         }
 
-        public override int Serialize(ref byte[] bytes, int offset, ImmutableList<T> value)
+        public override int Serialize(ref byte[] bytes, int offset, Artist value)
         {
             // use sequence format.
             if (value == null)
@@ -38,14 +39,14 @@ namespace ReactivePlayer.Modules.ZeroFormatter.Domain.Repositories
             return offset - startOffset;
         }
 
-        public override ImmutableList<T> Deserialize(ref byte[] bytes, int offset, DirtyTracker tracker, out int byteSize)
+        public override Artist Deserialize(ref byte[] bytes, int offset, DirtyTracker tracker, out int byteSize)
         {
             byteSize = 4;
             var length = BinaryUtil.ReadInt32(ref bytes, offset);
             if (length == -1) return null;
 
             var formatter = Formatter<TTypeResolver, T>.Default;
-            var builder = ImmutableList<T>.Empty.ToBuilder();
+            var builder = Artist.ToBuilder();
             int size;
             offset += 4;
             for (int i = 0; i < length; i++)

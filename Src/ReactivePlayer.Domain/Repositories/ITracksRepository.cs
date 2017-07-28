@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ReactivePlayer.Domain.Entities;
+using ReactivePlayer.Domain.Models;
 using System;
 
 namespace ReactivePlayer.Domain.Repositories

@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
-using ReactivePlayer.Domain.Entities;
-using ReactivePlayer.Domain.Json.Domain.Repositories;
-using ReactivePlayer.Exps.Serialization.Common;
+using ReactivePlayer.Domain;
+using ReactivePlayer.Domain.Models;
+using ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.Exps.Serialization.Json.Newtonsoft
 {

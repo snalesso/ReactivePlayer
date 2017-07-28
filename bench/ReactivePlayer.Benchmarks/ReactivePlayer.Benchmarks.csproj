@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -182,9 +182,9 @@
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
       <Name>ReactivePlayer.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Modules.NewtonsoftJson\ReactivePlayer.Modules.NewtonsoftJson.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Modules.Json.Newtonsoft\ReactivePlayer.Modules.Json.Newtonsoft.csproj">
       <Project>{3348376f-332f-471d-a613-09700a0e0cbe}</Project>
-      <Name>ReactivePlayer.Modules.NewtonsoftJson</Name>
+      <Name>ReactivePlayer.Modules.Json.Newtonsoft</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

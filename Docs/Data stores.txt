@@ -10,6 +10,7 @@ Serializers
 	- rogeralsing/Wire						https://github.com/rogeralsing/Wire
 	- ServiceStack.Text						https://github.com/ServiceStack/ServiceStack.Text
 	- tomba/netserializer					https://github.com/tomba/netserializer
+	- MichaCo/CacheManager					https://github.com/MichaCo/CacheManager
 
 Databases
 

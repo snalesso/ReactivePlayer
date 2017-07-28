@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZeroFormatter.Formatters;
 
-namespace ReactivePlayer.Modules.ZeroFormatter.Domain.Repositories
+namespace ReactivePlayer.Domain.Repositories
 {
     public class ZeroFormatterTracksRepository
     {

@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Caliburn.Micro;
-using ReactivePlayer.Core;
 using ReactivePlayer.Playback;
 using ReactivePlayer.Playback.CSCore;
 using ReactivePlayer.UI.WPF.Application.Composition.Modules;
@@ -26,8 +25,6 @@ namespace ReactivePlayer.UI.WPF.Application.Composition
                 { nameof(Window.Height), 900 },
                 { nameof(Window.Width), 1440 }
             };
-
-            this.Initialize();
         }
 
         #endregion

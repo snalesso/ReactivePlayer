@@ -1,6 +1,6 @@
 ﻿using ReactivePlayer.Core;
-using ReactivePlayer.Domain.Entities;
-using ReactivePlayer.Domain.Entities;
+using ReactivePlayer.Domain.Models;
+using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -156,22 +156,22 @@ namespace ReactivePlayer.Domain.Repositories
             return Task.FromResult(tracks);
         }
 
-        public Task<Track> AddAsync(Track entity)
+        public Task<bool> AddAsync(Track entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> BulkAddAsync(IEnumerable<Track> entities)
+        public Task<bool> BulkAddAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
+        public Task<bool> BulkRemoveAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
+        public Task<bool> BulkUpdateAsync(IEnumerable<Track> entities)
         {
             throw new NotImplementedException();
         }
@@ -181,12 +181,12 @@ namespace ReactivePlayer.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Track> RemoveAsync(Track entity)
+        public Task<bool> RemoveAsync(Track entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Track> UpdateAsync(Track entity)
+        public Task<bool> UpdateAsync(Track entity)
         {
             throw new NotImplementedException();
         }
@@ -196,7 +196,7 @@ namespace ReactivePlayer.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<ulong> CountAsync(Func<Track, bool> filter = null)
+        public Task<long> CountAsync(Func<Track, bool> filter = null)
         {
             throw new NotImplementedException();
         }

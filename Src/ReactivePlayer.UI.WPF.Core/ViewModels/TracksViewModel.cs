@@ -1,5 +1,5 @@
 ﻿using ReactivePlayer.Core;
-using ReactivePlayer.Domain.Entities;
+using ReactivePlayer.Domain.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;

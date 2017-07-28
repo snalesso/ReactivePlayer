@@ -1,7 +1,7 @@
-﻿using ReactivePlayer.Core;
+﻿using ReactivePlayer.Playback;
+using ReactivePlayer.Playback.CSCore;
 using ReactiveUI;
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
