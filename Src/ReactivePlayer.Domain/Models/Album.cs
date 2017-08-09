@@ -18,14 +18,21 @@ namespace ReactivePlayer.Domain.Models
             uint? tracksCount,
             uint? discsCount)
         {
-            this.Name = name.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
-            this.Authors = authors.ToList().AsReadOnly();
-            this.ReleaseDate =
-                !releaseDate.HasValue || releaseDate.Value <= DateTime.Now
-                ? releaseDate
-                : throw new ArgumentOutOfRangeException(nameof(releaseDate), releaseDate, $"{this.GetType().Name}'s {nameof(ReleaseDate)} cannot be in the future."); // TODO: localize;
-            this.TracksCount = tracksCount.HasValue && tracksCount.Value > 0 ? tracksCount : null;
-            this.DiscsCount = discsCount.HasValue && discsCount.Value > 0 ? discsCount : null;
+            try
+            {
+                this.Name = name.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
+                this.Authors = authors.EmptyIfNull().ToList().AsReadOnly();
+                this.ReleaseDate =
+                    !releaseDate.HasValue || releaseDate.Value <= DateTime.Now
+                    ? releaseDate
+                    : throw new ArgumentOutOfRangeException(nameof(releaseDate), releaseDate, $"{this.GetType().Name}'s {nameof(ReleaseDate)} cannot be in the future."); // TODO: localize;
+                this.TracksCount = tracksCount.HasValue && tracksCount.Value > 0 ? tracksCount : null;
+                this.DiscsCount = discsCount.HasValue && discsCount.Value > 0 ? discsCount : null;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         #endregion

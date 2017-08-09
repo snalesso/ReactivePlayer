@@ -28,8 +28,8 @@ namespace ReactivePlayer.Domain
                         DateTime.Now.AddDays(-1 * r.NextDouble() * 2000),
                         new Tags(
                             $"Title of song #{n}",
-                            Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Artist {n}.{j}")),
-                            Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Artist {n}.{j}")),
+                            Enumerable.Range(1, r.Next(0, 4)).Select(j => new Artist($"Artist {n}.{j}")),
+                            Enumerable.Range(1, r.Next(0, 4)).Select(j => new Artist($"Artist {n}.{j}")),
                             new Album(
                                 $"Title of Album #{r.Next(1, 2000 + 1)}",
                                 Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Artist {n}.{j}")),

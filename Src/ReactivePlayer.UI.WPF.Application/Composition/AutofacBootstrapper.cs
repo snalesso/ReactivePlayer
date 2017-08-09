@@ -1,12 +1,17 @@
 ﻿using Autofac;
 using Caliburn.Micro;
-using ReactivePlayer.Playback;
-using ReactivePlayer.Playback.CSCore;
+using ReactivePlayer.Core;
+using ReactivePlayer.Core.Playback;
+using ReactivePlayer.Core.Playback.CSCore;
+using ReactivePlayer.Domain.Models;
+using ReactivePlayer.Domain.Repositories;
 using ReactivePlayer.UI.WPF.Application.Composition.Modules;
 using ReactivePlayer.UI.WPF.Application.Views;
 using ReactivePlayer.UI.WPF.Core.ViewModels;
 using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -31,6 +36,7 @@ namespace ReactivePlayer.UI.WPF.Application.Composition
 
         #region methods
 
+        // TODO: dispose services when shutting down/no longer needed
         protected override void ConfigureContainer(ContainerBuilder builder)
         {
             base.ConfigureContainer(builder);
@@ -41,13 +47,25 @@ namespace ReactivePlayer.UI.WPF.Application.Composition
 
             // CORE COMPONENTS
 
-            builder.Register<IWindowManager>(c => new WindowManager()).InstancePerLifetimeScope();
-            builder.Register<IObservableAudioPlayer>(c => new CSCorePlayer()).InstancePerLifetimeScope();
+            builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
+            //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
+            builder.Register<ITracksRepository>(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml")).InstancePerLifetimeScope();
+            builder.RegisterType<LocalTracksService>().As<ITracksService>().InstancePerLifetimeScope();
+            builder.RegisterType<CSCorePlayer>().As<IObservableAudioPlayer>().InstancePerLifetimeScope();
+            builder.RegisterType<SimplePlaybackService>().As<IPlaybackService>().InstancePerLifetimeScope();
 
             // ViewModels & Views
 
             builder.RegisterType<ShellViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<ShellView>().As<IViewFor<ShellViewModel>>().InstancePerLifetimeScope();
+            builder.Register<Func<Track, TrackViewModel>>(
+                ctx =>
+                {
+                    var ctxInternal = ctx.Resolve<IComponentContext>();
+                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IPlaybackService>());
+                }).AsSelf();
+            builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsView>().As<IViewFor<PlaybackControlsViewModel>>().InstancePerLifetimeScope();
         }
@@ -59,7 +77,8 @@ namespace ReactivePlayer.UI.WPF.Application.Composition
             {
                 typeof(ShellViewModel).Assembly,
                 typeof(ShellView).Assembly
-            });
+            }
+            .Distinct());
         }
 
         //protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

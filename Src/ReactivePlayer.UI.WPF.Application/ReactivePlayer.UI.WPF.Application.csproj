@@ -109,14 +109,17 @@
     </Compile>
     <Compile Include="Composition\AutofacBootstrapper.cs" />
     <Compile Include="Composition\BootstrapperBaseEx`1.cs" />
-    <Compile Include="Composition\WindowManager+WindowConductor.cs" />
-    <Compile Include="Composition\WindowManager.cs" />
+    <Compile Include="Converters\StringEnumerableJoiner.cs" />
+    <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
+    <Compile Include="Views\CustomWindowManager+WindowConductor.cs" />
+    <Compile Include="Views\CustomWindowManager.cs" />
     <Compile Include="Composition\Modules\EventAggregationAutoSubscriptionModule.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimePlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeShellViewModel.cs" />
     <Compile Include="Views\PlaybackControlsViewModel.xaml.cs">
       <DependentUpon>PlaybackControlsViewModel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ReactiveUserControlViewFor.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -162,6 +165,14 @@
     <ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
       <Name>ReactivePlayer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj">
+      <Project>{39336567-1654-4a8e-b7d1-08c1776febbc}</Project>
+      <Name>ReactivePlayer.Fakes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Modules.iTunes\ReactivePlayer.Modules.iTunes.csproj">
+      <Project>{a45e3c4d-550f-4187-863d-c6f67e734162}</Project>
+      <Name>ReactivePlayer.Modules.iTunes</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.UI.WPF.Core\ReactivePlayer.UI.WPF.Core.csproj">
       <Project>{5aaf12fb-ac4b-4c76-a55e-0e9058d4a6b4}</Project>

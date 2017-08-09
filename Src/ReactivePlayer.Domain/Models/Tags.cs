@@ -19,8 +19,8 @@ namespace ReactivePlayer.Domain.Models
             uint? albumDiscNumber)
         {
             this.Title = title.TrimmedOrNull();
-            this.Performers = performers != null && performers.Any() ? performers.ToList().AsReadOnly() : null; // TODO: create some NullIfEmpty()
-            this.Composers = composers != null && composers.Any() ? composers.ToList().AsReadOnly() : null;
+            this.Performers = performers.EmptyIfNull().ToList().AsReadOnly();
+            this.Composers = composers.EmptyIfNull().ToList().AsReadOnly();
             this.Album = album;
             this.Lyrics = lyrics.TrimmedOrNull();
             this.AlbumTrackNumber = albumTrackNumber.NullIf(atn => atn <= 0);

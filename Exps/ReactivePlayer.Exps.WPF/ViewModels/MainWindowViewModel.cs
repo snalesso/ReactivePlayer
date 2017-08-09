@@ -1,5 +1,5 @@
-﻿using ReactivePlayer.Playback;
-using ReactivePlayer.Playback.CSCore;
+﻿using ReactivePlayer.Core.Playback;
+using ReactivePlayer.Core.Playback.CSCore;
 using ReactiveUI;
 using System;
 using System.IO;
@@ -21,9 +21,9 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
         {
             this.Load = ReactiveCommand.CreateFromTask((string path) => this._player.LoadTrackAsync(new Uri(Path.Combine(Assembly.GetEntryAssembly().Location, path))), this._player.WhenCanLoadChanged).DisposeWith(this._disposables);
             this.Play = ReactiveCommand.CreateFromTask(() => this._player.PlayAsync(), this._player.WhenCanPlayChanged).DisposeWith(this._disposables);
-            this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPausehanged).DisposeWith(this._disposables);
+            this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPauseChanged).DisposeWith(this._disposables);
             this.Resume = ReactiveCommand.CreateFromTask(() => this._player.ResumeAsync(), this._player.WhenCanResumeChanged).DisposeWith(this._disposables);
-            this.Stop = ReactiveCommand.CreateFromTask(() => this._player.StopAsync(), this._player.WhenCanStophanged).DisposeWith(this._disposables);
+            this.Stop = ReactiveCommand.CreateFromTask(() => this._player.StopAsync(), this._player.WhenCanStopChanged).DisposeWith(this._disposables);
 
             this.StartSeeking = ReactiveCommand.Create(() => this._isSeeking = true, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.EndSeeking = ReactiveCommand.Create(() => this._isSeeking = false, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);

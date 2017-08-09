@@ -5,7 +5,8 @@
              xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Application.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel}"
+             d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel,
+                                              IsDesignTimeCreatable=False}"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">

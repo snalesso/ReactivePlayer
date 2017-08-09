@@ -92,6 +92,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.Json
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Fakes", "Src\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj", "{39336567-1654-4A8E-B7D1-08C1776FEBBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.Reactive", "Exps\ReactivePlayer.Exps.Reactive\ReactivePlayer.Exps.Reactive.csproj", "{952D5278-2F2F-44DB-BD41-371668EF81BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.ReactiveUI.InvokeCommand", "Exps\ReactivePlayer.Exps.ReactiveUI.InvokeCommand\ReactivePlayer.Exps.ReactiveUI.InvokeCommand.csproj", "{208D7151-60DE-41FD-9A18-D1B0F677EF4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -186,6 +190,14 @@ Global
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952D5278-2F2F-44DB-BD41-371668EF81BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952D5278-2F2F-44DB-BD41-371668EF81BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952D5278-2F2F-44DB-BD41-371668EF81BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952D5278-2F2F-44DB-BD41-371668EF81BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208D7151-60DE-41FD-9A18-D1B0F677EF4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208D7151-60DE-41FD-9A18-D1B0F677EF4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208D7151-60DE-41FD-9A18-D1B0F677EF4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208D7151-60DE-41FD-9A18-D1B0F677EF4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -214,5 +226,7 @@ Global
 		{4793A829-7F40-49E3-8DEC-B70B3A26D432} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 		{C941DEEB-4A21-418A-87AB-857D1FBE83C0} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
+		{952D5278-2F2F-44DB-BD41-371668EF81BA} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{208D7151-60DE-41FD-9A18-D1B0F677EF4A} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
 	EndGlobalSection
 EndGlobal

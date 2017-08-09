@@ -11,19 +11,23 @@ namespace ReactivePlayer.UI.WPF.Core.ViewModels
 {
     public class ShellViewModel : ReactiveObject
     {
-        public ShellViewModel()
+        protected ShellViewModel()
         {
         }
 
         public ShellViewModel(
-            PlaybackControlsViewModel playbackControlsViewModel)
+            PlaybackControlsViewModel playbackControlsViewModel,
+            TracksViewModel tracksViewModel)
         {
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel)); // TODO: localize
+            this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel)); // TODO: localize
         }
+
+        public string Title => "ReactivePlayer";
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
 
-        public LibraryBrowserViewModel LibraryBrowserViewModel { get; }
+        public TracksViewModel TracksViewModel { get; }
 
         // visualizer viewmodel
 

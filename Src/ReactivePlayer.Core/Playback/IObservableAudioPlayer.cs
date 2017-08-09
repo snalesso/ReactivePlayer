@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Playback
+namespace ReactivePlayer.Core.Playback
 {
     public interface IObservableAudioPlayer : IDisposable
     {
@@ -19,10 +19,10 @@ namespace ReactivePlayer.Playback
         IObservable<bool> WhenCanResumeChanged { get; }
 
         Task PauseAsync();
-        IObservable<bool> WhenCanPausehanged { get; }
+        IObservable<bool> WhenCanPauseChanged { get; }
 
         Task StopAsync();
-        IObservable<bool> WhenCanStophanged { get; }
+        IObservable<bool> WhenCanStopChanged { get; }
 
         Task SeekToAsync(TimeSpan position); // TODO: make SeekTo void? Or SetVolume Task? What if concurrent SetVolume's?
         IObservable<bool> WhenCanSeekChanged { get; }

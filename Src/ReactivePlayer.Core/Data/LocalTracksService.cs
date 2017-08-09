@@ -4,11 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ReactivePlayer.Domain.Models;
+using ReactivePlayer.Domain.Repositories;
 
 namespace ReactivePlayer.Core
 {
     public class LocalTracksService : ITracksService
     {
+        private readonly ITracksRepository _tracksRepository;
+
+        public LocalTracksService(ITracksRepository tracksRepository)
+        {
+            this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
+        }
+
         public Task<IEnumerable<Track>> BulkAddTracks(IEnumerable<Track> tracks)
         {
             throw new NotImplementedException();
@@ -24,9 +32,16 @@ namespace ReactivePlayer.Core
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Track>> GetTracks()
+        public async Task<IEnumerable<Track>> GetTracks()
         {
-            throw new NotImplementedException();
+            var t = await this._tracksRepository.GetAllAsync();
+            return t;
+        }
+
+        public async Task<IEnumerable<Track>> GetTracks(Func<Track, bool> filter)
+        {
+            var t = await this._tracksRepository.GetAllAsync(filter);
+            return t;
         }
     }
 }

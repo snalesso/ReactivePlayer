@@ -1,15 +1,20 @@
-﻿using System;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Collections;
 
 namespace ReactivePlayer.Domain.Models
 {
     internal sealed class iTunesTrack
     {
         public const char iTunesFeaturingArtistsSplitter = '/';
+        // TODO: handle AC/DC splitting
+        //private readonly Hashtable<IReadOnlyList<string>, string>
 
         public iTunesTrack()
         {

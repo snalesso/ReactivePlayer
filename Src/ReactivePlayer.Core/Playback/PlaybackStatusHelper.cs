@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Playback
+namespace ReactivePlayer.Core.Playback
 {
     public static class PlaybackStatusHelper // TODO: switch to lambdas and use aggressive inlining
     {

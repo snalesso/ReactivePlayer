@@ -1,4 +1,4 @@
-﻿namespace ReactivePlayer.Playback
+﻿namespace ReactivePlayer.Core.Playback
 {
     // TODO: review use cases (KISS principle)
     public enum PlaybackStatus

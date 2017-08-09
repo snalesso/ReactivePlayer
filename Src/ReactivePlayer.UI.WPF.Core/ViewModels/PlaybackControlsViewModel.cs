@@ -1,4 +1,5 @@
-﻿using ReactivePlayer.Playback;
+﻿using ReactivePlayer.Core;
+using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Reflection;
 
 namespace ReactivePlayer.UI.WPF.Core.ViewModels
@@ -15,22 +17,27 @@ namespace ReactivePlayer.UI.WPF.Core.ViewModels
         #region constants & fields
 
         private readonly IObservableAudioPlayer _player;
+        private readonly ITracksService _tracksService;
+
         private CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isSeeking = false;
 
         #endregion
 
         #region constructors
-        
-        public PlaybackControlsViewModel(IObservableAudioPlayer player)
+
+        public PlaybackControlsViewModel(
+            IObservableAudioPlayer player,
+            ITracksService tracksService)
         {
             this._player = player ?? throw new ArgumentNullException(nameof(player)); // TODO: log
+            this._tracksService = tracksService ?? throw new ArgumentNullException(nameof(tracksService)); // TODO: localize
 
             this.Load = ReactiveCommand.CreateFromTask((string path) => this._player.LoadTrackAsync(new Uri(Path.Combine(Assembly.GetEntryAssembly().Location, path))), this._player.WhenCanLoadChanged).DisposeWith(this._disposables);
             this.Play = ReactiveCommand.CreateFromTask(() => this._player.PlayAsync(), this._player.WhenCanPlayChanged).DisposeWith(this._disposables);
-            this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPausehanged).DisposeWith(this._disposables);
+            this.Pause = ReactiveCommand.CreateFromTask(() => this._player.PauseAsync(), this._player.WhenCanPauseChanged).DisposeWith(this._disposables);
             this.Resume = ReactiveCommand.CreateFromTask(() => this._player.ResumeAsync(), this._player.WhenCanResumeChanged).DisposeWith(this._disposables);
-            this.Stop = ReactiveCommand.CreateFromTask(() => this._player.StopAsync(), this._player.WhenCanStophanged).DisposeWith(this._disposables);
+            this.Stop = ReactiveCommand.CreateFromTask(() => this._player.StopAsync(), this._player.WhenCanStopChanged).DisposeWith(this._disposables);
 
             this.StartSeeking = ReactiveCommand.Create(() => this._isSeeking = true, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.EndSeeking = ReactiveCommand.Create(() => this._isSeeking = false, this._player.WhenCanSeekChanged).DisposeWith(this._disposables);
@@ -74,6 +81,9 @@ namespace ReactivePlayer.UI.WPF.Core.ViewModels
                 .ToProperty(this, @this => @this.IsPositionSeekable)
                 .DisposeWith(this._disposables);
             this._volumeOAPH = this._player.WhenVolumeChanged.ToProperty(this, @this => @this.Volume).DisposeWith(this._disposables);
+            this._titleOAPH = this._player.WhenTrackLocationChanged
+                .Select(tl => "<Song title>")
+                .ToProperty(this, @this => @this.Title);
         }
 
         #endregion
@@ -116,6 +126,9 @@ namespace ReactivePlayer.UI.WPF.Core.ViewModels
             get => this._volumeOAPH.Value;
             set => this._player.SetVolume(value);
         }
+
+        private ObservableAsPropertyHelper<string> _titleOAPH;
+        public string Title => this._titleOAPH.Value;
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
+using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
@@ -12,7 +13,7 @@ using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Playback.CSCore
+namespace ReactivePlayer.Core.Playback.CSCore
 {
     // TODO: group status events in single subscriptions grouped by status in order to have Status == Loaded => Duration update before Position update & the inverse when Status == Stopped
     // TODO: buffering support, SingleBlockNotificationStream?? Dopamine docet
@@ -157,7 +158,7 @@ namespace ReactivePlayer.Playback.CSCore
 
             // Can - Pause
             this.__canPauseSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanPausePlaybackStatuses.Contains(this.__statusSubject.Value)).DisposeWith(this.__playerScopeDisposables);
-            this.WhenCanPausehanged = this.__canPauseSubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanPauseChanged = this.__canPauseSubject.AsObservable().DistinctUntilChanged();
             this.WhenStatusChanged
                 .Select(status => PlaybackStatusHelper.CanPausePlaybackStatuses.Contains(status))
                 .Subscribe(can => this.__canPauseSubject.OnNext(can))
@@ -173,7 +174,7 @@ namespace ReactivePlayer.Playback.CSCore
 
             // Can - Stop
             this.__canStopSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanStopPlaybackStatuses.Contains(this.__statusSubject.Value)).DisposeWith(this.__playerScopeDisposables);
-            this.WhenCanStophanged = this.__canStopSubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanStopChanged = this.__canStopSubject.AsObservable().DistinctUntilChanged();
             this.WhenStatusChanged
                 .Select(status => PlaybackStatusHelper.CanStopPlaybackStatuses.Contains(status))
                 .Subscribe(can => this.__canStopSubject.OnNext(can))
@@ -455,13 +456,13 @@ namespace ReactivePlayer.Playback.CSCore
         public IObservable<bool> WhenCanPlayChanged { get; }
 
         private readonly BehaviorSubject<bool> __canPauseSubject;
-        public IObservable<bool> WhenCanPausehanged { get; }
+        public IObservable<bool> WhenCanPauseChanged { get; }
 
         private readonly BehaviorSubject<bool> __canResumeSubject;
         public IObservable<bool> WhenCanResumeChanged { get; }
 
         private readonly BehaviorSubject<bool> __canStopSubject;
-        public IObservable<bool> WhenCanStophanged { get; }
+        public IObservable<bool> WhenCanStopChanged { get; }
 
         private readonly BehaviorSubject<bool> __canSeekSubject;
         public IObservable<bool> WhenCanSeekChanged { get; }
