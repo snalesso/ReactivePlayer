@@ -52,7 +52,7 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
             return new Album(
                 (string)jAlbum[nameof(Album.Name)],
                 authors,
-                (DateTime?)jAlbum[nameof(Album.ReleaseDate)],
+                (uint?)jAlbum[nameof(Album.Year)],
                 (uint?)jAlbum[nameof(Album.TracksCount)],
                 (uint?)jAlbum[nameof(Album.DiscsCount)]);
         }
@@ -67,7 +67,7 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
             return new Album(
                 (string)jAlbum[nameof(Album.Name)],
                 authors,
-                (DateTime?)jAlbum[nameof(Album.ReleaseDate)],
+                (uint?)jAlbum[nameof(Album.Year)],
                 (uint?)jAlbum[nameof(Album.TracksCount)],
                 (uint?)jAlbum[nameof(Album.DiscsCount)]);
         }
@@ -82,7 +82,7 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
             var jAlbum = new JObject();
             jAlbum[nameof(Album.Name)] = album.Name;
             jAlbum[nameof(Album.Authors)] = new JArray(jAuthors);
-            jAlbum[nameof(Album.ReleaseDate)] = album.ReleaseDate;
+            jAlbum[nameof(Album.Year)] = album.Year;
             jAlbum[nameof(Album.TracksCount)] = album.TracksCount;
             jAlbum[nameof(Album.DiscsCount)] = album.DiscsCount;
             return jAlbum;
@@ -90,64 +90,64 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
 
         #endregion
 
-        #region album
+        #region TrackTags
 
-        public static Tags ToTags(this JToken jTags)
+        public static TrackTags ToTrackTags(this JToken jTrackTags)
         {
-            if (jTags == null)
+            if (jTrackTags == null)
                 throw new ArgumentNullException();
 
-            var performers = jTags[nameof(Tags.Performers)].Select(ja => ja.ToArtist()).ToArray();
-            var composers = jTags[nameof(Tags.Composers)].Select(ja => ja.ToArtist()).ToArray();
-            var album = jTags[nameof(Tags.Album)].ToAlbum();
+            var performers = jTrackTags[nameof(TrackTags.Performers)].Select(ja => ja.ToArtist()).ToArray();
+            var composers = jTrackTags[nameof(TrackTags.Composers)].Select(ja => ja.ToArtist()).ToArray();
+            var album = jTrackTags[nameof(TrackTags.Album)].ToAlbum();
 
-            return new Tags(
-                (string)jTags[nameof(Tags.Title)],
+            return new TrackTags(
+                (string)jTrackTags[nameof(TrackTags.Title)],
                 performers,
                 composers,
                 album,
-                (string)jTags[nameof(Tags.Lyrics)],
-                (uint?)jTags[nameof(Tags.AlbumTrackNumber)],
-                (uint?)jTags[nameof(Tags.AlbumDiscNumber)]);
+                (string)jTrackTags[nameof(TrackTags.Lyrics)],
+                (uint?)jTrackTags[nameof(TrackTags.AlbumTrackNumber)],
+                (uint?)jTrackTags[nameof(TrackTags.AlbumDiscNumber)]);
         }
 
-        public static Tags ToTags(this JObject jTags)
+        public static TrackTags ToTrackTags(this JObject jTrackTags)
         {
-            if (jTags == null)
+            if (jTrackTags == null)
                 throw new ArgumentNullException();
 
-            var performers = jTags[nameof(Tags.Performers)].Select(ja => ja.ToArtist()).ToArray();
-            var composers = jTags[nameof(Tags.Composers)].Select(ja => ja.ToArtist()).ToArray();
-            var album = jTags[nameof(Tags.Album)].ToAlbum();
+            var performers = jTrackTags[nameof(TrackTags.Performers)].Select(ja => ja.ToArtist()).ToArray();
+            var composers = jTrackTags[nameof(TrackTags.Composers)].Select(ja => ja.ToArtist()).ToArray();
+            var album = jTrackTags[nameof(TrackTags.Album)].ToAlbum();
 
-            return new Tags(
-                (string)jTags[nameof(Tags.Title)],
+            return new TrackTags(
+                (string)jTrackTags[nameof(TrackTags.Title)],
                 performers,
                 composers,
                 album,
-                (string)jTags[nameof(Tags.Lyrics)],
-                (uint?)jTags[nameof(Tags.AlbumTrackNumber)],
-                (uint?)jTags[nameof(Tags.AlbumDiscNumber)]);
+                (string)jTrackTags[nameof(TrackTags.Lyrics)],
+                (uint?)jTrackTags[nameof(TrackTags.AlbumTrackNumber)],
+                (uint?)jTrackTags[nameof(TrackTags.AlbumDiscNumber)]);
         }
 
-        public static JObject ToJObject(this Tags tags)
+        public static JObject ToJObject(this TrackTags TrackTags)
         {
-            if (tags == null)
+            if (TrackTags == null)
                 throw new ArgumentNullException();
 
-            var jPerformers = tags.Performers.Select(p => p.ToJObject()).ToArray();
-            var jComposers = tags.Composers.Select(c => c.ToJObject()).ToArray();
-            var jAlbum = tags.Album.ToJObject();
+            var jPerformers = TrackTags.Performers.Select(p => p.ToJObject()).ToArray();
+            var jComposers = TrackTags.Composers.Select(c => c.ToJObject()).ToArray();
+            var jAlbum = TrackTags.Album.ToJObject();
 
-            var jTags = new JObject();
-            jTags[nameof(Tags.Title)] = tags.Title;
-            jTags[nameof(Tags.Performers)] = new JArray(jPerformers);
-            jTags[nameof(Tags.Composers)] = new JArray(jComposers);
-            jTags[nameof(Tags.Album)] = jAlbum;
-            jTags[nameof(Tags.Lyrics)] = tags.Lyrics;
-            jTags[nameof(Tags.AlbumTrackNumber)] = tags.AlbumTrackNumber;
-            jTags[nameof(Tags.AlbumDiscNumber)] = tags.AlbumDiscNumber;
-            return jTags;
+            var jTrackTags = new JObject();
+            jTrackTags[nameof(TrackTags.Title)] = TrackTags.Title;
+            jTrackTags[nameof(TrackTags.Performers)] = new JArray(jPerformers);
+            jTrackTags[nameof(TrackTags.Composers)] = new JArray(jComposers);
+            jTrackTags[nameof(TrackTags.Album)] = jAlbum;
+            jTrackTags[nameof(TrackTags.Lyrics)] = TrackTags.Lyrics;
+            jTrackTags[nameof(TrackTags.AlbumTrackNumber)] = TrackTags.AlbumTrackNumber;
+            jTrackTags[nameof(TrackTags.AlbumDiscNumber)] = TrackTags.AlbumDiscNumber;
+            return jTrackTags;
         }
 
         #endregion

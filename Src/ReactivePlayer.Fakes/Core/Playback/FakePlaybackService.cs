@@ -8,9 +8,10 @@ using ReactivePlayer.Domain.Models;
 
 namespace ReactivePlayer.Core.Playback
 {
+    // TODO: implement as singletion? could it help at design-time?
     public class FakePlaybackService : IPlaybackService
     {
-        public IObservable<TimeSpan> WhenPositionChanged => throw new NotImplementedException();
+        public IObservable<TimeSpan?> WhenPositionChanged => throw new NotImplementedException();
 
         public IObservable<PlaybackStatus> WhenStatusChanged => throw new NotImplementedException();
 
@@ -26,7 +27,21 @@ namespace ReactivePlayer.Core.Playback
 
         public IObservable<Uri> WhenTrackLocationChanged => throw new NotImplementedException();
 
-        IObservable<TimeSpan?> IPlaybackService.WhenPositionChanged => throw new NotImplementedException();
+        public IObservable<bool> WhenCanLoadChanged => throw new NotImplementedException();
+
+        public IObservable<float> WhenVolumeChanged => throw new NotImplementedException();
+
+        public IObservable<TimeSpan?> WhenDurationChanged => throw new NotImplementedException();
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task LoadTrackAsync(Uri trackLocation)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task PauseAsync()
         {
@@ -38,7 +53,22 @@ namespace ReactivePlayer.Core.Playback
             throw new NotImplementedException();
         }
 
+        public Task PlayAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task ResumeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SeekToAsync(TimeSpan position)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetVolume(float volume)
         {
             throw new NotImplementedException();
         }

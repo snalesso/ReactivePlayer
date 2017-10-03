@@ -1,4 +1,5 @@
 ﻿using Daedalus.ExtensionMethods;
+using ReactivePlayer.Infrastructure.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace ReactivePlayer.Domain.Models
 
         // TODO: validate location format or use Uri
         public Uri Location { get; }
+
         public TimeSpan? Duration { get; } // TODO: check if it's always available
+
         public DateTime? LastModifiedDateTime { get; } // TODO: check if it's always available, e.g. online services (Spotify, Soundcloud, YouTube, ...) or non-local (NAS, LAN, ...)
 
         #region ValueObject

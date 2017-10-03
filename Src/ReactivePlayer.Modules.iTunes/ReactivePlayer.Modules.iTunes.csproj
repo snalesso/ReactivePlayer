@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>CS0168</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="Domain\Entities\iTunesTrack.cs" />
     <Compile Include="iTunesDateTimeHelper.cs" />
@@ -66,6 +70,10 @@
     <ProjectReference Include="..\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
       <Name>ReactivePlayer.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
+      <Project>{DF6027C8-A1D8-4437-9842-C003D263558F}</Project>
+      <Name>ReactivePlayer.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

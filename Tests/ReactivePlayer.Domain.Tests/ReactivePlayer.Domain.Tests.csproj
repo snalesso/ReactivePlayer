@@ -79,6 +79,10 @@
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
       <Name>ReactivePlayer.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
+      <Project>{DF6027C8-A1D8-4437-9842-C003D263558F}</Project>
+      <Name>ReactivePlayer.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

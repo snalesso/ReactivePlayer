@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Domain
 {
     // TODO: is this reasonable?
-    public sealed class RangedNullable<T> 
+    public sealed class RangedNullable<T>
     {
     }
 }

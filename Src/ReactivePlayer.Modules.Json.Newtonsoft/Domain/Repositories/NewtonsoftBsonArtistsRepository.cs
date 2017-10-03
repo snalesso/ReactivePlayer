@@ -22,7 +22,7 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
             this._dbFileLocation = (dbFileLocation ?? throw new ArgumentNullException(nameof(dbFileLocation))).IsFile ? dbFileLocation : throw new UriFormatException(); // TODO: maybe it's not the perfect Exception
             this._dbFileStream = File.Open(this._dbFileLocation.LocalPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             //this._Artists = new List<Artist>();
-            
+
             ReloadArtistsFromBson();
         }
 

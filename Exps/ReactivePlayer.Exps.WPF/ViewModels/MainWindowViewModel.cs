@@ -13,7 +13,7 @@ namespace ReactivePlayer.Exps.WPF.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private IObservableAudioPlayer _player = new CSCorePlayer();
+        private IPlaybackService _player = new CSCorePlaybackService();
         private CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isSeeking = false;
 

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Daedalus.ExtensionMethods;
+using ReactivePlayer.Infrastructure.Domain.Models;
 
 namespace ReactivePlayer.Domain.Models
 {
-    // TODO: add IsDeluxe, 
+    // TODO: add IsDeluxe
     public class Album : ValueObject<Album>
     {
         #region ctor
@@ -14,7 +15,7 @@ namespace ReactivePlayer.Domain.Models
         public Album(
             string name,
             IEnumerable<Artist> authors,
-            DateTime? releaseDate,
+            uint? year,
             uint? tracksCount,
             uint? discsCount)
         {
@@ -22,10 +23,7 @@ namespace ReactivePlayer.Domain.Models
             {
                 this.Name = name.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
                 this.Authors = authors.EmptyIfNull().ToList().AsReadOnly();
-                this.ReleaseDate =
-                    !releaseDate.HasValue || releaseDate.Value <= DateTime.Now
-                    ? releaseDate
-                    : throw new ArgumentOutOfRangeException(nameof(releaseDate), releaseDate, $"{this.GetType().Name}'s {nameof(ReleaseDate)} cannot be in the future."); // TODO: localize;
+                this.Year = year;
                 this.TracksCount = tracksCount.HasValue && tracksCount.Value > 0 ? tracksCount : null;
                 this.DiscsCount = discsCount.HasValue && discsCount.Value > 0 ? discsCount : null;
             }
@@ -42,7 +40,7 @@ namespace ReactivePlayer.Domain.Models
         public string Name { get; }
         public IReadOnlyList<Artist> Authors { get; }
         // TODO: use year instead? or a new "DateAndTime" type?
-        public DateTime? ReleaseDate { get; }
+        public uint? Year { get; }
         public uint? TracksCount { get; }
         public uint? DiscsCount { get; }
 
@@ -53,28 +51,16 @@ namespace ReactivePlayer.Domain.Models
         protected override bool EqualsCore(Album other) =>
             this.Name.Equals(other.Name)
             && this.Authors.SequenceEqual(other.Authors)
-            && this.ReleaseDate.Equals(other.ReleaseDate)
+            && this.Year.Equals(other.Year)
             && this.TracksCount.Equals(other.TracksCount)
             && this.DiscsCount.Equals(other.DiscsCount);
 
         protected override IEnumerable<object> GetHashCodeIngredients()
-        //=>
-        //new object[]
-        //{
-        //    this.Name
-        //}.Concat(
-        //    this.Authors.Cast<object>()).Concat(
-        //new object[]
-        //{
-        //    this.ReleaseDate,
-        //    this.TracksCount,
-        //    this.DiscsCount
-        //});
         {
             yield return this.Name;
             foreach (var a in this.Authors)
                 yield return a;
-            yield return this.ReleaseDate;
+            yield return this.Year;
             yield return this.TracksCount;
             yield return this.DiscsCount;
         }

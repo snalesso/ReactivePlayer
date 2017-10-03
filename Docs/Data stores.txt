@@ -1,19 +1,32 @@
 Serializers
 
-	- akkadotnet/Hyperion					https://github.com/akkadotnet/Hyperion
-	- JamesNK/Newtonsoft.Json				https://github.com/JamesNK/Newtonsoft.Json
+	Text
+
 	- kevin-montrose/Jil					https://github.com/kevin-montrose/Jil
+	- JamesNK/Newtonsoft.Json				https://github.com/JamesNK/Newtonsoft.Json
+	- ServiceStack/ServiceStack.Text		https://github.com/ServiceStack/ServiceStack.Text
+
+	Binary
+
 	- mchidk/BinaryRage						https://github.com/mchidk/BinaryRage
-	- mgravell/protobuf-net					https://github.com/mgravell/protobuf-net
+
+	Protocol Buffers
+
 	- Microsoft/Bond						https://github.com/Microsoft/bond
+	- mgravell/protobuf-net					https://github.com/mgravell/protobuf-net
 	- neuecc/ZeroFormatter					https://github.com/neuecc/ZeroFormatter
+
+	Others
+
+	- akkadotnet/Hyperion					https://github.com/akkadotnet/Hyperion
 	- rogeralsing/Wire						https://github.com/rogeralsing/Wire
-	- ServiceStack.Text						https://github.com/ServiceStack/ServiceStack.Text
+											https://rogerjohansson.blog/2016/08/16/wire-writing-one-of-the-fastest-net-serializers/
 	- tomba/netserializer					https://github.com/tomba/netserializer
 	- MichaCo/CacheManager					https://github.com/MichaCo/CacheManager
 
 Databases
 
+	- symisc/unqlite						https://github.com/symisc/unqlite
 	- hhblaze/DBreeze						https://github.com/hhblaze/DBreeze
 	- mbdavid/LiteDB						https://github.com/mbdavid/LiteDB
 	- warrenfalk/rocksdb-sharp				https://github.com/warrenfalk/rocksdb-sharp
@@ -30,7 +43,6 @@ Databases
 		- V4								https://sqlite.org/src4/doc/trunk/www/index.wiki
 
 	- aspnet/Microsoft.Data.Sqlite			https://github.com/aspnet/Microsoft.Data.Sqlite
-											https://rogerjohansson.blog/2016/08/16/wire-writing-one-of-the-fastest-net-serializers/
 	- google/leveldb						https://github.com/google/leveldb
 		- ren85/leveldb.net					https://github.com/ren85/leveldb.net
 	- ravendb/ravendb						https://github.com/ravendb/ravendb
@@ -40,6 +52,7 @@ Databases
 	- mgholam/RaptorDB-Document				https://github.com/mgholam/RaptorDB-Document
 	- rethinkdb/rethinkdb					https://github.com/rethinkdb/rethinkdb
 		- bchavez/RethinkDb.Driver			https://github.com/bchavez/RethinkDb.Driver
+	- linq2db/linq2db						https://github.com/linq2db/linq2db
 
 Articles
 

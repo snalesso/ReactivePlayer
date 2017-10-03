@@ -1,7 +1,6 @@
 ﻿using Daedalus.ExtensionMethods;
 using ReactivePlayer.Core;
 using ReactivePlayer.Domain.Models;
-using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -189,14 +188,14 @@ namespace ReactivePlayer.Domain.Repositories
                                            t.TotalTime,
                                            t.DateModified),
                                        t.DateAdded,
-                                       new Tags(
+                                       new TrackTags(
                                            t.Name,
                                            perf,
                                            comp,
                                            new Album(
                                                t.Album,
                                                albArt,
-                                               t.ReleaseDate,
+                                               t.Year,
                                                t.TrackCount,
                                                t.DiscCount),
                                            null,
@@ -224,22 +223,7 @@ namespace ReactivePlayer.Domain.Repositories
             });
         }
 
-        public Task<bool> AddAsync(Track entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> BulkAddAsync(IEnumerable<Track> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> BulkRemoveAsync(IEnumerable<Track> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> BulkUpdateAsync(IEnumerable<Track> entities)
+        public Task<bool> AddAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }
@@ -249,12 +233,12 @@ namespace ReactivePlayer.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(Track entity)
+        public Task<bool> RemoveAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(Track entity)
+        public Task<bool> UpdateAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }

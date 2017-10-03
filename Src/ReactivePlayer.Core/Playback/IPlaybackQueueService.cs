@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,10 @@ namespace ReactivePlayer.Core.Playback
 {
     public interface IPlaybackQueueService
     {
-        IObservable<IReadOnlyList<Uri>> WhenQueueChanged { get; }
+        IReadOnlyReactiveList<Uri> LocationsHistory { get; }
+        IReadOnlyReactiveList<Uri> UpcomingTracksLocations { get; }
 
-        Task EnqueueAsync(Uri trackLocation);
-        Task<Uri> DeqeueAsync();
+        Task EnqueueTrackLocationAsync(Uri trackLocation);
+        Task<Uri> DeqeueTrackLocationAsync();
     }
 }

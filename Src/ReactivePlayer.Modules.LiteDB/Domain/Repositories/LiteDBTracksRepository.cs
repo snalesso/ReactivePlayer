@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using ReactivePlayer.Domain.Entities;
 using LiteDB;
+using ReactivePlayer.Domain.Models;
 
 namespace ReactivePlayer.Domain.Repositories
 {
@@ -38,52 +38,34 @@ namespace ReactivePlayer.Domain.Repositories
 
         #region ITracksRepository
 
-        public Task<Track> AddAsync(Track entity)
+        public Task<bool> AddAsync(IReadOnlyList<Track> tracks)
         {
             var dbTracks = this._db.GetCollection<Track>();
 
-            using (var trans = this._db.BeginTrans())
-            {
-                entity = dbTracks.Insert(entity).RawValue as Track;
-                trans.Commit();
-            }
-
-            return Task.FromResult(entity);
-        }
-
-        public Task<bool> AnyAsync(Func<Track, bool> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<Track>> BulkAddAsync(IEnumerable<Track> entities)
-        {
-            var dbTracks = this._db.GetCollection<Track>();
-            var addedTracks = new List<Track>();
+            bool result;
 
             using (var trans = this._db.BeginTrans())
             {
-                foreach (var entity in entities)
+                try
                 {
-                    addedTracks.Add(dbTracks.Insert(entity).RawValue as Track);
+                    foreach (var entity in tracks)
+                    {
+                        dbTracks.Insert(entity);
+                    }
+                    trans.Commit();
+                    result = true;
                 }
-                trans.Commit();
+                catch (Exception)
+                {
+                    trans.Rollback();
+                    result = false;
+                }
             }
 
-            return Task.FromResult<IReadOnlyList<Track>>(addedTracks.AsReadOnly());
+            return Task.FromResult(result);
         }
 
-        public Task<IReadOnlyList<Track>> BulkRemoveAsync(IEnumerable<Track> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<Track>> BulkUpdateAsync(IEnumerable<Track> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ulong> CountAsync(Func<Track, bool> filter = null)
+        public Task<long> CountAsync(Func<Track, bool> filter = null)
         {
             throw new NotImplementedException();
         }
@@ -111,12 +93,12 @@ namespace ReactivePlayer.Domain.Repositories
             return Task.FromResult<IReadOnlyList<Track>>(result);
         }
 
-        public Task<Track> RemoveAsync(Track entity)
+        public Task<bool> RemoveAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Track> UpdateAsync(Track entity)
+        public Task<bool> UpdateAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }
@@ -136,6 +118,8 @@ namespace ReactivePlayer.Domain.Repositories
 
         private void RegisterCustomMappers()
         {
+            // TODO: optimization: when accessing fields by index, internally the value is re-calculated every time
+
             this._db.Mapper.IncludeNonPublic = false;
             this._db.Mapper.RegisterType(
                 serialize: artist => new BsonDocument
@@ -144,18 +128,21 @@ namespace ReactivePlayer.Domain.Repositories
                 },
                 deserialize: bsonDoc => new Artist(bsonDoc.AsDocument[nameof(Artist.Name)]));
 
+            var tfiLocationStringKey = $"{nameof(TrackFileInfo.Location)}.{nameof(Uri.OriginalString)}";
             this._db.Mapper.RegisterType(
                 serialize: artist => new BsonDocument
                 {
-                    { nameof(Artist.Name), new BsonValue(artist.Name) }
+                    { tfiLocationStringKey, new BsonValue(artist.Location.OriginalString) },
+                    { nameof(TrackFileInfo.Duration), new BsonValue(artist.Duration) },
+                    { nameof(TrackFileInfo.LastModifiedDateTime), new BsonValue(artist.LastModifiedDateTime) }
                 },
                 deserialize: bsonDoc =>
                 {
                     var doc = bsonDoc.AsDocument;
                     return new TrackFileInfo(
-                    doc[nameof(TrackFileInfo.Location)],
+                    new Uri(doc[tfiLocationStringKey]),
                     !doc[nameof(TrackFileInfo.Duration)].IsNull ? TimeSpan.FromTicks(doc[nameof(TrackFileInfo.Duration)].AsInt64) : new TimeSpan?(),
-                    !doc[nameof(TrackFileInfo.LastModified)].IsNull ? doc[nameof(TrackFileInfo.LastModified)].AsDateTime : new DateTime?());
+                    !doc[nameof(TrackFileInfo.LastModifiedDateTime)].IsNull ? doc[nameof(TrackFileInfo.LastModifiedDateTime)].AsDateTime : new DateTime?());
                 });
 
             //this._db.Mapper.RegisterType(
@@ -169,6 +156,7 @@ namespace ReactivePlayer.Domain.Repositories
             //    },
             //    deserialize: bsonDoc => new Album(bsonDoc.AsDocument[nameof(Album.Name)]));
         }
+
         #endregion
     }
 }

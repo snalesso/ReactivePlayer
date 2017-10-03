@@ -1,28 +1,52 @@
-﻿using ReactivePlayer.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
 {
-    // TODO: move of IObservablePlayer non-core logic to here
-    public interface IPlaybackService
+    public interface IPlaybackService : IDisposable
     {
-        Task PlayAsync(Uri trackLocation);
-        Task PauseAsync();
-        Task ResumeAsync();
-        Task StopAsync();
+        #region methods
 
+        Task LoadTrackAsync(Uri trackLocation);
+        IObservable<bool> WhenCanLoadChanged { get; }
         IObservable<Uri> WhenTrackLocationChanged { get; }
+
+        Task PlayAsync();
+        IObservable<bool> WhenCanPlayChanged { get; }
+
+        Task ResumeAsync();
+        IObservable<bool> WhenCanResumeChanged { get; }
+
+        Task PauseAsync();
+        IObservable<bool> WhenCanPauseChanged { get; }
+
+        Task StopAsync();
+        IObservable<bool> WhenCanStopChanged { get; }
+
+        Task SeekToAsync(TimeSpan position); // TODO: make SeekTo void? Or SetVolume Task? What if multiple concurrent SetVolume's?
+        IObservable<bool> WhenCanSeekChanged { get; }
+
+        // TODO: protect from multiple concurrent setting
+        void SetVolume(float volume);
+        IObservable<float> WhenVolumeChanged { get; }
+
+        #endregion
+
+        #region observable events
+
         IObservable<TimeSpan?> WhenPositionChanged { get; }
+        IObservable<TimeSpan?> WhenDurationChanged { get; }
         IObservable<PlaybackStatus> WhenStatusChanged { get; }
 
-        IObservable<bool> WhenCanPlayChanged { get; }
-        IObservable<bool> WhenCanPauseChanged { get; }
-        IObservable<bool> WhenCanResumeChanged { get; }
-        IObservable<bool> WhenCanStopChanged { get; }
-        IObservable<bool> WhenCanSeekChanged { get; }
+        //IObservable<bool> WhenSomethingGoesWrong { get; } // TODO: is this enough? Use FailedEventArgs? How are exceptions handled in iobservables?
+
+        //IObservable<bool> WhenCanSwitchOutputDeviceChanged { get; }
+
+        //IObservable<IReadOnlyList<DirectSoundDeviceInfo>> WhenAvailableDevicesChanged { get; }
+
+        //Task<bool> SwitchToDevice(DirectSoundDeviceInfo device);
+
+        #endregion
     }
 }

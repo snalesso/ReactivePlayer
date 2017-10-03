@@ -1,4 +1,5 @@
 ﻿using Daedalus.ExtensionMethods;
+using ReactivePlayer.Core.Data;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Domain.Models;
 using ReactiveUI;
@@ -13,14 +14,14 @@ namespace ReactivePlayer.UI.WPF.Core.ViewModels
         #region constants & fields
 
         private readonly IPlaybackService _playbackService;
-        private readonly Track _track;
+        private readonly TrackDto _track;
 
         #endregion
 
         #region constructors
 
         public TrackViewModel(
-            Track track,
+            TrackDto track,
             IPlaybackService playbackService)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
@@ -33,36 +34,16 @@ namespace ReactivePlayer.UI.WPF.Core.ViewModels
 
         public string Title => this._track.Tags.Title;
 
-        private IReadOnlyList<string> _performers;
-        public IReadOnlyList<string> Performers
-        {
-            get
-            {
-                try
-                {
+        private IReadOnlyList<string> _performersNames;
+        public IReadOnlyList<string> PerformersNames =>
+            this._performersNames
+            ?? (this._performersNames = (this._track.Tags?.Performers).EmptyIfNull().Select(p => p.Name).ToList().AsReadOnly());
 
-                    if (this._performers == null)
-                        this._performers = (this._track.Tags?.Performers).EmptyIfNull().Select(p => p.Name).ToList().AsReadOnly();
-                }
-                catch (Exception ex)
-                {
-
-                    throw;
-                }
-
-                return this._performers;
-            }
-        }
-
-        public string AlbumName => this._track.Tags.Album.Name;
+        public string AlbumTitle => this._track.Tags.AlbumTitle;
 
         public uint? AlbumTrackNumber => this._track.Tags.AlbumTrackNumber;
 
         public uint? AlbumDiscNumber => this._track.Tags.AlbumDiscNumber;
-
-        public Uri Location => this._track.FileInfo.Location;
-
-        public string LocationAbsolutePath => this._track.FileInfo.Location.AbsolutePath;
 
         public DateTime AddedDateTime => this._track.AddedToLibraryDateTime;
 

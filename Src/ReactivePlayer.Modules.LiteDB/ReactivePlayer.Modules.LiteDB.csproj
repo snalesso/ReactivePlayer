@@ -58,6 +58,10 @@
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
       <Name>ReactivePlayer.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
+      <Project>{df6027c8-a1d8-4437-9842-c003d263558f}</Project>
+      <Name>ReactivePlayer.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

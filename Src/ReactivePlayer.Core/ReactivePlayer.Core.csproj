@@ -60,39 +60,36 @@
       <HintPath>..\..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-core.7.4.0\lib\Net45\ReactiveUI.dll</HintPath>
+      <HintPath>..\..\packages\reactiveui-core.7.4.0\lib\Net45\ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="Splat, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Splat.1.4.0\lib\Net45\Splat.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Rx-PlatformServices.2.3\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
@@ -100,46 +97,49 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AlbumDto.cs" />
-    <Compile Include="Data\ArtistDto.cs" />
-    <Compile Include="Data\ArtworkDto.cs" />
-    <Compile Include="Data\FileSystem\Audio\CSCoreAudioFileDurationCalculator.cs" />
-    <Compile Include="Data\FileSystem\Audio\IAudioFileDurationCalculator.cs" />
-    <Compile Include="Data\FileSystem\Audio\LocalAudioFileDurationCalculator.cs" />
-    <Compile Include="Data\TagsDto.cs" />
-    <Compile Include="Data\TrackDto.cs" />
-    <Compile Include="Data\TrackFileInfoDto.cs" />
-    <Compile Include="Data\TrackStatsDto.cs" />
-    <Compile Include="Data\LocalTracksService.cs" />
-    <Compile Include="MultipleServiceResponse`1.cs" />
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Library\AlbumDto.cs" />
+    <Compile Include="Library\ArtistDto.cs" />
+    <Compile Include="Library\ArtworkDto.cs" />
+    <Compile Include="FileSystem\Audio\CSCoreAudioFileDurationCalculator.cs" />
+    <Compile Include="FileSystem\Audio\IAudioFileDurationCalculator.cs" />
+    <Compile Include="FileSystem\Audio\LocalAudioFileDurationCalculator.cs" />
+    <Compile Include="Library\InvalidCommandException.cs" />
+    <Compile Include="Library\IWriteLibraryService.cs" />
+    <Compile Include="Library\TrackLibraryMetadataDto.cs" />
+    <Compile Include="Library\TrackTagsDto.cs" />
+    <Compile Include="Library\TrackCriteria.cs" />
+    <Compile Include="Library\TrackDto.cs" />
+    <Compile Include="Library\TrackFileInfoDto.cs" />
+    <Compile Include="Library\LocalLibraryService.cs" />
     <Compile Include="Playback\AudioChannels.cs" />
     <Compile Include="Playback\CSCore\Codecs\Vorbis\NVorbisWaveSource.cs" />
-    <Compile Include="Playback\CSCore\CSCorePlayer.cs" />
-    <Compile Include="Data\FileSystem\SimpleFileInfo.cs" />
+    <Compile Include="Playback\CSCore\CSCorePlaybackService.cs" />
+    <Compile Include="FileSystem\SimpleFileInfo.cs" />
     <Compile Include="Playback\IPlaybackQueueService.cs" />
-    <Compile Include="Data\FileSystem\Audio\IAudioFileTagger.cs" />
-    <Compile Include="Data\FileSystem\PlayableFileInfo.cs" />
-    <Compile Include="Data\FileSystem\FSWDirectoryWatcher.cs" />
-    <Compile Include="Data\FileSystem\IDirectoryWatcher.cs" />
+    <Compile Include="FileSystem\Audio\IAudioFileTagger.cs" />
+    <Compile Include="FileSystem\PlayableFileInfo.cs" />
+    <Compile Include="FileSystem\FSWDirectoryWatcher.cs" />
+    <Compile Include="FileSystem\IDirectoryWatcher.cs" />
     <Compile Include="Playback\PlaybackStatusHelper.cs" />
-    <Compile Include="Data\FileSystem\ILocalFileSystemService.cs" />
+    <Compile Include="FileSystem\ILocalFileSystemService.cs" />
+    <Compile Include="Library\IReadLibraryService.cs" />
+    <Compile Include="FileSystem\ShellObjectHelper.cs" />
+    <Compile Include="FileSystem\Audio\ShellObjectAudioFileDurationCalculator.cs" />
+    <Compile Include="FileSystem\Audio\TagLibSharp\TagLibSharpTagger.cs" />
+    <Compile Include="FileSystem\Audio\IAudioFileInfoProvider.cs" />
     <Compile Include="Playback\IPlaybackService.cs" />
-    <Compile Include="Data\ITracksService.cs" />
-    <Compile Include="Data\FileSystem\ShellObjectHelper.cs" />
-    <Compile Include="Data\FileSystem\Audio\ShellObjectAudioFileDurationCalculator.cs" />
-    <Compile Include="Data\FileSystem\Audio\TagLibSharp\TagLibSharpTagger.cs" />
-    <Compile Include="Data\FileSystem\Audio\IAudioFileInfoExtractor.cs" />
-    <Compile Include="Playback\IObservableAudioPlayer.cs" />
     <Compile Include="Playback\PlaybackStatus.cs" />
-    <Compile Include="Playback\SimplePlaybackService.cs" />
+    <Compile Include="Playback\PlaybackQueueService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Data\FileSystem\Audio\AudioFileTags.cs" />
-    <Compile Include="Data\FileSystem\Audio\AudioFileInfo.cs" />
-    <Compile Include="ServiceResponseErrorCode.cs" />
-    <Compile Include="ServiceResponseError`1.cs" />
-    <Compile Include="ServiceResponse`1.cs" />
+    <Compile Include="FileSystem\Audio\AudioFileTags.cs" />
+    <Compile Include="FileSystem\Audio\AudioFileInfo.cs" />
+    <Compile Include="TaskFlow\ILibraryTask.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -147,8 +147,14 @@
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
       <Name>ReactivePlayer.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
+      <Project>{df6027c8-a1d8-4437-9842-c003d263558f}</Project>
+      <Name>ReactivePlayer.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Editing\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

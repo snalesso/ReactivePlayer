@@ -24,6 +24,8 @@ FUNCTIONALITIES:
 	- stop
 	- app close
 	- PC power action
+- delete
+	- after played
 - pause on PC account lock
 - file integrity verifier
 - tag charset converter (take a look @ Foobar200's Chacon)
@@ -59,6 +61,10 @@ FUNCTIONALITIES:
 	- artista/titolo -> lettere
 	- data aggiunta -> anno
 - log criteria to track most used queries and test implementations for best perf in most used scenarios
+- servizio per controllare playback dall'esterno del PC (rete locale/globale, autenticazione?)
+- https://github.com/tjscience/audion.cscore
+- sync col telefono, files compresi
+- tray flyout
 
 - MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
 - Reflection.Emit			http://docs.servicestack.net/reflection-utils
@@ -69,3 +75,10 @@ FUNCTIONALITIES:
 	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
 	- JOINed SELECT on all needed Entities (gathering only needed fields) -> Direct DTOs creation
 - LINQ Optimizations		http://mattwarren.org/2016/09/29/Optimising-LINQ/
+
+Might help
+	- reactive-streams/reactive-streams-dotnet	https://github.com/reactive-streams/reactive-streams-dotnet
+	- RxDave/Qactive							https://github.com/RxDave/Qactive
+
+Optimizations:
+- make lazy subjects ("connectable")

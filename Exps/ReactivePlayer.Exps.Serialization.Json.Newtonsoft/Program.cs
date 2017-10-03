@@ -33,9 +33,9 @@ namespace ReactivePlayer.Exps.Serialization.Json.Newtonsoft
             var tagss = FakeDomainEntitiesGenerator.GetFakeTags(1).ToArray();
             var tags = tagss.FirstOrDefault();
             var jTags = JsonConvert.SerializeObject(tags, Formatting.None, tagsConverter);
-            var deserializedTags = JsonConvert.DeserializeObject<Tags>(jTags, tagsConverter);
+            var deserializedTags = JsonConvert.DeserializeObject<TrackTags>(jTags, tagsConverter);
 
-            Console.WriteLine();
+            Console.ReadLine();
         }
     }
 }

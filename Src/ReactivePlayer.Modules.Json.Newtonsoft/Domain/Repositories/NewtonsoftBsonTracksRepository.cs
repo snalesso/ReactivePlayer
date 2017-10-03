@@ -27,28 +27,23 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
 
         #region ITracksRepository
 
-        public Task<bool> AddAsync(Track entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> AnyAsync(Func<Track, bool> filter = null)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> BulkAddAsync(IEnumerable<Track> entities)
+        public async Task<bool> AddAsync(IReadOnlyList<Track> tracks)
         {
             bool result;
 
             try
             {
-                if (entities.Any(e => this._tracks.Select(t => t.Id).Contains(e.Id)))
+                if (tracks.Any(e => this._tracks.Select(t => t.Id).Contains(e.Id)))
                 {
                     throw new Exception("Duplicate Id");
                 }
 
-                this._tracks.AddRange(entities);
+                this._tracks.AddRange(tracks);
 
                 result = await Commit();
             }
@@ -85,12 +80,12 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(Track entity)
+        public Task<bool> RemoveAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(Track entity)
+        public Task<bool> UpdateAsync(IReadOnlyList<Track> tracks)
         {
             throw new NotImplementedException();
         }

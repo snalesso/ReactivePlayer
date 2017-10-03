@@ -9,20 +9,20 @@ namespace ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType != null && objectType == typeof(Tags);
+            return objectType != null && objectType == typeof(TrackTags);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jo = JObject.Load(reader);
 
-            return jo.ToTags();
+            return jo.ToTrackTags();
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var jTags = (value as Tags).ToJObject();
-            serializer.Serialize(writer, jTags);
+            var jTrackTags = (value as TrackTags).ToJObject();
+            serializer.Serialize(writer, jTrackTags);
         }
     }
 }

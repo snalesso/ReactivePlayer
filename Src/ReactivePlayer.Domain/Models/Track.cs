@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactivePlayer.Infrastructure.Domain.Models;
+using System;
 using System.Collections.Generic;
 
 namespace ReactivePlayer.Domain.Models
@@ -11,7 +12,7 @@ namespace ReactivePlayer.Domain.Models
             Guid id,
             TrackFileInfo fileInfo,
             DateTime addedToLibraryDateTime,
-            Tags tags)
+            TrackTags tags)
             : base(id)
         {
             this.FileInfo = fileInfo ?? throw new ArgumentNullException(nameof(fileInfo)); // TODO: localize
@@ -24,7 +25,7 @@ namespace ReactivePlayer.Domain.Models
             this.Tags = tags;
         }
 
-        public Track(TrackFileInfo fileInfo, DateTime addedToLibraryDateTime, Tags tags)
+        public Track(TrackFileInfo fileInfo, DateTime addedToLibraryDateTime, TrackTags tags)
             : this(Guid.NewGuid(), fileInfo, addedToLibraryDateTime, tags)
         {
         }
@@ -40,9 +41,9 @@ namespace ReactivePlayer.Domain.Models
 
         public TrackFileInfo FileInfo { get; private set; }
 
-        public Tags Tags { get; private set; }
+        public TrackTags Tags { get; private set; }
 
-        #region library info
+        #region library metadata
 
         public DateTime AddedToLibraryDateTime { get; }
 
@@ -54,25 +55,29 @@ namespace ReactivePlayer.Domain.Models
 
         #endregion
 
-        protected override void EnsureIsWellFormattedId(Guid id)
-        {
-            if (id == null) throw new ArgumentNullException(nameof(id)); // TODO: localize
-            if (id == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(id)); // TODO: localize
-        }
-
         #region methods
 
-        public void UpdateTags(Tags newTags) { }
+        public void UpdateTags(TrackTags newTags) { }
 
         public void PurgeTags() { }
 
-        public void ChangeArtworks(IEnumerable<Artwork> newArtworks) { }
+        public void ChangeArtworks(IReadOnlyList<Artwork> newArtworks) { }
 
         public void DeleteArtworks() { }
 
         public void UpdateRelationship(bool isLoved) { }
 
         public void LogPlayed(DateTime playedDateTime) { }
+
+        #endregion
+
+        #region Entity<>
+
+        protected override void EnsureIsWellFormattedId(Guid id)
+        {
+            if (id == null) throw new ArgumentNullException(nameof(id)); // TODO: localize
+            if (id == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(id)); // TODO: localize
+        }
 
         #endregion
     }

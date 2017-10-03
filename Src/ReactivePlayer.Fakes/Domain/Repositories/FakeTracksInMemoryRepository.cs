@@ -18,22 +18,7 @@ namespace ReactivePlayer.Domain.Repositories
             this._tracks.AddRange(FakeDomainEntitiesGenerator.GetFakeTracks(100));
         }
 
-        public Task<bool> AddAsync(Track entity)
-        {
-            bool result;
-
-            if (this._tracks.Any(t => t.Id == entity.Id)) ;
-            {
-                result = false;
-            }
-
-            this._tracks.Add(entity);
-            result = true;
-
-            return Task.FromResult(result);
-        }
-
-        public Task<bool> BulkAddAsync(IEnumerable<Track> entities)
+        public Task<bool> AddAsync(IReadOnlyList<Track> entities)
         {
             bool result;
 
@@ -47,16 +32,6 @@ namespace ReactivePlayer.Domain.Repositories
             result = true;
 
             return Task.FromResult(result);
-        }
-
-        public Task<bool> BulkRemoveAsync(IEnumerable<Track> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> BulkUpdateAsync(IEnumerable<Track> entities)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<long> CountAsync(Func<Track, bool> filter = null)
@@ -74,12 +49,12 @@ namespace ReactivePlayer.Domain.Repositories
             return Task.FromResult<IReadOnlyList<Track>>(this._tracks.AsReadOnly());
         }
 
-        public Task<bool> RemoveAsync(Track entity)
+        public Task<bool> RemoveAsync(IReadOnlyList<Track> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(Track entity)
+        public Task<bool> UpdateAsync(IReadOnlyList<Track> entities)
         {
             throw new NotImplementedException();
         }

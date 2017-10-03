@@ -26,14 +26,14 @@ namespace ReactivePlayer.Domain
                             TimeSpan.FromMinutes(3 + r.NextDouble() * 2),
                             DateTime.Now.AddDays(-1 * r.NextDouble() * 1000)),
                         DateTime.Now.AddDays(-1 * r.NextDouble() * 2000),
-                        new Tags(
+                        new TrackTags(
                             $"Title of song #{n}",
                             Enumerable.Range(1, r.Next(0, 4)).Select(j => new Artist($"Artist {n}.{j}")),
                             Enumerable.Range(1, r.Next(0, 4)).Select(j => new Artist($"Artist {n}.{j}")),
                             new Album(
                                 $"Title of Album #{r.Next(1, 2000 + 1)}",
                                 Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Artist {n}.{j}")),
-                                DateTime.Now.AddDays(-1 * r.NextDouble() * 30_000),
+                                Convert.ToUInt32(DateTime.Now.Year - r.Next(0, 50 + 1)),
                                 Convert.ToUInt32(10 + r.Next(0, 10 + 1)),
                                 Convert.ToUInt32(1 + r.NextDouble())),
                             StringExtensions.Alphabet.Randomize(r.Next(300, 600), r),
@@ -55,7 +55,7 @@ namespace ReactivePlayer.Domain
                     new Album(
                         $"Title of Album #{r.Next(1, 2000 + 1)}",
                         Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Artist {n}.{j}")),
-                        DateTime.Now.AddDays(-1 * r.NextDouble() * 30_000),
+                        Convert.ToUInt32(DateTime.Now.Year - r.Next(0, 50 + 1)),
                         Convert.ToUInt32(10 + r.Next(0, 10 + 1)),
                         Convert.ToUInt32(1 + r.NextDouble())))
                 .ToArray();
@@ -73,25 +73,25 @@ namespace ReactivePlayer.Domain
                 .ToArray();
         }
 
-        public static IEnumerable<Tags> GetFakeTags(int count)
+        public static IEnumerable<TrackTags> GetFakeTags(int count)
         {
             if (count <= 0)
-                return Enumerable.Empty<Tags>();
+                return Enumerable.Empty<TrackTags>();
 
             var r = new Random(31);
 
             return
                 Enumerable
                 .Range(1, count)
-                .Select(n => 
-                    new Tags(
+                .Select(n =>
+                    new TrackTags(
                         $"Title of song #{n}",
                         Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Performer {n}.{j}")).ToArray(),
                         Enumerable.Range(1, r.Next(0, 2)).Select(j => new Artist($"Composer {n}.{j}")).ToArray(),
                         new Album(
                             $"Title of Album #{r.Next(1, 2000 + 1)}",
                             Enumerable.Range(1, 1 + r.Next(0, 2)).Select(j => new Artist($"Author {n}.{j}")).ToArray(),
-                            DateTime.Now.AddDays(-1 * r.NextDouble() * 30_000),
+                            Convert.ToUInt32(DateTime.Now.Year - r.Next(0, 50 + 1)),
                             Convert.ToUInt32(10 + r.Next(0, 10 + 1)),
                             Convert.ToUInt32(1 + r.NextDouble())),
                         StringExtensions.Alphabet.Randomize(r.Next(300, 600), r),
