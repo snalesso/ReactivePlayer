@@ -64,6 +64,7 @@
     <Compile Include="Models\Artwork.cs" />
     <Compile Include="Models\ArtworkData.cs" />
     <Compile Include="Models\ArtworkType.cs" />
+    <Compile Include="Models\TrackAlbumRelation.cs" />
     <Compile Include="Models\TrackTags.cs" />
     <Compile Include="Models\TrackFileInfo.cs" />
     <Compile Include="RangedNullable`1.cs" />

@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using Caliburn.Micro;
+using ReactivePlayer.Application.Services;
+using ReactivePlayer.Application.WPF.Composition.Modules;
 using ReactivePlayer.Application.WPF.ViewModels;
 using ReactivePlayer.Application.WPF.Views;
 using ReactivePlayer.Core.Data;
@@ -7,15 +9,12 @@ using ReactivePlayer.Core.Data.Library;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactivePlayer.Domain.Repositories;
-using ReactivePlayer.Application.WPF.Composition.Modules;
-using ReactivePlayer.Application.WPF.Views;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using ReactivePlayer.Application.Services;
 
 namespace ReactivePlayer.Application.WPF.Composition
 {
@@ -50,7 +49,7 @@ namespace ReactivePlayer.Application.WPF.Composition
             // CORE COMPONENTS
 
             builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
-            builder.Register<IDialogService>(c => new WindowsDialogService()).InstancePerLifetimeScope();
+            //builder.Register<IDialogService>(c => new WindowsDialogService()).InstancePerLifetimeScope();
 
             /* TODO: serializers to test
              * JIL              (faster with less data?)

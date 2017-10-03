@@ -23,10 +23,10 @@ namespace ReactivePlayer.Core.Data
             this.DiscsCount = album.DiscsCount;
         }
 
-        public string Name { get; set; }
-        public IReadOnlyList<ArtistDto> Authors { get; set; }
-        public uint? Year { get; set; }
-        public uint? TracksCount { get; set; }
-        public uint? DiscsCount { get; set; }
+        public string Name { get; }
+        public IReadOnlyList<ArtistDto> Authors { get; }
+        public uint? Year { get; }
+        public uint? TracksCount { get; }
+        public uint? DiscsCount { get; }
     }
 }

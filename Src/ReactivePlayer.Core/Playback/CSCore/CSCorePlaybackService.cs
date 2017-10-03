@@ -24,6 +24,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
     {
         #region constants & fields
 
+        // TODO: make private?
         public static readonly TimeSpan DefaultPositionUpdateInterval = TimeSpan.FromMilliseconds(50); // TODO: benchmark impact with high freq. updates
         // SemaphoreSlim                https://docs.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=netframework-4.7
         // Semaphore vs SemaphoreSlim   https://docs.microsoft.com/en-us/dotnet/standard/threading/semaphore-and-semaphoreslim
@@ -317,6 +318,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
             catch (Exception ex)
             {
+                // TODO: move to logger
                 Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(PauseAsync)}: {ex.Message}");
                 this.__statusSubject.OnNext(PlaybackStatus.Exploded);
                 //throw;
@@ -342,6 +344,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
             catch (Exception ex)
             {
+                // TODO: move to logger
                 Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(ResumeAsync)}: {ex.Message}");
                 this.__statusSubject.OnNext(PlaybackStatus.Exploded);
                 //throw;

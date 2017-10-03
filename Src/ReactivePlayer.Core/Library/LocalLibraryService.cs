@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq;
+using System.Linq.Expressions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,9 +93,14 @@ namespace ReactivePlayer.Core.Data.Library
             return result;
         }
 
-        public Task<IReadOnlyList<ArtistDto>> GetArtists(IReadOnlyList<Track> tracks)
+        public async Task<IReadOnlyList<ArtistDto>> GetArtists(IReadOnlyList<Track> tracks)
         {
-            throw new NotImplementedException();
+            return (await this._tracksRepository.GetAllAsync())
+                .SelectMany(t => t.Tags.Performers)
+                .Select(p => new ArtistDto(p))
+                .OrderBy(name => name)
+                .Distinct()
+                .ToImmutableList();
         }
 
         public async Task<IReadOnlyList<TrackDto>> GetTracks(TrackCriteria trackCriteria = null)

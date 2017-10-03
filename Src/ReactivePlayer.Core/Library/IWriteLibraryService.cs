@@ -15,7 +15,7 @@ namespace ReactivePlayer.Core.Data.Library
 
     public class AddTrackCommand
     {
-        #region library info
+        #region library metadata
 
         public DateTime AddedToLibraryDateTime { get; }
 
@@ -33,15 +33,17 @@ namespace ReactivePlayer.Core.Data.Library
 
         public TrackTagsDto Tags { get; }
 
-        public uint? AlbumTrackNumber { get; }
-        public uint? AlbumDiscNumber { get; }
-
         #endregion
     }
 
     public class RemoveTrackCommand
     {
+        public RemoveTrackCommand(Guid trackId)
+        {
+            this.TrackId = trackId ;
+        }
 
+        public Guid TrackId { get; }
     }
 
     public class UpdateTrackCommand

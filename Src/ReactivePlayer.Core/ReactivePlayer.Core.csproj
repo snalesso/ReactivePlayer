@@ -38,6 +38,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\bin\Release\Daedalus.ExtensionMethods.dll</HintPath>
     </Reference>
+    <Reference Include="DynamicData, Version=4.11.0.1199, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.4.11.0.1199\lib\net45\DynamicData.dll</HintPath>
+    </Reference>
+    <Reference Include="DynamicData.ReactiveUI, Version=2.5.0.2009, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.ReactiveUI.2.5.0.2009\lib\portable45-net45+win8+wp8+wpa81\DynamicData.ReactiveUI.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -108,6 +114,7 @@
     <Compile Include="FileSystem\Audio\LocalAudioFileDurationCalculator.cs" />
     <Compile Include="Library\InvalidCommandException.cs" />
     <Compile Include="Library\IWriteLibraryService.cs" />
+    <Compile Include="Library\TrackAlbumRelationDto.cs" />
     <Compile Include="Library\TrackLibraryMetadataDto.cs" />
     <Compile Include="Library\TrackTagsDto.cs" />
     <Compile Include="Library\TrackCriteria.cs" />
@@ -154,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Editing\" />
+    <Folder Include="Remoting\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

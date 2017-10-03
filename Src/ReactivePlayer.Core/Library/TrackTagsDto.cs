@@ -23,8 +23,6 @@ namespace ReactivePlayer.Core.Data
         //    this.Artworks = tagLibTag.Pictures.Select(p => new ArtworkDto(p.Data.Data)).ToArray();
         //}
 
-        public TrackTagsDto() { }
-
         public TrackTagsDto(TrackTags tags)
         {
             if (tags == null) throw new ArgumentNullException(nameof(tags));
@@ -33,24 +31,15 @@ namespace ReactivePlayer.Core.Data
             this.Performers = tags.Performers.Select(p => new ArtistDto(p)).ToImmutableArray();
             this.Composers = tags.Composers.Select(c => new ArtistDto(c)).ToImmutableArray();
             //this.Artworks = tags.A.Select(a => new ArtworkDto(a)).ToImmutableArray();
+            //this.Album = new AlbumDto(tags.Album);
             this.Lyrics = tags.Lyrics;
-            this.AlbumTitle = tags.Album.Name;
-            this.AlbumAuthors = tags.Album.Authors.Select(a => new ArtistDto(a)).ToImmutableArray();
-            this.AlbumYear = tags.Album.Year;
-            this.AlbumTrackNumber = tags.AlbumTrackNumber;
-            this.AlbumDiscNumber = tags.AlbumDiscNumber;
         }
 
-        public string Title { get; set; }
-        public IReadOnlyList<ArtistDto> Performers { get; set; }
-        public IReadOnlyList<ArtistDto> Composers { get; set; }
-        public IReadOnlyList<ArtworkDto> Artworks { get; set; }
-        public string Lyrics { get; set; }
-
-        public string AlbumTitle { get; set; }
-        public IReadOnlyList<ArtistDto> AlbumAuthors { get; set; }
-        public uint? AlbumYear { get; set; }
-        public uint? AlbumTrackNumber { get; set; }
-        public uint? AlbumDiscNumber { get; set; }
+        public string Title { get; }
+        public IReadOnlyList<ArtistDto> Performers { get; }
+        public IReadOnlyList<ArtistDto> Composers { get; }
+        public IReadOnlyList<ArtworkDto> Artworks { get; }
+        public TrackAlbumRelationDto Album { get; }
+        public string Lyrics { get; }
     }
 }

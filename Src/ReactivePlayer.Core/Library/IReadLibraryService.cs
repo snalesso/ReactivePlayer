@@ -1,4 +1,5 @@
-﻿using ReactivePlayer.Core.Data;
+﻿using DynamicData;
+using ReactivePlayer.Core.Data;
 using ReactivePlayer.Domain.Models;
 using ReactiveUI;
 using System;
