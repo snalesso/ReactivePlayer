@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Infrastructure.Domain.Models;
+using ReactivePlayer.Infrastructure.Domain.Models;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Infrastructure.Domain.Repositories

@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Infrastructure.Domain.Models.Helpers;
+using ReactivePlayer.Infrastructure.Domain.Models.Helpers;
 using System;
 using System.Collections.Generic;
 

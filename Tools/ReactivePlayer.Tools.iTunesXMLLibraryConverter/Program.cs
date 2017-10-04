@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Domain.Repositories;
+using ReactivePlayer.Domain.Repositories;
 using System;
 
 namespace ReactivePlayer.Tools.iTunesXMLLibraryConverter

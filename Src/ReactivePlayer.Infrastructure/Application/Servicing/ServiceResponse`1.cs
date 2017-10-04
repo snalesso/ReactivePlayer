@@ -1,4 +1,4 @@
-﻿using Daedalus.ExtensionMethods;
+using Daedalus.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;

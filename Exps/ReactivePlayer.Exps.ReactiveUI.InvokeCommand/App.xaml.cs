@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Exps.ReactiveUI.InvokeCommand.ViewModels;
+using ReactivePlayer.Exps.ReactiveUI.InvokeCommand.ViewModels;
 using ReactivePlayer.Exps.ReactiveUI.InvokeCommand.Views;
 using System;
 using System.Collections.Generic;

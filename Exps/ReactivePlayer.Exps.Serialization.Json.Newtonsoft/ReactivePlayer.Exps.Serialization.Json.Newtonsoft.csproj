@@ -56,13 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj">
-      <Project>{39336567-1654-4a8e-b7d1-08c1776febbc}</Project>
-      <Name>ReactivePlayer.Fakes</Name>
+      <Name>ReactivePlayer.Core.Domain.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Modules.Json.Newtonsoft\ReactivePlayer.Modules.Json.Newtonsoft.csproj">
       <Project>{3348376f-332f-471d-a613-09700a0e0cbe}</Project>

@@ -60,9 +60,5 @@
     <Compile Include="Application\Servicing\ServiceResponseError`1.cs" />
     <Compile Include="Application\Servicing\ServiceResponse`1.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Application\Logging\" />
-    <Folder Include="Presentation\I18n\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

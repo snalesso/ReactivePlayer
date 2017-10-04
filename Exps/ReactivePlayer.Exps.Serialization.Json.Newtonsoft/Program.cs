@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
+using ReactivePlayer.Core.Domain.Library.Models;
 using ReactivePlayer.Domain;
-using ReactivePlayer.Domain.Models;
 using ReactivePlayer.Modules.Json.Newtonsoft.Domain.Repositories;
 using System;
 using System.Linq;

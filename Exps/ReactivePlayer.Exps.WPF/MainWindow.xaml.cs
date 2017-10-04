@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Exps.WPF.ViewModels;
+using ReactivePlayer.Exps.WPF.ViewModels;
 using System.Windows;
 using System;
 using System.Diagnostics;

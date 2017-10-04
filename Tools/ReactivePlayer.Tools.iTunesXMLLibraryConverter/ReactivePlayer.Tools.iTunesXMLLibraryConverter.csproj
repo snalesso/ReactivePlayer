@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -49,9 +49,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
+    <ProjectReference Include="..\..\src\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Domain</Name>
+      <Name>ReactivePlayer.Core.Domain.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\ReactivePlayer.Modules.iTunes\ReactivePlayer.Modules.iTunes.csproj">
       <Project>{a45e3c4d-550f-4187-863d-c6f67e734162}</Project>
