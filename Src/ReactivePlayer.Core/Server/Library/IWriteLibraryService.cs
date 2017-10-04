@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Data.Library
+namespace ReactivePlayer.Domain.Services.Library
 {
     public interface IWriteLibraryService
     {

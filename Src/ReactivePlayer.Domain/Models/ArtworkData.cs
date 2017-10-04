@@ -11,17 +11,17 @@ namespace ReactivePlayer.Domain.Models
     public class ArtworkData : Entity<string>
     {
         public ArtworkData(
-            string hash,
-            IEnumerable<byte> data)
-            : base(hash)
+            string fingerprint,
+            IReadOnlyList<byte> data)
+            : base(fingerprint)
         {
-            this.Hash = hash;
-            this.Data = data is IReadOnlyList<byte> ? data as IReadOnlyList<byte> : data.ToArray();
+            this.Fingerprint = fingerprint;
+            this.Data = data != null && data.Any() ? data : throw new ArgumentNullException(nameof(data)); // TODO: localize
             //this.MimeType = mimeType;
         }
 
         public IReadOnlyList<byte> Data { get; }
-        public string Hash { get; }
+        public string Fingerprint { get; }
         //public ImageMimeType MimeType { get; }
 
         protected override void EnsureIsWellFormattedId(string id)

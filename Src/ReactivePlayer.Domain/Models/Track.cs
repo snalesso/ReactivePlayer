@@ -49,8 +49,6 @@ namespace ReactivePlayer.Domain.Models
 
         public bool IsLoved { get; private set; }
 
-        public IReadOnlyList<DateTime> PlayedHistory { get; private set; }
-
         #endregion
 
         #endregion

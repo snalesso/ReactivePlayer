@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Data
 {
-    [Obsolete]
     public class TrackFileInfoDto
     {
         public TrackFileInfoDto() { }

@@ -3,9 +3,9 @@ using System;
 
 namespace ReactivePlayer.Domain.Models
 {
-    public class TrackAlbumRelation
+    public class TrackAlbumAssociation
     {
-        public TrackAlbumRelation(Album album, uint? trackNumber, uint? discNumber)
+        public TrackAlbumAssociation(Album album, uint? trackNumber, uint? discNumber)
         {
             this.Album = album ?? throw new ArgumentNullException(nameof(album));
             this.TrackNumber = trackNumber;

@@ -39,7 +39,7 @@ namespace ReactivePlayer.Core.Data
         public IReadOnlyList<ArtistDto> Performers { get; }
         public IReadOnlyList<ArtistDto> Composers { get; }
         public IReadOnlyList<ArtworkDto> Artworks { get; }
-        public TrackAlbumRelationDto Album { get; }
+        public string AlbumTitle { get; }
         public string Lyrics { get; }
     }
 }

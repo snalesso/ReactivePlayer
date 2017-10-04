@@ -11,7 +11,7 @@ namespace ReactivePlayer.Domain.Models
             string title,
             IEnumerable<Artist> performers,
             IEnumerable<Artist> composers,
-            Album album,
+            TrackAlbumAssociation albumAssociation,
             string lyrics,
             uint? albumTrackNumber,
             uint? albumDiscNumber)
@@ -19,20 +19,15 @@ namespace ReactivePlayer.Domain.Models
             this.Title = title.TrimmedOrNull();
             this.Performers = performers.EmptyIfNull().ToList().AsReadOnly();
             this.Composers = composers.EmptyIfNull().ToList().AsReadOnly();
-            this.Album = album;
+            this.AlbumAssociation = albumAssociation;
             this.Lyrics = lyrics.TrimmedOrNull();
-            this.AlbumTrackNumber = albumTrackNumber.NullIf(atn => atn <= 0);
-            this.AlbumDiscNumber = albumDiscNumber.NullIf(adn => adn <= 0);
         }
 
         public string Title { get; }
         public IReadOnlyList<Artist> Performers { get; }
         public IReadOnlyList<Artist> Composers { get; }
-        public Album Album { get; }
+        public TrackAlbumAssociation AlbumAssociation { get; }
         public string Lyrics { get; }
-        // int over ushort or smaller datatypes for performance over memory
-        public uint? AlbumTrackNumber { get; }
-        public uint? AlbumDiscNumber { get; }
 
         #region ValueObject
 
@@ -40,10 +35,8 @@ namespace ReactivePlayer.Domain.Models
             this.Title.Equals(other.Title)
             && this.Performers.SequenceEqual(other.Performers)
             && this.Composers.SequenceEqual(other.Composers)
-            && this.Album.Equals(other.Album)
-            && this.Lyrics.Equals(other.Lyrics)
-            && this.AlbumTrackNumber.Equals(other.AlbumTrackNumber)
-            && this.AlbumDiscNumber.Equals(other.AlbumDiscNumber);
+            && this.AlbumAssociation.Equals(other.AlbumAssociation)
+            && this.Lyrics.Equals(other.Lyrics);
 
         protected override IEnumerable<object> GetHashCodeIngredients()
         {
@@ -52,10 +45,8 @@ namespace ReactivePlayer.Domain.Models
                 yield return p;
             foreach (var p in this.Composers)
                 yield return p;
-            yield return this.Album;
-            yield return this.Lyrics;
-            yield return this.AlbumTrackNumber;
-            yield return this.AlbumDiscNumber;
+            yield return this.AlbumAssociation;
+            yield return this.Lyrics;;
         }
 
         #endregion

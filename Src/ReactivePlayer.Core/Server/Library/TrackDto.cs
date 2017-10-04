@@ -42,10 +42,12 @@ namespace ReactivePlayer.Core.Data
             this.AddedToLibraryDateTime = track.AddedToLibraryDateTime;
             this.FileInfo = new TrackFileInfoDto(track.FileInfo);
             this.Tags = new TrackTagsDto(track.Tags);
+            this.LibraryMetadata = new LibraryMetadataDto(track.LibraryMetadata);
         }
 
-        public DateTime AddedToLibraryDateTime { get; set; }
-        public TrackFileInfoDto FileInfo { get; set; }
-        public TrackTagsDto Tags { get; set; }
+        public DateTime AddedToLibraryDateTime { get; }
+        public TrackFileInfoDto FileInfo { get; }
+        public TrackTagsDto Tags { get; }
+        public TrackLibraryMetadataDto LibraryMetadata { get; }
     }
 }

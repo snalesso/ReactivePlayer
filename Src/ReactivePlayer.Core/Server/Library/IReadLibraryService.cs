@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Data.Library
+namespace ReactivePlayer.Domain.Services.Library
 {
     public interface IReadLibraryService // TODO: this should be named ITracksService, find a better name for the others that support domain operations
     {

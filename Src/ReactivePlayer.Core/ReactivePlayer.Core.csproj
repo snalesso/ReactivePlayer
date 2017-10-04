@@ -106,44 +106,44 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Library\AlbumDto.cs" />
-    <Compile Include="Library\ArtistDto.cs" />
-    <Compile Include="Library\ArtworkDto.cs" />
-    <Compile Include="FileSystem\Audio\CSCoreAudioFileDurationCalculator.cs" />
-    <Compile Include="FileSystem\Audio\IAudioFileDurationCalculator.cs" />
-    <Compile Include="FileSystem\Audio\LocalAudioFileDurationCalculator.cs" />
-    <Compile Include="Library\InvalidCommandException.cs" />
-    <Compile Include="Library\IWriteLibraryService.cs" />
-    <Compile Include="Library\TrackAlbumRelationDto.cs" />
-    <Compile Include="Library\TrackLibraryMetadataDto.cs" />
-    <Compile Include="Library\TrackTagsDto.cs" />
-    <Compile Include="Library\TrackCriteria.cs" />
-    <Compile Include="Library\TrackDto.cs" />
-    <Compile Include="Library\TrackFileInfoDto.cs" />
-    <Compile Include="Library\LocalLibraryService.cs" />
-    <Compile Include="Playback\AudioChannels.cs" />
-    <Compile Include="Playback\CSCore\Codecs\Vorbis\NVorbisWaveSource.cs" />
-    <Compile Include="Playback\CSCore\CSCorePlaybackService.cs" />
-    <Compile Include="FileSystem\SimpleFileInfo.cs" />
-    <Compile Include="Playback\IPlaybackQueueService.cs" />
-    <Compile Include="FileSystem\Audio\IAudioFileTagger.cs" />
-    <Compile Include="FileSystem\PlayableFileInfo.cs" />
-    <Compile Include="FileSystem\FSWDirectoryWatcher.cs" />
-    <Compile Include="FileSystem\IDirectoryWatcher.cs" />
-    <Compile Include="Playback\PlaybackStatusHelper.cs" />
-    <Compile Include="FileSystem\ILocalFileSystemService.cs" />
-    <Compile Include="Library\IReadLibraryService.cs" />
-    <Compile Include="FileSystem\ShellObjectHelper.cs" />
-    <Compile Include="FileSystem\Audio\ShellObjectAudioFileDurationCalculator.cs" />
-    <Compile Include="FileSystem\Audio\TagLibSharp\TagLibSharpTagger.cs" />
-    <Compile Include="FileSystem\Audio\IAudioFileInfoProvider.cs" />
-    <Compile Include="Playback\IPlaybackService.cs" />
-    <Compile Include="Playback\PlaybackStatus.cs" />
-    <Compile Include="Playback\PlaybackQueueService.cs" />
+    <Compile Include="Server\Library\AlbumDto.cs" />
+    <Compile Include="Server\Library\ArtistDto.cs" />
+    <Compile Include="Server\Library\ArtworkDto.cs" />
+    <Compile Include="Client\FileSystem\Audio\CSCoreAudioFileDurationCalculator.cs" />
+    <Compile Include="Client\FileSystem\Audio\IAudioFileDurationCalculator.cs" />
+    <Compile Include="Client\FileSystem\Audio\LocalAudioFileDurationCalculator.cs" />
+    <Compile Include="Server\Library\InvalidCommandException.cs" />
+    <Compile Include="Server\Library\IReadLibraryService.cs" />
+    <Compile Include="Server\Library\IWriteLibraryService.cs" />
+    <Compile Include="Server\Library\TrackAlbumRelationDto.cs" />
+    <Compile Include="Server\Library\TrackLibraryMetadataDto.cs" />
+    <Compile Include="Server\Library\TrackTagsDto.cs" />
+    <Compile Include="Server\Library\TrackCriteria.cs" />
+    <Compile Include="Server\Library\TrackDto.cs" />
+    <Compile Include="Server\Library\TrackFileInfoDto.cs" />
+    <Compile Include="Server\Library\LocalLibraryService.cs" />
+    <Compile Include="Client\Playback\AudioChannels.cs" />
+    <Compile Include="Client\Playback\CSCore\Codecs\Vorbis\NVorbisWaveSource.cs" />
+    <Compile Include="Client\Playback\CSCore\CSCorePlaybackService.cs" />
+    <Compile Include="Client\FileSystem\SimpleFileInfo.cs" />
+    <Compile Include="Client\Playback\IPlaybackQueueService.cs" />
+    <Compile Include="Client\FileSystem\Audio\IAudioFileTagger.cs" />
+    <Compile Include="Client\FileSystem\PlayableFileInfo.cs" />
+    <Compile Include="Client\FileSystem\FSWDirectoryWatcher.cs" />
+    <Compile Include="Client\FileSystem\IDirectoryWatcher.cs" />
+    <Compile Include="Client\Playback\PlaybackStatusHelper.cs" />
+    <Compile Include="Client\FileSystem\ILocalFileSystemService.cs" />
+    <Compile Include="Client\FileSystem\ShellObjectHelper.cs" />
+    <Compile Include="Client\FileSystem\Audio\ShellObjectAudioFileDurationCalculator.cs" />
+    <Compile Include="Client\FileSystem\Audio\TagLibSharp\TagLibSharpTagger.cs" />
+    <Compile Include="Client\FileSystem\Audio\IAudioFileInfoProvider.cs" />
+    <Compile Include="Client\Playback\IPlaybackService.cs" />
+    <Compile Include="Client\Playback\PlaybackStatus.cs" />
+    <Compile Include="Client\Playback\PlaybackQueueService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileSystem\Audio\AudioFileTags.cs" />
-    <Compile Include="FileSystem\Audio\AudioFileInfo.cs" />
-    <Compile Include="TaskFlow\ILibraryTask.cs" />
+    <Compile Include="Client\FileSystem\Audio\AudioFileTags.cs" />
+    <Compile Include="Client\FileSystem\Audio\AudioFileInfo.cs" />
+    <Compile Include="Client\TaskFlow\ILibraryTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -160,8 +160,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Editing\" />
-    <Folder Include="Remoting\" />
+    <Folder Include="Client\Editing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
