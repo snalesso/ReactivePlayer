@@ -12,7 +12,7 @@ namespace ReactivePlayer.Core.Domain.Library.Models
             Guid id,
             TrackFileInfo fileInfo,
             TrackTags tags,
-            TrackLibraryMetadata LibraryMetadata)
+            LibraryMetadata LibraryMetadata)
             : base(id)
         {
             this.FileInfo = fileInfo ?? throw new ArgumentNullException(nameof(fileInfo)); // TODO: localize
@@ -28,7 +28,7 @@ namespace ReactivePlayer.Core.Domain.Library.Models
 
         public TrackTags Tags { get; private set; }
 
-        public TrackLibraryMetadata LibraryMetadata { get; }
+        public LibraryMetadata LibraryMetadata { get; }
 
         #endregion
 

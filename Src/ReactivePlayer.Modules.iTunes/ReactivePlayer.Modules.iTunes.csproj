@@ -67,9 +67,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ReactivePlayer.Domain\ReactivePlayer.Domain.csproj">
+    <ProjectReference Include="..\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
       <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Domain</Name>
+      <Name>ReactivePlayer.Core.Domain.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
       <Project>{DF6027C8-A1D8-4437-9842-C003D263558F}</Project>

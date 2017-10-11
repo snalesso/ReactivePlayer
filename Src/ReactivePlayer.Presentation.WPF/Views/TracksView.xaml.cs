@@ -36,27 +36,27 @@ namespace ReactivePlayer.Presentation.WPF.Views
 
             this._viewModelSubject = new BehaviorSubject<TracksViewModel>(this.DataContext as TracksViewModel).DisposeWith(this._disposables);
             this.WhenViewModelChanged = this._viewModelSubject.AsObservable().DistinctUntilChanged();
-            
+
             this.Events()
                 .DataContextChanged
                 .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as TracksViewModel))
                 .DisposeWith(this._disposables);
 
-            this.Events()
-                .Loaded
-                .Take(1)
-                .Subscribe(ae=>
-                {
-                    //this.WhenViewModelChanged
-                    //    .Where(vm => vm != null)
-                    //    .Subscribe(vm=>vm.close)
+            //this.Events()
+            //    .Loaded
+            //    .Take(1)
+            //    .Subscribe(ae=>
+            //    {
+            //        //this.WhenViewModelChanged
+            //        //    .Where(vm => vm != null)
+            //        //    .Subscribe(vm=>vm.close)
 
-                    this.WhenViewModelChanged
-                        .Where(vm => vm != null)
-                        .Select(vm => Unit.Default)
-                        .InvokeCommand(this.ViewModel.ReloadTracks)
-                        .DisposeWith(this._disposables);
-                });
+            //        this.WhenViewModelChanged
+            //            .Where(vm => vm != null)
+            //            .Select(vm => Unit.Default)
+            //            .InvokeCommand(this.ViewModel.ReloadTracks)
+            //            .DisposeWith(this._disposables);
+            //    });
         }
 
         #endregion

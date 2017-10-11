@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="ReactivePlayer.Application.WPF.Views.TracksView"
+﻿<UserControl x:Class="ReactivePlayer.Presentation.WPF.Views.TracksView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Converters="clr-namespace:ReactivePlayer.Application.WPF.Converters"
-             xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.Application.WPF.ViewModels.DesignTime"
-             xmlns:ReactiveBlend="clr-namespace:ReactiveUI.Blend;assembly=ReactiveUI.Blend"
+             xmlns:Converters="clr-namespace:ReactivePlayer.Presentation.WPF.Converters"
+             xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.Presentation.WPF.ViewModels.DesignTime"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeTracksViewModel,

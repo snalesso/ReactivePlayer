@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="ReactivePlayer.Application.WPF.Views.PlaybackControlsView"
+﻿<UserControl x:Class="ReactivePlayer.Presentation.WPF.Views.PlaybackControlsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
-             xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.Application.WPF.ViewModels.DesignTime"
+             xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.Presentation.WPF.ViewModels.DesignTime"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimePlaybackControlsViewModel,
-                                              IsDesignTimeCreatable=True}"
+                                              IsDesignTimeCreatable=False}"
              d:DesignWidth="550"
              mc:Ignorable="d">
 
@@ -61,7 +61,7 @@
               Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
@@ -69,29 +69,39 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Command="{Binding Play, Mode=OneWay}"
-                    Content="Play" />
+            <!--<Button VerticalAlignment="Center"
+                    Command="{Binding PlaySelected, Mode=OneWay}"
+                    CommandParameter="{Binding SelectedTrackViewModel}"
+                    Content="Play" />-->
             <Button Grid.Column="2"
+                    VerticalAlignment="Center"
                     Command="{Binding Pause, Mode=OneWay}"
                     Content="Pause" />
             <Button Grid.Column="4"
+                    VerticalAlignment="Center"
                     Command="{Binding Resume, Mode=OneWay}"
                     Content="Resume" />
             <Button Grid.Column="6"
+                    VerticalAlignment="Center"
                     Command="{Binding Stop, Mode=OneWay}"
                     Content="Stop" />
 
             <Slider Grid.Column="8"
                     Width="100"
+                    VerticalAlignment="Center"
                     Maximum="1"
                     Minimum="0"
                     Value="{Binding Volume}" />
 
-        </Grid>
+            <TextBlock Grid.Column="10"
+                       VerticalAlignment="Center"
+                       Text="{Binding Title}" />
 
-        <TextBlock Text="{Binding Title}" />
+        </Grid>
 
     </Grid>
 

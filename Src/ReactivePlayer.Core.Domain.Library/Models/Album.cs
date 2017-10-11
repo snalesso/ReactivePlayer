@@ -19,18 +19,11 @@ namespace ReactivePlayer.Core.Domain.Library.Models
             uint? tracksCount,
             uint? discsCount)
         {
-            try
-            {
-                this.Name = name.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
-                this.Authors = authors.EmptyIfNull().ToList().AsReadOnly();
-                this.Year = year;
-                this.TracksCount = tracksCount.HasValue && tracksCount.Value > 0 ? tracksCount : null;
-                this.DiscsCount = discsCount.HasValue && discsCount.Value > 0 ? discsCount : null;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            this.Name = name.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
+            this.Authors = authors.EmptyIfNull().ToArray(); // TODO: this is not completely an IReadOnlyList<> since array items can be replaced via index access!!
+            this.Year = year.ThrowIf(v => v > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
+            this.TracksCount = tracksCount.NullIf(v => v <= 0);
+            this.DiscsCount = discsCount.NullIf(v => v <= 0);
         }
 
         #endregion
@@ -39,7 +32,6 @@ namespace ReactivePlayer.Core.Domain.Library.Models
 
         public string Name { get; }
         public IReadOnlyList<Artist> Authors { get; }
-        // TODO: use year instead? or a new "DateAndTime" type?
         public uint? Year { get; }
         public uint? TracksCount { get; }
         public uint? DiscsCount { get; }

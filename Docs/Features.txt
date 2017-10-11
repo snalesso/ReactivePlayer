@@ -82,3 +82,5 @@ Might help
 
 Optimizations:
 - make lazy subjects ("connectable")
+- ensure Autofac disposes things
+- ensure transients throughout the application get disposed

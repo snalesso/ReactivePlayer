@@ -10,6 +10,9 @@ namespace ReactivePlayer.Core.Domain.Library.Models
         public TrackAlbumAssociation(Album album, uint? trackNumber, uint? discNumber)
         {
             this.Album = album ?? throw new ArgumentNullException(nameof(album));
+            if (trackNumber > album.TracksCount) throw new ArgumentOutOfRangeException(nameof(trackNumber)); // TODO: localize
+            if (discNumber > album.DiscsCount) throw new ArgumentOutOfRangeException(nameof(discNumber)); // TODO: localize
+
             this.TrackNumber = trackNumber;
             this.DiscNumber = discNumber;
         }

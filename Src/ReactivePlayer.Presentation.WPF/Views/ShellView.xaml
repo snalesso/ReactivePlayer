@@ -1,8 +1,8 @@
-﻿<Window x:Class="ReactivePlayer.Application.WPF.Views.ShellView"
+﻿<Window x:Class="ReactivePlayer.Presentation.WPF.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.Application.WPF.ViewModels.DesignTime"
-        xmlns:Views="clr-namespace:ReactivePlayer.Application.WPF.Views"
+        xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.Presentation.WPF.ViewModels.DesignTime"
+        xmlns:Views="clr-namespace:ReactivePlayer.Presentation.WPF.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel,

@@ -56,7 +56,7 @@
     <Compile Include="Models\ArtworkData.cs" />
     <Compile Include="Models\ArtworkType.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />
-    <Compile Include="Models\TrackLibraryMetadata.cs" />
+    <Compile Include="Models\LibraryMetadata.cs" />
     <Compile Include="Models\TrackTags.cs" />
     <Compile Include="Models\TrackFileInfo.cs" />
     <Compile Include="Repositories\IArtistsRepository.cs" />

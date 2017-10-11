@@ -1,7 +1,8 @@
-using ReactivePlayer.Application.Services;
-using ReactivePlayer.Core.Data.FileSystem.Audio;
-using ReactivePlayer.Core.Playback;
-using ReactivePlayer.Core.Services.Library;
+using Caliburn.Micro;
+using ReactivePlayer.Core.Application.FileSystem.Audio;
+using ReactivePlayer.Core.Application.Library;
+using ReactivePlayer.Core.Application.Playback;
+using ReactivePlayer.Presentation.Services;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ using System.Reactive.Disposables;
 
 namespace ReactivePlayer.Presentation.WPF.ViewModels
 {
-    public class ShellViewModel : Caliburn.Micro.Conductor<Caliburn.Micro.IScreen>.Collection.AllActive
+    public class ShellViewModel : Conductor<Caliburn.Micro.IScreen>.Collection.AllActive
     {
         #region constancts & fields
 
-        private readonly IPlaybackService _playbackService;
+        private readonly IAudioPlayer _playbackService;
         private readonly IWriteLibraryService _writeLibraryService;
         private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
@@ -32,10 +33,10 @@ namespace ReactivePlayer.Presentation.WPF.ViewModels
         }
 
         public ShellViewModel(
-            IPlaybackService playbackService,
+            IAudioPlayer playbackService,
             IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
-            PlaybackViewModel playbackControlsViewModel,
+            PlaybackControlsViewModel playbackControlsViewModel,
             TracksViewModel tracksViewModel)
         {
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
@@ -70,7 +71,7 @@ namespace ReactivePlayer.Presentation.WPF.ViewModels
 
         #region properties
 
-        public PlaybackViewModel PlaybackControlsViewModel { get; }
+        public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
 
         public TracksViewModel TracksViewModel { get; }
 

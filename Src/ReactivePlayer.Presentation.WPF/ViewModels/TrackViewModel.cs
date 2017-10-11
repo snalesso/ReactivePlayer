@@ -1,8 +1,6 @@
 using Daedalus.ExtensionMethods;
-using ReactivePlayer.Core.Data;
-using ReactivePlayer.Core.Playback;
-using ReactivePlayer.Core.Services.Library;
-using ReactivePlayer.Domain.Models;
+using ReactivePlayer.Core.Application.Library;
+using ReactivePlayer.Core.Application.Playback;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ namespace ReactivePlayer.Presentation.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IPlaybackService _playbackService;
+        private readonly IAudioPlayer _playbackService;
         private readonly TrackDto _track;
 
         #endregion
@@ -23,7 +21,7 @@ namespace ReactivePlayer.Presentation.WPF.ViewModels
 
         public TrackViewModel(
             TrackDto track,
-            IPlaybackService playbackService)
+            IAudioPlayer playbackService)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
@@ -42,7 +40,7 @@ namespace ReactivePlayer.Presentation.WPF.ViewModels
 
         public string AlbumTitle => this._track.Tags.AlbumTitle;
 
-        public Uri Location => this._track.FileInfo.Location;
+        public Uri TrackLocation => this._track.FileInfo.Location;
 
         public DateTime AddedToLibraryDateTime => this._track.LibraryMetadata.AddedToLibraryDateTime;
 

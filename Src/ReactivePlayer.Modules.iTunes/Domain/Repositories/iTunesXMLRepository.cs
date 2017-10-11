@@ -1,5 +1,7 @@
 ﻿using Daedalus.ExtensionMethods;
 using ReactivePlayer.Core;
+using ReactivePlayer.Core.Domain.Library.Models;
+using ReactivePlayer.Core.Domain.Library.Repositories;
 using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -183,24 +185,33 @@ namespace ReactivePlayer.Domain.Repositories
                                 var albArt = t.AlbumArtistNames.EmptyIfNull().Select(artistName => artists.ContainsKey(artistName) ? artists[artistName] : throw new Exception($"Could not find album artist {artistName}"));
 
                                 var nt = new Track(
-                                       new TrackFileInfo(
-                                           new Uri(t.Location.StartsWith(@"file://localhost/") ? t.Location.Remove(@"file://".Length - 1, @"localhost/".Length) : t.Location),
-                                           t.TotalTime,
-                                           t.DateModified),
-                                       t.DateAdded,
-                                       new TrackTags(
-                                           t.Name,
-                                           perf,
-                                           comp,
-                                           new Album(
-                                               t.Album,
-                                               albArt,
-                                               t.Year,
-                                               t.TrackCount,
-                                               t.DiscCount),
-                                           null,
-                                           t.TrackNumber,
-                                           t.DiscNumber));
+
+                                    Guid.NewGuid(),
+
+                                    new TrackFileInfo(
+                                        new Uri(t.Location.StartsWith(@"file://localhost/") ? t.Location.Remove(@"file://".Length - 1, @"localhost/".Length) : t.Location),
+                                        t.TotalTime,
+                                        t.DateModified),
+
+                                    new TrackTags(
+                                        t.Name,
+                                        perf,
+                                        comp,
+                                        new TrackAlbumAssociation(
+                                            new Album(
+                                                t.Album,
+                                                albArt,
+                                                t.Year,
+                                                t.TrackCount,
+                                                t.DiscCount),
+                                            t.TrackNumber,
+                                            t.DiscNumber),
+                                        null),
+
+                                    new LibraryMetadata(
+                                        t.DateAdded,
+                                        false,
+                                        null));
 
                                 var fwefwefwef = filters.Any(f => f(nt));
 

@@ -1,6 +1,6 @@
-using System.Linq;
-using ReactivePlayer.Domain.Models;
+using ReactivePlayer.Core.Domain.Library.Models;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace ReactivePlayer.Domain.Tests.Model

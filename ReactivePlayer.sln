@@ -102,7 +102,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Modules.SQLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Infrastructure", "Src\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj", "{DF6027C8-A1D8-4437-9842-C003D263558F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{2515A07B-39AE-46FF-8982-2E4C9068B2BD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{2515A07B-39AE-46FF-8982-2E4C9068B2BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Presentation", "Src\ReactivePlayer.Presentation\ReactivePlayer.Presentation.csproj", "{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}"
 EndProject

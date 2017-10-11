@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ReactivePlayer.Application.WPF.App</StartupObject>
+    <StartupObject>ReactivePlayer.Presentation.WPF.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -56,14 +56,17 @@
     <Reference Include="Daedalus.UI">
       <HintPath>..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\bin\Release\Daedalus.UI.dll</HintPath>
     </Reference>
+    <Reference Include="DynamicData, Version=4.15.0.2299, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.4.15.0.2299\lib\net45\DynamicData.dll</HintPath>
+    </Reference>
+    <Reference Include="DynamicData.ReactiveUI, Version=2.5.0.2009, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.ReactiveUI.2.5.0.2009\lib\portable45-net45+win8+wp8+wpa81\DynamicData.ReactiveUI.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\reactiveui-core.7.4.0\lib\Net45\ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Blend, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\reactiveui-blend.7.4.0\lib\Net45\ReactiveUI.Blend.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Events, Version=7.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\reactiveui-events.7.4.0\lib\Net45\ReactiveUI.Events.dll</HintPath>
+    <Reference Include="ReactiveUI.Events, Version=7.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\reactiveui-events.7.3.0\lib\Net45\ReactiveUI.Events.dll</HintPath>
     </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
@@ -117,7 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Composition\AutofacBootstrapper.cs" />
+    <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
     <Compile Include="Composition\BootstrapperBaseEx`1.cs" />
     <Compile Include="Controls\PlaybackBox.xaml.cs">
       <DependentUpon>PlaybackBox.xaml</DependentUpon>
@@ -129,7 +132,7 @@
     <Compile Include="ReactiveCaliburnMicro\WeakValueDictionary.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TrackEditViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
@@ -137,7 +140,7 @@
     <Compile Include="ViewModels\CrashViewModel.cs" />
     <Compile Include="Views\CustomWindowManager+WindowConductor.cs" />
     <Compile Include="Views\CustomWindowManager.cs" />
-    <Compile Include="Composition\Modules\EventAggregationAutoSubscriptionModule.cs" />
+    <Compile Include="Composition\Autofac\Modules\EventAggregationAutoSubscriptionModule.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimePlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeShellViewModel.cs" />
     <Compile Include="Views\PlaybackControlsView.xaml.cs">

@@ -15,7 +15,7 @@ namespace ReactivePlayer.Presentation.WPF.Views
     /// <summary>
     /// Interaction logic for TrackbarView.xaml
     /// </summary>
-    public partial class PlaybackControlsView : UserControl, IViewFor<PlaybackViewModel>
+    public partial class PlaybackControlsView : UserControl, IViewFor<PlaybackControlsViewModel>
     {
         private CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -28,8 +28,8 @@ namespace ReactivePlayer.Presentation.WPF.Views
 
         #region IViewFor
 
-        private PlaybackViewModel _viewModel;
-        public PlaybackViewModel ViewModel
+        private PlaybackControlsViewModel _viewModel;
+        public PlaybackControlsViewModel ViewModel
         {
             get => this._viewModel;
             set => this._viewModel = value ?? throw new ArgumentNullException(nameof(value)); // TODO: localize
@@ -38,7 +38,7 @@ namespace ReactivePlayer.Presentation.WPF.Views
         object IViewFor.ViewModel
         {
             get => this.ViewModel;
-            set => this.ViewModel = (value as PlaybackViewModel);
+            set => this.ViewModel = (value as PlaybackControlsViewModel);
         }
 
         #endregion
