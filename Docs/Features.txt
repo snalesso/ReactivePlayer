@@ -84,3 +84,5 @@ Optimizations:
 - make lazy subjects ("connectable")
 - ensure Autofac disposes things
 - ensure transients throughout the application get disposed
+
+- http://www.wpf-tutorial.com/

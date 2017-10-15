@@ -25,7 +25,7 @@ namespace ReactivePlayer.Core.Application.Playback.CSCore
         #region constants & fields
 
         // TODO: benchmark impact high frequency position updates
-        private readonly TimeSpan _positionUpdatesInterval = TimeSpan.FromMilliseconds(500);
+        private readonly TimeSpan _positionUpdatesInterval = TimeSpan.FromMilliseconds(100);
         // SemaphoreSlim                https://docs.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim?view=netframework-4.7
         // Semaphore vs SemaphoreSlim   https://docs.microsoft.com/en-us/dotnet/standard/threading/semaphore-and-semaphoreslim
         private readonly SemaphoreSlim __playbackActionsSemaphore = new SemaphoreSlim(1, 1);
@@ -129,14 +129,14 @@ namespace ReactivePlayer.Core.Application.Playback.CSCore
                 .DistinctUntilChanged();
 
             // playback stopped subscriber/subscription
-            this._whenSoundOutStoppedSubscriber = Observable
+            this._whenSoundOutStoppedEventSubscriber = Observable
                  .FromEventPattern<PlaybackStoppedEventArgs>(
                      h => this._soundOut.Stopped += h,
                      h => this._soundOut.Stopped -= h)
                  .Take(1) // TODO: First vs Take(1)
                  .Publish();
             // manual inturruption removes the .Stopped handler before calling .Stop()
-            this._whenSoundOutStoppedSubscriber
+            this._whenSoundOutStoppedEventSubscriber
                  .Subscribe(e => this.__statusSubject.OnNext(e.EventArgs.HasError ? PlaybackStatus.Exploded : PlaybackStatus.Ended))
                  .DisposeWith(this.__playerScopeDisposables);
 
@@ -205,7 +205,7 @@ namespace ReactivePlayer.Core.Application.Playback.CSCore
             // duration chage log
             this.WhenDurationChanged.Subscribe(duration => Debug.WriteLine($"Duration\t=\t{duration?.ToString() ?? "null"}")).DisposeWith(this.__playerScopeDisposables);
             // volume change log
-            this.WhenVolumeChanged.Throttle(TimeSpan.FromMilliseconds(500)).Subscribe(volume => Debug.WriteLine($"Volume\t\t=\t{volume}")).DisposeWith(this.__playerScopeDisposables);
+            this.WhenVolumeChanged.Throttle(TimeSpan.FromMilliseconds(1000)).Subscribe(volume => Debug.WriteLine($"Volume\t\t=\t{volume}")).DisposeWith(this.__playerScopeDisposables);
 
             #endregion
         }
@@ -240,7 +240,7 @@ namespace ReactivePlayer.Core.Application.Playback.CSCore
                     this._soundOut.DisposeWith(this._playbackScopeDisposables);
 
                     // start listening to ISoundOut.Stopped
-                    this._whenSoundOutStoppedSubscription = this._whenSoundOutStoppedSubscriber.Connect();
+                    this._whenSoundOutStoppedSubscription = this._whenSoundOutStoppedEventSubscriber.Connect();
 
                     this.__statusSubject.OnNext(PlaybackStatus.Loaded);
                 }
@@ -458,7 +458,7 @@ namespace ReactivePlayer.Core.Application.Playback.CSCore
 
         public IObservable<TimeSpan?> WhenDurationChanged { get; }
 
-        private IConnectableObservable<EventPattern<PlaybackStoppedEventArgs>> _whenSoundOutStoppedSubscriber;
+        private IConnectableObservable<EventPattern<PlaybackStoppedEventArgs>> _whenSoundOutStoppedEventSubscriber;
         private IDisposable _whenSoundOutStoppedSubscription;
         private readonly BehaviorSubject<PlaybackStatus> __statusSubject;
         public IObservable<PlaybackStatus> WhenStatusChanged { get; }
@@ -508,6 +508,7 @@ namespace ReactivePlayer.Core.Application.Playback.CSCore
             }
             catch (Exception ex)
             {
+                // TODO: log
                 Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(Dispose)}: {ex.Message}");
                 throw ex;
             }

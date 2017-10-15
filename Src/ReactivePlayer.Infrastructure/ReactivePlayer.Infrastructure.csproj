@@ -46,6 +46,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Domain\Models\IAggregateRoot.cs" />
     <Compile Include="Domain\Repositories\IEntityRepository`1.cs" />
     <Compile Include="Domain\Repositories\IValueObjectRepository`1.cs" />
     <Compile Include="Domain\Models\Entity.cs" />

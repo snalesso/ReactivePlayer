@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ReactivePlayer.Core.Domain.Library.Models
 {
-    public class Track : Entity<Guid>
+    public class Track : Entity<Guid>, IAggregateRoot
     {
         #region ctor
 
@@ -24,9 +24,9 @@ namespace ReactivePlayer.Core.Domain.Library.Models
 
         #region properties
 
-        public TrackFileInfo FileInfo { get; private set; }
+        public TrackFileInfo FileInfo { get; set; }
 
-        public TrackTags Tags { get; private set; }
+        public TrackTags Tags { get; set; }
 
         public LibraryMetadata LibraryMetadata { get; }
 
@@ -36,19 +36,29 @@ namespace ReactivePlayer.Core.Domain.Library.Models
 
         public void UpdateTags(TrackTags newTags) { }
 
-        public void PurgeTags() { }
+        public void UpdateArtworks(IReadOnlyList<Artwork> newArtworks) { }
 
-        public void ChangeArtworks(IReadOnlyList<Artwork> newArtworks) { }
-
-        public void DeleteArtworks() { }
-
-        public void UpdateRelationship(bool isLoved) { }
+        public void UpdateLibraryMetadata(LibraryMetadata libraryMetadata) { }
 
         public void LogPlayed(DateTime playedDateTime) { }
 
         #endregion
 
         #region Entity<>
+
+        protected override bool EqualsCore(Entity other)
+        {
+            return base.EqualsCore(other);
+        }
+
+        protected override IEnumerable<object> GetHashCodeComponents()
+        {
+            yield return base.GetHashCodeComponents();
+
+            yield return this.FileInfo;
+            yield return this.Tags;
+            yield return this.LibraryMetadata;
+        }
 
         protected override void EnsureIsWellFormattedId(Guid id)
         {

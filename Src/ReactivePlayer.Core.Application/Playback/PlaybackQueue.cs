@@ -22,5 +22,10 @@ namespace ReactivePlayer.Core.Application.Playback
         {
             throw new NotImplementedException();
         }
+
+        public Task SetQueueSource(IReactiveNotifyCollectionChanged<Uri> source)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

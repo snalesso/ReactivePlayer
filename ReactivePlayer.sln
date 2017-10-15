@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{1CCA9496-A979-4E3B-850F-38E5B8B31942}"
 EndProject
@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Presentation.WPF", "Src\ReactivePlayer.Presentation.WPF\ReactivePlayer.Presentation.WPF.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI.WPF", "Src\ReactivePlayer.UI.WPF\ReactivePlayer.UI.WPF.csproj", "{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Domain.Library", "Src\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj", "{B6AA4A9C-BA48-41A4-91FF-00FB23B5C204}"
 EndProject
@@ -104,9 +104,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Infrastructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{2515A07B-39AE-46FF-8982-2E4C9068B2BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Presentation", "Src\ReactivePlayer.Presentation\ReactivePlayer.Presentation.csproj", "{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.UI", "Src\ReactivePlayer.UI\ReactivePlayer.UI.csproj", "{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps", "Exps\ReactivePlayer.Exps\ReactivePlayer.Exps.csproj", "{39336567-1654-4A8E-B7D1-08C1776FEBBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Infrastructure.Tests", "Tests\ReactivePlayer.Infrastructure.Tests\ReactivePlayer.Infrastructure.Tests.csproj", "{325823E2-0816-45A8-9EEA-333D97A4AB07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -226,6 +228,10 @@ Global
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325823E2-0816-45A8-9EEA-333D97A4AB07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325823E2-0816-45A8-9EEA-333D97A4AB07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325823E2-0816-45A8-9EEA-333D97A4AB07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325823E2-0816-45A8-9EEA-333D97A4AB07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +267,7 @@ Global
 		{2515A07B-39AE-46FF-8982-2E4C9068B2BD} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{EF3ED4E8-E260-4557-8EC7-2FBAFB399343} = {1CCA9496-A979-4E3B-850F-38E5B8B31942}
 		{39336567-1654-4A8E-B7D1-08C1776FEBBC} = {DCA2872A-CCDE-44AA-8EDF-208E572F02B1}
+		{325823E2-0816-45A8-9EEA-333D97A4AB07} = {EA59A37D-74FD-49BA-8944-175DAEDC08EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B138181B-6FB1-4F94-BC8F-85617D18E3D5}

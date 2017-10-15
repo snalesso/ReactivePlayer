@@ -12,6 +12,8 @@ namespace ReactivePlayer.Core.Application.Playback
         IReadOnlyReactiveList<Uri> LocationsHistory { get; }
         IReadOnlyReactiveList<Uri> UpcomingTracksLocations { get; }
 
+
+        Task SetQueueSource(IReactiveNotifyCollectionChanged<Uri> source);
         Task EnqueueTrackLocationAsync(Uri trackLocation);
         Task<Uri> DeqeueTrackLocationAsync();
     }

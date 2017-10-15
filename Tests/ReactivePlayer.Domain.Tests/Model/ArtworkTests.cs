@@ -61,7 +61,7 @@ namespace ReactivePlayer.Domain.Tests.Model
             data1.CopyTo(data2, 0);
             var data1Hash = System.Text.Encoding.ASCII.GetString(xxHash.ComputeHash(data1));
             var data2Hash = System.Text.Encoding.ASCII.GetString(xxHash.ComputeHash(data2));
-            
+
             var a1 = new Artwork(new ArtworkData(data1Hash, data1), ArtworkType.Cover);
             var a2 = new Artwork(new ArtworkData(data2Hash, data2), ArtworkType.Cover);
 

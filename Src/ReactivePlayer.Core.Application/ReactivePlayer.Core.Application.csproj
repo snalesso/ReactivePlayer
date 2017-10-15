@@ -122,6 +122,7 @@
     <Compile Include="FileSystem\PlayableFileInfo.cs" />
     <Compile Include="FileSystem\FSWDirectoryWatcher.cs" />
     <Compile Include="FileSystem\IDirectoryWatcher.cs" />
+    <Compile Include="Playback\PlayableTrack.cs" />
     <Compile Include="Playback\PlaybackStatusHelper.cs" />
     <Compile Include="FileSystem\ILocalFileSystemService.cs" />
     <Compile Include="FileSystem\ShellObjectHelper.cs" />
