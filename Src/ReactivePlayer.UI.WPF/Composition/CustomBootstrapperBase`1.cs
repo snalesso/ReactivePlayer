@@ -8,8 +8,8 @@ using System.Windows;
 
 namespace ReactivePlayer.UI.WPF.Composition
 {
-    public class BootstrapperBaseEx<TViewModel> : BootstrapperBase
-            //where TViewModel : IScreen
+    public class CustomBootstrapperBase<TShellViewModel> : BootstrapperBase // https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/src/Caliburn.Micro.Platform/Bootstrapper.cs
+        where TShellViewModel : IScreen
     {
         #region properties
 
@@ -21,13 +21,15 @@ namespace ReactivePlayer.UI.WPF.Composition
 
         #region methods
 
+        protected virtual void RegisterComponents(ContainerBuilder builder) { }
+
         protected override void Configure()
         {
             this.ConfigureBootstrapper();
 
             var builder = new ContainerBuilder();
 
-            this.ConfigureContainer(builder);
+            this.RegisterComponents(builder);
 
             this.Container = builder.Build();
         }
@@ -47,9 +49,15 @@ namespace ReactivePlayer.UI.WPF.Composition
             throw new Exception(string.Format("Could not locate any instances of contract {0}.", key ?? service.Name)); // TODO: localize
         }
 
-        protected override IEnumerable<object> GetAllInstances(Type service) => this.Container.Resolve(typeof(IEnumerable<>).MakeGenericType(new[] { service })) as IEnumerable<object>;
+        protected override IEnumerable<object> GetAllInstances(Type service)
+        {
+            return this.Container.Resolve(typeof(IEnumerable<>).MakeGenericType(new[] { service })) as IEnumerable<object>;
+        }
 
-        protected override void BuildUp(object instance) => this.Container.InjectProperties(instance);
+        protected override void BuildUp(object instance)
+        {
+            this.Container.InjectProperties(instance);
+        }
 
         protected virtual void ConfigureBootstrapper()
         {
@@ -62,20 +70,11 @@ namespace ReactivePlayer.UI.WPF.Composition
             ViewModelLocator.ConfigureTypeMappings(config);
         }
 
-        protected virtual void ConfigureContainer(ContainerBuilder builder) { }
-
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             base.OnStartup(sender, e);
 
-            this.DisplayRootViewFor<TViewModel>(this.RootViewDIsplaySettings);
-        }
-
-        protected override void OnExit(object sender, EventArgs e)
-        {
-            base.OnExit(sender, e);
-
-            //this.Container.Dispose();
+            this.DisplayRootViewFor<TShellViewModel>(this.RootViewDIsplaySettings);
         }
 
         #endregion

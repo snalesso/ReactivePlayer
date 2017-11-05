@@ -63,7 +63,6 @@
     <Compile Include="Models\ImageMimeType.cs" />
     <Compile Include="Repositories\IArtworksRepository.cs" />
     <Compile Include="Repositories\ITracksRepository.cs" />
-    <Compile Include="Models\SortDirection.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

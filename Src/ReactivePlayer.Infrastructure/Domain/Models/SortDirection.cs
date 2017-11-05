@@ -1,5 +1,6 @@
-namespace ReactivePlayer.Core.Domain.Library.Models
+namespace ReactivePlayer.Infrastructure
 {
+    // TODO: find a better places
     public enum SortDirection
     {
         Descending = -1,

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -37,8 +37,8 @@
     <StartupObject>ReactivePlayer.UI.WPF.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -75,7 +75,11 @@
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -120,8 +124,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\DoubleClick.cs" />
     <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
-    <Compile Include="Composition\BootstrapperBaseEx`1.cs" />
+    <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
     <Compile Include="Controls\CustomSlider.cs" />
     <Compile Include="Controls\PlaybackBox.xaml.cs">
       <DependentUpon>PlaybackBox.xaml</DependentUpon>
@@ -133,7 +138,11 @@
     <Compile Include="ReactiveCaliburnMicro\WeakValueDictionary.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
+    <Compile Include="ViewModels\LibraryPlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackHistoryItemViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TrackEditViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
@@ -146,6 +155,9 @@
     <Compile Include="ViewModels\DesignTime\DesignTimeShellViewModel.cs" />
     <Compile Include="Views\PlaybackControlsView.xaml.cs">
       <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlaybackHistoryItemView.xaml.cs">
+      <DependentUpon>PlaybackHistoryItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ReactiveUserControlViewFor.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
@@ -217,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PlaybackControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlaybackHistoryItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

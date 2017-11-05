@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
              xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
+             xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimePlaybackControlsViewModel,
@@ -31,37 +32,48 @@
             <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
 
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
 
-        <Grid Grid.Row="1"
-              Grid.Column="1"
-              IsEnabled="{Binding IsPositionKnown}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+            <ProgressBar Height="8"
+                         IsIndeterminate="True"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-            <TextBlock Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
-            <Slider x:Name="PlaybackPositionSlider"
-                    Grid.Column="2"
-                    IsEnabled="False"
-                    IsMoveToPointEnabled="True"
-                    Maximum="{Binding DurationAsTicks}"
-                    Minimum="0"
-                    TickFrequency="0.5"
-                    Value="{Binding PositionAsTicks, Mode=OneWay}" />
-            <TextBlock Grid.Column="4"
-                       Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
+            <Grid IsEnabled="{Binding IsPositionKnown}"
+                  Visibility="{Binding IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        </Grid>
+                <TextBlock Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
+                <Slider x:Name="PlaybackPositionSlider"
+                        Grid.Column="2"
+                        IsEnabled="False"
+                        IsMoveToPointEnabled="True"
+                        Maximum="{Binding DurationAsTicks}"
+                        Minimum="0"
+                        TickFrequency="0.5"
+                        Value="{Binding PositionAsTicks, Mode=OneWay}" />
+                <TextBlock Grid.Column="4"
+                           Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}}" />
+
+            </Grid>
+        </StackPanel>
+
 
         <Grid Grid.Row="3"
               Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
@@ -87,17 +99,25 @@
                     Content="Resume" />
             <Button Grid.Column="6"
                     VerticalAlignment="Center"
+                    Command="{Binding PlayPrevious, Mode=OneWay}"
+                    Content="Prev" />
+            <Button Grid.Column="8"
+                    VerticalAlignment="Center"
                     Command="{Binding Stop, Mode=OneWay}"
                     Content="Stop" />
+            <Button Grid.Column="10"
+                    VerticalAlignment="Center"
+                    Command="{Binding PlayNext, Mode=OneWay}"
+                    Content="Next" />
 
-            <Slider Grid.Column="8"
+            <Slider Grid.Column="12"
                     Width="100"
                     VerticalAlignment="Center"
                     Maximum="1"
                     Minimum="0"
                     Value="{Binding Volume}" />
 
-            <TextBlock Grid.Column="10"
+            <TextBlock Grid.Column="14"
                        VerticalAlignment="Center"
                        Text="{Binding Title}" />
 

@@ -15,11 +15,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace ReactivePlayer.UI.WPF.Composition.Autofac
 {
-    // Autofac Documentation: http://autofac.readthedocs.org/en/latest/index.html
-    public class AutofacBootstrapper : BootstrapperBaseEx<ShellViewModel>
+    // Autofac Documentation:   http://autofac.readthedocs.org/en/latest/index.html
+    // Autofac source code:     https://github.com/autofac/Autofac
+
+    // TODO: dispose services when shutting down/no longer needed, maybe in OnExit?
+    // TODO: separate configuration from DisplayRootViewFor
+    // TODO: export shell config
+    internal sealed class AutofacBootstrapper : CustomBootstrapperBase<ShellViewModel>
     {
         #region ctor
 
@@ -38,12 +44,25 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
         #region methods
 
-        // TODO: dispose services when shutting down/no longer needed
-        protected override void ConfigureContainer(ContainerBuilder builder)
-        {
-            base.ConfigureContainer(builder);
+        #region lifetime
 
-            // ADDITIONAL BUILDER MODULES/FEATURES
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            base.OnStartup(sender, e);
+        }
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            base.OnExit(sender, e);
+        }
+
+        #endregion
+
+        protected override void RegisterComponents(ContainerBuilder builder)
+        {
+            base.RegisterComponents(builder);
+
+            // MODULES
 
             builder.RegisterModule<EventAggregationAutoSubscriptionModule>(); // TODO: review: automatic behavior with no counterpart for unsubscription
 
@@ -63,11 +82,15 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
              * DBreeze          (???)
              */
 
-
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             builder.Register<ITracksRepository>(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml")).InstancePerLifetimeScope();
-            builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
+            builder.RegisterType<LocalLibraryService>()
+                .As<IReadLibraryService>()
+                .As<IWriteLibraryService>()
+                .InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlayer>().As<IAudioPlayer>().InstancePerLifetimeScope();
+            builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
 
             // ViewModels & Views
 
@@ -77,9 +100,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
                     return (TrackDto t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlayer>());
-                })
-                .AsSelf()
-                .InstancePerLifetimeScope();
+                }).AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();
@@ -97,15 +118,15 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             .Distinct());
         }
 
-        //protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        //{
-        //    //if (Debugger.IsAttached)
-        //    //    return;
+        protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            //if (Debugger.IsAttached)
+            //    return;
 
-        //    //e.Handled = true;
+            //e.Handled = true;
 
-        //    //Application.Current.Shutdown();
-        //}
+            //Application.Current.Shutdown();
+        }
 
         #endregion
     }

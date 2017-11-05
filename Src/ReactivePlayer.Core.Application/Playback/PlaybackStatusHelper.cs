@@ -11,8 +11,8 @@ namespace ReactivePlayer.Core.Application.Playback
         public static readonly PlaybackStatus[] CanLoadPlaybackStatuses =
             {
                 PlaybackStatus.None,
-                PlaybackStatus.Ended,
-                PlaybackStatus.Interrupted,
+                PlaybackStatus.PlayedToEnd,
+                PlaybackStatus.ManuallyInterrupted,
                 PlaybackStatus.Exploded
             };
         public static readonly PlaybackStatus[] CanPlayPlaybackStatuses =
@@ -41,8 +41,8 @@ namespace ReactivePlayer.Core.Application.Playback
         // TODO: review if it can be replaced by CanLoadPlaybackStatuses
         public static readonly PlaybackStatus[] StoppedPlaybackStatuses =
             {
-                PlaybackStatus.Ended,
-                PlaybackStatus.Interrupted,
+                PlaybackStatus.PlayedToEnd,
+                PlaybackStatus.ManuallyInterrupted,
                 PlaybackStatus.Exploded
             };
     }

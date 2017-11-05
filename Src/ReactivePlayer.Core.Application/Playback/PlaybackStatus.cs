@@ -8,8 +8,8 @@ namespace ReactivePlayer.Core.Application.Playback
         Loaded,
         Playing,
         Paused,
-        Interrupted,
-        Ended,
+        ManuallyInterrupted,
+        PlayedToEnd,
         Exploded
     }
 }

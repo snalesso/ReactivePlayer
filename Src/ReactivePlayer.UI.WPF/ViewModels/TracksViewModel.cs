@@ -1,14 +1,21 @@
 using DynamicData;
+using DynamicData.Binding;
+using DynamicData.Aggregation;
+using DynamicData.Kernel;
 using DynamicData.ReactiveUI;
+using DynamicData.Operators;
+using DynamicData.List;
 using ReactivePlayer.Core.Application.Library;
 using ReactivePlayer.Core.Application.Playback;
 using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using DynamicData.Controllers;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -17,7 +24,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         private readonly IReadLibraryService _readLibraryService;
-        private readonly IAudioPlayer _playbackService;
+        private readonly IAudioPlayer _audioPlayer;
+        private readonly PlaybackQueue _playbackQueue;
         private readonly Func<TrackDto, TrackViewModel> _trackViewModelFactoryMethod;
 
         private CompositeDisposable _disposables = new CompositeDisposable();
@@ -30,46 +38,69 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksViewModel(
             IReadLibraryService readLibraryService,
-            IAudioPlayer playbackService,
+            IAudioPlayer audioPlayer,
+            PlaybackQueue playbackQueue,
             Func<TrackDto, TrackViewModel> trackViewModelFactoryMethod)
         {
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
-            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
+            this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
+            this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod)); // TODO: localize
 
             this._readLibraryService
                 .Tracks
                 .Connect()
                 .Transform(trackDto => this._trackViewModelFactoryMethod(trackDto))
+                .Sort(SortExpressionComparer<TrackViewModel>.Descending(trackVM => trackVM.AddedToLibraryDateTime))
                 .Bind(this._trackViewModels)
                 .DisposeMany()
                 .Subscribe()
-                .DisposeWith(this._disposables)                ;
+                .DisposeWith(this._disposables);
 
-            //this.ReloadTracks = ReactiveCommand.CreateFromTask(
-            //    async () =>
-            //    {
-            //        var tracks = await this._readLibraryService.Tracks();
-            //        //await Task.Delay(3 * 1000);
-            //        var trackVMs = tracks.Select(track => this._trackViewModelFactoryMethod.Invoke(track));
-            //        this.TrackViewModels = new ReactiveList<TrackViewModel>(trackVMs);
-            //    })
-            //    .DisposeWith(this._disposables);
+            //var libraryTracksSubscription = this._readLibraryService.Tracks.Connect().Publish();
+
+            this.PlayAll = ReactiveCommand.CreateFromTask(
+                async () =>
+                {
+                    await this._audioPlayer.StopAsync();
+                    this._playbackQueue.Clear();
+                    var uris = this._readLibraryService.Tracks.Connect().Transform(track => track.FileInfo.Location).AsObservableList();
+                    this._playbackQueue.SetPlaylist(uris);
+                    await this._audioPlayer.PlayAsync();
+                },
+                Observable.CombineLatest(
+                    this.WhenAnyValue(t => t.SelectedTrackViewModel).Select(vm => vm != null),
+                    this._audioPlayer.WhenCanStopChanged,
+                    this._audioPlayer.WhenCanLoadChanged,
+                    this._audioPlayer.WhenCanPlayChanged,
+                    (isSingleTrackSelected, canStop, canLoad, canPlay) => isSingleTrackSelected && (canStop || canLoad || canPlay)))
+                .DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackVM) =>
                 {
-                    await this._playbackService.StopAsync();
-                    await this._playbackService.LoadTrackAsync(trackVM.TrackLocation);
-                    await this._playbackService.PlayAsync();
+                    await this._audioPlayer.StopAsync();
+                    await this._audioPlayer.LoadTrackAsync(trackVM.TrackLocation);
+                    await this._audioPlayer.PlayAsync();
                 },
                 Observable.CombineLatest(
                     this.WhenAnyValue(t => t.SelectedTrackViewModel).Select(vm => vm != null),
-                    this._playbackService.WhenCanStopChanged,
-                    this._playbackService.WhenCanLoadChanged,
-                    this._playbackService.WhenCanPlayChanged,
+                    this._audioPlayer.WhenCanStopChanged,
+                    this._audioPlayer.WhenCanLoadChanged,
+                    this._audioPlayer.WhenCanPlayChanged,
                     (isSingleTrackSelected, canStop, canLoad, canPlay) => isSingleTrackSelected && (canStop || canLoad || canPlay)))
                 .DisposeWith(this._disposables);
+
+            this.PlayAll = ReactiveCommand.Create(
+             () => // TODO: test UI asynchrony
+             {
+                 var locationsQueueSource = this._trackViewModels.ToObservableChangeSet().Transform(tvm => tvm.TrackLocation).AsObservableList();
+                 this._playbackQueue.SetPlaylist(locationsQueueSource);
+             }).DisposeWith(this._disposables);
+
+            // logging
+
+            this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
         }
 
         #endregion
@@ -103,9 +134,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region commands
 
-        public ReactiveCommand<Unit, Unit> ReloadTracks { get; }
-
         public ReactiveCommand<TrackViewModel, Unit> PlayTrack { get; }
+        public ReactiveCommand<Unit, Unit> PlayAll { get; }
+        //public ReactiveCommand<Unit, Unit> PlayAllRandomly { get; }
 
         #endregion
     }

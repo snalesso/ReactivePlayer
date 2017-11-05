@@ -65,6 +65,8 @@ FUNCTIONALITIES:
 - https://github.com/tjscience/audion.cscore
 - sync col telefono, files compresi
 - tray flyout
+- commenti sulla canzone/flag per ricordarsi di tagliarla
+- risultati ricerca canzone -> per ogni traccia che contiene le parole cercate visualizza anche le playlist che la contengono, in modo da poter riprodurre la traccia come inizio della riproduzione di una playlist specifica
 
 - MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
 - Reflection.Emit			http://docs.servicestack.net/reflection-utils
@@ -84,5 +86,7 @@ Optimizations:
 - make lazy subjects ("connectable")
 - ensure Autofac disposes things
 - ensure transients throughout the application get disposed
+- IDisposable	https://github.com/Fody/Janitor
+- IEquatable<>	https://github.com/Fody/Equals
 
 - http://www.wpf-tutorial.com/

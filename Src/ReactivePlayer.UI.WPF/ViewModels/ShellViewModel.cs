@@ -43,6 +43,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
+            this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
+            this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
+
             this.DisplayName = nameof(ReactivePlayer);
 
             this.AddTracks = ReactiveCommand.CreateFromTask(
@@ -54,6 +57,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                      return await this._writeLibraryService.AddTracks(adcs);
                  })
                 .DisposeWith(this._disposables);
+            // TODO: use interaction?
             this.MakeUserSelectTracksToAdd = ReactiveCommand.CreateFromTask(
                  async () =>
                  {
@@ -63,8 +67,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .DisposeWith(this._disposables);
             this.MakeUserSelectTracksToAdd.InvokeCommand(this.AddTracks);
 
-            this.ActivateItem(this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel))); // TODO: localize
-            this.ActivateItem(this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel))); // TODO: localize
+            this.ActivateItem(this.PlaybackControlsViewModel);
+            this.ActivateItem(this.TracksViewModel);
         }
 
         #endregion
@@ -87,7 +91,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public override void CanClose(Action<bool> callback)
         {
-            this._playbackService.StopAsync().Wait(); // TODO: handle special cases: playback stop/other actions before closing fail so can close should return false
+            //this._playbackService.StopAsync().Wait(); // TODO: handle special cases: playback stop/other actions before closing fail so can close should return false
             base.CanClose(callback);
         }
 

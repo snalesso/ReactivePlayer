@@ -11,6 +11,32 @@
         d:DesignWidth="300"
         mc:Ignorable="d">
 
+    <Window.InputBindings>
+        <KeyBinding Key="Space"
+                    Command="{Binding PlaybackControlsViewModel.Resume}" />
+        <KeyBinding Key="Space"
+                    Command="{Binding PlaybackControlsViewModel.Pause}" />
+        <KeyBinding Key="Space"
+                    Command="{Binding PlaybackControlsViewModel.Stop}"
+                    Modifiers="Alt" />
+    </Window.InputBindings>
+
+    <!--<Window.TaskbarItemInfo>
+        <TaskbarItemInfo x:Name="taskBarItemInfo1"
+                         Description="ReactivePlayer afejifjawpefjwaiej">
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfoCollection>
+                    <ThumbButtonInfo Command="{Binding PlaybackControlsViewModel.Pause}"
+                                     Description="Play"
+                                     DismissWhenClicked="False"
+                                     Visibility="{Binding PlaybackControlsViewModel.CanPause}" />
+                    <ThumbButtonInfo Command="{Binding PlaybackControlsViewModel.Stop}"
+                                     Description="Stop" />
+                </ThumbButtonInfoCollection>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>-->
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

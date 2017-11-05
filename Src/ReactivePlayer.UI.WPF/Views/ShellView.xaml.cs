@@ -28,7 +28,8 @@ namespace ReactivePlayer.UI.WPF.Views
 
             this._viewModelSubject = new BehaviorSubject<ShellViewModel>(this.DataContext as ShellViewModel);
             // when .DataContext changes => update .ViewModel
-            this.Events().DataContextChanged
+            this.Events()
+                .DataContextChanged
                 .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as ShellViewModel))
                 .DisposeWith(this._disposables);
             this.WhenViewModelChanged = this._viewModelSubject.AsObservable().DistinctUntilChanged();

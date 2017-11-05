@@ -47,6 +47,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Domain\Models\IAggregateRoot.cs" />
+    <Compile Include="Domain\Models\SortDirection.cs" />
     <Compile Include="Domain\Repositories\IEntityRepository`1.cs" />
     <Compile Include="Domain\Repositories\IValueObjectRepository`1.cs" />
     <Compile Include="Domain\Models\Entity.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
     <Compile Include="Domain\Models\ValueObject`1.cs" />
     <Compile Include="Domain\Repositories\Specification\ISpecification`1.cs" />
+    <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\Servicing\MultipleServiceResponse`1.cs" />
     <Compile Include="Application\Servicing\ServiceResponseStatusCode.cs" />

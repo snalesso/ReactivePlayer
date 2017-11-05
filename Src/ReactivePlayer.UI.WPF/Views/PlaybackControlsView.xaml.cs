@@ -7,8 +7,10 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Shell;
 
 namespace ReactivePlayer.UI.WPF.Views
 {
@@ -123,6 +125,29 @@ namespace ReactivePlayer.UI.WPF.Views
             //        .Subscribe(_ => this._dragCompletedSubscription = this._dragCompletedSubscriber.Connect().DisposeWith(this._disposables))
             //        .DisposeWith(this._disposables);
             //}
+        }
+
+        #endregion
+
+        #region TaskbarItemInfo
+
+        public static readonly DependencyProperty ContainerWindowTaskbarItemInfoDependencyProperty = DependencyProperty.Register(
+            "ContainerWindowTaskbarItemInfo",
+            typeof(TaskbarItemInfo),
+            typeof(PlaybackControlsView),
+            new PropertyMetadata(null));
+
+        public TaskbarItemInfo ContainerWindowTaskbarItemInfo
+        {
+            get
+            {
+                return (TaskbarItemInfo)Window.GetWindow(this)?.TaskbarItemInfo;
+            }
+            set
+            {
+                var wtii = Window.GetWindow(this)?.TaskbarItemInfo;
+                if (wtii != null) wtii = value;
+            }
         }
 
         #endregion
