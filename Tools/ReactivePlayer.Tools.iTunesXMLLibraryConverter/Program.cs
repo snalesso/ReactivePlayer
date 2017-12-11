@@ -8,7 +8,7 @@ namespace ReactivePlayer.Tools.iTunesXMLLibraryConverter
         static void Main(string[] args)
         {
             var xmlItlFilePath = @"..\..\..\..\library\iTunes Music Library.xml";
-            var itlRepo = new iTunesXMLRepository(xmlItlFilePath);
+            var itlRepo = new ITunesXMLRepository(xmlItlFilePath);
             var tracks = itlRepo.GetAllAsync().Result;
 
             Console.WriteLine("Finished!");

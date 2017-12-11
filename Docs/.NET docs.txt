@@ -9,3 +9,6 @@
 	- Official MS guidelines	https://blogs.msdn.microsoft.com/ericlippert/2011/02/28/guidelines-and-rules-for-gethashcode/
 
 - System.StringComparison	https://docs.microsoft.com/en-us/dotnet/api/system.stringcomparison?view=netframework-4.7
+
+T4 Code Generation
+- Re-run T4 when read files change	https://docs.microsoft.com/it-it/visualstudio/modeling/design-time-code-generation-by-using-t4-text-templates#Regenerating

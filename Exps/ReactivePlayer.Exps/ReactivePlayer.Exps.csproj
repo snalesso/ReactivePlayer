@@ -55,7 +55,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Application\ReactivePlayer.Core.Application.csproj">
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3F17AA7E-9965-4000-8446-9BC315F17C57}</Project>
       <Name>ReactivePlayer.Core</Name>
     </ProjectReference>

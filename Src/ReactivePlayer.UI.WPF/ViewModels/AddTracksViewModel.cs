@@ -1,4 +1,4 @@
-using ReactivePlayer.Core.Application.Library;
+using ReactivePlayer.Core.Library;
 using ReactiveUI;
 using System;
 

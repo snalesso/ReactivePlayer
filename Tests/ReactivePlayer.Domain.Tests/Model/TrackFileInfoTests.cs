@@ -1,4 +1,4 @@
-using ReactivePlayer.Core.Domain.Library.Models;
+using ReactivePlayer.Core.Library.Models;
 using System;
 using System.Reflection;
 using Xunit;
@@ -13,7 +13,7 @@ namespace ReactivePlayer.Domain.Tests.Model
             var location = Assembly.GetExecutingAssembly().Location;
             var duration = TimeSpan.FromMilliseconds(5 * 60 * 1000 + 3 * 1000 + 197); // 00:05:03.197
             var lastModifiedDateTime = DateTime.Now.Add(duration.Negate());
-            var tpi = new TrackFileInfo(new Uri(location), duration, lastModifiedDateTime);
+            var tpi = new LibraryEntryFileInfo(new Uri(location), duration, lastModifiedDateTime);
 
             Assert.True(tpi.Equals(tpi));
         }
@@ -39,8 +39,8 @@ namespace ReactivePlayer.Domain.Tests.Model
                 ? duration2.HasValue ? DateTime.Parse(lmdtString).Add(duration2.Value.Negate()) : DateTime.Parse(lmdtString)
                 : (null as DateTime?);
 
-            var tpi1 = new TrackFileInfo(new Uri(location), duration1, lmdt1);
-            var tpi2 = new TrackFileInfo(new Uri(location), duration2, lmdt2);
+            var tpi1 = new LibraryEntryFileInfo(new Uri(location), duration1, lmdt1);
+            var tpi2 = new LibraryEntryFileInfo(new Uri(location), duration2, lmdt2);
 
             Assert.True(tpi1 == tpi2);
         }
@@ -48,7 +48,7 @@ namespace ReactivePlayer.Domain.Tests.Model
         [Fact]
         public void TrackFileInfo_null_location_throws_ArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new TrackFileInfo(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new LibraryEntryFileInfo(null, null, null));
         }
     }
 }

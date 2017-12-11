@@ -5,8 +5,8 @@ using DynamicData.Operators;
 using DynamicData.ReactiveUI;
 using DynamicData.Aggregation;
 using DynamicData.Binding;
-using ReactivePlayer.Core.Application.Library;
-using ReactivePlayer.Core.Application.Playback;
+using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
@@ -23,7 +23,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly PlaybackQueue _playbackQueue;
+        private readonly IPlaybackService _audioPlayer;
         private readonly IReadLibraryService _readLibraryService;
 
         #endregion
@@ -31,10 +31,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackHistoryViewModel(
-            PlaybackQueue playbackQueue,
+            IPlaybackService audioPlayer,
             IReadLibraryService readLibraryService)
         {
-            this._playbackQueue.Items.Connect().Transform(location => new PlaybackHistoryItemViewModel(location)).Bind(this._items);
+            this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
+            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
+
+            // TODO: review operators order, e.g. where should .DisposeMany() be placed?
+            // TODO: does this represent a subscription that should be disposed?
+            this._audioPlayer
+                .WhenAudioSourceLocationChanged
+                .ToObservableChangeSet(10)
+                .Transform(location => new PlaybackHistoryItemViewModel(location)).Bind(this._items)
+                .AsObservableList()
+                .Connect()
+                .DisposeMany()
+                .Bind(this._items);
         }
 
         #endregion

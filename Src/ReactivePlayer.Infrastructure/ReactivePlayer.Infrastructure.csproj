@@ -49,6 +49,7 @@
     <Compile Include="Domain\Models\IAggregateRoot.cs" />
     <Compile Include="Domain\Models\SortDirection.cs" />
     <Compile Include="Domain\Repositories\IEntityRepository`1.cs" />
+    <Compile Include="Domain\Repositories\IUnitOfWork.cs" />
     <Compile Include="Domain\Repositories\IValueObjectRepository`1.cs" />
     <Compile Include="Domain\Models\Entity.cs" />
     <Compile Include="Domain\Models\Entity`1.cs" />

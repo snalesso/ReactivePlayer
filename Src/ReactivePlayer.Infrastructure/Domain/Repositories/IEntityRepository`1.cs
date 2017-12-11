@@ -19,6 +19,5 @@ namespace ReactivePlayer.Infrastructure.Domain.Repositories
          * it doesn't guarantee that between Any() and Add() possibleNewId becomes used */
         Task<bool> AddAsync(IReadOnlyList<TEntity> entities);
         Task<bool> RemoveAsync(IReadOnlyList<TEntity> entities);
-        Task<bool> UpdateAsync(IReadOnlyList<TEntity> entities);
     }
 }

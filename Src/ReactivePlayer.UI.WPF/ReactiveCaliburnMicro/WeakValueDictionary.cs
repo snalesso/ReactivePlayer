@@ -23,9 +23,9 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         private bool IsCleanupNeeded()
         {
-            if (gcSentinel.Target == null)
+            if (this.gcSentinel.Target == null)
             {
-                gcSentinel.Target = new object();
+                this.gcSentinel.Target = new object();
                 return true;
             }
 
@@ -34,11 +34,11 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         private void CleanAbandonedItems()
         {
-            var keysToRemove = inner.Where(pair => !pair.Value.IsAlive)
+            var keysToRemove = this.inner.Where(pair => !pair.Value.IsAlive)
                 .Select(pair => pair.Key)
                 .ToList();
 
-            keysToRemove.Apply(key => inner.Remove(key));
+            keysToRemove.Apply(key => this.inner.Remove(key));
         }
 
         private void CleanIfNeeded()
@@ -58,7 +58,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// </summary>
         public WeakValueDictionary()
         {
-            inner = new Dictionary<TKey, WeakReference>();
+            this.inner = new Dictionary<TKey, WeakReference>();
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="dictionary">The <see cref="IDictionary&lt;TKey, TValue&gt;"/> whose elements are copied to the new <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/>.</param>
         public WeakValueDictionary(IDictionary<TKey, TValue> dictionary)
         {
-            inner = new Dictionary<TKey, WeakReference>();
-            dictionary.Apply(item => inner.Add(item.Key, new WeakReference(item.Value)));
+            this.inner = new Dictionary<TKey, WeakReference>();
+            dictionary.Apply(item => this.inner.Add(item.Key, new WeakReference(item.Value)));
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="comparer">The <see cref="IEqualityComparer&lt;T&gt;"/> implementation to use when comparing keys, or null to use the default <see cref="EqualityComparer&lt;T&gt;"/> for the type of the key.</param>
         public WeakValueDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
         {
-            inner = new Dictionary<TKey, WeakReference>(comparer);
-            dictionary.Apply(item => inner.Add(item.Key, new WeakReference(item.Value)));
+            this.inner = new Dictionary<TKey, WeakReference>(comparer);
+            dictionary.Apply(item => this.inner.Add(item.Key, new WeakReference(item.Value)));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="comparer">The <see cref="IEqualityComparer&lt;T&gt;"/> implementation to use when comparing keys, or null to use the default <see cref="EqualityComparer&lt;T&gt;"/> for the type of the key.</param>
         public WeakValueDictionary(IEqualityComparer<TKey> comparer)
         {
-            inner = new Dictionary<TKey, WeakReference>(comparer);
+            this.inner = new Dictionary<TKey, WeakReference>(comparer);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="capacity">The initial number of elements that the <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/> can contain.</param>
         public WeakValueDictionary(int capacity)
         {
-            inner = new Dictionary<TKey, WeakReference>(capacity);
+            this.inner = new Dictionary<TKey, WeakReference>(capacity);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="comparer">The <see cref="IEqualityComparer&lt;T&gt;"/> implementation to use when comparing keys, or null to use the default <see cref="EqualityComparer&lt;T&gt;"/> for the type of the key.</param>
         public WeakValueDictionary(int capacity, IEqualityComparer<TKey> comparer)
         {
-            inner = new Dictionary<TKey, WeakReference>(capacity, comparer);
+            this.inner = new Dictionary<TKey, WeakReference>(capacity, comparer);
         }
 
         #endregion
@@ -119,7 +119,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             CleanIfNeeded();
-            var enumerable = inner.Select(pair => new KeyValuePair<TKey, TValue>(pair.Key, (TValue)pair.Value.Target))
+            var enumerable = this.inner.Select(pair => new KeyValuePair<TKey, TValue>(pair.Key, (TValue)pair.Value.Target))
                 .Where(pair => pair.Value != null);
             return enumerable.GetEnumerator();
         }
@@ -139,13 +139,12 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// </summary>
         public void Clear()
         {
-            inner.Clear();
+            this.inner.Clear();
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-            if (!TryGetValue(item.Key, out value))
+            if (!TryGetValue(item.Key, out TValue value))
                 return false;
 
             return value == item.Value;
@@ -157,7 +156,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
                 throw new ArgumentNullException("array");
             if (arrayIndex < 0 || arrayIndex >= array.Length)
                 throw new ArgumentOutOfRangeException("arrayIndex");
-            if ((arrayIndex + Count) > array.Length)
+            if ((arrayIndex + this.Count) > array.Length)
                 throw new ArgumentException(
                     "The number of elements in the source collection is greater than the available space from arrayIndex to the end of the destination array.");
 
@@ -166,12 +165,11 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-            if (!TryGetValue(item.Key, out value))
+            if (!TryGetValue(item.Key, out TValue value))
                 return false;
             if (value != item.Value)
                 return false;
-            return inner.Remove(item.Key);
+            return this.inner.Remove(item.Key);
         }
 
         /// <summary>
@@ -187,7 +185,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
             get
             {
                 CleanIfNeeded();
-                return inner.Count;
+                return this.inner.Count;
             }
         }
 
@@ -204,7 +202,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         public void Add(TKey key, TValue value)
         {
             CleanIfNeeded();
-            inner.Add(key, new WeakReference(value));
+            this.inner.Add(key, new WeakReference(value));
         }
 
         /// <summary>
@@ -214,8 +212,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <returns></returns>
         public bool ContainsKey(TKey key)
         {
-            TValue dummy;
-            return TryGetValue(key, out dummy);
+            return TryGetValue(key, out TValue dummy);
         }
 
         /// <summary>
@@ -226,7 +223,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         public bool Remove(TKey key)
         {
             CleanIfNeeded();
-            return inner.Remove(key);
+            return this.inner.Remove(key);
         }
 
         /// <summary>
@@ -242,8 +239,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         {
             CleanIfNeeded();
 
-            WeakReference wr;
-            if (!inner.TryGetValue(key, out wr))
+            if (!this.inner.TryGetValue(key, out WeakReference wr))
             {
                 value = null;
                 return false;
@@ -252,7 +248,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
             var result = (TValue)wr.Target;
             if (result == null)
             {
-                inner.Remove(key);
+                this.inner.Remove(key);
                 value = null;
                 return false;
             }
@@ -273,15 +269,14 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         {
             get
             {
-                TValue result;
-                if (!TryGetValue(key, out result))
+                if (!TryGetValue(key, out TValue result))
                     throw new KeyNotFoundException();
                 return result;
             }
             set
             {
                 CleanIfNeeded();
-                inner[key] = new WeakReference(value);
+                this.inner[key] = new WeakReference(value);
             }
         }
 
@@ -290,7 +285,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// </summary>
         public ICollection<TKey> Keys
         {
-            get { return inner.Keys; }
+            get { return this.inner.Keys; }
         }
 
         /// <summary>
@@ -309,12 +304,12 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
             public ValueCollection(WeakValueDictionary<TKey, TValue> dictionary)
             {
-                inner = dictionary;
+                this.inner = dictionary;
             }
 
             public IEnumerator<TValue> GetEnumerator()
             {
-                return inner.Select(pair => pair.Value).GetEnumerator();
+                return this.inner.Select(pair => pair.Value).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -334,7 +329,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
             bool ICollection<TValue>.Contains(TValue item)
             {
-                return inner.Any(pair => pair.Value == item);
+                return this.inner.Any(pair => pair.Value == item);
             }
 
             public void CopyTo(TValue[] array, int arrayIndex)
@@ -343,7 +338,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
                     throw new ArgumentNullException("array");
                 if (arrayIndex < 0 || arrayIndex >= array.Length)
                     throw new ArgumentOutOfRangeException("arrayIndex");
-                if ((arrayIndex + Count) > array.Length)
+                if ((arrayIndex + this.Count) > array.Length)
                     throw new ArgumentException(
                         "The number of elements in the source collection is greater than the available space from arrayIndex to the end of the destination array.");
 
@@ -357,7 +352,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
             public int Count
             {
-                get { return inner.Count; }
+                get { return this.inner.Count; }
             }
 
             bool ICollection<TValue>.IsReadOnly

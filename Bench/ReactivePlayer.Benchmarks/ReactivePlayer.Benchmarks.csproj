@@ -173,13 +173,9 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ReactivePlayer.Core.Application\ReactivePlayer.Core.Application.csproj">
+    <ProjectReference Include="..\..\src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
-      <Name>ReactivePlayer.Core.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
-      <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Core.Domain.Library</Name>
+      <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Modules.Json.Newtonsoft\ReactivePlayer.Modules.Json.Newtonsoft.csproj">
       <Project>{3348376f-332f-471d-a613-09700a0e0cbe}</Project>

@@ -77,9 +77,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
-      <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Core.Domain.Library</Name>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
+      <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
+      <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
       <Project>{DF6027C8-A1D8-4437-9842-C003D263558F}</Project>

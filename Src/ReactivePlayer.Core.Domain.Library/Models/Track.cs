@@ -44,7 +44,7 @@ namespace ReactivePlayer.Core.Domain.Library.Models
 
         #endregion
 
-        #region Entity<>
+        #region Entity
 
         protected override bool EqualsCore(Entity other)
         {

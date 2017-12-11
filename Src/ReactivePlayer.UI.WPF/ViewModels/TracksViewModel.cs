@@ -5,8 +5,7 @@ using DynamicData.Kernel;
 using DynamicData.ReactiveUI;
 using DynamicData.Operators;
 using DynamicData.List;
-using ReactivePlayer.Core.Application.Library;
-using ReactivePlayer.Core.Application.Playback;
+using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
@@ -16,6 +15,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData.Controllers;
+using ReactivePlayer.Core.Library;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -24,7 +24,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         private readonly IReadLibraryService _readLibraryService;
-        private readonly IAudioPlayer _audioPlayer;
+        private readonly IPlaybackService _audioPlayer;
         private readonly PlaybackQueue _playbackQueue;
         private readonly Func<TrackDto, TrackViewModel> _trackViewModelFactoryMethod;
 
@@ -38,7 +38,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksViewModel(
             IReadLibraryService readLibraryService,
-            IAudioPlayer audioPlayer,
+            IPlaybackService audioPlayer,
             PlaybackQueue playbackQueue,
             Func<TrackDto, TrackViewModel> trackViewModelFactoryMethod)
         {
@@ -80,7 +80,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 async (TrackViewModel trackVM) =>
                 {
                     await this._audioPlayer.StopAsync();
-                    await this._audioPlayer.LoadTrackAsync(trackVM.TrackLocation);
+                    await this._audioPlayer.LoadAsync(trackVM.TrackLocation);
                     await this._audioPlayer.PlayAsync();
                 },
                 Observable.CombineLatest(

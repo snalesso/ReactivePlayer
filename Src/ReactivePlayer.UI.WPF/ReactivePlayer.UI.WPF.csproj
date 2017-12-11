@@ -138,13 +138,11 @@
     <Compile Include="ReactiveCaliburnMicro\WeakValueDictionary.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
-    <Compile Include="ViewModels\LibraryPlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\PlaybackHistoryItemViewModel.cs" />
     <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TrackEditViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
     <Compile Include="ViewModels\TrackViewModel.cs" />
     <Compile Include="ViewModels\CrashViewModel.cs" />
@@ -202,13 +200,9 @@
       <Project>{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}</Project>
       <Name>ReactivePlayer.UI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
-      <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Core.Domain.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.Application\ReactivePlayer.Core.Application.csproj">
+    <ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
-      <Name>ReactivePlayer.Core.Application</Name>
+      <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
       <Project>{DF6027C8-A1D8-4437-9842-C003D263558F}</Project>

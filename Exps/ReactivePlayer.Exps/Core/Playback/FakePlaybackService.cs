@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Core.Application.Services.Playback;
+﻿using ReactivePlayer.Core.Playback;
 using System;
 using System.Threading.Tasks;
 
@@ -29,7 +29,14 @@ namespace ReactivePlayer.Core.Playback
 
         public IObservable<TimeSpan?> WhenDurationChanged => throw new NotImplementedException();
 
+        public IObservable<Uri> WhenAudioSourceLocationChanged => throw new NotImplementedException();
+
         public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task LoadAsync(Uri audioSourceLocation)
         {
             throw new NotImplementedException();
         }

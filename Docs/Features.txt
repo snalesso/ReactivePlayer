@@ -1,5 +1,5 @@
 FUNCTIONALITIES:
-- when a file change/move is detected listen to the preview to check if the tags correspond to the file data
+- when a file change/move is detected listen to the preview to check if the tags correspond to the file data: http://opensource.wildgums.com/orc.filesystem/
 - add speakers/headphones and more generically "playback device selection"
 - save to 2nd file (in %temp%, plus for coincidental SSD speed), and replace the current one at the end in order to prevent data loss
 - white noise generator
@@ -69,24 +69,26 @@ FUNCTIONALITIES:
 - risultati ricerca canzone -> per ogni traccia che contiene le parole cercate visualizza anche le playlist che la contengono, in modo da poter riprodurre la traccia come inizio della riproduzione di una playlist specifica
 
 - MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
-- Reflection.Emit			http://docs.servicestack.net/reflection-utils
-- Compiled expression trees	http://docs.servicestack.net/reflection-utils
 - Fody per INPC
 
 - benchmark DTOs creation using:
 	- separate SELECTs for Entity1, ..., EntityN -> final fusion into DTOs using LINQ-2-Objects
 	- JOINed SELECT on all needed Entities (gathering only needed fields) -> Direct DTOs creation
-- LINQ Optimizations		http://mattwarren.org/2016/09/29/Optimising-LINQ/
 
 Might help
 	- reactive-streams/reactive-streams-dotnet	https://github.com/reactive-streams/reactive-streams-dotnet
 	- RxDave/Qactive							https://github.com/RxDave/Qactive
+	- http://www.wpf-tutorial.com/
 
 Optimizations:
 - make lazy subjects ("connectable")
 - ensure Autofac disposes things
 - ensure transients throughout the application get disposed
-- IDisposable	https://github.com/Fody/Janitor
-- IEquatable<>	https://github.com/Fody/Equals
-
-- http://www.wpf-tutorial.com/
+- IDisposable				https://github.com/Fody/Janitor
+- IEquatable<>				https://github.com/Fody/Equals
+- Expression trees			https://github.com/dadhi/FastExpressionCompiler
+- optimize for x64
+- Reflection.Emit			http://docs.servicestack.net/reflection-utils
+- Compiled expression trees	http://docs.servicestack.net/reflection-utils
+- LINQ Optimizations		http://mattwarren.org/2016/09/29/Optimising-LINQ/
+- study -volatile- keyword

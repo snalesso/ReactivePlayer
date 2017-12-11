@@ -1,7 +1,7 @@
 using Daedalus.ExtensionMethods;
 using ReactivePlayer.Core;
-using ReactivePlayer.Core.Domain.Library.Models;
-using ReactivePlayer.Core.Domain.Library.Repositories;
+using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Repositories;
 using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ using System.Xml.Linq;
 
 namespace ReactivePlayer.Domain.Repositories
 {
-    public sealed class iTunesXMLRepository : ITracksRepository
+    public sealed class ITunesXMLRepository : ITracksRepository
     {
         private readonly string _xmlItmlFilePath;
         private readonly IReadOnlyList<Track> _tracks = null;
 
-        public iTunesXMLRepository(string xmlItlFilePath)
+        public ITunesXMLRepository(string xmlItlFilePath)
         {
             if (!File.Exists(xmlItlFilePath))
                 throw new FileNotFoundException(); // TODO: localize
@@ -224,7 +224,11 @@ namespace ReactivePlayer.Domain.Repositories
 
                                 Guid.NewGuid(),
 
-                                new TrackFileInfo(
+                                t.DateAdded,
+                                false,
+                                null,
+
+                                new LibraryEntryFileInfo(
                                     new Uri(t.Location.StartsWith(@"file://localhost/") ? t.Location.Remove(@"file://".Length - 1, @"localhost/".Length) : t.Location),
                                     t.TotalTime,
                                     t.DateModified),
@@ -242,11 +246,6 @@ namespace ReactivePlayer.Domain.Repositories
                                             t.DiscCount),
                                         t.TrackNumber,
                                         t.DiscNumber),
-                                    null),
-
-                                new LibraryMetadata(
-                                    t.DateAdded,
-                                    false,
                                     null));
 
                             var fwefwefwef = filters.Any(f => f(nt));

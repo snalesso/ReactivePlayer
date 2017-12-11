@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace ReactivePlayer.Infrastructure.Domain.Models
 {
+    // TODO: possible performance optimization: https://github.com/dddlib/dddlib/blob/55e5cc71f8242a813fb67a460147660f9f9fba17/src/dddlib/ValueObject.cs#L20
     public abstract class ValueObject<T> : IEquatable<T>
         where T : ValueObject<T>
     {

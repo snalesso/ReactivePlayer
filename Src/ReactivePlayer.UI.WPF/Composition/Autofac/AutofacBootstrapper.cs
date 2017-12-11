@@ -1,10 +1,9 @@
 using Autofac;
 using Caliburn.Micro;
-using ReactivePlayer.Core.Application.Library;
-using ReactivePlayer.Core.Application.Playback;
-using ReactivePlayer.Core.Application.Playback.CSCore;
-using ReactivePlayer.Core.Domain.Library.Repositories;
-using ReactivePlayer.Domain.Repositories;
+using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Playback;
+using ReactivePlayer.Core.Playback.CSCore;
+using ReactivePlayer.Core.Library.Repositories;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Composition.Autofac.Modules;
 using ReactivePlayer.UI.WPF.ViewModels;
@@ -16,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using ReactivePlayer.Domain.Repositories;
 
 namespace ReactivePlayer.UI.WPF.Composition.Autofac
 {
@@ -83,14 +83,14 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
              */
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
-            builder.Register<ITracksRepository>(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml")).InstancePerLifetimeScope();
+            builder.Register<ITracksRepository>(c => new ITunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml")).InstancePerLifetimeScope();
             builder.RegisterType<LocalLibraryService>()
                 .As<IReadLibraryService>()
                 .As<IWriteLibraryService>()
                 .InstancePerLifetimeScope();
-            builder.RegisterType<CSCoreAudioPlayer>().As<IAudioPlayer>().InstancePerLifetimeScope();
+            builder.RegisterType<CSCoreAudioPlaybackService>().As<IPlaybackService>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
 
             // ViewModels & Views
 
@@ -99,7 +99,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.Register<Func<TrackDto, TrackViewModel>>(ctx =>
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
-                    return (TrackDto t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlayer>());
+                    return (TrackDto t) => new TrackViewModel(t, ctxInternal.Resolve<IPlaybackService>());
                 }).AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();

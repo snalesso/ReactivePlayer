@@ -1,9 +1,10 @@
 using Daedalus.ExtensionMethods;
-using ReactivePlayer.Core.Application.Library;
-using ReactivePlayer.Core.Application.Playback;
+using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
@@ -12,7 +13,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlayer _playbackService;
+        private readonly IPlaybackService _playbackService;
         private readonly TrackDto _track;
 
         #endregion
@@ -21,7 +22,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TrackViewModel(
             TrackDto track,
-            IAudioPlayer playbackService)
+            IPlaybackService playbackService)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
@@ -43,6 +44,25 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public Uri TrackLocation => this._track.FileInfo.Location;
 
         public DateTime AddedToLibraryDateTime => this._track.LibraryMetadata.AddedToLibraryDateTime;
+
+        //#region IEditableObject
+
+        //public void BeginEdit()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void EndEdit()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public void CancelEdit()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //#endregion
 
         #endregion
 

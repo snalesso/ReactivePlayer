@@ -1,7 +1,7 @@
 using Caliburn.Micro;
-using ReactivePlayer.Core.Application.FileSystem.Audio;
-using ReactivePlayer.Core.Application.Library;
-using ReactivePlayer.Core.Application.Playback;
+using ReactivePlayer.Core.FileSystem.Media.Audio;
+using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
@@ -17,7 +17,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constancts & fields
 
-        private readonly IAudioPlayer _playbackService;
+        private readonly IPlaybackService _playbackService;
         private readonly IWriteLibraryService _writeLibraryService;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
@@ -33,7 +33,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         }
 
         public ShellViewModel(
-            IAudioPlayer playbackService,
+            IPlaybackService playbackService,
             IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             PlaybackControlsViewModel playbackControlsViewModel,

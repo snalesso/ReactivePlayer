@@ -1,5 +1,5 @@
-using ReactivePlayer.Core.Application.Library;
-using ReactivePlayer.Core.Application.Playback;
+using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
@@ -17,9 +17,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlayer _audioPlayer;
+        private readonly IPlaybackService _audioPlayer;
         private readonly PlaybackQueue _playbackQueue;
-        private readonly PlaybackHistory _playbackHistory;
+        //private readonly PlaybackHistory _playbackHistory;
         private readonly IReadLibraryService _readLibraryService;
 
         private CompositeDisposable _disposables = new CompositeDisposable(); // TODO: move to #region IDisposable
@@ -30,16 +30,16 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackControlsViewModel(
-            IAudioPlayer audioPlayer,
+            IPlaybackService audioPlayer,
             PlaybackQueue playbackQueue,
-            PlaybackHistory playbackHistory,
+            //PlaybackHistory playbackHistory,
             IReadLibraryService readLibraryService)
         {
             // TODO: localize
             // TODO: log
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer));
             this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
-            this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory));
+            //this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
 
             ////this.Load = ReactiveCommand.CreateFromTask((string path) => this._player.LoadTrackAsync(new Uri(Path.Combine(Assembly.GetEntryAssembly().Location, path))), this._player.WhenCanLoadChanged).DisposeWith(this._disposables);
@@ -70,7 +70,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     var next = this._playbackQueue.Deqeue();
                     if (next != null)
                     {
-                        await this._audioPlayer.LoadTrackAsync(next);
+                        await this._audioPlayer.LoadAsync(next);
                         await this._audioPlayer.PlayAsync();
                     }
                 }, Observable.CombineLatest(
@@ -85,7 +85,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     var next = this._playbackQueue.Deqeue();
                     if (next != null)
                     {
-                        await this._audioPlayer.LoadTrackAsync(next);
+                        await this._audioPlayer.LoadAsync(next);
                         await this._audioPlayer.PlayAsync();
                     }
                 }, Observable.CombineLatest(
@@ -109,7 +109,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._durationAsTicksOAPH = this._audioPlayer.WhenDurationChanged.Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L).ToProperty(this, @this => @this.DurationAsTicks).DisposeWith(this._disposables);
 
             this._currentTrackLocationOAPH = this._audioPlayer
-                .WhenTrackLocationChanged
+                .WhenAudioSourceLocationChanged
                 .Select(l => l?.ToString())
                 .ToProperty(this, @this => @this.CurrentTrackLocation)
                 .DisposeWith(this._disposables);
@@ -134,7 +134,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._volumeOAPH = this._audioPlayer.WhenVolumeChanged
                 .ToProperty(this, @this => @this.Volume)
                 .DisposeWith(this._disposables);
-            this._titleOAPH = this._audioPlayer.WhenTrackLocationChanged
+            this._titleOAPH = this._audioPlayer.WhenAudioSourceLocationChanged
                 .Select(tl => this._readLibraryService.Tracks.Items.FirstOrDefault(t => t.FileInfo.Location == tl)?.Tags.Title)
                 .ToProperty(this, @this => @this.Title)
                 .DisposeWith(this._disposables);
@@ -220,6 +220,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReactiveCommand<Unit, Unit> EndSeeking { get; }
         public ReactiveCommand<Unit, Unit> PlayPrevious { get; }
         public ReactiveCommand<Unit, Unit> PlayNext { get; }
+        public ReactiveCommand<Unit, Unit> PlayCurrentPlaylist { get; }
 
         #endregion
     }

@@ -1,4 +1,4 @@
-using ReactivePlayer.Core.Domain.Library.Models;
+using ReactivePlayer.Core.Library.Models;
 using System;
 using System.Linq;
 using Xunit;

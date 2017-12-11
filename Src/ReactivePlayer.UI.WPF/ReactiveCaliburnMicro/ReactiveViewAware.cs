@@ -36,17 +36,17 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         void IViewAware.AttachView(object view, object context)
         {
-            Views[context ?? DefaultContext] = view;
+            this.Views[context ?? DefaultContext] = view;
 
             var nonGeneratedView = PlatformProvider.Current.GetFirstNonGeneratedView(view);
-            PlatformProvider.Current.ExecuteOnFirstLoad(nonGeneratedView, OnViewLoaded);
+            PlatformProvider.Current.ExecuteOnFirstLoad(nonGeneratedView, this.OnViewLoaded);
             OnViewAttached(nonGeneratedView, context);
             ViewAttached(this, new ViewAttachedEventArgs { View = nonGeneratedView, Context = context });
 
             var activatable = this as IActivate;
             if (activatable == null || activatable.IsActive)
             {
-                PlatformProvider.Current.ExecuteOnLayoutUpdated(nonGeneratedView, OnViewReady);
+                PlatformProvider.Current.ExecuteOnLayoutUpdated(nonGeneratedView, this.OnViewReady);
             }
             else
             {
@@ -102,8 +102,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <returns>The view.</returns>
         public virtual object GetView(object context = null)
         {
-            object view;
-            Views.TryGetValue(context ?? DefaultContext, out view);
+            this.Views.TryGetValue(context ?? DefaultContext, out object view);
             return view;
         }
     }
