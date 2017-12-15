@@ -17,6 +17,9 @@
     </UserControl.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <ListView Behaviors:DoubleClick.Command="{Binding PlayTrack}"
                   Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
                   ItemsSource="{Binding TrackViewModels}"
@@ -60,6 +63,15 @@
                     <MenuItem Command="{Binding PlayTrack}"
                               CommandParameter="{Binding SelectedTrackViewModel}"
                               Header="Play" />
+                    <Separator />
+                    <MenuItem Command="{Binding AddTrackToLibrary}"
+                              Header="Add track" />
+                    <MenuItem Command="{Binding EditTrack}"
+                              CommandParameter="{Binding SelectedTrackViewModel}"
+                              Header="Edit" />
+                    <MenuItem Command="{Binding RemoveTrackFromLibrary}"
+                              CommandParameter="{Binding SelectedTrackViewModel}"
+                              Header="Remove from library" />
                 </ContextMenu>
             </ListView.ContextMenu>
 

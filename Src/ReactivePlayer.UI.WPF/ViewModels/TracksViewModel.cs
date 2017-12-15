@@ -1,21 +1,18 @@
 using DynamicData;
 using DynamicData.Binding;
-using DynamicData.Aggregation;
-using DynamicData.Kernel;
 using DynamicData.ReactiveUI;
-using DynamicData.Operators;
-using DynamicData.List;
+using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using DynamicData.Controllers;
-using ReactivePlayer.Core.Library;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -24,9 +21,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         private readonly IReadLibraryService _readLibraryService;
+        private readonly IWriteLibraryService _writeLibraryService;
         private readonly IPlaybackService _audioPlayer;
         private readonly PlaybackQueue _playbackQueue;
-        private readonly Func<TrackDto, TrackViewModel> _trackViewModelFactoryMethod;
+        private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
 
         private CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -38,11 +36,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksViewModel(
             IReadLibraryService readLibraryService,
+            IWriteLibraryService writeLibraryService,
             IPlaybackService audioPlayer,
             PlaybackQueue playbackQueue,
-            Func<TrackDto, TrackViewModel> trackViewModelFactoryMethod)
+            Func<Track, TrackViewModel> trackViewModelFactoryMethod)
         {
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
+            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
             this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod)); // TODO: localize
@@ -53,9 +53,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Transform(trackDto => this._trackViewModelFactoryMethod(trackDto))
                 .Sort(SortExpressionComparer<TrackViewModel>.Descending(trackVM => trackVM.AddedToLibraryDateTime))
                 .Bind(this._trackViewModels)
-                .DisposeMany()
+                //.ObserveOn(RxApp.MainThreadScheduler) // TODO: when is it needed?
+                .DisposeMany() // TODO: how & when to use it?
                 .Subscribe()
                 .DisposeWith(this._disposables);
+
+            this._readLibraryService.Tracks.Connect().OnItemRemoved(c => Debug.WriteLine($"TracksVM.Tracks.OnItemRemoved: {c.Id}"));
+            this._readLibraryService.Tracks.Connect().Subscribe(c => Debug.WriteLine($"TracksVM.Tracks.Subscribe: {c.TotalChanges}"));
+            this._readLibraryService.Tracks.CountChanged.Subscribe(c => Debug.WriteLine($"TracksVM.Tracks.CountChanged: {c}"));
 
             //var libraryTracksSubscription = this._readLibraryService.Tracks.Connect().Publish();
 
@@ -101,6 +106,35 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             // logging
 
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
+
+            this.EditTrack = ReactiveCommand.CreateFromTask(
+                async (TrackViewModel trackVM) =>
+                {
+                    var command = new UpdateTrackCommand()
+                    {
+                        Id = trackVM.Id,
+                        Title = "Diocane"
+                    };
+                    await this._writeLibraryService.UpdateTrack(command);
+                });
+
+            this.AddTrackToLibrary = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var addTrackCommand = new AddTrackCommand()
+                {
+                    AddedToLibraryDateTime = DateTime.Now,
+                    Title = "-----------------------",
+                    Performers = new Artist[] { new Artist("fjawe9fjp9awe"), new Artist("fj2394 oewf") },
+                    Location = new Uri(@"D:\Music\Daughter - Landfill.mp3")
+                };
+                await this._writeLibraryService.AddTrack(addTrackCommand);
+            });
+
+            this.RemoveTrackFromLibrary = ReactiveCommand.CreateFromTask(async (TrackViewModel trackVM) =>
+            {
+                var removeTrackCommand = new RemoveTrackCommand(trackVM.Id);
+                await this._writeLibraryService.RemoveTrack(removeTrackCommand);
+            });
         }
 
         #endregion
@@ -137,6 +171,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReactiveCommand<TrackViewModel, Unit> PlayTrack { get; }
         public ReactiveCommand<Unit, Unit> PlayAll { get; }
         //public ReactiveCommand<Unit, Unit> PlayAllRandomly { get; }
+
+        public ReactiveCommand<TrackViewModel, Unit> EditTrack { get; }
+        public ReactiveCommand<Unit, Unit> AddTrackToLibrary { get; }
+        public ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromLibrary { get; }
 
         #endregion
     }

@@ -135,7 +135,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .ToProperty(this, @this => @this.Volume)
                 .DisposeWith(this._disposables);
             this._titleOAPH = this._audioPlayer.WhenAudioSourceLocationChanged
-                .Select(tl => this._readLibraryService.Tracks.Items.FirstOrDefault(t => t.FileInfo.Location == tl)?.Tags.Title)
+                .Select(tl => this._readLibraryService.Tracks.Items.FirstOrDefault(t => t.FileInfo.Location == tl)?.Title)
                 .ToProperty(this, @this => @this.Title)
                 .DisposeWith(this._disposables);
             this._isLoadingOAPH = this._audioPlayer.WhenStatusChanged

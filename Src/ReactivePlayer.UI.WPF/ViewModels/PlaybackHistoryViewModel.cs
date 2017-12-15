@@ -1,21 +1,13 @@
 ﻿using DynamicData;
-using DynamicData.List;
-using DynamicData.Kernel;
-using DynamicData.Operators;
-using DynamicData.ReactiveUI;
-using DynamicData.Aggregation;
 using DynamicData.Binding;
+using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

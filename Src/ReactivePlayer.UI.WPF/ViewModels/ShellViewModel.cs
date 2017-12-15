@@ -1,5 +1,4 @@
 using Caliburn.Micro;
-using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;

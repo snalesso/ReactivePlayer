@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Daedalus.ExtensionMethods">
-      <HintPath>..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\bin\Release\Daedalus.ExtensionMethods.dll</HintPath>
+      <HintPath>..\..\Libs\Daedalus.ExtensionMethods\Debug\Daedalus.ExtensionMethods.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,27 +46,16 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Core\Playback\FakePlaybackService.cs" />
-    <Compile Include="Domain\FakeDomainEntitiesGenerator.cs" />
-    <Compile Include="Domain\Repositories\FakeTracksInMemoryRepository.cs" />
+    <Compile Include="Domain\Models\Employee.cs" />
+    <Compile Include="Domain\Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{3F17AA7E-9965-4000-8446-9BC315F17C57}</Project>
       <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Domain.Library\ReactivePlayer.Core.Domain.Library.csproj">
-      <Project>{b6aa4a9c-ba48-41a4-91ff-00fb23b5c204}</Project>
-      <Name>ReactivePlayer.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Infrastructure\ReactivePlayer.Infrastructure.csproj">
-      <Project>{DF6027C8-A1D8-4437-9842-C003D263558F}</Project>
-      <Name>ReactivePlayer.Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
