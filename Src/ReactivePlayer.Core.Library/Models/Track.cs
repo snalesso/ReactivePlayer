@@ -1,4 +1,3 @@
-using Daedalus.ExtensionMethods;
 using ReactivePlayer.Core.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace ReactivePlayer.Core.Library.Models
         #region ctor
 
         public Track(
-            Guid id,
+            int id,
             DateTime addedToLibraryDateTime,
             bool isLoved,
             IReadOnlyList<DateTime> playedHistory,
@@ -48,10 +47,8 @@ namespace ReactivePlayer.Core.Library.Models
 
         #region Entity
 
-        protected override void EnsureIsWellFormattedId(Guid id)
+        protected override void EnsureIsWellFormattedId(int id)
         {
-            if (id == null) throw new ArgumentNullException(nameof(id)); // TODO: localize
-            if (id == Guid.Empty) throw new ArgumentOutOfRangeException(nameof(id)); // TODO: localize
         }
 
         #endregion

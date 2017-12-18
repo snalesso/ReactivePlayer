@@ -4,13 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{779EC49B-1EDB-44D4-8620-3D8C1E3D7946}</ProjectGuid>
+    <ProjectGuid>{18AF6B1A-BD94-4FC8-95A0-4ACCA41B83FA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReactivePlayer.Core</RootNamespace>
-    <AssemblyName>ReactivePlayer.Core</AssemblyName>
+    <RootNamespace>ReactivePlayer.Core.Library.SQLite3</RootNamespace>
+    <AssemblyName>ReactivePlayer.Core.Library.SQLite3</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,22 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Domain\Models\Entity`1.cs" />
-    <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
-    <Compile Include="Domain\Models\IAggregateRoot.cs" />
-    <Compile Include="SortDirection.cs" />
-    <Compile Include="Domain\Models\ValueObject`1.cs" />
-    <Compile Include="Domain\Repositories\IEntityRepository`1.cs" />
-    <Compile Include="Domain\Repositories\IUnitOfWork.cs" />
-    <Compile Include="Domain\Repositories\Specification\ISpecification`1.cs" />
+    <Compile Include="POCOs\Album.cs" />
+    <Compile Include="POCOs\AlbumAuthor.cs" />
+    <Compile Include="POCOs\Artist.cs" />
+    <Compile Include="POCOs\Track.cs" />
+    <Compile Include="POCOs\TrackComposer.cs" />
+    <Compile Include="POCOs\TrackPerformer.cs" />
+    <Compile Include="POCOs\TrackPlayLog.cs" />
+    <Compile Include="POCOs\TrackStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

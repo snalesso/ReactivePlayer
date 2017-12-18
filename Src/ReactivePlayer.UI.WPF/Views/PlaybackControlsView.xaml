@@ -80,44 +80,47 @@
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <!--<Button VerticalAlignment="Center"
                     Command="{Binding PlaySelected, Mode=OneWay}"
                     CommandParameter="{Binding SelectedTrackViewModel}"
                     Content="Play" />-->
-            <Button Grid.Column="2"
-                    VerticalAlignment="Center"
-                    Command="{Binding Pause, Mode=OneWay}"
-                    Content="Pause" />
+            <StackPanel Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Button VerticalAlignment="Center"
+                        Command="{Binding Pause, Mode=OneWay}"
+                        Content="Pause"
+                        Visibility="{Binding CanPause, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Button VerticalAlignment="Center"
+                        Command="{Binding Resume, Mode=OneWay}"
+                        Content="Resume"
+                        Visibility="{Binding CanResume, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
+
             <Button Grid.Column="4"
-                    VerticalAlignment="Center"
-                    Command="{Binding Resume, Mode=OneWay}"
-                    Content="Resume" />
-            <Button Grid.Column="6"
                     VerticalAlignment="Center"
                     Command="{Binding PlayPrevious, Mode=OneWay}"
                     Content="Prev" />
-            <Button Grid.Column="8"
+            <Button Grid.Column="6"
                     VerticalAlignment="Center"
                     Command="{Binding Stop, Mode=OneWay}"
                     Content="Stop" />
-            <Button Grid.Column="10"
+            <Button Grid.Column="8"
                     VerticalAlignment="Center"
                     Command="{Binding PlayNext, Mode=OneWay}"
                     Content="Next" />
 
-            <Slider Grid.Column="12"
+            <Slider Grid.Column="10"
                     Width="100"
                     VerticalAlignment="Center"
                     Maximum="1"
                     Minimum="0"
                     Value="{Binding Volume}" />
 
-            <TextBlock Grid.Column="14"
+            <TextBlock Grid.Column="12"
                        VerticalAlignment="Center"
                        Text="{Binding Title}" />
 

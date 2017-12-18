@@ -42,7 +42,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                             Title = "Diocane"
                         }
                     };
-                    await this._writeLibraryService.UpdateTracks(commands);
+                    await this._writeLibraryService.UpdateTracksAsync(commands);
                 });
         }
 
@@ -50,7 +50,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        public Guid Id => this._track.Id;
+        public int Id => this._track.Id;
 
         public string Title => this._track.Title;
 

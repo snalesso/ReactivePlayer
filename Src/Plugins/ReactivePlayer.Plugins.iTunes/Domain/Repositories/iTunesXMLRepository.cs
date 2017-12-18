@@ -10,17 +10,20 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace ReactivePlayer.Domain.Repositories
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public sealed class iTunesXMLRepository : ITracksRepository
+    public sealed class iTunesXMLRepository : ITracksRepository, ITrackFactory
 #pragma warning restore IDE1006 // Naming Styles
     {
         private readonly string _xmlItmlFilePath;
-        private readonly IReadOnlyDictionary<Guid, Track> _tracks = null;
+        // TODO: consider making AsyncLazy
+        private IReadOnlyDictionary<int, Track> _tracks = null;
+        int id = 0;
 
         public iTunesXMLRepository(string xmlItlFilePath)
         {
@@ -28,34 +31,32 @@ namespace ReactivePlayer.Domain.Repositories
                 throw new FileNotFoundException(); // TODO: localize
 
             this._xmlItmlFilePath = xmlItlFilePath;
-
-            this._tracks = this.GetITunesXMLMediaLibraryTracks();
         }
 
-        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public async Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
         {
-            IReadOnlyList<Track> tracks = this._tracks.Values/*.Where(t => filter(t))*/.ToImmutableList();
-            return Task.FromResult(tracks);
+            IReadOnlyList<Track> tracks = (this._tracks ?? (this._tracks = await this.GetITunesXMLMediaLibraryTracks())).Values.ToImmutableArray();
+            return tracks;
         }
 
         public Task<bool> AddAsync(IReadOnlyList<Track> tracks)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public Task<Track> FirstAsync(Func<Track, bool> filter)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public Task<bool> RemoveAsync(IReadOnlyList<Track> tracks)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public Task<bool> UpdateAsync(IReadOnlyList<Track> tracks)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public Task<bool> AnyAsync(Func<Track, bool> filter = null)
@@ -68,9 +69,9 @@ namespace ReactivePlayer.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        private IReadOnlyDictionary<Guid, Track> GetITunesXMLMediaLibraryTracks()
+        private async Task<IReadOnlyDictionary<int, Track>> GetITunesXMLMediaLibraryTracks()
         {
-            IReadOnlyDictionary<Guid, Track> returnedTracks = null;
+            IReadOnlyDictionary<int, Track> returnedTracks = null;
 
             try
             {
@@ -205,7 +206,7 @@ namespace ReactivePlayer.Domain.Repositories
                     }
                 }
 
-                IDictionary<Guid, Track> finalTracks = new SortedDictionary<Guid, Track>();
+                IDictionary<int, Track> finalTracks = new SortedDictionary<int, Track>();
                 List<string> nonLocalLocations = new List<string>();
                 foreach (var t in itTracks)
                 {
@@ -225,10 +226,7 @@ namespace ReactivePlayer.Domain.Repositories
                             var comp = t.ComposerNames.EmptyIfNull().Select(artistName => artists.ContainsKey(artistName) ? artists[artistName] : throw new Exception($"Could not find composer {artistName}"));
                             var albArt = t.AlbumArtistNames.EmptyIfNull().Select(artistName => artists.ContainsKey(artistName) ? artists[artistName] : throw new Exception($"Could not find album artist {artistName}"));
 
-                            var nt = new Track(
-
-                                Guid.NewGuid(),
-
+                            var nt = await this.CreateAsync(
                                 t.DateAdded,
                                 false,
                                 null,
@@ -238,19 +236,19 @@ namespace ReactivePlayer.Domain.Repositories
                                     t.TotalTime,
                                     t.DateModified),
 
-                                    t.Name,
-                                    perf,
-                                    comp,
-                                    new TrackAlbumAssociation(
-                                        new Album(
-                                            t.Album,
-                                            albArt,
-                                            t.Year,
-                                            t.TrackCount,
-                                            t.DiscCount),
-                                        t.TrackNumber,
-                                        t.DiscNumber),
-                                    null);
+                                t.Name,
+                                perf,
+                                comp,
+                                new TrackAlbumAssociation(
+                                    new Album(
+                                        t.Album,
+                                        albArt,
+                                        t.Year,
+                                        t.TrackCount,
+                                        t.DiscCount),
+                                    t.TrackNumber,
+                                    t.DiscNumber),
+                                null);
 
                             var fwefwefwef = filters.Any(f => f(nt));
 
@@ -272,7 +270,7 @@ namespace ReactivePlayer.Domain.Repositories
             return returnedTracks;
         }
 
-        public Task<Track> GetByIdAsync(Guid id)
+        public Task<Track> GetByIdAsync(int id)
         {
             this._tracks.TryGetValue(id, out var track);
             return Task.FromResult(track);
@@ -281,6 +279,43 @@ namespace ReactivePlayer.Domain.Repositories
         public Task<bool> AddAsync(Track entity)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<bool> RemoveAsync(int identity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RemoveAsync(IReadOnlyList<int> identities)
+        {
+            throw new NotImplementedException();
+        }
+
+        // TODO: change to NotSupportedException()
+        public Task<Track> CreateAsync(
+            DateTime addedToLibraryDateTime,
+            bool isLoved,
+            IReadOnlyList<DateTime> playedHistory,
+            LibraryEntryFileInfo fileInfo,
+            string title,
+            IEnumerable<Artist> performers,
+            IEnumerable<Artist> composers,
+            TrackAlbumAssociation albumAssociation,
+            string lyrics)
+        {
+            var newTrack = new Track(
+                Interlocked.Increment(ref this.id),
+                addedToLibraryDateTime,
+                isLoved,
+                playedHistory,
+                fileInfo,
+                title,
+                performers,
+                composers,
+                albumAssociation,
+                lyrics);
+
+            return Task.FromResult(newTrack);
         }
     }
 }

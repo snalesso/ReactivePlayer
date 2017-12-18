@@ -35,6 +35,7 @@ Databases
 		- V3
 			- SQLite.NET-PCL				https://github.com/praeclarum/sqlite-net
 			- System.Data.SQLite			https://www.System.Data.SQLite.org
+				- PRAGMA					https://sqlite.org/pragma.html
 				- Articles
 					- Getting started		https://blog.tigrangasparian.com/2012/02/09/getting-started-with-sqlite-in-c-part-one/
 					- Connection strings	https://www.connectionstrings.com/sqlite/

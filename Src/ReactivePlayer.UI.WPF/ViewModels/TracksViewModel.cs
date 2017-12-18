@@ -115,7 +115,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                         Id = trackVM.Id,
                         Title = "Diocane"
                     };
-                    await this._writeLibraryService.UpdateTrack(command);
+                    await this._writeLibraryService.UpdateTrackAsync(command);
                 });
 
             this.AddTrackToLibrary = ReactiveCommand.CreateFromTask(async () =>
@@ -133,7 +133,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.RemoveTrackFromLibrary = ReactiveCommand.CreateFromTask(async (TrackViewModel trackVM) =>
             {
                 var removeTrackCommand = new RemoveTrackCommand(trackVM.Id);
-                await this._writeLibraryService.RemoveTrack(removeTrackCommand);
+                await this._writeLibraryService.RemoveTrackAsync(removeTrackCommand);
             });
         }
 

@@ -1,8 +1,7 @@
+using ReactivePlayer.Core.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Daedalus.ExtensionMethods;
-using ReactivePlayer.Core.Domain.Models;
 
 namespace ReactivePlayer.Core.Library.Models
 {

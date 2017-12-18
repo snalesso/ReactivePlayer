@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace ReactivePlayer.Core.Library.Models
 {
-    public abstract class LibraryEntry : Entity<Guid>
+    public abstract class LibraryEntry : Entity<int>
     {
         #region ctor
 
         public LibraryEntry(
-            Guid id,
+            int id,
             DateTime addedToLibraryDateTime,
             bool isLoved,
             IReadOnlyList<DateTime> playedHistory,

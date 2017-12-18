@@ -1,11 +1,8 @@
-using Daedalus.ExtensionMethods;
-using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
@@ -33,7 +30,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        public Guid Id => this._track.Id;
+        public int Id => this._track.Id;
 
         public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.FileInfo.Location.LocalPath);
 

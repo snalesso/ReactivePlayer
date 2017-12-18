@@ -4,7 +4,8 @@ using System;
 
 namespace ReactivePlayer.Core.Library.Repositories
 {
-    public interface ITracksRepository : IEntityRepository<Track, Guid>
+    // TODO: change creation strategy from .Create() + .Add() to .Add(args[]) only
+    public interface ITracksRepository : IEntityRepository<Track, int>
     {
     }
 }

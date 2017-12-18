@@ -69,13 +69,6 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Daedalus.ExtensionMethods, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\bin\Release\Daedalus.ExtensionMethods.dll</HintPath>
-    </Reference>
-    <Reference Include="Daedalus.UI">
-      <HintPath>..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\bin\Release\Daedalus.UI.dll</HintPath>
-    </Reference>
     <Reference Include="DynamicData, Version=4.15.0.2299, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DynamicData.4.15.0.2299\lib\net45\DynamicData.dll</HintPath>
     </Reference>
@@ -96,9 +89,7 @@
       <HintPath>..\..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -119,11 +110,8 @@
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -171,6 +159,9 @@
     <Compile Include="Composition\Autofac\Modules\EventAggregationAutoSubscriptionModule.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimePlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeShellViewModel.cs" />
+    <Compile Include="Views\EditTrackViewModel.xaml.cs">
+      <DependentUpon>EditTrackViewModel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlaybackControlsView.xaml.cs">
       <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
     </Compile>
@@ -216,6 +207,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
+      <Project>{3358412e-6ca8-462b-883b-0a640218a4a0}</Project>
+      <Name>Daedalus.ExtensionMethods</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
+      <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
+      <Name>Daedalus.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
       <Project>{a45e3c4d-550f-4187-863d-c6f67e734162}</Project>
       <Name>ReactivePlayer.Plugins.iTunes</Name>
@@ -245,6 +244,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EditTrackViewModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlaybackControlsView.xaml">
       <SubType>Designer</SubType>
