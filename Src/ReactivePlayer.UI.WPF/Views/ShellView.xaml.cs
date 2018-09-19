@@ -24,7 +24,7 @@ namespace ReactivePlayer.UI.WPF.Views
 
         public ShellView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this._viewModelSubject = new BehaviorSubject<ShellViewModel>(this.DataContext as ShellViewModel);
             // when .DataContext changes => update .ViewModel

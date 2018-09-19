@@ -1,13 +1,13 @@
-﻿namespace ReactivePlaye.Domain.Models.SQLite3
+﻿namespace ReactivePlayer.Core.Library.SQLite3.POCOs
 {
-    internal class Track
+    public class Track
     {
         public long Id { get; set; }
         public long AddedDateTimeTicks { get; set; }
         public bool IsLoved { get; set; }
         public string Location { get; set; }
-        public long DurationTicks { get; set; }
-        public long SyncDateTimeTicks { get; set; }
+        public long? DurationTicks { get; set; }
+        public long? LastModifiedDateTimeTicks { get; set; }
         public string Title { get; set; }
         public long? ArtistId { get; set; }
         public long? AlbumId { get; set; }

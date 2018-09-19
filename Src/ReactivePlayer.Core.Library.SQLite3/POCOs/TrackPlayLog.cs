@@ -1,6 +1,6 @@
-﻿namespace ReactivePlaye.Domain.Models.SQLite3
+﻿namespace ReactivePlayer.Core.Library.SQLite3.POCOs
 {
-    internal class TrackPlayTimestamp
+    public class TrackPlayTimestamp
     {
         public int Id { get; set; }
         public long DateTimeTicks { get; set; }

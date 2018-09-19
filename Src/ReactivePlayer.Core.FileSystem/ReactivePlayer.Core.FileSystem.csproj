@@ -63,21 +63,21 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="FileSystem\FSWDirectoryWatcher.cs" />
-    <Compile Include="FileSystem\IDirectoryWatcher.cs" />
-    <Compile Include="FileSystem\IFileSystemService.cs" />
-    <Compile Include="FileSystem\Media\Audio\AudioChannels.cs" />
-    <Compile Include="FileSystem\Media\Audio\AudioFileInfo.cs" />
-    <Compile Include="FileSystem\Media\Audio\AudioFileTags.cs" />
-    <Compile Include="FileSystem\Media\Audio\CSCoreAudioFileDurationCalculator.cs" />
-    <Compile Include="FileSystem\Media\Audio\IAudioFileDurationCalculator.cs" />
-    <Compile Include="FileSystem\Media\Audio\IAudioFileInfoProvider.cs" />
-    <Compile Include="FileSystem\Media\Audio\IAudioFileTagger.cs" />
-    <Compile Include="FileSystem\Media\Audio\LocalAudioFileInfoProvider.cs" />
-    <Compile Include="FileSystem\Media\Audio\TagLibSharp\TagLibSharpAudioFileTagger.cs" />
-    <Compile Include="FileSystem\Media\Audio\Tags.cs" />
-    <Compile Include="FileSystem\Media\PlayableFileInfo.cs" />
-    <Compile Include="FileSystem\SimpleFileInfo.cs" />
+    <Compile Include="FSWDirectoryWatcher.cs" />
+    <Compile Include="IDirectoryWatcher.cs" />
+    <Compile Include="IFileSystemService.cs" />
+    <Compile Include="Media\Audio\AudioChannels.cs" />
+    <Compile Include="Media\Audio\AudioFileInfo.cs" />
+    <Compile Include="Media\Audio\AudioFileTags.cs" />
+    <Compile Include="Media\Audio\CSCoreAudioFileDurationCalculator.cs" />
+    <Compile Include="Media\Audio\IAudioFileDurationCalculator.cs" />
+    <Compile Include="Media\Audio\IAudioFileInfoProvider.cs" />
+    <Compile Include="Media\Audio\IAudioFileTagger.cs" />
+    <Compile Include="Media\Audio\LocalAudioFileInfoProvider.cs" />
+    <Compile Include="Media\Audio\TagLibSharp\TagLibSharpAudioFileTagger.cs" />
+    <Compile Include="Media\Audio\Tags.cs" />
+    <Compile Include="Media\PlayableFileInfo.cs" />
+    <Compile Include="SimpleFileInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

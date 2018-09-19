@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -5,6 +6,9 @@ namespace ReactivePlayer.Core.Library
 {
     public interface IWriteLibraryService
     {
+        bool IsBusy { get; }
+        IObservable<bool> WhenIsBusyChanged { get; }
+
         Task<bool> AddTrack(AddTrackCommand command);
         Task<bool> AddTracks(IReadOnlyList<AddTrackCommand> commands);
 

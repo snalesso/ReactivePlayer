@@ -1,6 +1,6 @@
-﻿namespace ReactivePlaye.Domain.Models.SQLite3
+﻿namespace ReactivePlayer.Core.Library.SQLite3.POCOs
 {
-    internal class AlbumAuthor
+    public class AlbumAuthor
     {
         public long AlbumId { get; set; }
         public long ArtistId { get; set; }

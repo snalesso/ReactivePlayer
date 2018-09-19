@@ -46,7 +46,7 @@ namespace ReactivePlayer.Core.Library
                 list.AddRange(artists);
             }))).DisposeWith(this._disposables); // TODO: does the inner SourceList get disposed?
 
-            this._manualTracksChanges.Where(c => c != null).Subscribe(c => Debug.WriteLine($"_manualTracksChanges: {c.TotalChanges}"));
+            this._manualTracksChanges.Where(c => c != null).Subscribe(c => Debug.WriteLine($"{nameof(_manualTracksChanges)}: {c.TotalChanges}"));
         }
 
         #region IReadLibraryService

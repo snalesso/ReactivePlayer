@@ -1,3 +1,8 @@
+PROBLEMS
+- bulk edit
+- keep a edited item unsaved and save others
+
+
 Serializers
 
 	Text
@@ -5,6 +10,7 @@ Serializers
 	- kevin-montrose/Jil					https://github.com/kevin-montrose/Jil
 	- JamesNK/Newtonsoft.Json				https://github.com/JamesNK/Newtonsoft.Json
 	- ServiceStack/ServiceStack.Text		https://github.com/ServiceStack/ServiceStack.Text
+	- ttu/json-flatfile-datastore			https://github.com/ttu/json-flatfile-datastore
 
 	Binary
 

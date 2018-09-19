@@ -1,6 +1,6 @@
-﻿namespace ReactivePlaye.Domain.Models.SQLite3
+﻿namespace ReactivePlayer.Core.Library.SQLite3.POCOs
 {
-    internal class TrackStats
+    public class TrackStats
     {
         public long Id { get; set; }
         public long TrackId { get; set; }

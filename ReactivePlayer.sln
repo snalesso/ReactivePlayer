@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F745F881-EE04-4005-99AD-0CF762F91C13}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F745F881-E
 		Docs\Features.txt = Docs\Features.txt
 		Docs\MVVM.txt = Docs\MVVM.txt
 		Docs\Online audio sources.txt = Docs\Online audio sources.txt
+		Optimizations.txt = Optimizations.txt
 		Docs\Playback libraries.txt = Docs\Playback libraries.txt
 		Docs\Playback.txt = Docs\Playback.txt
 		Docs\Reactive.txt = Docs\Reactive.txt
@@ -18,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F745F881-E
 		Docs\Spotify API.txt = Docs\Spotify API.txt
 		Docs\SQLite.txt = Docs\SQLite.txt
 		Docs\TAGs.txt = Docs\TAGs.txt
+		TextFile1.html = TextFile1.html
 		Docs\Unit test.txt = Docs\Unit test.txt
 		Docs\Visual Studio doc comments.txt = Docs\Visual Studio doc comments.txt
 		Docs\YouTube.txt = Docs\YouTube.txt

@@ -1,0 +1,14 @@
+OPTIMIZATIONS
+
+- make lazy subjects ("connectable")
+- ensure non-async code before Task.FromResult doesn't block UI thread
+- ensure Autofac disposes things
+- ensure transients throughout the application get disposed
+- IDisposable				https://github.com/Fody/Janitor
+- IEquatable<>				https://github.com/Fody/Equals
+- Expression trees			https://github.com/dadhi/FastExpressionCompiler
+- optimize for x64
+- Reflection.Emit			http://docs.servicestack.net/reflection-utils
+- Compiled expression trees	http://docs.servicestack.net/reflection-utils
+- LINQ Optimizations		http://mattwarren.org/2016/09/29/Optimising-LINQ/
+- study VOLATILE keyword
