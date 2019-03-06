@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// </summary>
         public ReactiveScreen()
         {
-            this.displayName = GetType().FullName;
+            this.displayName = this.GetType().FullName;
         }
 
         /// <summary>
@@ -93,12 +93,12 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
             if (!this.IsInitialized)
             {
                 this.IsInitialized = initialized = true;
-                OnInitialize();
+                this.OnInitialize();
             }
 
             this.IsActive = true;
             Log.Info("Activating {0}.", this);
-            OnActivate();
+            this.OnActivate();
 
             Activated?.Invoke(this, new ActivationEventArgs
             {
@@ -127,7 +127,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
                 this.IsActive = false;
                 Log.Info("Deactivating {0}.", this);
-                OnDeactivate(close);
+                this.OnDeactivate(close);
 
                 Deactivated?.Invoke(this, new DeactivationEventArgs
                 {
@@ -164,7 +164,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="dialogResult">The dialog result.</param>
         public virtual void TryClose(bool? dialogResult = null)
         {
-            PlatformProvider.Current.GetViewCloseAction(this, Views.Values, dialogResult).OnUIThread();
+            PlatformProvider.Current.GetViewCloseAction(this, this.Views.Values, dialogResult).OnUIThread();
         }
     }
 }

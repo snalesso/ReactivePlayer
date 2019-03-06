@@ -1,6 +1,7 @@
 PROBLEMS
 - bulk edit
-- keep a edited item unsaved and save others
+- keep an edited item unsaved and save others
+	- la modifica deve propagarsi solo quando viene salvata su disco, quindi le entities devono essere editate tramite una copia, che viene passata al db/serializzatore, che salva la modifica che poi viene riflessa sull'entità e notificata (tramite INPC o tramite evento a livello db)
 
 
 Serializers
@@ -47,7 +48,7 @@ Databases
 					- Connection strings	https://www.connectionstrings.com/sqlite/
 					- Bulk insert			https://docs.google.com/file/d/0B5-wcgU-Ku-eMDNlY1R3SzByV00/edit?pli=1
 					- ROWID					https://www.sqlitetutorial.net/sqlite-autoincrement/
-		- V4								https://sqlite.org/src4/doc/trunk/www/index.wiki
+		- V4 (abandoned)					https://sqlite.org/src4/doc/trunk/www/index.wiki
 
 	- aspnet/Microsoft.Data.Sqlite			https://github.com/aspnet/Microsoft.Data.Sqlite
 	- google/leveldb						https://github.com/google/leveldb

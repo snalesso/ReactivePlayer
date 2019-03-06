@@ -39,15 +39,15 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Domain\Models\Entity.cs" />
     <Compile Include="Domain\Models\Entity`1.cs" />
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
     <Compile Include="Domain\Models\IAggregateRoot.cs" />
-    <Compile Include="Domain\Repositories\IDbConnectionFactory.cs" />
+    <Compile Include="Domain\Persistence\IEntityRepository`1.cs" />
     <Compile Include="SortDirection.cs" />
     <Compile Include="Domain\Models\ValueObject`1.cs" />
-    <Compile Include="Domain\Repositories\IEntityRepository`1.cs" />
-    <Compile Include="Domain\Repositories\IUnitOfWork.cs" />
-    <Compile Include="Domain\Repositories\Specification\ISpecification`1.cs" />
+    <Compile Include="Domain\Persistence\IEntityWithIdRepository`1.cs" />
+    <Compile Include="Domain\Persistence\Specification\ISpecification`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

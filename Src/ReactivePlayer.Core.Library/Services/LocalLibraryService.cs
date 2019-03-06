@@ -23,16 +23,13 @@ namespace ReactivePlayer.Core.Library
     public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable // TODO: ensure IDisposable is disposed
     {
         private readonly ITracksRepository _tracksRepository;
-        private readonly ITrackFactory _trackFactory;
 
         public LocalLibraryService(
-            ITracksRepository tracksRepository,
-            ITrackFactory trackFactory)
+            ITracksRepository tracksRepository)
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
-            this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory)); // TODO: localize
 
-            this._sourceTracks = new SourceCache<Track, int>(t => t.Id).DisposeWith(this._disposables);
+            this._sourceTracks = new SourceCache<Track, Uri>(t => t.Location).DisposeWith(this._disposables);
             this._sourceTracks.Edit(async list =>
             {
                 var tracks = await this._tracksRepository.GetAllAsync();
@@ -46,25 +43,38 @@ namespace ReactivePlayer.Core.Library
                 list.AddRange(artists);
             }))).DisposeWith(this._disposables); // TODO: does the inner SourceList get disposed?
 
-            this._manualTracksChanges.Where(c => c != null).Subscribe(c => Debug.WriteLine($"{nameof(_manualTracksChanges)}: {c.TotalChanges}"));
+            this._manualTracksChanges.Where(c => c != null).Subscribe(c => Debug.WriteLine($"{nameof(this._manualTracksChanges)}: {c.TotalChanges}"));
         }
 
         #region IReadLibraryService
 
-        private readonly SourceCache<Track, int> _sourceTracks;
+        private readonly SourceCache<Track, Uri> _sourceTracks;
         private readonly BehaviorSubject<IChangeSet<Track>> _manualTracksChanges = new BehaviorSubject<IChangeSet<Track>>(null);
         public IObservableList<Track> Tracks => this._sourceTracks.Connect().RemoveKey().AsObservableList().DisposeWith(this._disposables);
 
         private readonly SourceList<Artist> _sourceArtists;
         public IObservableList<Artist> Artists => this._sourceArtists;
 
+        public IObservableList<Album> Albums => throw new NotImplementedException();
+
         #endregion
 
         #region IWriteLibraryService
 
-        public async Task<bool> AddTrack(AddTrackCommand command)
+        public bool IsBusy
+        {
+            get { return this._whenIsBusyChanged_subject.Value; }
+            private set { this._whenIsBusyChanged_subject.OnNext(value); }
+        }
+
+        private BehaviorSubject<bool> _whenIsBusyChanged_subject = new BehaviorSubject<bool>(false);
+        public IObservable<bool> WhenIsBusyChanged => this._whenIsBusyChanged_subject.AsObservable();
+
+        public Task<bool> AddTrack(AddTrackCommand command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
+
+            this.IsBusy = true;
 
             bool wasSuccessful;
 
@@ -72,31 +82,26 @@ namespace ReactivePlayer.Core.Library
 
             try
             {
-                var highestTakenId = this._sourceTracks.Items.Max(t => t.Id);
-
-                var newTrack = await this._trackFactory.CreateAsync(
-                    command.AddedToLibraryDateTime,
-                    false,
-                    null,
-
-                    new LibraryEntryFileInfo(
-                        command.Location,
-                        command.Duration,
-                        command.LastModifiedDateTime),
-
-                    command.Title,
-                    command.Performers?.Select(performer => new Artist(performer.Name)).ToArray(),
-                    command.Composers?.Select(composer => new Artist(composer.Name)).ToArray(),
-                    new TrackAlbumAssociation(
-                    new Album(
-                        command.Title,
-                        null, //adc.Tags.AlbumAuthors.Select(author => new Artist(author.Name)).ToArray(),
-                        null, //adc.Tags.AlbumYear,
+                var newTrack = new Track(
+                    command.Location,
+                    command.Duration,
+                        command.LastModifiedDateTime,
                         null,
-                        null),
+                    DateTime.Now,
+                    false,
+                    command.Title,
+                    command.PerformersNames?.Select(performerName => new Artist(performerName)).ToArray(),
+                    command.ComposersNames?.Select(composerName => new Artist(composerName)).ToArray(),
                     null,
-                    null),
-                    command.Lyrics);
+                    new TrackAlbumAssociation(
+                        new Album(
+                            command.Title,
+                            null, //adc.Tags.AlbumAuthors.Select(author => new Artist(author.Name)).ToArray(),
+                            null, //adc.Tags.AlbumYear,
+                            null),
+                        null,
+                        null)
+                        );
 
                 //if (wasSuccessful = await this._tracksRepository.AddAsync(newTrack))
                 //{
@@ -109,8 +114,12 @@ namespace ReactivePlayer.Core.Library
                 wasSuccessful = false;
                 // TODO: log
             }
+            finally
+            {
+                this.IsBusy = false;
+            }
 
-            return wasSuccessful;
+            return Task.FromResult(wasSuccessful);
         }
 
         public async Task<bool> AddTracks(IReadOnlyList<AddTrackCommand> commands)
@@ -127,30 +136,28 @@ namespace ReactivePlayer.Core.Library
 
             try
             {
-                var newTracks = await Task.WhenAll(commands
-                    .Select(async adc => await this._trackFactory.CreateAsync(
-                        adc.AddedToLibraryDateTime,
+                var newTracks = commands
+                    .Select(command => new Track(
+                        command.Location,
+                        command.Duration,
+                        command.LastModifiedDateTime,
+                        command.FileSizeBytes,
+                        DateTime.Now,
                         false,
-                        null,
 
-                        new LibraryEntryFileInfo(
-                            adc.Location,
-                            adc.Duration,
-                            adc.LastModifiedDateTime),
-
-                        adc.Title,
-                        adc.Performers.Select(performer => new Artist(performer.Name)).ToArray(),
-                        adc.Composers.Select(composer => new Artist(composer.Name)).ToArray(),
+                        command.Title,
+                        command.PerformersNames.Select(performerName => new Artist(performerName)).ToArray(),
+                        command.ComposersNames.Select(composerName => new Artist(composerName)).ToArray(),
+                        command.Year,
                         new TrackAlbumAssociation(
-                        new Album(
-                            adc.Title,
-                            null, //adc.Tags.AlbumAuthors.Select(author => new Artist(author.Name)).ToArray(),
-                            null, //adc.Tags.AlbumYear,
-                            null,
-                            null),
-                        null,
-                        null),
-                        adc.Lyrics)));
+                            new Album(
+                                command.Title,
+                                command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToArray(),
+                                command.AlbumTracksCount,
+                                command.AlbumDiscsCount),
+                            command.AlbumTrackNumber,
+                        command.AlbumDiscNumber)))
+                    .ToArray();
 
                 if (wasSuccessful = await this._tracksRepository.AddAsync(newTracks))
                 {
@@ -172,15 +179,15 @@ namespace ReactivePlayer.Core.Library
 
             try
             {
-                if (wasSuccessful = await this._tracksRepository.RemoveAsync(command.TrackId))
+                if (wasSuccessful = await this._tracksRepository.RemoveAsync(command.TrackLocation))
                 {
                     this._sourceTracks.Edit(cacheUpdater =>
                     {
-                        cacheUpdater.RemoveKey(command.TrackId);
+                        cacheUpdater.RemoveKey(command.TrackLocation);
                     });
                 }
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 wasSuccessful = false;
                 // TODO: log
@@ -195,7 +202,7 @@ namespace ReactivePlayer.Core.Library
 
             try
             {
-                var toBeRemovedIds = commands.Select(c => c.TrackId).ToImmutableArray();
+                var toBeRemovedIds = commands.Select(c => c.TrackLocation).ToImmutableArray();
                 if (wasSuccessful = await this._tracksRepository.RemoveAsync(toBeRemovedIds))
                 {
                     this._sourceTracks.Edit(cacheUpdater =>
@@ -204,7 +211,7 @@ namespace ReactivePlayer.Core.Library
                     });
                 }
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 wasSuccessful = false;
                 // TODO: log
@@ -216,24 +223,33 @@ namespace ReactivePlayer.Core.Library
         public async Task<bool> UpdateTrackAsync(UpdateTrackCommand command)
         {
             var wasSuccessful = false;
-            var trackToUpdate = await this._tracksRepository.GetByIdAsync(command.Id);
+            var trackToUpdate = await this._tracksRepository.GetByIdAsync(command.Location);
 
-            if (trackToUpdate is null)
+            if (trackToUpdate == null)
             {
                 wasSuccessful = false;
             }
             else
             {
+                trackToUpdate.Location = command.Location;
+                trackToUpdate.Duration = command.Duration;
+                trackToUpdate.LastModifiedDateTime = command.LastModifiedDateTime;
+                trackToUpdate.FileSizeBytes = command.FileSizeBytes;
+                trackToUpdate.IsLoved = command.IsLoved;
+
                 trackToUpdate.Title = command.Title;
-                trackToUpdate.Performers = command.Performers;
-                trackToUpdate.Composers = command.Composers;
-                trackToUpdate.AlbumAssociation = command.AlbumAssociation;
-                trackToUpdate.Lyrics = command.Lyrics;
-                trackToUpdate.UpdateFileInfo(
-                    new LibraryEntryFileInfo(
-                        command.Location,
-                        command.Duration,
-                        command.LastModifiedDateTime));
+                trackToUpdate.Performers = command.PerformersNames.Select(performerName => new Artist(performerName)).ToArray();
+                trackToUpdate.Composers = command.ComposersNames.Select(composerName => new Artist(composerName)).ToArray();
+                trackToUpdate.Year = command.Year;
+                trackToUpdate.AlbumAssociation =
+                    new TrackAlbumAssociation(
+                        new Album(
+                            command.Title,
+                            command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToArray(),
+                            command.AlbumTracksCount,
+                            command.AlbumDiscsCount),
+                        command.AlbumTrackNumber,
+                        command.AlbumDiscNumber);
 
                 //var index = this._sourceTracks.Items.IndexOf(trackToUpdate);
                 //var change = new Change<Track>(ListChangeReason.Refresh, trackToUpdate, index);
@@ -250,14 +266,13 @@ namespace ReactivePlayer.Core.Library
 
         public Task<bool> UpdateTracksAsync(IReadOnlyList<UpdateTrackCommand> commands)
         {
-            var updates = commands.Select(c => new Tuple<Track, string>(this.Tracks.Items.FirstOrDefault(t => t.Id == c.Id), c.Title)).Where(u => u.Item1 != null);
+            var updates = commands.Select(c => new Tuple<Track, string>(this.Tracks.Items.FirstOrDefault(t => t.Location == c.Location), c.Title)).Where(u => u.Item1 != null);
             foreach (var u in updates)
             {
                 u.Item1.Title = u.Item1.Title + " " + u.Item2;
                 u.Item1.Performers = u.Item1.Performers;
                 u.Item1.Composers = u.Item1.Composers;
                 u.Item1.AlbumAssociation = u.Item1.AlbumAssociation;
-                u.Item1.Lyrics = u.Item1.Lyrics;
             }
             this._manualTracksChanges.OnNext(
                 new ChangeSet<Track>(
@@ -268,7 +283,7 @@ namespace ReactivePlayer.Core.Library
                     })));
             this._sourceTracks.Edit(cacheUpdater =>
             {
-                cacheUpdater.Remove(this._sourceTracks.Items.FirstOrDefault().Id);
+                cacheUpdater.Remove(this._sourceTracks.Items.FirstOrDefault().Location);
             });
 
             return Task.FromResult(true);

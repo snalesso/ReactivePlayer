@@ -150,7 +150,9 @@
     <Compile Include="ViewModels\PlaybackHistoryItemViewModel.cs" />
     <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
+    <Compile Include="ViewModels\SelectableTacksListViewModel`1.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="ViewModels\TracksOfPerformerViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
     <Compile Include="ViewModels\TrackViewModel.cs" />
     <Compile Include="ViewModels\CrashViewModel.cs" />

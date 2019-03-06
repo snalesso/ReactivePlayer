@@ -22,7 +22,7 @@ namespace ReactivePlayer.UI.WPF.Controls
     {
         public PlaybackBox()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

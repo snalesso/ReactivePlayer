@@ -79,6 +79,7 @@
     <Compile Include="PlaybackStatus.cs" />
     <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackPlaybackStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -87,6 +88,14 @@
     <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
       <Project>{3358412e-6ca8-462b-883b-0a640218a4a0}</Project>
       <Name>Daedalus.ExtensionMethods</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
+      <Project>{61f616a4-feb6-4582-b1a2-418fd0147c7b}</Project>
+      <Name>ReactivePlayer.Core.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
+      <Project>{402feed0-76d6-4640-b261-ebe598ba6fbe}</Project>
+      <Name>ReactivePlayer.Core.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

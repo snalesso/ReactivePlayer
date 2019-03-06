@@ -1,18 +1,23 @@
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
+using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public sealed class TrackViewModel : ReactiveObject
+    public sealed class TrackViewModel : ReactiveScreen
     {
         #region constants & fields
 
         private readonly IPlaybackService _playbackService;
         private readonly Track _track;
+
+        private CompositeDisposable _disposables = new CompositeDisposable(); // TODO: move to #region IDisposable
 
         #endregion
 
@@ -24,15 +29,34 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
+
+            this._trackPlaybackStatus_OAPH = Observable.CombineLatest(
+                  this._playbackService.WhenAudioSourceLocationChanged,
+                  this._playbackService.WhenStatusChanged,
+                  (audioSourceLocation, status) =>
+                  {
+                      if (this.TrackLocation == audioSourceLocation)
+                      {
+                          if (status == PlaybackStatus.Playing)
+                              return TrackPlaybackStatus.Playing;
+
+                          else if (status == PlaybackStatus.Paused)
+                              return TrackPlaybackStatus.Paused;
+                      }
+                      return TrackPlaybackStatus.NotPlaying;
+                  })
+                  .ToProperty(this, @this => @this.TrackPlaybackStatus)
+                  .DisposeWith(this._disposables);
         }
 
         #endregion
 
         #region properties
 
-        public int Id => this._track.Id;
-
-        public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.FileInfo.Location.LocalPath);
+        private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
+        public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
+        
+        public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
 
         private IReadOnlyList<string> _performersNames;
         public IReadOnlyList<string> PerformersNames =>
@@ -41,13 +65,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public string AlbumTitle => this._track.AlbumAssociation?.Album?.Title;
 
-        public Uri TrackLocation => this._track.FileInfo.Location;
+        // TODO: expose as string? probably YES because some methods (like .Escape()) modify internal URI data
+        public Uri TrackLocation => this._track.Location;
 
         public DateTime AddedToLibraryDateTime => this._track.AddedToLibraryDateTime;
 
         #endregion
 
         #region methods
+
+        public override void CanClose(Action<bool> callback)
+        {
+            this._disposables.Dispose();
+
+            base.CanClose(callback);
+        }
+
         #endregion
 
         #region commands

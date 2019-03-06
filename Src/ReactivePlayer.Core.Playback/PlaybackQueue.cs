@@ -55,7 +55,7 @@ namespace ReactivePlayer.Core.Playback
         private SourceList<Uri> _items = new SourceList<Uri>();
         public IObservableList<Uri> Items => this._items.AsObservableList();
 
-        public IObservable<bool> IsEmpty => this.Items.Connect().IsEmpty();
+        //public IObservable<bool> IsEmpty => this.Items.Connect().IsEmpty();
 
         //public BehaviorSubject<Uri> _currentlyPlayingSubject = new BehaviorSubject<Uri>(null);
         //public IObservable<Uri> CurrentlyPlaying => this._audioPlayer.WhenTrackLocationChanged;

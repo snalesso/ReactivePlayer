@@ -29,7 +29,7 @@ namespace ReactivePlayer.UI.WPF.Views
 
         public CrashView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

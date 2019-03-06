@@ -36,9 +36,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 {
                     var commands = new[]
                     {
-                        new UpdateTrackCommand()
+                        new UpdateTrackCommand(trackVM.TrackLocation)
                         {
-                            Id = trackVM.Id,
                             Title = "Diocane"
                         }
                     };
@@ -49,8 +48,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region properties
-
-        public int Id => this._track.Id;
 
         public string Title => this._track.Title;
 

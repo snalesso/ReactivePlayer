@@ -1,4 +1,10 @@
-Tagging libraries
+DOCUMENTATIONS
+
+- Picard
+	- TAGS		https://picard.musicbrainz.org/docs/tags/
+	- Mappings	https://picard.musicbrainz.org/docs/mappings/
+
+LIBRARIES
 
 - Taglib-Sharp		https://github.com/mono/taglib-sharp
 - NTagLite			https://bitbucket.org/orthoprog/ntaglite/wiki/Home

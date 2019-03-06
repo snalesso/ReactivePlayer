@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
-    public abstract class Entity<TIdentity> : /*Entity,*/ IEquatable<Entity<TIdentity>>
+    public abstract class Entity<TIdentity> : Entity, IEquatable<Entity<TIdentity>>
         where TIdentity : IEquatable<TIdentity>
     {
         #region artificial id
@@ -24,6 +24,15 @@ namespace ReactivePlayer.Core.Domain.Models
 
         #region Entity<TIdentity>
 
+        protected override IEnumerable<object> GetIdentityIngredients()
+        {
+            yield return this.Id;
+        }
+
+        #endregion
+
+        #region Entity<TIdentity>
+
         public override bool Equals(object obj)
         {
             return this.Equals(obj as Entity<TIdentity>);
@@ -36,7 +45,7 @@ namespace ReactivePlayer.Core.Domain.Models
 
         public bool Equals(Entity<TIdentity> other)
         {
-            if (other is null)
+            if (other == null)
                 return false;
 
             if (this.GetType() != other.GetType())
@@ -57,10 +66,10 @@ namespace ReactivePlayer.Core.Domain.Models
 
         public static bool operator ==(Entity<TIdentity> left, Entity<TIdentity> right)
         {
-            if (left is null ^ right is null)
+            if (left == null ^ right == null)
                 return false;
 
-            return (left is null) || left.Equals(right);
+            return (left == null) || left.Equals(right);
         }
 
         public static bool operator !=(Entity<TIdentity> left, Entity<TIdentity> right)

@@ -40,7 +40,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
             var nonGeneratedView = PlatformProvider.Current.GetFirstNonGeneratedView(view);
             PlatformProvider.Current.ExecuteOnFirstLoad(nonGeneratedView, this.OnViewLoaded);
-            OnViewAttached(nonGeneratedView, context);
+            this.OnViewAttached(nonGeneratedView, context);
             ViewAttached(this, new ViewAttachedEventArgs { View = nonGeneratedView, Context = context });
 
             var activatable = this as IActivate;

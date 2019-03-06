@@ -43,6 +43,8 @@ namespace ReactivePlayer.Core.Playback.CSCore
             this._playerScopeDisposables = new CompositeDisposable();
             this.__playbackScopeDisposables = new CompositeDisposable().DisposeWith(this._playerScopeDisposables);
 
+            this._playbackActionsSemaphore.DisposeWith(this._playerScopeDisposables);
+
             // Track location
             this._audioSourceLocationSubject = new BehaviorSubject<Uri>(null).DisposeWith(this._playerScopeDisposables);
             this.WhenAudioSourceLocationChanged = this._audioSourceLocationSubject

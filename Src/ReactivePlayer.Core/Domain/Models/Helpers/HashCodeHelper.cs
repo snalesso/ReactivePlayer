@@ -12,6 +12,7 @@ namespace ReactivePlayer.Core.Domain.Models.Helpers
         public static int CombineHashCodes(IEnumerable<object> objects)
         {
             // TODO: learn about unchecked
+            // TODO: when objects == null || objects.Count == 0 || objects.All(o => o == null) || objects.Any(o => o == null)?
             unchecked
             {
                 var hash = 17;

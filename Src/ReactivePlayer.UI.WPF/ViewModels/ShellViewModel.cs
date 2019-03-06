@@ -50,10 +50,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.AddTracks = ReactiveCommand.CreateFromTask(
                  async (IReadOnlyList<string> locationsStrings) =>
                  {
-                     var adcs = locationsStrings.Select(ls => new AddTrackCommand()
+                     var addTrackCommands = locationsStrings.Select(ls => new AddTrackCommand(new Uri(ls))
                      {
                      }).ToImmutableList();
-                     return await this._writeLibraryService.AddTracks(adcs);
+                     return await this._writeLibraryService.AddTracks(addTrackCommands);
                  })
                 .DisposeWith(this._disposables);
             // TODO: use interaction?

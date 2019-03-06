@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Domain.Repositories
+namespace ReactivePlayer.Core.Domain.Persistence
 {
     // TODO: return a meaningful response instead of a bare bool
-    public interface IEntityRepository<TEntity, TIdentity>
+    public interface IEntityWithIdRepository<TEntity, TIdentity>
         where TEntity : Entity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
@@ -21,8 +21,8 @@ namespace ReactivePlayer.Core.Domain.Repositories
          * since even though Any(e => e.ID == possibleNewId) might be a solution
          * it doesn't guarantee that between Any() and Add() possibleNewId becomes used */
         Task<bool> AddAsync(TEntity entity);
-        Task<bool> AddAsync(IReadOnlyList<TEntity> entities);
+        Task<bool> AddAsync(IEnumerable<TEntity> entities);
         Task<bool> RemoveAsync(TIdentity identity);
-        Task<bool> RemoveAsync(IReadOnlyList<TIdentity> identities);
+        Task<bool> RemoveAsync(IEnumerable<TIdentity> identities);
     }
 }

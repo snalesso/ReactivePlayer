@@ -28,7 +28,9 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
 
             return
                 new AudioFileInfo(
-                    new PlayableFileInfo(trackLocation, fileInfo.LastWriteTime, Convert.ToUInt64(fileInfo.Length), waveSource.GetLength()),
+                    trackLocation, fileInfo.LastWriteTime,
+                    Convert.ToUInt64(fileInfo.Length),
+                    waveSource.GetLength(),
                     this._tagger.ReadTags(trackLocation));
         }
 

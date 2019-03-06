@@ -32,7 +32,7 @@ namespace ReactivePlayer.UI.WPF.Views
 
         public TracksView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this._viewModelSubject = new BehaviorSubject<TracksViewModel>(this.DataContext as TracksViewModel).DisposeWith(this._disposables);
             this.WhenViewModelChanged = this._viewModelSubject.AsObservable().DistinctUntilChanged();

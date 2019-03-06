@@ -29,6 +29,7 @@ FUNCTIONALITIES:
 	- PC power action
 - delete
 	- after played
+- queued tracks save
 - pause on PC account lock
 - file integrity verifier
 - tag charset converter (take a look @ Foobar200's Chacon)
@@ -56,6 +57,7 @@ FUNCTIONALITIES:
 	- lives (might add a tag entry, and specify in config a format to rename the file)
 	- covers (new tag: OriginalPerformer)
 	- both
+- cache Lyrics
 - FluentValidation
 - setup different builds for x86 & x64
 - UI

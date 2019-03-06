@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
 {
+    // TODO: consider making some methods SYNC, and letting the UI caller thread offloading
     public interface IPlaybackService : IDisposable
     {
         #region methods
@@ -13,15 +14,19 @@ namespace ReactivePlayer.Core.Playback
         IObservable<bool> WhenCanLoadChanged { get; }
         IObservable<Uri> WhenAudioSourceLocationChanged { get; }
 
+        // TODO: make sync
         Task PlayAsync();
         IObservable<bool> WhenCanPlayChanged { get; }
 
+        // TODO: make sync
         Task ResumeAsync();
         IObservable<bool> WhenCanResumeChanged { get; }
 
+        // TODO: make sync
         Task PauseAsync();
         IObservable<bool> WhenCanPauseChanged { get; }
 
+        // TODO: make sync
         Task StopAsync();
         IObservable<bool> WhenCanStopChanged { get; }
 

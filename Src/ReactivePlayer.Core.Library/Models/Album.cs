@@ -14,13 +14,11 @@ namespace ReactivePlayer.Core.Library.Models
         public Album(
             string title,
             IEnumerable<Artist> authors,
-            uint? year,
             uint? tracksCount,
             uint? discsCount)
         {
             this.Title = title.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
             this.Authors = authors.EmptyIfNull().ToArray(); // TODO: this is not completely an IReadOnlyList<> since array items can be replaced via index access!!
-            this.Year = year.ThrowIf(v => v > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
             this.TracksCount = tracksCount.NullIf(v => v <= 0);
             this.DiscsCount = discsCount.NullIf(v => v <= 0);
         }
@@ -30,8 +28,8 @@ namespace ReactivePlayer.Core.Library.Models
         #region properties
 
         public string Title { get; }
+        // TODO: use immutable array? https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1, what about uniqueness?
         public IReadOnlyList<Artist> Authors { get; }
-        public uint? Year { get; }
         public uint? TracksCount { get; }
         public uint? DiscsCount { get; }
 
@@ -39,19 +37,11 @@ namespace ReactivePlayer.Core.Library.Models
 
         #region ValueObject
 
-        protected override bool EqualsCore(Album other) =>
-            this.Title.Equals(other.Title)
-            && this.Authors.SequenceEqual(other.Authors)
-            && this.Year.Equals(other.Year)
-            && this.TracksCount.Equals(other.TracksCount)
-            && this.DiscsCount.Equals(other.DiscsCount);
-
-        protected override IEnumerable<object> GetHashCodeIngredients()
+        protected override IEnumerable<object> GetValueIngredients()
         {
             yield return this.Title;
             foreach (var a in this.Authors)
                 yield return a;
-            yield return this.Year;
             yield return this.TracksCount;
             yield return this.DiscsCount;
         }

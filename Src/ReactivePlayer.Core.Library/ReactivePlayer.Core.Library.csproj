@@ -69,9 +69,7 @@
     </Compile>
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
-    <Compile Include="Models\ITrackFactory.cs" />
     <Compile Include="Models\LibraryEntry.cs" />
-    <Compile Include="Models\LibraryEntryFileInfo.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />
     <Compile Include="Repositories\ITracksRepository.cs" />
@@ -90,6 +88,10 @@
     <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
       <Project>{3358412e-6ca8-462b-883b-0a640218a4a0}</Project>
       <Name>Daedalus.ExtensionMethods</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
+      <Project>{61f616a4-feb6-4582-b1a2-418fd0147c7b}</Project>
+      <Name>ReactivePlayer.Core.FileSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{779ec49b-1edb-44d4-8620-3d8c1e3d7946}</Project>

@@ -1,12 +1,14 @@
-﻿namespace ReactivePlayer.Core.Library
+﻿using System;
+
+namespace ReactivePlayer.Core.Library
 {
     public class RemoveTrackCommand
     {
-        public RemoveTrackCommand(int trackId)
+        public RemoveTrackCommand(Uri trackLocation)
         {
-            this.TrackId = trackId; // TODO: null check
+            this.TrackLocation = trackLocation; // TODO: null check
         }
 
-        public int TrackId { get; }
+        public Uri TrackLocation { get; }
     }
 }

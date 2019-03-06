@@ -20,7 +20,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// </summary>
         public virtual bool IsNotifying
         {
-            get { return AreChangeNotificationsEnabled(); }
+            get { return this.AreChangeNotificationsEnabled(); }
             set { throw new NotSupportedException(); }
         }
 
@@ -31,7 +31,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name = "property">The property expression.</param>
         public virtual void NotifyOfPropertyChange<TProperty>(Expression<Func<TProperty>> property)
         {
-            NotifyOfPropertyChange(property.GetMemberInfo().Name);
+            this.NotifyOfPropertyChange(property.GetMemberInfo().Name);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// </summary>
         public virtual void Refresh()
         {
-            NotifyOfPropertyChange(string.Empty);
+            this.NotifyOfPropertyChange(string.Empty);
         }
     }
 }

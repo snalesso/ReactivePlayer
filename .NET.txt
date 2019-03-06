@@ -1,6 +1,2 @@
 Optimizations
 
-Writing High-Performance Managed Applications : A Primer	https://msdn.microsoft.com/it-it/library/ms973858.aspx
-Writing Faster Managed Code: Know What Things Cost			https://msdn.microsoft.com/it-it/library/ms973852(it-it).aspx
-Garbage Collector Basics and Performance Hints				https://msdn.microsoft.com/it-it/library/ms973837.aspx
-Performance Tips and Tricks in .NET Applications			https://msdn.microsoft.com/it-it/library/ms973839(it-it).aspx

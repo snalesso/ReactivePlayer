@@ -5,9 +5,12 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
     public sealed class AudioFileInfo : PlayableFileInfo
     {
         public AudioFileInfo(
-            PlayableFileInfo fileInfo,
+            Uri location,
+            DateTime? lastModifiedDateTime,
+            ulong? sizeBytes,
+            TimeSpan? duration,
             AudioFileTags tags)
-            : base(fileInfo.Location, fileInfo.LastModifiedDateTime, fileInfo.SizeBytes, fileInfo.Duration)
+            : base(location, lastModifiedDateTime, sizeBytes, duration)
         {
             this.Tags = tags;
         }

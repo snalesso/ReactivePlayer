@@ -43,9 +43,9 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         private void CleanIfNeeded()
         {
-            if (IsCleanupNeeded())
+            if (this.IsCleanupNeeded())
             {
-                CleanAbandonedItems();
+                this.CleanAbandonedItems();
             }
         }
 
@@ -118,7 +118,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <returns>The enumerator.</returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            CleanIfNeeded();
+            this.CleanIfNeeded();
             var enumerable = this.inner.Select(pair => new KeyValuePair<TKey, TValue>(pair.Key, (TValue)pair.Value.Target))
                 .Where(pair => pair.Value != null);
             return enumerable.GetEnumerator();
@@ -126,12 +126,12 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            Add(item.Key, item.Value);
+            this.Add(item.Key, item.Value);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (!TryGetValue(item.Key, out TValue value))
+            if (!this.TryGetValue(item.Key, out TValue value))
                 return false;
 
             return value == item.Value;
@@ -165,7 +165,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            if (!TryGetValue(item.Key, out TValue value))
+            if (!this.TryGetValue(item.Key, out TValue value))
                 return false;
             if (value != item.Value)
                 return false;
@@ -184,7 +184,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         {
             get
             {
-                CleanIfNeeded();
+                this.CleanIfNeeded();
                 return this.inner.Count;
             }
         }
@@ -201,7 +201,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <param name="value">The value of the element to add. The value can be null for reference types.</param>
         public void Add(TKey key, TValue value)
         {
-            CleanIfNeeded();
+            this.CleanIfNeeded();
             this.inner.Add(key, new WeakReference(value));
         }
 
@@ -212,7 +212,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <returns></returns>
         public bool ContainsKey(TKey key)
         {
-            return TryGetValue(key, out TValue dummy);
+            return this.TryGetValue(key, out TValue dummy);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <returns>true if the element is successfully found and removed; otherwise, false. This method returns false if key is not found in the <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/>.</returns>
         public bool Remove(TKey key)
         {
-            CleanIfNeeded();
+            this.CleanIfNeeded();
             return this.inner.Remove(key);
         }
 
@@ -237,7 +237,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         /// <returns>true if the <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/> contains an element with the specified key; otherwise, false.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            CleanIfNeeded();
+            this.CleanIfNeeded();
 
             if (!this.inner.TryGetValue(key, out WeakReference wr))
             {
@@ -269,13 +269,13 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
         {
             get
             {
-                if (!TryGetValue(key, out TValue result))
+                if (!this.TryGetValue(key, out TValue result))
                     throw new KeyNotFoundException();
                 return result;
             }
             set
             {
-                CleanIfNeeded();
+                this.CleanIfNeeded();
                 this.inner[key] = new WeakReference(value);
             }
         }
@@ -314,7 +314,7 @@ namespace ReactivePlayer.UI.WPF.ReactiveCaliburnMicro
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return GetEnumerator();
+                return this.GetEnumerator();
             }
 
             void ICollection<TValue>.Add(TValue item)

@@ -22,7 +22,7 @@ namespace ReactivePlayer.UI.WPF.Views
     {
         public EditTrackViewModel()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

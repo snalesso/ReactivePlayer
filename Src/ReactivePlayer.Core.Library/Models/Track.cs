@@ -5,39 +5,74 @@ using System.Linq;
 
 namespace ReactivePlayer.Core.Library.Models
 {
-    public class Track : LibraryEntry, IAggregateRoot
+    public class Track : LibraryEntry
     {
         #region ctor
 
         public Track(
-            int id,
+            // LibraryEntry
+            Uri location,
+            TimeSpan? duration,
+            DateTime? lastModified,
+            uint? fileSizeBytes,
             DateTime addedToLibraryDateTime,
             bool isLoved,
-            IReadOnlyList<DateTime> playedHistory,
-            LibraryEntryFileInfo fileInfo,
+            // Track
             string title,
             IEnumerable<Artist> performers,
             IEnumerable<Artist> composers,
-            TrackAlbumAssociation albumAssociation,
-            string lyrics)
-            : base(id, addedToLibraryDateTime, isLoved, playedHistory, fileInfo)
+            uint? year,
+            TrackAlbumAssociation albumAssociation
+            )
+            : base(location, duration, lastModified, fileSizeBytes, addedToLibraryDateTime, isLoved)
         {
             this.Title = title.TrimmedOrNull();
             this.Performers = performers.EmptyIfNull().ToList().AsReadOnly();
             this.Composers = composers.EmptyIfNull().ToList().AsReadOnly();
             this.AlbumAssociation = albumAssociation;
-            this.Lyrics = lyrics.TrimmedOrNull();
+            this.Year = year.ThrowIf(v => v > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
         }
 
         #endregion
 
         #region properties
 
-        public string Title { get; internal set; }
-        public IReadOnlyList<Artist> Performers { get; internal set; }
-        public IReadOnlyList<Artist> Composers { get; internal set; }
-        public TrackAlbumAssociation AlbumAssociation { get; internal set; }
-        public string Lyrics { get; internal set; }
+        private string _title;
+        public string Title
+        {
+            get => this._title;
+            internal set => this.SetAndRaiseIfChanged(ref this._title, value);
+        }
+
+        // TODO: use immutable array? https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1, what about uniqueness?
+        private IReadOnlyList<Artist> _performers;
+        public IReadOnlyList<Artist> Performers
+        {
+            get => this._performers;
+            internal set => this.SetAndRaiseIfChanged(ref this._performers, value);
+        }
+
+        // TODO: use immutable array? https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1, what about uniqueness?
+        private IReadOnlyList<Artist> _composers;
+        public IReadOnlyList<Artist> Composers
+        {
+            get => this._composers;
+            internal set => this.SetAndRaiseIfChanged(ref this._composers, value);
+        }
+
+        private uint? _year;
+        public uint? Year
+        {
+            get => this._year;
+            internal set => this.SetAndRaiseIfChanged(ref this._year, value);
+        }
+
+        private TrackAlbumAssociation _albumAssociation;
+        public TrackAlbumAssociation AlbumAssociation
+        {
+            get => this._albumAssociation;
+            internal set => this.SetAndRaiseIfChanged(ref this._albumAssociation, value);
+        }
 
         #endregion
 
@@ -47,8 +82,9 @@ namespace ReactivePlayer.Core.Library.Models
 
         #region Entity
 
-        protected override void EnsureIsWellFormattedId(int id)
+        protected override IEnumerable<object> GetIdentityIngredients()
         {
+            yield return this.Location;
         }
 
         #endregion

@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.Views
     {
         public PlaybackHistoryItemView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private CompositeDisposable _disposables = new CompositeDisposable();

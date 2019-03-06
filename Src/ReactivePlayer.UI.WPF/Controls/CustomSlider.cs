@@ -27,61 +27,61 @@ namespace ReactivePlayer.UI.WPF.Controls
 
         #region Properties
 
-        public static readonly DependencyProperty ChangeValueWhileDraggingProperty = DependencyProperty.Register("ChangeValueWhileDragging", typeof(bool), typeof(SliderBase), new PropertyMetadata(false));
+        public static readonly DependencyProperty ChangeValueWhileDraggingProperty = DependencyProperty.Register(nameof(ChangeValueWhileDragging), typeof(bool), typeof(SliderBase), new PropertyMetadata(false));
         public bool ChangeValueWhileDragging
         {
-            get { return Convert.ToBoolean(GetValue(ChangeValueWhileDraggingProperty)); }
-            set { SetValue(ChangeValueWhileDraggingProperty, value); }
+            get { return Convert.ToBoolean(this.GetValue(ChangeValueWhileDraggingProperty)); }
+            set { this.SetValue(ChangeValueWhileDraggingProperty, value); }
         }
 
-        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(double), typeof(SliderBase), new PropertyMetadata(0.0, MinMaxChangedCallback));
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(SliderBase), new PropertyMetadata(0.0, MinMaxChangedCallback));
         public double Minimum
         {
-            get { return Convert.ToDouble(GetValue(MinimumProperty)); }
-            set { SetValue(MinimumProperty, value); }
+            get { return Convert.ToDouble(this.GetValue(MinimumProperty)); }
+            set { this.SetValue(MinimumProperty, value); }
         }
 
-        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(double), typeof(SliderBase), new PropertyMetadata(100.0, MinMaxChangedCallback));
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(SliderBase), new PropertyMetadata(100.0, MinMaxChangedCallback));
         public double Maximum
         {
-            get { return Convert.ToDouble(GetValue(MaximumProperty)); }
-            set { SetValue(MaximumProperty, value); }
+            get { return Convert.ToDouble(this.GetValue(MaximumProperty)); }
+            set { this.SetValue(MaximumProperty, value); }
         }
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(double), typeof(SliderBase), new PropertyMetadata(0.0, ValueChangedCallback));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(double), typeof(SliderBase), new PropertyMetadata(0.0, ValueChangedCallback));
         public double Value
         {
-            get { return Convert.ToDouble(GetValue(ValueProperty)); }
-            set { SetValue(ValueProperty, value); }
+            get { return Convert.ToDouble(this.GetValue(ValueProperty)); }
+            set { this.SetValue(ValueProperty, value); }
         }
 
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(double), typeof(SliderBase), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(nameof(Position), typeof(double), typeof(SliderBase), new PropertyMetadata(0.0));
         [EditorBrowsable(EditorBrowsableState.Never)]
         public double Position
         {
-            get { return Convert.ToDouble(GetValue(PositionProperty)); }
-            set { SetValue(PositionProperty, value); }
+            get { return Convert.ToDouble(this.GetValue(PositionProperty)); }
+            set { this.SetValue(PositionProperty, value); }
         }
 
-        public static readonly DependencyProperty TrackBackgroundProperty = DependencyProperty.Register("TrackBackground", typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty TrackBackgroundProperty = DependencyProperty.Register(nameof(TrackBackground), typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
         public Brush TrackBackground
         {
-            get { return (Brush)GetValue(TrackBackgroundProperty); }
-            set { SetValue(TrackBackgroundProperty, value); }
+            get { return (Brush)this.GetValue(TrackBackgroundProperty); }
+            set { this.SetValue(TrackBackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty BarBackgroundProperty = DependencyProperty.Register("BarBackground", typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty BarBackgroundProperty = DependencyProperty.Register(nameof(BarBackground), typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
         public Brush BarBackground
         {
-            get { return (Brush)GetValue(BarBackgroundProperty); }
-            set { SetValue(BarBackgroundProperty, value); }
+            get { return (Brush)this.GetValue(BarBackgroundProperty); }
+            set { this.SetValue(BarBackgroundProperty, value); }
         }
 
-        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register("ButtonBackground", typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(nameof(ButtonBackground), typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
         public Brush ButtonBackground
         {
-            get { return (Brush)GetValue(ButtonBackgroundProperty); }
-            set { SetValue(ButtonBackgroundProperty, value); }
+            get { return (Brush)this.GetValue(ButtonBackgroundProperty); }
+            set { this.SetValue(ButtonBackgroundProperty, value); }
         }
 
         #endregion
@@ -103,24 +103,24 @@ namespace ReactivePlayer.UI.WPF.Controls
         {
             base.OnApplyTemplate();
 
-            this.sliderCanvas = (Canvas)GetTemplateChild("PART_Canvas");
-            this.sliderTrack = (Rectangle)GetTemplateChild("PART_Track");
-            this.sliderBar = (Rectangle)GetTemplateChild("PART_Bar");
-            this.sliderButton = (Button)GetTemplateChild("PART_Button");
+            this.sliderCanvas = (Canvas)this.GetTemplateChild("PART_Canvas");
+            this.sliderTrack = (Rectangle)this.GetTemplateChild("PART_Track");
+            this.sliderBar = (Rectangle)this.GetTemplateChild("PART_Bar");
+            this.sliderButton = (Button)this.GetTemplateChild("PART_Button");
 
-            this.sliderCanvas.SizeChanged += SizeChangedHandler;
-            this.sliderCanvas.Loaded += LoadedHandler;
+            this.sliderCanvas.SizeChanged += this.SizeChangedHandler;
+            this.sliderCanvas.Loaded += this.LoadedHandler;
 
             if (this.sliderButton != null)
             {
-                this.sliderButton.PreviewMouseDown += SliderButton_PreviewMouseDown;
-                this.sliderButton.PreviewMouseUp += SliderButton_PreviewMouseUp;
-                this.sliderButton.PreviewMouseMove += SliderButton_PreviewMouseMove;
+                this.sliderButton.PreviewMouseDown += this.SliderButton_PreviewMouseDown;
+                this.sliderButton.PreviewMouseUp += this.SliderButton_PreviewMouseUp;
+                this.sliderButton.PreviewMouseMove += this.SliderButton_PreviewMouseMove;
             }
 
             if (this.sliderCanvas != null)
             {
-                this.sliderCanvas.PreviewMouseUp += SliderCanvas_PreviewMouseUp;
+                this.sliderCanvas.PreviewMouseUp += this.SliderCanvas_PreviewMouseUp;
             }
         }
 

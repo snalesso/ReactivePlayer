@@ -27,7 +27,7 @@ namespace ReactivePlayer.UI.WPF.Views
 
             this.Events().Initialized.Take(1).Subscribe(a => this.ConfigureTrackbar(this.PlaybackPositionSlider));
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #region IViewFor

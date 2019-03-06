@@ -8,6 +8,6 @@ namespace ReactivePlayer.Core.Library
     {
         IObservableList<Track> Tracks { get; }
         IObservableList<Artist> Artists { get; }
-        //IObservableList<Track> PlayedHistory { get; }
+        IObservableList<Album> Albums { get; }
     }
 }

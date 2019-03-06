@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ReactivePlayer.Core.Library.Models
 {
     // TODO: possible fields: website, youtube, spotify, itunes, 
-    public class Artist : ValueObject<Artist>
+    public partial class Artist : ValueObject<Artist>
     {
         #region ctor
 
@@ -20,12 +20,7 @@ namespace ReactivePlayer.Core.Library.Models
 
         #region ValueObject
 
-        protected override bool EqualsCore(Artist other)
-        {
-            return this.Name.Equals(other.Name);
-        }
-
-        protected override IEnumerable<object> GetHashCodeIngredients()
+        protected override IEnumerable<object> GetValueIngredients()
         {
             yield return this.Name;
         }
