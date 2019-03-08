@@ -215,9 +215,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region commands
 
-        public ReactiveCommand Pause { get; }
-        public ReactiveCommand Resume { get; }
-        public ReactiveCommand Stop { get; }
+        public ReactiveCommand<Unit, Unit> Pause { get; }
+        public ReactiveCommand<Unit, Unit> Resume { get; }
+        public ReactiveCommand<Unit, Unit> Stop { get; }
         public ReactiveCommand<Unit, Unit> StartSeeking { get; }
         public ReactiveCommand<long, Unit> SeekTo { get; }
         public ReactiveCommand<Unit, Unit> EndSeeking { get; }
