@@ -16,7 +16,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constancts & fields
 
-        private readonly IPlaybackService _playbackService;
+        private readonly IAudioPlaybackEngine _playbackService;
         private readonly IWriteLibraryService _writeLibraryService;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
@@ -32,42 +32,23 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         }
 
         public ShellViewModel(
-            IPlaybackService playbackService,
+            IAudioPlaybackEngine playbackService,
             IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             PlaybackControlsViewModel playbackControlsViewModel,
-            TracksViewModel tracksViewModel)
+            TracksViewModel libraryViewModel)
         {
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
-            this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
-
-            this.DisplayName = nameof(ReactivePlayer);
-
-            this.AddTracks = ReactiveCommand.CreateFromTask(
-                 async (IReadOnlyList<string> locationsStrings) =>
-                 {
-                     var addTrackCommands = locationsStrings.Select(ls => new AddTrackCommand(new Uri(ls))
-                     {
-                     }).ToImmutableList();
-                     return await this._writeLibraryService.AddTracks(addTrackCommands);
-                 })
-                .DisposeWith(this._disposables);
-            // TODO: use interaction?
-            this.MakeUserSelectTracksToAdd = ReactiveCommand.CreateFromTask(
-                 async () =>
-                 {
-                     var dr = await this._dialogService.OpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), true, null, "Add to library ...");
-                     return dr.Code == true ? dr.Content : null;
-                 })
-                .DisposeWith(this._disposables);
-            this.MakeUserSelectTracksToAdd.InvokeCommand(this.AddTracks);
+            this.LibraryViewModel = libraryViewModel ?? throw new ArgumentNullException(nameof(libraryViewModel));
 
             this.ActivateItem(this.PlaybackControlsViewModel);
-            this.ActivateItem(this.TracksViewModel);
+            this.ActivateItem(this.LibraryViewModel);
+
+            this.DisplayName = nameof(ReactivePlayer);
         }
 
         #endregion
@@ -76,7 +57,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
 
-        public TracksViewModel TracksViewModel { get; }
+        public TracksViewModel LibraryViewModel { get; }
 
         // artists viewmodel
 
@@ -97,10 +78,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region commands
-
-        public ReactiveCommand<IReadOnlyList<string>, bool> AddTracks { get; }
-
-        public ReactiveCommand<Unit, IReadOnlyList<string>> MakeUserSelectTracksToAdd { get; }
 
         #endregion
     }

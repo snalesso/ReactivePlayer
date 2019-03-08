@@ -7,7 +7,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Navigation;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.WPF.Services
 {
     /// <summary>
     /// A service that manages windows.

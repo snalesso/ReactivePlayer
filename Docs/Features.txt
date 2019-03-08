@@ -17,6 +17,7 @@ FUNCTIONALITIES:
 	- remove from playlist
 	- remove from library
 	- move to bin
+- if the currently playing track is removed from the playlist from which its playback was started, ask if stop playback
 - tracks bin that moves to recycle bin on app close but allows restore
 - tag sanitizer (configurable)
 - stop after (shedule stop, without emptying the queue)

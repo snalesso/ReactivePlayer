@@ -36,12 +36,12 @@ namespace ReactivePlayer.Core.Library
                 list.AddOrUpdate(tracks);
             }); // TODO: does the inner SourceList get disposed?
 
-            // TODO: review: avoid re-querying every time to calculate artists
-            (this._sourceArtists = new SourceList<Artist>(ObservableChangeSet.Create<Artist>(async list =>
-            {
-                var artists = (await this._tracksRepository.GetAllAsync()).SelectMany(t => t.Performers).Distinct();
-                list.AddRange(artists);
-            }))).DisposeWith(this._disposables); // TODO: does the inner SourceList get disposed?
+            //// TODO: review: avoid re-querying every time to calculate artists
+            //(this._sourceArtists = new SourceList<Artist>(ObservableChangeSet.Create<Artist>(async list =>
+            //{
+            //    var artists = (await this._tracksRepository.GetAllAsync()).SelectMany(t => t.Performers).Distinct();
+            //    list.AddRange(artists);
+            //}))).DisposeWith(this._disposables); // TODO: does the inner SourceList get disposed?
 
             this._manualTracksChanges.Where(c => c != null).Subscribe(c => Debug.WriteLine($"{nameof(this._manualTracksChanges)}: {c.TotalChanges}"));
         }
@@ -50,12 +50,12 @@ namespace ReactivePlayer.Core.Library
 
         private readonly SourceCache<Track, Uri> _sourceTracks;
         private readonly BehaviorSubject<IChangeSet<Track>> _manualTracksChanges = new BehaviorSubject<IChangeSet<Track>>(null);
-        public IObservableList<Track> Tracks => this._sourceTracks.Connect().RemoveKey().AsObservableList().DisposeWith(this._disposables);
+        public IObservableCache<Track, Uri> Tracks => this._sourceTracks/*.Connect().RemoveKey().AsObservableList()*/.AsObservableCache().DisposeWith(this._disposables);
 
-        private readonly SourceList<Artist> _sourceArtists;
-        public IObservableList<Artist> Artists => this._sourceArtists;
+        //private readonly SourceList<Artist> _sourceArtists;
+        //public IObservableList<Artist> Artists => this._sourceArtists;
 
-        public IObservableList<Album> Albums => throw new NotImplementedException();
+        //public IObservableList<Album> Albums => throw new NotImplementedException();
 
         #endregion
 

@@ -1,15 +1,13 @@
+using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Playback;
-using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using DynamicData;
-using DynamicData.Operators;
-using System.Diagnostics;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -30,14 +28,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackControlsViewModel(
-            IPlaybackService audioPlayer,
+            IPlaybackService playbackService,
             PlaybackQueue playbackQueue,
             //PlaybackHistory playbackHistory,
             IReadLibraryService readLibraryService)
         {
             // TODO: localize
             // TODO: log
-            this._playbackService = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer));
+            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
             this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
             //this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
@@ -51,36 +49,36 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.EndSeeking = ReactiveCommand.Create(() => { this._isSeeking = false; }, this._playbackService.WhenCanSeekChanged).DisposeWith(this._disposables);
             this.SeekTo = ReactiveCommand.CreateFromTask<long>(position => this._playbackService.SeekToAsync(TimeSpan.FromTicks(position)), this._playbackService.WhenCanSeekChanged).DisposeWith(this._disposables);
 
-            this.PlayPrevious = ReactiveCommand
-                .CreateFromTask(async () =>
-                {
-                    await this._playbackService.StopAsync();
-                    var next = this._playbackQueue.Deqeue();
-                    if (next != null)
-                    {
-                        await this._playbackService.LoadAsync(next);
-                        await this._playbackService.PlayAsync();
-                    }
-                }, Observable.CombineLatest(
-                    this._playbackQueue.Items.Connect().IsEmpty(),
-                    this._playbackService.WhenCanStopChanged,
-                    (isEmpty, canStop) => !isEmpty && canStop))
-                .DisposeWith(this._disposables);
-            this.PlayNext = ReactiveCommand
-                .CreateFromTask(async () =>
-                {
-                    await this._playbackService.StopAsync();
-                    var next = this._playbackQueue.Deqeue();
-                    if (next != null)
-                    {
-                        await this._playbackService.LoadAsync(next);
-                        await this._playbackService.PlayAsync();
-                    }
-                }, Observable.CombineLatest(
-                    this._playbackQueue.Items.Connect().IsEmpty(),
-                    this._playbackService.WhenCanStopChanged,
-                    (isEmpty, canStop) => !isEmpty && canStop))
-                .DisposeWith(this._disposables);
+            //this.PlayPrevious = ReactiveCommand
+            //    .CreateFromTask(async () =>
+            //    {
+            //        await this._playbackService.StopAsync();
+            //        var next = this._playbackQueue.Remove();
+            //        if (next != null)
+            //        {
+            //            await this._playbackService.LoadAsync(next);
+            //            await this._playbackService.PlayAsync();
+            //        }
+            //    }, Observable.CombineLatest(
+            //        this._playbackQueue.Items.Connect().IsEmpty(),
+            //        this._playbackService.WhenCanStopChanged,
+            //        (isEmpty, canStop) => !isEmpty && canStop))
+            //    .DisposeWith(this._disposables);
+            //this.PlayNext = ReactiveCommand
+            //    .CreateFromTask(async () =>
+            //    {
+            //        await this._playbackService.StopAsync();
+            //        var next = this._playbackQueue.Remove();
+            //        if (next != null)
+            //        {
+            //            await this._playbackService.LoadAsync(next);
+            //            await this._playbackService.PlayAsync();
+            //        }
+            //    }, Observable.CombineLatest(
+            //        this._playbackQueue.Items.Connect().IsEmpty(),
+            //        this._playbackService.WhenCanStopChanged,
+            //        (isEmpty, canStop) => !isEmpty && canStop))
+            //    .DisposeWith(this._disposables);
 
             this._canLoadOAPH = this._playbackService.WhenCanLoadChanged.ToProperty(this, @this => @this.CanLoad).DisposeWith(this._disposables);
 
@@ -225,7 +223,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReactiveCommand<Unit, Unit> EndSeeking { get; }
         public ReactiveCommand<Unit, Unit> PlayPrevious { get; }
         public ReactiveCommand<Unit, Unit> PlayNext { get; }
-        public ReactiveCommand<Unit, Unit> PlayCurrentPlaylist { get; }
 
         #endregion
     }

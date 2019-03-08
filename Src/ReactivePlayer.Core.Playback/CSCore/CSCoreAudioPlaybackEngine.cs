@@ -21,7 +21,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
     // TODO: investigate IWaveSource.GetLength: how does it calculate duration? How accurate is it guaranteed to be?
     // TODO: add timeout for track loading?
     // TODO: consider using AsyncLock (System.Reactive.Core)
-    public class CSCoreAudioPlaybackService : IPlaybackService // TODO: learn how to handle IDisposable from outside and in general how to handle interfaces which implementations may or may not be IDisposable
+    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngine // TODO: learn how to handle IDisposable from outside and in general how to handle interfaces which implementations may or may not be IDisposable
     {
         #region constants & fields
 
@@ -38,7 +38,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         #region ctor
 
         // TODO: add logger
-        public CSCoreAudioPlaybackService(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
+        public CSCoreAudioPlaybackEngine(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
         {
             this._playerScopeDisposables = new CompositeDisposable();
             this.__playbackScopeDisposables = new CompositeDisposable().DisposeWith(this._playerScopeDisposables);

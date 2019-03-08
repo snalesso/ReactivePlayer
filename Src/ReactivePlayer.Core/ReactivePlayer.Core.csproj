@@ -50,5 +50,8 @@
     <Compile Include="Domain\Persistence\Specification\ISpecification`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Domain\Persistence\Specification\Utils.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,7 @@ using ReactivePlayer.Core.Playback.CSCore;
 using ReactivePlayer.Domain.Repositories;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Composition.Autofac.Modules;
+using ReactivePlayer.UI.WPF.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
 using ReactivePlayer.UI.WPF.Views;
 using ReactiveUI;
@@ -93,7 +94,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 .As<IReadLibraryService>()
                 .As<IWriteLibraryService>()
                 .InstancePerLifetimeScope();
-            builder.RegisterType<CSCoreAudioPlaybackService>().As<IPlaybackService>().InstancePerLifetimeScope();
+            builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
 
@@ -104,7 +105,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.Register<Func<Track, TrackViewModel>>(ctx =>
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
-                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IPlaybackService>());
+                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
                 }).AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();

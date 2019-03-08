@@ -70,12 +70,14 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CSCore\Codecs\NVorbisWaveSource.cs" />
-    <Compile Include="CSCore\CSCoreAudioPlaybackService.cs" />
+    <Compile Include="CSCore\CSCoreAudioPlaybackEngine.cs" />
     <Compile Include="IAudioSource.cs" />
+    <Compile Include="IAudioPlaybackEngine.cs" />
+    <Compile Include="IPlaybackQueue.cs" />
     <Compile Include="IPlaybackService.cs" />
     <Compile Include="PlaybackQueue.cs" />
     <Compile Include="PlaybackQueueEntry.cs" />
-    <Compile Include="PlaybackServiceMixins.cs" />
+    <Compile Include="IAudioPlaybackEngineMixins.cs" />
     <Compile Include="PlaybackStatus.cs" />
     <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

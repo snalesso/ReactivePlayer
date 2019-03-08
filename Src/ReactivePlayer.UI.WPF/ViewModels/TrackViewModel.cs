@@ -1,6 +1,6 @@
+using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
-using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IPlaybackService _playbackService;
+        private readonly IAudioPlaybackEngine _playbackService;
         private readonly Track _track;
 
         private CompositeDisposable _disposables = new CompositeDisposable(); // TODO: move to #region IDisposable
@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TrackViewModel(
             Track track,
-            IPlaybackService playbackService)
+            IAudioPlaybackEngine playbackService)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize

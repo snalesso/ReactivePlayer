@@ -1,5 +1,7 @@
 using DynamicData;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -7,20 +9,20 @@ using System.Reactive.Linq;
 
 namespace ReactivePlayer.Core.Playback
 {
-    public class PlaybackQueue : IDisposable
+    public class PlaybackQueue : IDisposable, IPlaybackQueue
     {
         #region constants & fields
 
         private const ushort HistoryMaxLength = 10;
 
-        private readonly IPlaybackService _audioPlayer;
+        private readonly IAudioPlaybackEngine _audioPlayer;
         //private readonly Random _random = new Random((int)DateTime.Now.Ticks);
 
         #endregion
 
         #region ctor
 
-        public PlaybackQueue(IPlaybackService audioPlayer)
+        public PlaybackQueue(IAudioPlaybackEngine audioPlayer)
         {
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
 
@@ -32,11 +34,11 @@ namespace ReactivePlayer.Core.Playback
                 .Where(canPlayNext => canPlayNext == true)
                 .Subscribe(async (s) =>
                 {
-                    var next = this._items.Items.FirstOrDefault();
+                    var next = this._queueItems.Items.FirstOrDefault();
 
                     if (next != null)
                     {
-                        this._items.RemoveAt(0);
+                        this._queueItems.RemoveAt(0);
                         await this._audioPlayer.LoadAsync(next);
                         await this._audioPlayer.PlayAsync();
                     }
@@ -52,8 +54,9 @@ namespace ReactivePlayer.Core.Playback
 
         #region properties
 
-        private SourceList<Uri> _items = new SourceList<Uri>();
-        public IObservableList<Uri> Items => this._items.AsObservableList();
+        private ConcurrentQueue<Uri> _queue;
+        private SourceList<Uri> _queueItems = new SourceList<Uri>();
+        public IObservableList<Uri> Items => this._queueItems.AsObservableList();
 
         //public IObservable<bool> IsEmpty => this.Items.Connect().IsEmpty();
 
@@ -66,7 +69,12 @@ namespace ReactivePlayer.Core.Playback
 
         public void Clear()
         {
-            this._items.Clear();
+            this._queueItems.Clear();
+        }
+
+        public void Enqueue(IEnumerable<Uri> trackLocations)
+        {
+            this._queueItems.AddRange(trackLocations);
         }
 
         private IObservableList<Uri> _playlist;
@@ -90,13 +98,13 @@ namespace ReactivePlayer.Core.Playback
         //}
 
         // TODO: dequeu an IAudioSource which will carry its .Location
-        public Uri Deqeue()
+        public void Remove(Uri trackLocation)
         {
-            var head = this._items.Items.FirstOrDefault();
+            //var head = this._queueItems.Items.FirstOrDefault();
 
-            this._items.RemoveAt(0);
+            this._queueItems.RemoveAt(0);
 
-            return head;
+            //return head;
         }
 
         //private readonly BehaviorSubject<bool> _isShuffling;

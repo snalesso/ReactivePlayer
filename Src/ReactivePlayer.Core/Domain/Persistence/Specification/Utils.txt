@@ -1,0 +1,3 @@
+﻿- navozenko/LinqSpecs	https://github.com/navozenko/LinqSpecs/tree/master/LinqSpecs
+- Baune8D/linqbuilder	https://github.com/Baune8D/linqbuilder/tree/master/src/LinqBuilder
+- 

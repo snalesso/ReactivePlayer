@@ -1,9 +1,9 @@
-﻿using DynamicData;
+﻿using Caliburn.Micro.ReactiveUI;
+using DynamicData;
 using DynamicData.Binding;
 using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Playback;
-using ReactivePlayer.UI.WPF.ReactiveCaliburnMicro;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
@@ -15,7 +15,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IPlaybackService _audioPlayer;
+        private readonly IAudioPlaybackEngine _audioPlayer;
         private readonly IReadLibraryService _readLibraryService;
 
         #endregion
@@ -23,7 +23,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackHistoryViewModel(
-            IPlaybackService audioPlayer,
+            IAudioPlaybackEngine audioPlayer,
             IReadLibraryService readLibraryService)
         {
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize

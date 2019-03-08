@@ -8,6 +8,11 @@ namespace ReactivePlayer.Core.Playback
 {
     public class PlaybackQueueEntry
     {
+        public PlaybackQueueEntry(Uri location)
+        {
+            this.Location = location;
+        }
 
+        public Uri Location { get; }
     }
 }
