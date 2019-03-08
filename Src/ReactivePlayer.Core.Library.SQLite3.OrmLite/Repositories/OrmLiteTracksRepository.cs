@@ -59,9 +59,13 @@ namespace ReactivePlayer.Core.Library.SQLite3.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public async Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
         {
-            throw new NotImplementedException();
+            using (this._dbConnection = await this._dbConnectionFactory.OpenAsync())
+            using (var transaction = this._dbConnection.BeginTransaction(IsolationLevel.Serializable))
+            {
+                return await transaction.Connection.SelectAsync<Track>(t => filter(t));
+            }
         }
 
         public async Task<Track> GetByIdAsync(Uri location)

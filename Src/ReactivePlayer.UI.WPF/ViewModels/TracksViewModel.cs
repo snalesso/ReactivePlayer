@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public abstract class TracksViewModel : ReactiveConductor<Caliburn.Micro.IScreen>.Collection.AllActive// ReactiveObject
+    public class TracksViewModel : ReactiveConductor<Caliburn.Micro.IScreen>.Collection.AllActive// ReactiveObject
     {
         #region constants & fields
 
@@ -45,7 +45,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksViewModel(
             IDialogService dialogService,
-            IAudioFileInfoProvider audioFileInfoProvider,
+            //IAudioFileInfoProvider audioFileInfoProvider,
             IWriteLibraryService writeLibraryService,
             IAudioPlaybackEngine audioPlayer,
             PlaybackQueue playbackQueue,
@@ -168,7 +168,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        protected abstract IReadOnlyList<Tuple<Expression<Func<TrackViewModel, object>>, Predicate<TrackViewModel>>> Filters { get; }
+        //protected abstract IReadOnlyList<Tuple<Expression<Func<TrackViewModel, object>>, Predicate<TrackViewModel>>> Filters { get; }
 
         private ReadOnlyObservableCollection<TrackViewModel> _filteredSortedTrackViewModels;
         public ReadOnlyObservableCollection<TrackViewModel> FilteredSortedTrackViewModels

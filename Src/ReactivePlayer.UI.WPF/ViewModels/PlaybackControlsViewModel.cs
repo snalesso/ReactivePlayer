@@ -15,7 +15,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IPlaybackService _playbackService;
+        //private readonly IPlaybackService _playbackService;
+        private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         private readonly PlaybackQueue _playbackQueue;
         //private readonly PlaybackHistory _playbackHistory;
         private readonly IReadLibraryService _readLibraryService;
@@ -28,26 +29,28 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackControlsViewModel(
-            IPlaybackService playbackService,
+            //IPlaybackService playbackService,
+            IAudioPlaybackEngine audioPlaybackEngine,
             PlaybackQueue playbackQueue,
             //PlaybackHistory playbackHistory,
             IReadLibraryService readLibraryService)
         {
             // TODO: localize
             // TODO: log
-            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
+            //this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
+            this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
             //this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
 
-            this.Pause = ReactiveCommand.CreateFromTask(() => this._playbackService.PauseAsync(), this._playbackService.WhenCanPauseChanged).DisposeWith(this._disposables);
-            this.Resume = ReactiveCommand.CreateFromTask(() => this._playbackService.ResumeAsync(), this._playbackService.WhenCanResumeChanged).DisposeWith(this._disposables);
-            this.Stop = ReactiveCommand.CreateFromTask(() => this._playbackService.StopAsync(), this._playbackService.WhenCanStopChanged).DisposeWith(this._disposables);
+            this.Pause = ReactiveCommand.CreateFromTask(() => this._audioPlaybackEngine.PauseAsync(), this._audioPlaybackEngine.WhenCanPauseChanged).DisposeWith(this._disposables);
+            this.Resume = ReactiveCommand.CreateFromTask(() => this._audioPlaybackEngine.ResumeAsync(), this._audioPlaybackEngine.WhenCanResumeChanged).DisposeWith(this._disposables);
+            this.Stop = ReactiveCommand.CreateFromTask(() => this._audioPlaybackEngine.StopAsync(), this._audioPlaybackEngine.WhenCanStopChanged).DisposeWith(this._disposables);
 
             // TODO: is it good to implement ReactiveCommand<Unit, Unit> with .Create( () => {}) ?
-            this.StartSeeking = ReactiveCommand.Create(() => { this._isSeeking = true; }, this._playbackService.WhenCanSeekChanged).DisposeWith(this._disposables);
-            this.EndSeeking = ReactiveCommand.Create(() => { this._isSeeking = false; }, this._playbackService.WhenCanSeekChanged).DisposeWith(this._disposables);
-            this.SeekTo = ReactiveCommand.CreateFromTask<long>(position => this._playbackService.SeekToAsync(TimeSpan.FromTicks(position)), this._playbackService.WhenCanSeekChanged).DisposeWith(this._disposables);
+            this.StartSeeking = ReactiveCommand.Create(() => { this._isSeeking = true; }, this._audioPlaybackEngine.WhenCanSeekChanged).DisposeWith(this._disposables);
+            this.EndSeeking = ReactiveCommand.Create(() => { this._isSeeking = false; }, this._audioPlaybackEngine.WhenCanSeekChanged).DisposeWith(this._disposables);
+            this.SeekTo = ReactiveCommand.CreateFromTask<long>(position => this._audioPlaybackEngine.SeekToAsync(TimeSpan.FromTicks(position)), this._audioPlaybackEngine.WhenCanSeekChanged).DisposeWith(this._disposables);
 
             //this.PlayPrevious = ReactiveCommand
             //    .CreateFromTask(async () =>
@@ -80,60 +83,60 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //        (isEmpty, canStop) => !isEmpty && canStop))
             //    .DisposeWith(this._disposables);
 
-            this._canLoadOAPH = this._playbackService.WhenCanLoadChanged.ToProperty(this, @this => @this.CanLoad).DisposeWith(this._disposables);
+            this._canLoadOAPH = this._audioPlaybackEngine.WhenCanLoadChanged.ToProperty(this, @this => @this.CanLoad).DisposeWith(this._disposables);
 
             // timespans
-            this._positionOAPH = this._playbackService.WhenPositionChanged.ToProperty(this, @this => @this.Position).DisposeWith(this._disposables);
-            this._durationOAPH = this._playbackService.WhenDurationChanged.ToProperty(this, @this => @this.Duration).DisposeWith(this._disposables);
+            this._positionOAPH = this._audioPlaybackEngine.WhenPositionChanged.ToProperty(this, @this => @this.Position).DisposeWith(this._disposables);
+            this._durationOAPH = this._audioPlaybackEngine.WhenDurationChanged.ToProperty(this, @this => @this.Duration).DisposeWith(this._disposables);
             // milliseconds
-            this._positionAsTickssOAPH = this._playbackService
+            this._positionAsTickssOAPH = this._audioPlaybackEngine
                 .WhenPositionChanged
                 .Where(p => !this._isSeeking)
                 .Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L)
                 .ToProperty(this, @this => @this.PositionAsTicks)
                 .DisposeWith(this._disposables);
-            this._durationAsTicksOAPH = this._playbackService.WhenDurationChanged.Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L).ToProperty(this, @this => @this.DurationAsTicks).DisposeWith(this._disposables);
+            this._durationAsTicksOAPH = this._audioPlaybackEngine.WhenDurationChanged.Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L).ToProperty(this, @this => @this.DurationAsTicks).DisposeWith(this._disposables);
 
-            this._currentTrackLocationOAPH = this._playbackService
+            this._currentTrackLocationOAPH = this._audioPlaybackEngine
                 .WhenAudioSourceLocationChanged
                 .Select(l => l?.ToString())
                 .ToProperty(this, @this => @this.CurrentTrackLocation)
                 .DisposeWith(this._disposables);
-            this._isSeekableStatusOAPH = this._playbackService
+            this._isSeekableStatusOAPH = this._audioPlaybackEngine
                 .WhenStatusChanged
                 .Select(status => PlaybackStatusHelper.CanSeekPlaybackStatuses.Contains(status))
                 .ToProperty(this, @this => @this.IsSeekableStatus).DisposeWith(this._disposables);
-            this._isDurationKnownOAPH = this._playbackService
+            this._isDurationKnownOAPH = this._audioPlaybackEngine
                 .WhenDurationChanged
                 .Select(duration => duration.HasValue)
                 .ToProperty(this, @this => @this.IsDurationKnown)
                 .DisposeWith(this._disposables);
-            this._isPositionKnownOAPH = this._playbackService
+            this._isPositionKnownOAPH = this._audioPlaybackEngine
                 .WhenPositionChanged
                 .Select(position => position.HasValue)
                 .ToProperty(this, @this => @this.IsPositionKnown)
                 .DisposeWith(this._disposables);
-            this._isPositionSeekableOAPH = this._playbackService
+            this._isPositionSeekableOAPH = this._audioPlaybackEngine
                 .WhenCanSeekChanged
                 .ToProperty(this, @this => @this.IsPositionSeekable)
                 .DisposeWith(this._disposables);
-            this._volumeOAPH = this._playbackService.WhenVolumeChanged
+            this._volumeOAPH = this._audioPlaybackEngine.WhenVolumeChanged
                 .ToProperty(this, @this => @this.Volume)
                 .DisposeWith(this._disposables);
-            this._titleOAPH = this._playbackService.WhenAudioSourceLocationChanged
+            this._titleOAPH = this._audioPlaybackEngine.WhenAudioSourceLocationChanged
                 .Select(tl => this._readLibraryService.Tracks.Items.FirstOrDefault(t => t.Location == tl)?.Title)
                 .ToProperty(this, @this => @this.Title)
                 .DisposeWith(this._disposables);
-            this._isLoadingOAPH = this._playbackService.WhenStatusChanged
+            this._isLoadingOAPH = this._audioPlaybackEngine.WhenStatusChanged
                 .ObserveOn(RxApp.MainThreadScheduler) // TODO: can remove? should others use it?
                 .Select(status => status == PlaybackStatus.Loading)
                 .Do(isLoading => { if (isLoading) Debug.WriteLine($"{this.GetType().Name}.{nameof(this.IsLoading)} == {isLoading}"); })
                 .ToProperty(this, @this => @this.IsLoading)
                 .DisposeWith(this._disposables);
-            this._canPauseOAPH = this._playbackService.WhenCanPauseChanged
+            this._canPauseOAPH = this._audioPlaybackEngine.WhenCanPauseChanged
                 .ToProperty(this, @this => @this.CanPause)
                 .DisposeWith(this._disposables);
-            this._canResumeOAPH = this._playbackService.WhenCanResumeChanged
+            this._canResumeOAPH = this._audioPlaybackEngine.WhenCanResumeChanged
                 .ToProperty(this, @this => @this.CanResume)
                 .DisposeWith(this._disposables);
             //this._canPlayOAPH = this._playbackService.WhenCanPlayChanged
@@ -184,7 +187,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public float Volume
         {
             get => this._volumeOAPH.Value;
-            set => this._playbackService.SetVolume(value);
+            set => this._audioPlaybackEngine.SetVolume(value);
         }
 
         private ObservableAsPropertyHelper<string> _titleOAPH;
@@ -205,7 +208,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public override async void CanClose(Action<bool> callback)
         {
-            await this._playbackService.StopAsync();
+            await this._audioPlaybackEngine.StopAsync();
             this._disposables.Dispose();
 
             base.CanClose(callback);

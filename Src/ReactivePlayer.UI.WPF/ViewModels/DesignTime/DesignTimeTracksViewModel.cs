@@ -9,7 +9,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
         public DesignTimeTracksViewModel()
             : base(
                   null
-                  , null
+                  //, null
                   , null
                   , null
                   , null
@@ -22,6 +22,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
             //this.ReloadTracks.Execute();
         }
 
-        protected override IReadOnlyList<Tuple<Expression<Func<TrackViewModel, object>>, Predicate<TrackViewModel>>> Filters => throw new NotImplementedException();
+        //protected override IReadOnlyList<Tuple<Expression<Func<TrackViewModel, object>>, Predicate<TrackViewModel>>> Filters => throw new NotImplementedException();
     }
 }

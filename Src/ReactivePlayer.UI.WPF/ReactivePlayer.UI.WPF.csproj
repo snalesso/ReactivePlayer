@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ReactivePlayer.UI.WPF.App</StartupObject>
+    <StartupObject>ReactivePlayer.UI.WPF.EntryPoint</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -68,9 +68,6 @@
     </Reference>
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro.ReactiveUI, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Caliburn.Micro.ReactiveUI.2.4.0\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.ReactiveUI.dll</HintPath>
     </Reference>
     <Reference Include="DynamicData, Version=6.8.0.2561, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DynamicData.6.8.0.2561\lib\net46\DynamicData.dll</HintPath>
@@ -114,11 +111,11 @@
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -148,6 +145,7 @@
       <DependentUpon>PlaybackBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\StringEnumerableJoiner.cs" />
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Services\LibraryViewModelsProxy.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
@@ -224,6 +222,10 @@
       <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
       <Name>Daedalus.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj">
+      <Project>{203b0466-bee4-4ec6-8562-6bd9bb1919bb}</Project>
+      <Name>Caliburn.Micro.ReactiveUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
       <Project>{a45e3c4d-550f-4187-863d-c6f67e734162}</Project>
       <Name>ReactivePlayer.Plugins.iTunes</Name>
@@ -231,6 +233,10 @@
     <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
       <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
       <Name>ReactivePlayer.Core.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core.Library.SQLite3.OrmLite\ReactivePlayer.Core.Library.SQLite3.OrmLite.csproj">
+      <Project>{AF3350EF-79FE-405A-B405-ED93F1010B14}</Project>
+      <Name>ReactivePlayer.Core.Library.SQLite3.OrmLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{d410bfe3-22c7-4ee6-ab62-9a069f2f1566}</Project>
