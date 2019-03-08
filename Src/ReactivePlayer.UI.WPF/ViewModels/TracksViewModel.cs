@@ -30,7 +30,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IWriteLibraryService _writeLibraryService;
         private readonly IAudioPlaybackEngine _audioPlayer;
-        private readonly IAudioFileInfoProvider _audioFileInfoProvider;
+        //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
         private readonly PlaybackQueue _playbackQueue;
         private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;

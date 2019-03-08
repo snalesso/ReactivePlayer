@@ -6,6 +6,7 @@ using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 
@@ -34,19 +35,19 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._audioPlayer
                 .WhenAudioSourceLocationChanged
                 .ToObservableChangeSet(10)
-                .Transform(location => new PlaybackHistoryItemViewModel(location)).Bind(this._items)
-                .AsObservableList()
-                .Connect()
+                .Transform(location => new PlaybackHistoryItemViewModel(location))
+                .Bind(out this._items)
                 .DisposeMany()
-                .Bind(this._items);
+                .Subscribe()
+                .DisposeWith(this._disposables);
         }
 
         #endregion
 
         #region properties
 
-        private ReactiveList<PlaybackHistoryItemViewModel> _items = new ReactiveList<PlaybackHistoryItemViewModel>();
-        public IReadOnlyReactiveList<PlaybackHistoryItemViewModel> Items => this._items;
+        private ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> _items;
+        public ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> Items => this._items;
 
         #endregion
 

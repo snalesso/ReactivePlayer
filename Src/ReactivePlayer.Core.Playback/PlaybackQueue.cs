@@ -54,7 +54,7 @@ namespace ReactivePlayer.Core.Playback
 
         #region properties
 
-        private ConcurrentQueue<Uri> _queue;
+        //private ConcurrentQueue<Uri> _queue;
         private SourceList<Uri> _queueItems = new SourceList<Uri>();
         public IObservableList<Uri> Items => this._queueItems.AsObservableList();
 
