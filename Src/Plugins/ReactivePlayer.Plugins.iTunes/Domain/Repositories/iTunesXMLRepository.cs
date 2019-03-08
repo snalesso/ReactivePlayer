@@ -1,7 +1,6 @@
 using Daedalus.ExtensionMethods;
 using ReactivePlayer.Core;
 using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Repositories;
 using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -9,8 +8,6 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
