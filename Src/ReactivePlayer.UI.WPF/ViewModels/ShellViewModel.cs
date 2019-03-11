@@ -16,8 +16,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constancts & fields
 
-        private readonly IAudioPlaybackEngine _playbackService;
-        private readonly IWriteLibraryService _writeLibraryService;
+        //private readonly IAudioPlaybackEngine _playbackService;
+        //private readonly IWriteLibraryService _writeLibraryService;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
 
@@ -32,21 +32,21 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         }
 
         public ShellViewModel(
-            IAudioPlaybackEngine playbackService,
+            //IAudioPlaybackEngine playbackService,
             IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             PlaybackControlsViewModel playbackControlsViewModel,
-            TracksViewModel libraryViewModel)
+            TracksViewModel tracksViewModel)
         {
-            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
-            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            //this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
+            //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
-            this.LibraryViewModel = libraryViewModel ?? throw new ArgumentNullException(nameof(libraryViewModel));
+            this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
 
             this.ActivateItem(this.PlaybackControlsViewModel);
-            this.ActivateItem(this.LibraryViewModel);
+            this.ActivateItem(this.TracksViewModel);
 
             this.DisplayName = nameof(ReactivePlayer);
         }
@@ -57,7 +57,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
 
-        public TracksViewModel LibraryViewModel { get; }
+        public TracksViewModel TracksViewModel { get; }
 
         // artists viewmodel
 

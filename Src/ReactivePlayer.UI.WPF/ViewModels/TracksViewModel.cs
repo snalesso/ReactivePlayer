@@ -27,13 +27,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IDialogService _dialogService;
-        private readonly IWriteLibraryService _writeLibraryService;
-        private readonly IAudioPlaybackEngine _audioPlayer;
+        //private readonly IDialogService _dialogService;
+        //private readonly IWriteLibraryService _writeLibraryService;
+        private readonly IAudioPlaybackEngineAsync _audioPlaybackEngine;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
-        private readonly PlaybackQueue _playbackQueue;
-        private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
+        //private readonly PlaybackQueue _playbackQueue;
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -44,124 +43,120 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         protected TracksViewModel() { }
 
         public TracksViewModel(
-            IDialogService dialogService,
+            //IDialogService dialogService,
             //IAudioFileInfoProvider audioFileInfoProvider,
-            IWriteLibraryService writeLibraryService,
-            IAudioPlaybackEngine audioPlayer,
-            PlaybackQueue playbackQueue,
-            Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            LibraryViewModelsProxy libraryViewModelsProxy)
+            //IWriteLibraryService writeLibraryService,
+            IAudioPlaybackEngineAsync audioPlaybackEngine,
+            //PlaybackQueue playbackQueue,
+            //Func<Track, TrackViewModel> trackViewModelFactoryMethod,
+            LibraryViewModelsProxy libraryViewModelsProxy
+            )
         {
-            this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService)); // TODO: localize
+            //this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService)); // TODO: localize
             this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy)); // TODO: localize
-            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
-            this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
-            this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
-            this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod)); // TODO: localize
+            //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
+            //this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
 
-            //this._libraryViewModelsProxy
-            //.TrackViewModels
-            //.Connect()
-            //.Transform(trackDto => this._trackViewModelFactoryMethod(trackDto)))
-            //.Filter(this.GetFilters())
-            //.Sort(SortExpressionComparer<TrackViewModel>.Descending(trackVM => trackVM.AddedToLibraryDateTime)
-            //.AsObservableList()
+            this._libraryViewModelsProxy
+            .TrackViewModels
             //.ObserveOn(RxApp.MainThreadScheduler) // TODO: when is it needed?
-            //.DisposeMany() // TODO: how & when to use it?
-            //.Subscribe()
-            //.DisposeWith(this._disposables);
+            .Bind(out this._filteredSortedTrackViewModels)
+            .Subscribe()
+            .DisposeWith(this._disposables)
+            ;
 
             //var libraryTracksSubscription = this._readLibraryService.Tracks.Connect().Publish();
 
-            this.PlayAll = ReactiveCommand.CreateFromTask(
-                async () =>
-                {
-                    await this._audioPlayer.StopAsync();
-                    this._playbackQueue.Clear();
-                    var trackLocations = this.FilteredSortedTrackViewModels.Select(x => x.TrackLocation);
-                    this._playbackQueue.Enqueue(trackLocations);
-                    await this._audioPlayer.PlayAsync();
-                },
-                Observable.CombineLatest(
-                    this.WhenAnyValue(t => t.SelectedTrackViewModel).Select(vm => vm != null),
-                    this._audioPlayer.WhenCanStopChanged,
-                    this._audioPlayer.WhenCanLoadChanged,
-                    this._audioPlayer.WhenCanPlayChanged,
-                    (isSingleTrackSelected, canStop, canLoad, canPlay) => isSingleTrackSelected && (canStop || canLoad || canPlay)))
-                .DisposeWith(this._disposables);
+            //this.PlayAll = ReactiveCommand.CreateFromTask(
+            //    async () =>
+            //    {
+            //        await this._audioPlaybackEngine.StopAsync();
+            //        this._playbackQueue.Clear();
+            //        var trackLocations = this.FilteredSortedTrackViewModels.Select(x => x.TrackLocation);
+            //        this._playbackQueue.Enqueue(trackLocations);
+            //        await this._audioPlaybackEngine.PlayAsync();
+            //    },
+            //    Observable.CombineLatest(
+            //        this.WhenAnyValue(t => t.SelectedTrackViewModel).Select(vm => vm != null),
+            //        this._audioPlaybackEngine.WhenCanStopChanged,
+            //        this._audioPlaybackEngine.WhenCanLoadChanged,
+            //        this._audioPlaybackEngine.WhenCanPlayChanged,
+            //        (isSingleTrackSelected, canStop, canLoad, canPlay) => isSingleTrackSelected && (canStop || canLoad || canPlay)))
+            //    .DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackVM) =>
                 {
-                    await this._audioPlayer.StopAsync();
-                    await this._audioPlayer.LoadAsync(trackVM.TrackLocation);
-                    await this._audioPlayer.PlayAsync();
-                },
-                Observable.CombineLatest(
-                    this.WhenAnyValue(t => t.SelectedTrackViewModel).Select(vm => vm != null),
-                    this._audioPlayer.WhenCanStopChanged,
-                    this._audioPlayer.WhenCanLoadChanged,
-                    this._audioPlayer.WhenCanPlayChanged,
-                    (isSingleTrackSelected, canStop, canLoad, canPlay) => isSingleTrackSelected && (canStop || canLoad || canPlay)))
+                    await this._audioPlaybackEngine.StopAsync()/*.ConfigureAwait(false)*/;
+                    await this._audioPlaybackEngine.LoadAndPlayAsync(trackVM.TrackLocation)/*.ConfigureAwait(false)*/;
+                }
+                , Observable.CombineLatest(
+                    this.WhenAnyValue(t => t.SelectedTrackViewModel),
+                    this._audioPlaybackEngine.WhenAudioSourceLocationChanged,
+                    this._audioPlaybackEngine.WhenCanStopChanged,
+                    this._audioPlaybackEngine.WhenCanLoadChanged,
+                    this._audioPlaybackEngine.WhenCanPlayChanged,
+                    (selectedTrackViewModel, currentlyPlayingAudioSourceLocation, canStop, canLoad, canPlay) =>
+                        selectedTrackViewModel != null
+                        && (currentlyPlayingAudioSourceLocation != selectedTrackViewModel.TrackLocation)
+                        && (canStop || canLoad || canPlay)))
                 .DisposeWith(this._disposables);
-
-            this.PlayAll = ReactiveCommand.Create(
-             () => // TODO: test UI asynchrony
-             {
-                 var locationsQueueSource = this._filteredSortedTrackViewModels.ToObservableChangeSet().Transform(tvm => tvm.TrackLocation).AsObservableList();
-                 this._playbackQueue.SetPlaylist(locationsQueueSource);
-             }).DisposeWith(this._disposables);
-
-            // logging
-
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
 
-            this.EditTrack = ReactiveCommand.CreateFromTask(
-                async (TrackViewModel trackVM) =>
-                {
-                    throw new NotImplementedException();
-                    var command = new UpdateTrackCommand(trackVM.TrackLocation)
-                    {
-                        Title = "Diocane"
-                    };
-                    await this._writeLibraryService.UpdateTrackAsync(command);
-                });
+            //this.PlayAll = ReactiveCommand.Create(
+            // () => // TODO: test UI asynchrony
+            // {
+            //     var locationsQueueSource = this._filteredSortedTrackViewModels.ToObservableChangeSet().Transform(tvm => tvm.TrackLocation).AsObservableList();
+            //     this._playbackQueue.SetPlaylist(locationsQueueSource);
+            // }).DisposeWith(this._disposables);
 
-            this.RemoveTrackFromLibrary = ReactiveCommand.CreateFromTask(async (TrackViewModel trackVM) =>
-            {
-                var removeTrackCommand = new RemoveTrackCommand(trackVM.TrackLocation);
-                await this._writeLibraryService.RemoveTrackAsync(removeTrackCommand);
-            });
+            //this.EditTrack = ReactiveCommand.CreateFromTask(
+            //    async (TrackViewModel trackVM) =>
+            //    {
+            //        throw new NotImplementedException();
+            //        var command = new UpdateTrackCommand(trackVM.TrackLocation)
+            //        {
+            //            Title = "Diocane"
+            //        };
+            //        await this._writeLibraryService.UpdateTrackAsync(command);
+            //    });
 
-            this.AddTracks = ReactiveCommand.CreateFromTask(
-                 async (IReadOnlyList<string> locationsStrings) =>
-                 {
-                     var addTrackCommands = (await Task.WhenAll(locationsStrings
-                        .AsParallel()
-                        .Select(async ls =>
-                        {
-                            throw new NotImplementedException();
+            //this.RemoveTrackFromLibrary = ReactiveCommand.CreateFromTask(async (TrackViewModel trackVM) =>
+            //{
+            //    var removeTrackCommand = new RemoveTrackCommand(trackVM.TrackLocation);
+            //    await this._writeLibraryService.RemoveTrackAsync(removeTrackCommand);
+            //});
 
-                            //var newTrack = await this._audioFileInfoProvider.ExtractAudioFileInfo(new Uri(ls));
+            //this.AddTracks = ReactiveCommand.CreateFromTask(
+            //     async (IReadOnlyList<string> locationsStrings) =>
+            //     {
+            //         var addTrackCommands = (await Task.WhenAll(locationsStrings
+            //            .AsParallel()
+            //            .Select(async ls =>
+            //            {
+            //                throw new NotImplementedException();
 
-                            return await Task.FromResult(new AddTrackCommand(new Uri(ls)) { });
-                            return new AddTrackCommand(new Uri(ls)) { };
+            //                //var newTrack = await this._audioFileInfoProvider.ExtractAudioFileInfo(new Uri(ls));
 
-                        })))
-                        .ToImmutableList();
-                     return await this._writeLibraryService.AddTracks(addTrackCommands);
-                 })
-                .DisposeWith(this._disposables);
-            // TODO: use interaction?
-            this.MakeUserSelectTracksToAdd = ReactiveCommand.CreateFromTask(
-                 async () =>
-                 {
-                     // TODO: add possbility to specifiy default/last path to pick audio from
-                     var dr = await this._dialogService.OpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), true, null, "Add to library ...");
-                     return dr.Code == true ? dr.Content : null;
-                 })
-                .DisposeWith(this._disposables);
-            this.MakeUserSelectTracksToAdd.InvokeCommand(this.AddTracks);
+            //                return await Task.FromResult(new AddTrackCommand(new Uri(ls)) { });
+            //                return new AddTrackCommand(new Uri(ls)) { };
+
+            //            })))
+            //            .ToImmutableList();
+            //         return await this._writeLibraryService.AddTracks(addTrackCommands);
+            //     })
+            //    .DisposeWith(this._disposables);
+            //// TODO: use interaction?
+            //this.MakeUserSelectTracksToAdd = ReactiveCommand.CreateFromTask(
+            //     async () =>
+            //     {
+            //         // TODO: add possbility to specifiy default/last path to pick audio from
+            //         var dr = await this._dialogService.OpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), true, null, "Add to library ...");
+            //         return dr.Code == true ? dr.Content : null;
+            //     })
+            //    .DisposeWith(this._disposables);
+            //this.MakeUserSelectTracksToAdd.InvokeCommand(this.AddTracks);
         }
 
         #endregion

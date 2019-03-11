@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.Views
         {
             //this.ViewModel = viewModel ?? throw new ArgumentNullException(); // TODO: localize
 
-            this.Events().Initialized.Take(1).Subscribe(a => this.ConfigureTrackbar(this.PlaybackPositionSlider));
+            //this.Events().Initialized.Take(1).Subscribe(a => this.ConfigureTrackbar(this.PlaybackPositionSlider));
 
             this.InitializeComponent();
         }

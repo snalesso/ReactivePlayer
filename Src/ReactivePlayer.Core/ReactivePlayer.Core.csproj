@@ -43,6 +43,7 @@
     <Compile Include="Domain\Models\Entity`1.cs" />
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
     <Compile Include="Domain\Models\IAggregateRoot.cs" />
+    <Compile Include="Domain\Models\IEntity.cs" />
     <Compile Include="Domain\Persistence\IEntityRepository`1.cs" />
     <Compile Include="SortDirection.cs" />
     <Compile Include="Domain\Models\ValueObject`1.cs" />

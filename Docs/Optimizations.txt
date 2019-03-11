@@ -15,6 +15,7 @@ OPTIMIZATIONS
 - study VOLATILE keyword
 - debugging converters		https://stackoverflow.com/a/32195726/1790497
 - explicitly calls to GC (e.g. after huge collection filtering/sorting)
+- remove unused dependencies from projects
 
 Articles & Ideas
 

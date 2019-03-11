@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
-    public abstract class Entity : IEquatable<Entity>, INotifyPropertyChanged
+    public abstract class Entity : IEquatable<Entity>, IEntity, INotifyPropertyChanged
     {
         public override bool Equals(object obj)
         {

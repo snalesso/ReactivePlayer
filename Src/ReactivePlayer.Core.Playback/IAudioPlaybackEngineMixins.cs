@@ -8,23 +8,23 @@ namespace ReactivePlayer.Core.Playback
 {
     public static class IAudioPlaybackEngineMixins
     {
-        public static async Task LoadAndPlayAsync(this IAudioPlaybackEngine playbackService, Uri audioSourceLocation)
+        public static void LoadAndPlay(this IAudioPlaybackEngine playbackService, Uri audioSourceLocation)
         {
             if (playbackService == null) throw new ArgumentNullException(nameof(playbackService));
             if (audioSourceLocation == null) throw new ArgumentNullException(nameof(audioSourceLocation));
 
-            await playbackService.LoadAsync(audioSourceLocation);
-            await playbackService.PlayAsync();
+            playbackService.Load(audioSourceLocation);
+            playbackService.Play();
         }
 
-        // TODO: possible NON-SENSE or at least exception thrower: when startPosition == currentlyInitializedAudioSource.Length, doesn't make sense to start from the end, since the moment you read a byte you are already out of range
-        public static async Task PlayAtAsync(this IAudioPlaybackEngine playbackService, TimeSpan startPosition)
-        {
-            if (playbackService == null) throw new ArgumentNullException(nameof(playbackService));
-            if (startPosition < TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(startPosition));
+        //// TODO: possible NON-SENSE or at least exception thrower: when startPosition == currentlyInitializedAudioSource.Length, doesn't make sense to start from the end, since the moment you read a byte you are already out of range
+        //public static void LoadAndSeekTo(this IAudioPlaybackEngine playbackService, TimeSpan startPosition)
+        //{
+        //    if (playbackService == null) throw new ArgumentNullException(nameof(playbackService));
+        //    if (startPosition < TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(startPosition));
 
-            await playbackService.SeekToAsync(startPosition);
-            await playbackService.PlayAsync();
-        }
+        //     playbackService.Load();
+        //     playbackService.Position = startPosition;
+        //}
     }
 }

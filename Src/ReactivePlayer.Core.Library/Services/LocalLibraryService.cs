@@ -7,7 +7,7 @@ using DynamicData.Experimental;
 using DynamicData.Operators;
 using DynamicData.Kernel;
 using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Repositories;
+using ReactivePlayer.Core.Library.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

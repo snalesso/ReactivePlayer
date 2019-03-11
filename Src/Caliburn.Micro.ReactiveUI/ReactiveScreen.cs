@@ -20,7 +20,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public ReactiveScreen()
         {
-            displayName = GetType().FullName;
+            this.displayName = this.GetType().FullName;
         }
 
         /// <summary>
@@ -28,10 +28,10 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public virtual object Parent
         {
-            get { return parent; }
+            get { return this.parent; }
             set
             {
-                this.RaiseAndSetIfChanged(ref parent, value);
+                this.RaiseAndSetIfChanged(ref this.parent, value);
             }
         }
 
@@ -40,10 +40,10 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public virtual string DisplayName
         {
-            get { return displayName; }
+            get { return this.displayName; }
             set
             {
-                this.RaiseAndSetIfChanged(ref displayName, value);
+                this.RaiseAndSetIfChanged(ref this.displayName, value);
             }
         }
 
@@ -53,10 +53,10 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public virtual bool IsActive
         {
-            get { return isActive; }
+            get { return this.isActive; }
             private set
             {
-                this.RaiseAndSetIfChanged(ref isActive, value);
+                this.RaiseAndSetIfChanged(ref this.isActive, value);
             }
         }
 
@@ -66,10 +66,10 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public virtual bool IsInitialized
         {
-            get { return isInitialized; }
+            get { return this.isInitialized; }
             private set
             {
-                this.RaiseAndSetIfChanged(ref isInitialized, value);
+                this.RaiseAndSetIfChanged(ref this.isInitialized, value);
             }
         }
 
@@ -90,22 +90,22 @@ namespace Caliburn.Micro.ReactiveUI
 
         void IActivate.Activate()
         {
-            if (IsActive)
+            if (this.IsActive)
             {
                 return;
             }
 
             var initialized = false;
 
-            if (!IsInitialized)
+            if (!this.IsInitialized)
             {
-                IsInitialized = initialized = true;
-                OnInitialize();
+                this.IsInitialized = initialized = true;
+                this.OnInitialize();
             }
 
-            IsActive = true;
+            this.IsActive = true;
             Log.Info("Activating {0}.", this);
-            OnActivate();
+            this.OnActivate();
 
             var handler = Activated;
             if (handler != null)
@@ -129,7 +129,7 @@ namespace Caliburn.Micro.ReactiveUI
 
         void IDeactivate.Deactivate(bool close)
         {
-            if (IsActive || (IsInitialized && close))
+            if (this.IsActive || (this.IsInitialized && close))
             {
                 var attemptingDeactivationHandler = AttemptingDeactivation;
                 if (attemptingDeactivationHandler != null)
@@ -140,9 +140,9 @@ namespace Caliburn.Micro.ReactiveUI
                     });
                 }
 
-                IsActive = false;
+                this.IsActive = false;
                 Log.Info("Deactivating {0}.", this);
-                OnDeactivate(close);
+                this.OnDeactivate(close);
 
                 var deactivatedHandler = Deactivated;
                 if (deactivatedHandler != null)
@@ -155,7 +155,7 @@ namespace Caliburn.Micro.ReactiveUI
 
                 if (close)
                 {
-                    Views.Clear();
+                    this.Views.Clear();
                     Log.Info("Closed {0}.", this);
                 }
             }
@@ -183,7 +183,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="dialogResult">The dialog result.</param>
         public virtual void TryClose(bool? dialogResult = null)
         {
-            PlatformProvider.Current.GetViewCloseAction(this, Views.Values, dialogResult).OnUIThread();
+            PlatformProvider.Current.GetViewCloseAction(this, this.Views.Values, dialogResult).OnUIThread();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ReactivePlayer.Core.Domain.Persistence
         Task<TEntity> GetByIdAsync(TIdentity id);
 
         //Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> filter);
-        Task<long> CountAsync(Func<TEntity, bool> filter = null);
+        //Task<long> CountAsync(Func<TEntity, bool> filter = null);
 
         /* TODO: return Task<TEntity> because ID has to be set by the repository
          * since even though Any(e => e.ID == possibleNewId) might be a solution

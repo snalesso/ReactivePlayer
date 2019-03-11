@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
-    public abstract class Entity<TIdentity> : Entity, IEquatable<Entity<TIdentity>>
+    public abstract class Entity<TIdentity> : Entity, IEntity, IEquatable<Entity<TIdentity>>
         where TIdentity : IEquatable<TIdentity>
     {
         #region artificial id

@@ -14,7 +14,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlaybackEngine _playbackService;
+        private readonly IAudioPlaybackEngineAsync _playbackService;
         private readonly Track _track;
 
         private CompositeDisposable _disposables = new CompositeDisposable(); // TODO: move to #region IDisposable
@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TrackViewModel(
             Track track,
-            IAudioPlaybackEngine playbackService)
+            IAudioPlaybackEngineAsync playbackService)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
@@ -45,7 +45,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                       }
                       return TrackPlaybackStatus.NotPlaying;
                   })
-                  .ToProperty(this, @this => @this.TrackPlaybackStatus)
+                  .ToProperty(this, nameof(this.TrackPlaybackStatus))
                   .DisposeWith(this._disposables);
         }
 

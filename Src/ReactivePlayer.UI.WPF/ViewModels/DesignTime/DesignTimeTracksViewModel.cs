@@ -9,12 +9,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
         public DesignTimeTracksViewModel()
             : base(
                   null
+                  , null
                   //, null
-                  , null
-                  , null
-                  , null
-                  , null
-                  , null)
+                  //, null
+                  //, null
+                  //, null
+                  //, null
+                  )
         //new LocalLibraryService(new FakeTracksInMemoryRepository()),
         //new FakePlaybackService(),
         //t => new TrackViewModel(t, new FakePlaybackService()))

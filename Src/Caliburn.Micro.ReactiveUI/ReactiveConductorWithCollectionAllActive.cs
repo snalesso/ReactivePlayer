@@ -39,7 +39,7 @@ namespace Caliburn.Micro.ReactiveUI
                 /// </summary>
                 public AllActive()
                 {
-                    _items.CollectionChanged += (s, e) =>
+                    this._items.CollectionChanged += (s, e) =>
                     {
                         switch (e.Action)
                         {
@@ -54,7 +54,7 @@ namespace Caliburn.Micro.ReactiveUI
                                 e.OldItems.OfType<IChild>().Apply(x => x.Parent = null);
                                 break;
                             case NotifyCollectionChangedAction.Reset:
-                                _items.OfType<IChild>().Apply(x => x.Parent = this);
+                                this._items.OfType<IChild>().Apply(x => x.Parent = this);
                                 break;
                         }
                     };
@@ -90,10 +90,10 @@ namespace Caliburn.Micro.ReactiveUI
                 /// <param name="close">Inidicates whether this instance will be closed.</param>
                 protected override void OnDeactivate(bool close)
                 {
-                    _items.OfType<IDeactivate>().Apply(x => x.Deactivate(close));
+                    this._items.OfType<IDeactivate>().Apply(x => x.Deactivate(close));
                     if (close)
                     {
-                        _items.Clear();
+                        this._items.Clear();
                     }
                 }
 
@@ -103,12 +103,12 @@ namespace Caliburn.Micro.ReactiveUI
                 /// <param name="callback">The implementor calls this action with the result of the close check.</param>
                 public override void CanClose(Action<bool> callback)
                 {
-                    CloseStrategy.Execute(_items.ToList(), (canClose, closable) =>
+                    this.CloseStrategy.Execute(this._items.ToList(), (canClose, closable) =>
                     {
                         if (!canClose && closable.Any())
                         {
                             closable.OfType<IDeactivate>().Apply(x => x.Deactivate(true));
-                            _items.RemoveRange(closable);
+                            this._items.RemoveRange(closable);
                         }
 
                         callback(canClose);
@@ -120,13 +120,13 @@ namespace Caliburn.Micro.ReactiveUI
                 /// </summary>
                 protected override void OnInitialize()
                 {
-                    if (openPublicItems)
+                    if (this.openPublicItems)
                     {
-                        GetType().GetRuntimeProperties()
+                        this.GetType().GetRuntimeProperties()
                             .Where(x => x.Name != "Parent" && typeof(T).GetTypeInfo().IsAssignableFrom(x.PropertyType.GetTypeInfo()))
                             .Select(x => x.GetValue(this, null))
                             .Cast<T>()
-                            .Apply(ActivateItem);
+                            .Apply(this.ActivateItem);
                     }
                 }
 
@@ -141,14 +141,14 @@ namespace Caliburn.Micro.ReactiveUI
                         return;
                     }
 
-                    item = EnsureItem(item);
+                    item = this.EnsureItem(item);
 
-                    if (IsActive)
+                    if (this.IsActive)
                     {
                         ScreenExtensions.TryActivate(item);
                     }
 
-                    OnActivationProcessed(item, true);
+                    this.OnActivationProcessed(item, true);
                 }
 
                 /// <summary>
@@ -165,10 +165,10 @@ namespace Caliburn.Micro.ReactiveUI
 
                     if (close)
                     {
-                        CloseStrategy.Execute(new[] { item }, (canClose, closable) =>
+                        this.CloseStrategy.Execute(new[] { item }, (canClose, closable) =>
                         {
                             if (canClose)
-                                CloseItemCore(item);
+                                this.CloseItemCore(item);
                         });
                     }
                     else
@@ -183,13 +183,13 @@ namespace Caliburn.Micro.ReactiveUI
                 /// <returns>The collection of children.</returns>
                 public override IEnumerable<T> GetChildren()
                 {
-                    return _items;
+                    return this._items;
                 }
 
                 void CloseItemCore(T item)
                 {
                     ScreenExtensions.TryDeactivate(item, true);
-                    _items.Remove(item);
+                    this._items.Remove(item);
                 }
 
                 /// <summary>
@@ -199,15 +199,15 @@ namespace Caliburn.Micro.ReactiveUI
                 /// <returns>The item to be activated.</returns>
                 protected override T EnsureItem(T newItem)
                 {
-                    var index = _items.IndexOf(newItem);
+                    var index = this._items.IndexOf(newItem);
 
                     if (index == -1)
                     {
-                        _items.Add(newItem);
+                        this._items.Add(newItem);
                     }
                     else
                     {
-                        newItem = _items[index];
+                        newItem = this._items[index];
                     }
 
                     return base.EnsureItem(newItem);

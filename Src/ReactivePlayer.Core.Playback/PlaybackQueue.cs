@@ -15,14 +15,14 @@ namespace ReactivePlayer.Core.Playback
 
         private const ushort HistoryMaxLength = 10;
 
-        private readonly IAudioPlaybackEngine _audioPlayer;
+        private readonly IAudioPlaybackEngineAsync _audioPlayer;
         //private readonly Random _random = new Random((int)DateTime.Now.Ticks);
 
         #endregion
 
         #region ctor
 
-        public PlaybackQueue(IAudioPlaybackEngine audioPlayer)
+        public PlaybackQueue(IAudioPlaybackEngineAsync audioPlayer)
         {
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
 

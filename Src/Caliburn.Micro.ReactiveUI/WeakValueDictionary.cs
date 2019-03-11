@@ -21,9 +21,9 @@ namespace Caliburn.Micro.ReactiveUI
 
         private bool IsCleanupNeeded()
         {
-            if (gcSentinel.Target == null)
+            if (this.gcSentinel.Target == null)
             {
-                gcSentinel.Target = new object();
+                this.gcSentinel.Target = new object();
                 return true;
             }
 
@@ -32,18 +32,18 @@ namespace Caliburn.Micro.ReactiveUI
 
         private void CleanAbandonedItems()
         {
-            var keysToRemove = inner.Where(pair => !pair.Value.IsAlive)
+            var keysToRemove = this.inner.Where(pair => !pair.Value.IsAlive)
                 .Select(pair => pair.Key)
                 .ToList();
 
-            keysToRemove.Apply(key => inner.Remove(key));
+            keysToRemove.Apply(key => this.inner.Remove(key));
         }
 
         private void CleanIfNeeded()
         {
-            if (IsCleanupNeeded())
+            if (this.IsCleanupNeeded())
             {
-                CleanAbandonedItems();
+                this.CleanAbandonedItems();
             }
         }
 
@@ -56,7 +56,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public WeakValueDictionary()
         {
-            inner = new Dictionary<TKey, WeakReference>();
+            this.inner = new Dictionary<TKey, WeakReference>();
         }
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="dictionary">The <see cref="IDictionary&lt;TKey, TValue&gt;"/> whose elements are copied to the new <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/>.</param>
         public WeakValueDictionary(IDictionary<TKey, TValue> dictionary)
         {
-            inner = new Dictionary<TKey, WeakReference>();
-            dictionary.Apply(item => inner.Add(item.Key, new WeakReference(item.Value)));
+            this.inner = new Dictionary<TKey, WeakReference>();
+            dictionary.Apply(item => this.inner.Add(item.Key, new WeakReference(item.Value)));
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="comparer">The <see cref="IEqualityComparer&lt;T&gt;"/> implementation to use when comparing keys, or null to use the default <see cref="EqualityComparer&lt;T&gt;"/> for the type of the key.</param>
         public WeakValueDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
         {
-            inner = new Dictionary<TKey, WeakReference>(comparer);
-            dictionary.Apply(item => inner.Add(item.Key, new WeakReference(item.Value)));
+            this.inner = new Dictionary<TKey, WeakReference>(comparer);
+            dictionary.Apply(item => this.inner.Add(item.Key, new WeakReference(item.Value)));
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="comparer">The <see cref="IEqualityComparer&lt;T&gt;"/> implementation to use when comparing keys, or null to use the default <see cref="EqualityComparer&lt;T&gt;"/> for the type of the key.</param>
         public WeakValueDictionary(IEqualityComparer<TKey> comparer)
         {
-            inner = new Dictionary<TKey, WeakReference>(comparer);
+            this.inner = new Dictionary<TKey, WeakReference>(comparer);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="capacity">The initial number of elements that the <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/> can contain.</param>
         public WeakValueDictionary(int capacity)
         {
-            inner = new Dictionary<TKey, WeakReference>(capacity);
+            this.inner = new Dictionary<TKey, WeakReference>(capacity);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="comparer">The <see cref="IEqualityComparer&lt;T&gt;"/> implementation to use when comparing keys, or null to use the default <see cref="EqualityComparer&lt;T&gt;"/> for the type of the key.</param>
         public WeakValueDictionary(int capacity, IEqualityComparer<TKey> comparer)
         {
-            inner = new Dictionary<TKey, WeakReference>(capacity, comparer);
+            this.inner = new Dictionary<TKey, WeakReference>(capacity, comparer);
         }
 
         #endregion
@@ -116,20 +116,20 @@ namespace Caliburn.Micro.ReactiveUI
         /// <returns>The enumerator.</returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            CleanIfNeeded();
-            var enumerable = inner.Select(pair => new KeyValuePair<TKey, TValue>(pair.Key, (TValue)pair.Value.Target))
+            this.CleanIfNeeded();
+            var enumerable = this.inner.Select(pair => new KeyValuePair<TKey, TValue>(pair.Key, (TValue)pair.Value.Target))
                 .Where(pair => pair.Value != null);
             return enumerable.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            Add(item.Key, item.Value);
+            this.Add(item.Key, item.Value);
         }
 
         /// <summary>
@@ -137,13 +137,13 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public void Clear()
         {
-            inner.Clear();
+            this.inner.Clear();
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
             TValue value;
-            if (!TryGetValue(item.Key, out value))
+            if (!this.TryGetValue(item.Key, out value))
                 return false;
 
             return value == item.Value;
@@ -155,7 +155,7 @@ namespace Caliburn.Micro.ReactiveUI
                 throw new ArgumentNullException("array");
             if (arrayIndex < 0 || arrayIndex >= array.Length)
                 throw new ArgumentOutOfRangeException("arrayIndex");
-            if ((arrayIndex + Count) > array.Length)
+            if ((arrayIndex + this.Count) > array.Length)
                 throw new ArgumentException(
                     "The number of elements in the source collection is greater than the available space from arrayIndex to the end of the destination array.");
 
@@ -165,11 +165,11 @@ namespace Caliburn.Micro.ReactiveUI
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
             TValue value;
-            if (!TryGetValue(item.Key, out value))
+            if (!this.TryGetValue(item.Key, out value))
                 return false;
             if (value != item.Value)
                 return false;
-            return inner.Remove(item.Key);
+            return this.inner.Remove(item.Key);
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace Caliburn.Micro.ReactiveUI
         {
             get
             {
-                CleanIfNeeded();
-                return inner.Count;
+                this.CleanIfNeeded();
+                return this.inner.Count;
             }
         }
 
@@ -201,8 +201,8 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="value">The value of the element to add. The value can be null for reference types.</param>
         public void Add(TKey key, TValue value)
         {
-            CleanIfNeeded();
-            inner.Add(key, new WeakReference(value));
+            this.CleanIfNeeded();
+            this.inner.Add(key, new WeakReference(value));
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Caliburn.Micro.ReactiveUI
         public bool ContainsKey(TKey key)
         {
             TValue dummy;
-            return TryGetValue(key, out dummy);
+            return this.TryGetValue(key, out dummy);
         }
 
         /// <summary>
@@ -223,8 +223,8 @@ namespace Caliburn.Micro.ReactiveUI
         /// <returns>true if the element is successfully found and removed; otherwise, false. This method returns false if key is not found in the <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/>.</returns>
         public bool Remove(TKey key)
         {
-            CleanIfNeeded();
-            return inner.Remove(key);
+            this.CleanIfNeeded();
+            return this.inner.Remove(key);
         }
 
         /// <summary>
@@ -238,10 +238,10 @@ namespace Caliburn.Micro.ReactiveUI
         /// <returns>true if the <see cref="WeakValueDictionary&lt;TKey, TValue&gt;"/> contains an element with the specified key; otherwise, false.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            CleanIfNeeded();
+            this.CleanIfNeeded();
 
             WeakReference wr;
-            if (!inner.TryGetValue(key, out wr))
+            if (!this.inner.TryGetValue(key, out wr))
             {
                 value = null;
                 return false;
@@ -250,7 +250,7 @@ namespace Caliburn.Micro.ReactiveUI
             var result = (TValue)wr.Target;
             if (result == null)
             {
-                inner.Remove(key);
+                this.inner.Remove(key);
                 value = null;
                 return false;
             }
@@ -272,14 +272,14 @@ namespace Caliburn.Micro.ReactiveUI
             get
             {
                 TValue result;
-                if (!TryGetValue(key, out result))
+                if (!this.TryGetValue(key, out result))
                     throw new KeyNotFoundException();
                 return result;
             }
             set
             {
-                CleanIfNeeded();
-                inner[key] = new WeakReference(value);
+                this.CleanIfNeeded();
+                this.inner[key] = new WeakReference(value);
             }
         }
 
@@ -288,7 +288,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         public ICollection<TKey> Keys
         {
-            get { return inner.Keys; }
+            get { return this.inner.Keys; }
         }
 
         /// <summary>
@@ -307,17 +307,17 @@ namespace Caliburn.Micro.ReactiveUI
 
             public ValueCollection(WeakValueDictionary<TKey, TValue> dictionary)
             {
-                inner = dictionary;
+                this.inner = dictionary;
             }
 
             public IEnumerator<TValue> GetEnumerator()
             {
-                return inner.Select(pair => pair.Value).GetEnumerator();
+                return this.inner.Select(pair => pair.Value).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return GetEnumerator();
+                return this.GetEnumerator();
             }
 
             void ICollection<TValue>.Add(TValue item)
@@ -332,7 +332,7 @@ namespace Caliburn.Micro.ReactiveUI
 
             bool ICollection<TValue>.Contains(TValue item)
             {
-                return inner.Any(pair => pair.Value == item);
+                return this.inner.Any(pair => pair.Value == item);
             }
 
             public void CopyTo(TValue[] array, int arrayIndex)
@@ -341,7 +341,7 @@ namespace Caliburn.Micro.ReactiveUI
                     throw new ArgumentNullException("array");
                 if (arrayIndex < 0 || arrayIndex >= array.Length)
                     throw new ArgumentOutOfRangeException("arrayIndex");
-                if ((arrayIndex + Count) > array.Length)
+                if ((arrayIndex + this.Count) > array.Length)
                     throw new ArgumentException(
                         "The number of elements in the source collection is greater than the available space from arrayIndex to the end of the destination array.");
 
@@ -355,7 +355,7 @@ namespace Caliburn.Micro.ReactiveUI
 
             public int Count
             {
-                get { return inner.Count; }
+                get { return this.inner.Count; }
             }
 
             bool ICollection<TValue>.IsReadOnly

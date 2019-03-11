@@ -16,7 +16,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlaybackEngine _audioPlayer;
+        private readonly IAudioPlaybackEngineAsync _audioPlayer;
         private readonly IReadLibraryService _readLibraryService;
 
         #endregion
@@ -24,10 +24,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackHistoryViewModel(
-            IAudioPlaybackEngine audioPlayer,
+            IAudioPlaybackEngineAsync audioPlaybackEngine,
             IReadLibraryService readLibraryService)
         {
-            this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
+            this._audioPlayer = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
 
             // TODO: review operators order, e.g. where should .DisposeMany() be placed?

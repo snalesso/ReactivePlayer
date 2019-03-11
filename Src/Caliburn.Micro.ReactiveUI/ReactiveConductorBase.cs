@@ -20,23 +20,23 @@ namespace Caliburn.Micro.ReactiveUI
         /// <value>The close strategy.</value>
         public ICloseStrategy<T> CloseStrategy
         {
-            get { return closeStrategy ?? (closeStrategy = new DefaultCloseStrategy<T>()); }
-            set { closeStrategy = value; }
+            get { return this.closeStrategy ?? (this.closeStrategy = new DefaultCloseStrategy<T>()); }
+            set { this.closeStrategy = value; }
         }
 
         void IConductor.ActivateItem(object item)
         {
-            ActivateItem((T)item);
+            this.ActivateItem((T)item);
         }
 
         void IConductor.DeactivateItem(object item, bool close)
         {
-            DeactivateItem((T)item, close);
+            this.DeactivateItem((T)item, close);
         }
 
         IEnumerable IParent.GetChildren()
         {
-            return GetChildren();
+            return this.GetChildren();
         }
 
         /// <summary>

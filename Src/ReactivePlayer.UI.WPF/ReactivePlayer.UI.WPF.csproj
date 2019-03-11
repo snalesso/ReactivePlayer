@@ -79,11 +79,11 @@
     <Reference Include="ReactiveUI, Version=9.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReactiveUI.9.11.3\lib\net461\ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Events, Version=9.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveUI.Events.9.11.3\lib\net461\ReactiveUI.Events.dll</HintPath>
-    </Reference>
     <Reference Include="ReactiveUI.Events.WPF, Version=9.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReactiveUI.Events.WPF.9.11.3\lib\net461\ReactiveUI.Events.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.WPF, Version=9.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ReactiveUI.WPF.9.11.3\lib\net461\ReactiveUI.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Splat, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Splat.6.1.7\lib\net461\Splat.dll</HintPath>
@@ -141,6 +141,7 @@
     <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
     <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
     <Compile Include="Controls\CustomSlider.cs" />
+    <Compile Include="Controls\GridLengthSwitcher.cs" />
     <Compile Include="Controls\PlaybackBox.xaml.cs">
       <DependentUpon>PlaybackBox.xaml</DependentUpon>
     </Compile>
@@ -245,6 +246,10 @@
     <ProjectReference Include="..\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj">
       <Project>{d35e71ae-d254-4989-ae24-12747f3dcdc8}</Project>
       <Name>ReactivePlayer.Core.Playback</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj">
+      <Project>{376b6cd2-b0cf-4edd-a55d-d0a1b3674b10}</Project>
+      <Name>ReactivePlayer.Fakes</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.UI\ReactivePlayer.UI.csproj">
       <Project>{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}</Project>

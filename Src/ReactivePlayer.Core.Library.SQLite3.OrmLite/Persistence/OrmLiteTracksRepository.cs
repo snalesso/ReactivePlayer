@@ -1,5 +1,5 @@
 ﻿using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Repositories;
+using ReactivePlayer.Core.Library.Persistence;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Library.SQLite3.Repositories
+namespace ReactivePlayer.Core.Library.SQLite3.Persistence
 {
     public class OrmLiteTracksRepository : ITracksRepository, IDisposable
     {

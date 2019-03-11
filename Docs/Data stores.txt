@@ -31,6 +31,12 @@ Serializers
 	- tomba/netserializer					https://github.com/tomba/netserializer
 	- MichaCo/CacheManager					https://github.com/MichaCo/CacheManager
 
+Key-Value Stores
+
+	- lmdb									https://symas.com/lmdb/
+		GitHub								https://github.com/LMDB/lmdb
+	- spotify/sparkey						https://github.com/spotify/sparkey/
+
 Databases
 
 	- symisc/unqlite						https://github.com/symisc/unqlite

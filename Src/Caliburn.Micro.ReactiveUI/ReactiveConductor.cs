@@ -16,21 +16,21 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="item">The item to activate.</param>
         public override void ActivateItem(T item)
         {
-            if (item != null && item.Equals(ActiveItem))
+            if (item != null && item.Equals(this.ActiveItem))
             {
-                if (IsActive)
+                if (this.IsActive)
                 {
                     ScreenExtensions.TryActivate(item);
-                    OnActivationProcessed(item, true);
+                    this.OnActivationProcessed(item, true);
                 }
                 return;
             }
 
-            CloseStrategy.Execute(new[] { ActiveItem }, (canClose, items) =>
+            this.CloseStrategy.Execute(new[] { this.ActiveItem }, (canClose, items) =>
             {
                 if (canClose)
-                    ChangeActiveItem(item, true);
-                else OnActivationProcessed(item, false);
+                    this.ChangeActiveItem(item, true);
+                else this.OnActivationProcessed(item, false);
             });
         }
 
@@ -41,15 +41,15 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="close">Indicates whether or not to close the item after deactivating it.</param>
         public override void DeactivateItem(T item, bool close)
         {
-            if (item == null || !item.Equals(ActiveItem))
+            if (item == null || !item.Equals(this.ActiveItem))
             {
                 return;
             }
 
-            CloseStrategy.Execute(new[] { ActiveItem }, (canClose, items) =>
+            this.CloseStrategy.Execute(new[] { this.ActiveItem }, (canClose, items) =>
             {
                 if (canClose)
-                    ChangeActiveItem(default(T), close);
+                    this.ChangeActiveItem(default(T), close);
             });
         }
 
@@ -59,7 +59,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="callback">The implementor calls this action with the result of the close check.</param>
         public override void CanClose(Action<bool> callback)
         {
-            CloseStrategy.Execute(new[] { ActiveItem }, (canClose, items) => callback(canClose));
+            this.CloseStrategy.Execute(new[] { this.ActiveItem }, (canClose, items) => callback(canClose));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// </summary>
         protected override void OnActivate()
         {
-            ScreenExtensions.TryActivate(ActiveItem);
+            ScreenExtensions.TryActivate(this.ActiveItem);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <param name="close">Inidicates whether this instance will be closed.</param>
         protected override void OnDeactivate(bool close)
         {
-            ScreenExtensions.TryDeactivate(ActiveItem, close);
+            ScreenExtensions.TryDeactivate(this.ActiveItem, close);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Caliburn.Micro.ReactiveUI
         /// <returns>The collection of children.</returns>
         public override IEnumerable<T> GetChildren()
         {
-            return new[] { ActiveItem };
+            return new[] { this.ActiveItem };
         }
     }
 }

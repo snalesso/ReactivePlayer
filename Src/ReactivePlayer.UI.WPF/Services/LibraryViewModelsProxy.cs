@@ -31,6 +31,7 @@ namespace ReactivePlayer.UI.WPF.Services
                  .Connect()
                  .Transform(track => this._trackViewModelFactoryMethod.Invoke(track));
             this._trackViewModels
+                .DisposeMany()
                 .Subscribe()
                 .DisposeWith(this._disposables);
         }

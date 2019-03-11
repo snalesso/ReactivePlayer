@@ -5,9 +5,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
         public DesignTimePlaybackControlsViewModel()
             : base(
                   null
-                  , null
                   //, null
-                  , null
+                  //, null
+                  //, null
                   )
                   //new FakePlaybackService(),
                   //new LocalLibraryService(new FakeTracksInMemoryRepository()))

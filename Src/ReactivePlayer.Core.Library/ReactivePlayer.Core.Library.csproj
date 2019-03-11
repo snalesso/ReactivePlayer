@@ -73,7 +73,7 @@
     <Compile Include="Models\LibraryEntry.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />
-    <Compile Include="Repositories\ITracksRepository.cs" />
+    <Compile Include="Persistence\ITracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AddTrackCommand.cs" />
     <Compile Include="Services\InvalidCommandException.cs" />
