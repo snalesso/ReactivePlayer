@@ -20,14 +20,29 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
 
             this._tracksCache = new ConcurrentDictionary<Uri, Track>(new Track[]
             {
+                //new Track(
+                //    new Uri(@"D:\Music\Productions\300 Hz - 2 s.ogg"),
+                //    new TimeSpan(0, 4, 57),
+                //    DateTime.ParseExact("11/03/2019 15:35",dtf, dtFormatProvider),
+                //    11_900_450U,
+                //    DateTime.ParseExact("11/03/2019 15:35", dtf, dtFormatProvider),
+                //    true,
+                //    "300 Hz - 2 s",
+                //    null,
+                //    new []
+                //    {
+                //        new Artist("Sergio Nalesso")
+                //    },
+                //    2019,
+                //    null),
                 new Track(
-                    new Uri(@"D:\Music\Productions\300 Hz - 2 secs.ogg"),
+                    new Uri(@"D:\Music\Productions\300 Hz - 1.5 s.mp3"),
                     new TimeSpan(0, 4, 57),
-                    DateTime.ParseExact("11/03/2019 15:35",dtf, dtFormatProvider),
+                    DateTime.ParseExact("11/03/2019 16:57",dtf, dtFormatProvider),
                     11_900_450U,
-                    DateTime.ParseExact("11/03/2019 15:35", dtf, dtFormatProvider),
+                    DateTime.ParseExact("11/03/2019 16:57", dtf, dtFormatProvider),
                     true,
-                    "300 Hz",
+                    "300 Hz - 1.5 s",
                     null,
                     new []
                     {

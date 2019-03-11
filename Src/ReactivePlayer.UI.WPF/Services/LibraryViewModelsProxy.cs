@@ -29,7 +29,7 @@ namespace ReactivePlayer.UI.WPF.Services
 
             this._trackViewModels = this._readLibraryService.Tracks
                  .Connect()
-                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track));
+                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track)); // TODO: Uri key is inherited from track cache, find out how to choose new select'ed cache key
             this._trackViewModels
                 .DisposeMany()
                 .Subscribe()

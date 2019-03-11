@@ -41,6 +41,7 @@ namespace ReactivePlayer.Core.Playback
 
         #region observable events
 
+        // TODO: move outside? e.g. service/UI polls position
         IObservable<TimeSpan?> WhenPositionChanged { get; }
         IObservable<TimeSpan?> WhenDurationChanged { get; }
         IObservable<PlaybackStatus> WhenStatusChanged { get; }

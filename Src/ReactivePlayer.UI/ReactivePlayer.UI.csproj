@@ -48,8 +48,17 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DynamicData, Version=6.8.0.2561, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.6.8.0.2561\lib\net46\DynamicData.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SharedAssemblyInfo.cs">
@@ -59,7 +68,17 @@
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\ITaskbarService.cs" />
     <Compile Include="Services\IKeyboardHookService.cs" />
+    <Compile Include="Services\ModelsToViewModelsProxy`2.cs" />
     <Compile Include="Services\WindowsDialogService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
+      <Project>{402FEED0-76D6-4640-B261-EBE598BA6FBE}</Project>
+      <Name>ReactivePlayer.Core.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
