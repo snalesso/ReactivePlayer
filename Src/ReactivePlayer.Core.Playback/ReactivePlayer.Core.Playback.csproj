@@ -70,7 +70,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CSCore\Codecs\NVorbisWaveSource.cs" />
-    <Compile Include="CSCore\CSCoreAudioPlaybackEngineAsync.cs" />
+    <Compile Include="CSCore\CSCoreAudioPlaybackEngine.cs" />
     <Compile Include="IAudioSource.cs" />
     <Compile Include="IAudioPlaybackEngineAsync.cs" />
     <Compile Include="IPlaybackQueue.cs" />

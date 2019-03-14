@@ -95,7 +95,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CSCoreAudioPlaybackEngineAsync.cs" />
     <Compile Include="CSCorePlayer.cs" />
+    <Compile Include="IAudioPlaybackEngineAsync.cs" />
+    <Compile Include="IAudioPlaybackEngineAsyncMixins.cs" />
+    <Compile Include="PlaybackStatus.cs" />
+    <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -131,6 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="CSCore.Ffmpeg ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
+      <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
+      <Name>Daedalus.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\CSCore.Ffmpeg.1.2.0-beta1\build\CSCore.Ffmpeg.targets" Condition="Exists('..\..\packages\CSCore.Ffmpeg.1.2.0-beta1\build\CSCore.Ffmpeg.targets')" />

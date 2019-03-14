@@ -32,14 +32,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             // TODO: review operators order, e.g. where should .DisposeMany() be placed?
             // TODO: does this represent a subscription that should be disposed?
-            this._audioPlayer
-                .WhenAudioSourceLocationChanged
-                .ToObservableChangeSet(10)
-                .Transform(location => new PlaybackHistoryItemViewModel(location))
-                .Bind(out this._items)
-                .DisposeMany()
-                .Subscribe()
-                .DisposeWith(this._disposables);
+            //this._audioPlayer
+            //    .WhenAudioSourceLocationChanged
+            //    .ToObservableChangeSet(10)
+            //    .Transform(location => new PlaybackHistoryItemViewModel(location))
+            //    .Bind(out this._items)
+            //    .DisposeMany()
+            //    .Subscribe()
+            //    .DisposeWith(this._disposables);
         }
 
         #endregion

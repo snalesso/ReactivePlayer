@@ -12,7 +12,7 @@ using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Playback.CSCore
+namespace CSCore.SimpleControlsSync
 {
     // TODO: group status events in single subscriptions grouped by status in order to have Status == Loaded => Duration update before Position update & the inverse when Status == Stopped
     // TODO: buffering support, SingleBlockNotificationStream?? Dopamine docet
@@ -26,7 +26,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
     // TODO: investigate whether .AsObservable().DistinctUntilChanged() creates a new observable every time someone subscribes
-    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngineAsync
+    public class CSCoreAudioPlaybackEngineAsync : IAudioPlaybackEngineAsync
     {
         // TODO: study SubscribeOn VS ObserveOn, .ToProperty(x, x => x.Property, scheduler: ...), RxApp.MainThreadScheduler.Schedule(() => DoAThing())
 
@@ -44,7 +44,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         #region ctor
 
-        static CSCoreAudioPlaybackEngine()
+        static CSCoreAudioPlaybackEngineAsync()
         {
             //if (!CodecFactory.Instance.GetSupportedFileExtensions().Contains(".ogg"))
             //{
@@ -52,7 +52,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
             //}
         }
 
-        public CSCoreAudioPlaybackEngine(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
+        public CSCoreAudioPlaybackEngineAsync(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
         {
             //this.__playbackScopeDisposables.DisposeWith(this._playerScopeDisposables);
             this._playbackActionsSemaphore.DisposeWith(this._playerScopeDisposables);
@@ -352,34 +352,6 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public Task SeekToAsync(TimeSpan position)
-        {
-            throw new NotImplementedException();
-            //await this._playbackActionsSemaphore.WaitAsync();
-
-            //try
-            //{
-            //    if (this._canSeekSubject.Value)
-            //    {
-            //        if (position < TimeSpan.Zero || position > this.__soundOut.WaveSource.GetLength())
-            //            throw new ArgumentOutOfRangeException(nameof(position), position, $"{nameof(position)} out of {nameof(IWaveSource)} range."); // TODO: localize
-
-            //        await Task.Run(() => this.__soundOut.WaveSource.SetPosition(position));
-            //        this._positionSubject.OnNext(this.__soundOut?.WaveSource?.GetPosition());
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(SetVolume)}: {ex.Message}");
-            //    // it might happen that the ISoundOut is "not initialized yet" -> swallow it
-            //    // TODO: find out why CSCore source code
-            //}
-            //finally
-            //{
-            //    this._playbackActionsSemaphore.Release();
-            //}
-        }
-
         #endregion
 
         private void UpdateDuration()
@@ -457,7 +429,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
             catch
             {
                 // swallow in case it exploded
-                Debug.WriteLine($"{nameof(CSCoreAudioPlaybackEngine)}.{nameof(this.DeactivatePositionUpdater)}: exception getting position");
+                Debug.WriteLine($"{nameof(CSCoreAudioPlaybackEngineAsync)}.{nameof(this.DeactivatePositionUpdater)}: exception getting position");
                 this._positionSubject.OnNext(null);
             }
             // null checker because if just Loaded it never started polling for position
@@ -554,10 +526,6 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 }
             }
         }
-
-        public IObservable<Uri> WhenAudioSourceLocationChanged => throw new NotImplementedException();
-
-        public IObservable<bool> WhenCanSeekChanged => throw new NotImplementedException();
 
         #endregion
 

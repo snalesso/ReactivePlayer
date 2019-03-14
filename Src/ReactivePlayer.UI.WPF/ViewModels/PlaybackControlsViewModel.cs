@@ -93,12 +93,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._positionAsTickssOAPH = this._audioPlaybackEngine
                 .WhenPositionChanged
                 .Where(p => !this._isSeeking) // TODO: use an observable to toggle observing
-                .Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L)
+                .Select(p => p != null && p.HasValue ? Convert.ToUInt64(p.Value.Ticks) : 0UL)
                 .ToProperty(this, nameof(this.PositionAsTicks))
                 .DisposeWith(this._disposables);
             this._durationAsTicksOAPH = this._audioPlaybackEngine
                 .WhenDurationChanged
-                .Select(p => p != null && p.HasValue ? p.Value.Ticks : 0L)
+                .Select(p => p != null && p.HasValue ? Convert.ToUInt64(p.Value.Ticks) : 0UL)
                 .ToProperty(this, nameof(this.DurationAsTicks))
                 .DisposeWith(this._disposables);
 
@@ -162,11 +162,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //private ObservableAsPropertyHelper<string> _currentTrackLocationOAPH;
         //public string CurrentTrackLocation => this._currentTrackLocationOAPH.Value;
 
-        private ObservableAsPropertyHelper<long> _positionAsTickssOAPH;
-        public long PositionAsTicks => this._positionAsTickssOAPH.Value;
+        private ObservableAsPropertyHelper<ulong> _positionAsTickssOAPH;
+        public ulong PositionAsTicks => this._positionAsTickssOAPH.Value;
 
-        private ObservableAsPropertyHelper<long> _durationAsTicksOAPH;
-        public long DurationAsTicks => this._durationAsTicksOAPH.Value;
+        private ObservableAsPropertyHelper<ulong> _durationAsTicksOAPH;
+        public ulong DurationAsTicks => this._durationAsTicksOAPH.Value;
 
         private ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
         public TimeSpan? Position => this._positionOAPH.Value;
@@ -190,7 +190,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public float Volume
         {
             get => this._volumeOAPH.Value;
-            set => this._audioPlaybackEngine.SetVolume(value);
+            set => this._audioPlaybackEngine.Volume = value;
         }
 
         //private ObservableAsPropertyHelper<string> _titleOAPH;

@@ -91,7 +91,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.RegisterType<FakeTracksRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
             //builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
-            builder.RegisterType<CSCoreAudioPlaybackEngineAsync>().As<IAudioPlaybackEngineAsync>().InstancePerLifetimeScope();
+            builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngineAsync>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<LibraryViewModelsProxy>()

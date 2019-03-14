@@ -30,23 +30,23 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
 
-            this._trackPlaybackStatus_OAPH = Observable.CombineLatest(
-                  this._playbackService.WhenAudioSourceLocationChanged,
-                  this._playbackService.WhenStatusChanged,
-                  (audioSourceLocation, status) =>
-                  {
-                      if (this.TrackLocation == audioSourceLocation)
-                      {
-                          if (status == PlaybackStatus.Playing)
-                              return TrackPlaybackStatus.Playing;
+            //this._trackPlaybackStatus_OAPH = Observable.CombineLatest(
+            //      this._playbackService.WhenAudioSourceLocationChanged,
+            //      this._playbackService.WhenStatusChanged,
+            //      (audioSourceLocation, status) =>
+            //      {
+            //          if (this.TrackLocation == audioSourceLocation)
+            //          {
+            //              if (status == PlaybackStatus.Playing)
+            //                  return TrackPlaybackStatus.Playing;
 
-                          else if (status == PlaybackStatus.Paused)
-                              return TrackPlaybackStatus.Paused;
-                      }
-                      return TrackPlaybackStatus.NotPlaying;
-                  })
-                  .ToProperty(this, nameof(this.TrackPlaybackStatus))
-                  .DisposeWith(this._disposables);
+            //              else if (status == PlaybackStatus.Paused)
+            //                  return TrackPlaybackStatus.Paused;
+            //          }
+            //          return TrackPlaybackStatus.NotPlaying;
+            //      })
+            //      .ToProperty(this, nameof(this.TrackPlaybackStatus))
+            //      .DisposeWith(this._disposables);
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
         public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
-        
+
         public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
 
         private IReadOnlyList<string> _performersNames;
