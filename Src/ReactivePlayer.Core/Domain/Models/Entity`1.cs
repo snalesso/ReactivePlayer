@@ -45,7 +45,7 @@ namespace ReactivePlayer.Core.Domain.Models
 
         public bool Equals(Entity<TIdentity> other)
         {
-            if (other == null)
+            if (other is null)
                 return false;
 
             if (this.GetType() != other.GetType())
@@ -66,10 +66,10 @@ namespace ReactivePlayer.Core.Domain.Models
 
         public static bool operator ==(Entity<TIdentity> left, Entity<TIdentity> right)
         {
-            if (left == null ^ right == null)
+            if (left is null ^ right is null)
                 return false;
 
-            return (left == null) || left.Equals(right);
+            return (left is null) || left.Equals(right);
         }
 
         public static bool operator !=(Entity<TIdentity> left, Entity<TIdentity> right)

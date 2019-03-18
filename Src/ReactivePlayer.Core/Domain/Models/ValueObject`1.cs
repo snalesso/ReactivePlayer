@@ -41,7 +41,7 @@ namespace ReactivePlayer.Core.Domain.Models
         public bool Equals(T other)
         {
             return
-                other != null
+                !(other is null)
                 && this.GetType() == other.GetType() // TODO: does this work if I pass an inheriting class instance??
                 && this.GetValueIngredients().SequenceEqual(other.GetValueIngredients());
         }
@@ -64,10 +64,10 @@ namespace ReactivePlayer.Core.Domain.Models
         /// <returns></returns>
         public static bool operator ==(ValueObject<T> left, ValueObject<T> right)
         {
-            if (left == null ^ right == null)
+            if (left is null ^ right is null)
                 return false;
 
-            return left == null || left.Equals(right);
+            return left is null || left.Equals(right);
         }
 
         /// <summary>
