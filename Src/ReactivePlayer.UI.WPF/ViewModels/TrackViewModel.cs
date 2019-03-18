@@ -53,8 +53,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
-        public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
+        //private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
+        //public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
 
         public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
 

@@ -1,13 +1,14 @@
 using DynamicData;
 using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Services;
 using System;
+using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Library
+namespace ReactivePlayer.Core.Library.Services
 {
-    public interface IReadLibraryService : IDisposable // TODO: this should be named ITracksService, find a better name for the others that support domain operations
+    // TODO: this should be named ITracksService, find a better name for the others that support domain operations
+    public interface IReadLibraryService : IConnectableService, IDisposable
     {
         IObservableCache<Track, Uri> Tracks { get; }
-        //IObservableList<Artist> Artists { get; }
-        //IObservableList<Album> Albums { get; }
     }
 }

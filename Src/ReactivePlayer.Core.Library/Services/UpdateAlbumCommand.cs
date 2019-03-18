@@ -1,4 +1,4 @@
-﻿namespace ReactivePlayer.Core.Library
+﻿namespace ReactivePlayer.Core.Library.Services
 {
     public class UpdateAlbumCommand
     {

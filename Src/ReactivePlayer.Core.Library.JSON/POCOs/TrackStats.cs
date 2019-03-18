@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ReactivePlayer.Core.Library.JSON.POCOs
+namespace ReactivePlayer.Core.Library.Json.POCOs
 {
     public class TrackStats
     {

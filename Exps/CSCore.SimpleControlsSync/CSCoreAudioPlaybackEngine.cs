@@ -1,6 +1,7 @@
 using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
+using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
@@ -26,7 +27,7 @@ namespace CSCore.SimpleControlsSync
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
     // TODO: investigate whether .AsObservable().DistinctUntilChanged() creates a new observable every time someone subscribes
-    public class CSCoreAudioPlaybackEngineAsync : IAudioPlaybackEngineAsync
+    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngineAsync
     {
         // TODO: study SubscribeOn VS ObserveOn, .ToProperty(x, x => x.Property, scheduler: ...), RxApp.MainThreadScheduler.Schedule(() => DoAThing())
 
@@ -44,7 +45,7 @@ namespace CSCore.SimpleControlsSync
 
         #region ctor
 
-        static CSCoreAudioPlaybackEngineAsync()
+        static CSCoreAudioPlaybackEngine()
         {
             //if (!CodecFactory.Instance.GetSupportedFileExtensions().Contains(".ogg"))
             //{
@@ -52,7 +53,7 @@ namespace CSCore.SimpleControlsSync
             //}
         }
 
-        public CSCoreAudioPlaybackEngineAsync(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
+        public CSCoreAudioPlaybackEngine(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
         {
             //this.__playbackScopeDisposables.DisposeWith(this._playerScopeDisposables);
             this._playbackActionsSemaphore.DisposeWith(this._playerScopeDisposables);
@@ -186,27 +187,31 @@ namespace CSCore.SimpleControlsSync
             {
                 this._statusSubject.OnNext(PlaybackStatus.Loading);
 
-                await Task.Run(() =>
-                {
-                    // TODO: expose and make selectable internal playback engine
-                    if (WasapiOut.IsSupportedOnCurrentPlatform)
-                        this.__soundOut = new WasapiOut();
-                    else
-                        this.__soundOut = new DirectSoundOut(100);
+                await
+                    Task.WhenAll(
+                        Task.Delay(TimeSpan.FromSeconds(1)),
+                        Task.Run(() =>
+                        {
+                            // TODO: expose and make selectable internal playback engine
+                            if (WasapiOut.IsSupportedOnCurrentPlatform)
+                                this.__soundOut = new WasapiOut();
+                            else
+                                this.__soundOut = new DirectSoundOut(100);
 
-                    var codec = CodecFactory.Instance.GetCodec(audioSourceLocation);
-                    this.__soundOut.Initialize(codec);
+                            var codec = CodecFactory.Instance.GetCodec(audioSourceLocation);
+                            this.__soundOut.Initialize(codec);
 
-                    // start listening to ISoundOut.Stopped
-                    // we do it here so the this.Stop unloads the this.Load
-                    this.AttachToISoundOutStoppedEvent();
+                            // start listening to ISoundOut.Stopped
+                            // we do it here so the this.Stop unloads the this.Load
+                            this.AttachToISoundOutStoppedEvent();
 
-                    this.__soundOut.Volume = this._volumeSubject.Value;
+                            this.__soundOut.Volume = this._volumeSubject.Value;
 
-                    // register playbackScopeDisposables
-                    this.__soundOut.WaveSource.DisposeWith(this.__playbackScopeDisposables);
-                    this.__soundOut.DisposeWith(this.__playbackScopeDisposables);
-                });
+                            // register playbackScopeDisposables
+                            this.__soundOut.WaveSource.DisposeWith(this.__playbackScopeDisposables);
+                            this.__soundOut.DisposeWith(this.__playbackScopeDisposables);
+                        })
+                    );
 
                 this._statusSubject.OnNext(PlaybackStatus.Loaded);
             }
@@ -216,11 +221,11 @@ namespace CSCore.SimpleControlsSync
 
                 switch (ex)
                 {
-                    case NullReferenceException nse:
+                    case NullReferenceException nullReference:
                         break;
-                    case NotSupportedException nse:
+                    case NotSupportedException notSupported:
                         break;
-                    case ArgumentNullException ane:
+                    case ArgumentNullException argumentNull:
                         break;
                     default:
                         break;
@@ -352,6 +357,34 @@ namespace CSCore.SimpleControlsSync
             }
         }
 
+        public Task SeekToAsync(TimeSpan position)
+        {
+            throw new NotImplementedException();
+            //await this._playbackActionsSemaphore.WaitAsync();
+
+            //try
+            //{
+            //    if (this._canSeekSubject.Value)
+            //    {
+            //        if (position < TimeSpan.Zero || position > this.__soundOut.WaveSource.GetLength())
+            //            throw new ArgumentOutOfRangeException(nameof(position), position, $"{nameof(position)} out of {nameof(IWaveSource)} range."); // TODO: localize
+
+            //        await Task.Run(() => this.__soundOut.WaveSource.SetPosition(position));
+            //        this._positionSubject.OnNext(this.__soundOut?.WaveSource?.GetPosition());
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(SetVolume)}: {ex.Message}");
+            //    // it might happen that the ISoundOut is "not initialized yet" -> swallow it
+            //    // TODO: find out why CSCore source code
+            //}
+            //finally
+            //{
+            //    this._playbackActionsSemaphore.Release();
+            //}
+        }
+
         #endregion
 
         private void UpdateDuration()
@@ -429,7 +462,7 @@ namespace CSCore.SimpleControlsSync
             catch
             {
                 // swallow in case it exploded
-                Debug.WriteLine($"{nameof(CSCoreAudioPlaybackEngineAsync)}.{nameof(this.DeactivatePositionUpdater)}: exception getting position");
+                Debug.WriteLine($"{nameof(CSCoreAudioPlaybackEngine)}.{nameof(this.DeactivatePositionUpdater)}: exception getting position");
                 this._positionSubject.OnNext(null);
             }
             // null checker because if just Loaded it never started polling for position
@@ -526,6 +559,10 @@ namespace CSCore.SimpleControlsSync
                 }
             }
         }
+
+        public IObservable<Uri> WhenAudioSourceLocationChanged => throw new NotImplementedException();
+
+        public IObservable<bool> WhenCanSeekChanged => throw new NotImplementedException();
 
         #endregion
 

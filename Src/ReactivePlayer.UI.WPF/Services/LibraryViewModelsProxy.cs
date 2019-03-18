@@ -2,6 +2,7 @@
 using DynamicData.Binding;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
 using System;
 using System.Collections.Generic;

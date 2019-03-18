@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="POCOs\Album.cs" />
-    <Compile Include="POCOs\AlbumAuthor.cs" />
     <Compile Include="POCOs\Artist.cs" />
     <Compile Include="POCOs\Track.cs" />
     <Compile Include="POCOs\TrackComposer.cs" />

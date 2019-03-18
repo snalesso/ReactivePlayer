@@ -54,26 +54,12 @@ namespace ReactivePlayer.Core.Library.SQLite3.Persistence
             throw new NotImplementedException();
         }
 
-        public Task<long> CountAsync(Func<Track, bool> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
         {
             using (this._dbConnection = await this._dbConnectionFactory.OpenAsync())
             using (var transaction = this._dbConnection.BeginTransaction(IsolationLevel.Serializable))
             {
                 return await transaction.Connection.SelectAsync<Track>(t => filter(t));
-            }
-        }
-
-        public async Task<Track> GetByIdAsync(Uri location)
-        {
-            using (this._dbConnection = await this._dbConnectionFactory.OpenAsync())
-            using (var transaction = this._dbConnection.BeginTransaction(IsolationLevel.Serializable))
-            {
-                return await transaction.Connection.LoadSingleByIdAsync<Track>(location);
             }
         }
 

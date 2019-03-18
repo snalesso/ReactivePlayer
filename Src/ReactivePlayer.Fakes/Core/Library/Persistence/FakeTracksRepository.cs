@@ -165,12 +165,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         {
             return Task.FromResult(this._tracksCache.Values.ToList().AsReadOnly() as IReadOnlyList<Track>);
         }
-
-        public Task<Track> GetByIdAsync(Uri id)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<bool> RemoveAsync(Uri identity)
         {
             throw new NotImplementedException();

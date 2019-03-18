@@ -1,5 +1,6 @@
 ﻿using CSCore.Codecs;
 using CSCore.SoundOut;
+using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace CSCore.SimpleControlsSync
         private CompositeDisposable _disposables = new CompositeDisposable();
         //private ISoundOut _soundOut;
         //CSCorePlayer _csCorePlayer = new CSCorePlayer();
-        CSCoreAudioPlaybackEngineAsync _audioPlaybackEngineAsync = new CSCoreAudioPlaybackEngineAsync();
+        CSCoreAudioPlaybackEngine _audioPlaybackEngineAsync = new CSCoreAudioPlaybackEngine();
 
         public ShellViewModel()
         {

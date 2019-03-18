@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Domain.Persistence
 {
     // TODO: return a meaningful response instead of a bare bool
-    public interface IEntityRepository<TEntity, TIdentity>
+    public interface IEntityRepository<TEntity, TIdentity> 
         where TEntity : Entity
         //where TIdentity : IEquatable<TIdentity>
     {
         Task<IReadOnlyList<TEntity>> GetAllAsync(Func<TEntity, bool> filter = null);
-        Task<TEntity> GetByIdAsync(TIdentity id);
+        //Task<TEntity> GetByIdAsync(TIdentity id);
 
         //Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> filter);
         //Task<long> CountAsync(Func<TEntity, bool> filter = null);

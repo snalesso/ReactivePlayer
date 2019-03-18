@@ -1,9 +1,8 @@
-﻿namespace ReactivePlayer.Core.Library.JSON.POCOs
+﻿namespace ReactivePlayer.Core.Library.Json.POCOs
 {
     public class Album
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public long? ReleaseDateTimeTicks { get; set; }
         public short? TracksCount { get; set; }
         public short? DiscsCount { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace ReactivePlayer.Core.Library.JSON.POCOs
+﻿namespace ReactivePlayer.Core.Library.Json.POCOs
 {
     public class Track
     {

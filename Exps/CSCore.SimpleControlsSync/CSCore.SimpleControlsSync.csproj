@@ -95,12 +95,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CSCoreAudioPlaybackEngineAsync.cs" />
+    <Compile Include="CSCoreAudioPlaybackEngine.cs" />
     <Compile Include="CSCorePlayer.cs" />
-    <Compile Include="IAudioPlaybackEngineAsync.cs" />
-    <Compile Include="IAudioPlaybackEngineAsyncMixins.cs" />
-    <Compile Include="PlaybackStatus.cs" />
-    <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -141,6 +137,10 @@
     <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
       <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
       <Name>Daedalus.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj">
+      <Project>{d35e71ae-d254-4989-ae24-12747f3dcdc8}</Project>
+      <Name>ReactivePlayer.Core.Playback</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

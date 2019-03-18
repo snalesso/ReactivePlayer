@@ -186,27 +186,31 @@ namespace ReactivePlayer.Core.Playback.CSCore
             {
                 this._statusSubject.OnNext(PlaybackStatus.Loading);
 
-                await Task.Run(() =>
-                {
-                    // TODO: expose and make selectable internal playback engine
-                    if (WasapiOut.IsSupportedOnCurrentPlatform)
-                        this.__soundOut = new WasapiOut();
-                    else
-                        this.__soundOut = new DirectSoundOut(100);
+                await
+                    Task.WhenAll(
+                        Task.Delay(TimeSpan.FromSeconds(1)),
+                        Task.Run(() =>
+                        {
+                            // TODO: expose and make selectable internal playback engine
+                            if (WasapiOut.IsSupportedOnCurrentPlatform)
+                                this.__soundOut = new WasapiOut();
+                            else
+                                this.__soundOut = new DirectSoundOut(100);
 
-                    var codec = CodecFactory.Instance.GetCodec(audioSourceLocation);
-                    this.__soundOut.Initialize(codec);
+                            var codec = CodecFactory.Instance.GetCodec(audioSourceLocation);
+                            this.__soundOut.Initialize(codec);
 
-                    // start listening to ISoundOut.Stopped
-                    // we do it here so the this.Stop unloads the this.Load
-                    this.AttachToISoundOutStoppedEvent();
+                            // start listening to ISoundOut.Stopped
+                            // we do it here so the this.Stop unloads the this.Load
+                            this.AttachToISoundOutStoppedEvent();
 
-                    this.__soundOut.Volume = this._volumeSubject.Value;
+                            this.__soundOut.Volume = this._volumeSubject.Value;
 
-                    // register playbackScopeDisposables
-                    this.__soundOut.WaveSource.DisposeWith(this.__playbackScopeDisposables);
-                    this.__soundOut.DisposeWith(this.__playbackScopeDisposables);
-                });
+                            // register playbackScopeDisposables
+                            this.__soundOut.WaveSource.DisposeWith(this.__playbackScopeDisposables);
+                            this.__soundOut.DisposeWith(this.__playbackScopeDisposables);
+                        })
+                    );
 
                 this._statusSubject.OnNext(PlaybackStatus.Loaded);
             }
@@ -216,11 +220,11 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
                 switch (ex)
                 {
-                    case NullReferenceException nse:
+                    case NullReferenceException nullReference:
                         break;
-                    case NotSupportedException nse:
+                    case NotSupportedException notSupported:
                         break;
-                    case ArgumentNullException ane:
+                    case ArgumentNullException argumentNull:
                         break;
                     default:
                         break;

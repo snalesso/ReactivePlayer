@@ -1,5 +1,6 @@
 ﻿using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Services;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -31,17 +32,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService)); // TODO: localize
 
-            this.FakeEdit = ReactiveCommand.CreateFromTask(
-                async (TrackViewModel trackVM) =>
+            this.FakeEdit = ReactiveCommand.Create(
+                (TrackViewModel trackVM) =>
                 {
-                    var commands = new[]
-                    {
-                        new UpdateTrackCommand(trackVM.TrackLocation)
-                        {
-                            Title = "Diocane"
-                        }
-                    };
-                    await this._writeLibraryService.UpdateTracksAsync(commands);
+                    throw new NotImplementedException();
                 });
         }
 

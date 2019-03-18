@@ -88,7 +88,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Library
 		{61F616A4-FEB6-4582-B1A2-418FD0147C7B} = {61F616A4-FEB6-4582-B1A2-418FD0147C7B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Library.JSON", "Src\ReactivePlayer.Core.Library.JSON\ReactivePlayer.Core.Library.JSON.csproj", "{BB846D47-8B91-4793-99A6-5DB19984F6E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Library.Json", "Src\ReactivePlayer.Core.Library.Json\ReactivePlayer.Core.Library.Json.csproj", "{BB846D47-8B91-4793-99A6-5DB19984F6E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.ReactiveUI", "Src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj", "{203B0466-BEE4-4EC6-8562-6BD9BB1919BB}"
 EndProject
@@ -99,6 +99,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.SimpleControlsSync", "Exps\CSCore.SimpleControlsSync\CSCore.SimpleControlsSync.csproj", "{C4A06DB3-F874-4E35-8A6E-5D4038880050}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveUI.ReactiveCommandTests", "Exps\ReactiveUI.ReactiveCommandTests\ReactiveUI.ReactiveCommandTests.csproj", "{1865F8CB-8383-4348-996F-122EED25F64F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Library.Json.ServiceStack.Text", "Src\ReactivePlayer.Core.Library.Json.ServiceStack.Text\ReactivePlayer.Core.Library.Json.ServiceStack.Text.csproj", "{0CB3F381-DF4B-45B7-B886-C41AE9223F04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Library.Json.Utf8Json", "Src\ReactivePlayer.Core.Library.Json.Utf8Json\ReactivePlayer.Core.Library.Json.Utf8Json.csproj", "{76CBB591-EC80-4D02-B24D-57B7E683AFBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Exps.Persistence.Tracks", "Exps\ReactivePlayer.Exps.Persistence.Tracks\ReactivePlayer.Exps.Persistence.Tracks.csproj", "{83B58730-C94C-45D6-9C0F-8E820216B229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Core.Library.Json.Newtonsoft", "Src\ReactivePlayer.Core.Library.Json.Newtonsoft\ReactivePlayer.Core.Library.Json.Newtonsoft.csproj", "{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -260,6 +268,38 @@ Global
 		{1865F8CB-8383-4348-996F-122EED25F64F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1865F8CB-8383-4348-996F-122EED25F64F}.Release|x64.ActiveCfg = Release|Any CPU
 		{1865F8CB-8383-4348-996F-122EED25F64F}.Release|x64.Build.0 = Release|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04}.Release|x64.Build.0 = Release|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Debug|x64.Build.0 = Debug|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Release|x64.ActiveCfg = Release|Any CPU
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB}.Release|x64.Build.0 = Release|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Debug|x64.Build.0 = Debug|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Release|x64.ActiveCfg = Release|Any CPU
+		{83B58730-C94C-45D6-9C0F-8E820216B229}.Release|x64.Build.0 = Release|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Debug|x64.Build.0 = Debug|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Release|x64.ActiveCfg = Release|Any CPU
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -286,6 +326,10 @@ Global
 		{376B6CD2-B0CF-4EDD-A55D-D0A1B3674B10} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{C4A06DB3-F874-4E35-8A6E-5D4038880050} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
 		{1865F8CB-8383-4348-996F-122EED25F64F} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
+		{0CB3F381-DF4B-45B7-B886-C41AE9223F04} = {8191942A-59BD-4149-84AA-B800AE9604F3}
+		{76CBB591-EC80-4D02-B24D-57B7E683AFBB} = {8191942A-59BD-4149-84AA-B800AE9604F3}
+		{83B58730-C94C-45D6-9C0F-8E820216B229} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
+		{1AFE2B64-D7E6-4897-8E90-96C17C1B952D} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89BD77AF-A336-4C8F-A1F9-E89FF141FEC5}

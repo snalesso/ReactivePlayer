@@ -3,6 +3,7 @@ using DynamicData;
 using DynamicData.Binding;
 using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
@@ -46,8 +47,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        private ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> _items;
-        public ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> Items => this._items;
+        //private ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> _items;
+        //public ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> Items => this._items;
 
         #endregion
 

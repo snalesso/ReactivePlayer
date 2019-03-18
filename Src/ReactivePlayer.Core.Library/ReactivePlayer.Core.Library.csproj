@@ -76,6 +76,7 @@
     <Compile Include="Persistence\ITracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AddTrackCommand.cs" />
+    <Compile Include="Services\IConnectableService.cs" />
     <Compile Include="Services\InvalidCommandException.cs" />
     <Compile Include="Services\IReadLibraryService.cs" />
     <Compile Include="Services\IWriteLibraryService.cs" />

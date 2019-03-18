@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ReactivePlayer.Core.Library
+namespace ReactivePlayer.Core.Library.Services
 {
     public class AddTrackCommand
     {
