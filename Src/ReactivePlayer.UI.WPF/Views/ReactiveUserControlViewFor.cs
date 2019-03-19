@@ -26,7 +26,7 @@ namespace ReactivePlayer.UI.WPF.Views
             this.Events().DataContextChanged
                 .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as TViewModel))
                 .DisposeWith(this._disposables);
-            this.WhenViewModelChanged = this._viewModelSubject.AsObservable().DistinctUntilChanged();
+            this.WhenViewModelChanged = this._viewModelSubject.DistinctUntilChanged();
         }
 
         #region IViewFor

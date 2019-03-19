@@ -62,11 +62,6 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
             return (filter != null ? this._albums.AsParallel().Where(filter).AsEnumerable() : this._albums).ToArray();
         }
 
-        public Task<Album> GetByIdAsync(Uri id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> RemoveAsync(Uri identity)
         {
             throw new NotImplementedException();
@@ -93,8 +88,6 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
                     this._albums = new List<Album>(jsonAlbums ?? Enumerable.Empty<Album>());
                 }
             }
-
-            //return Task.CompletedTask;
         }
 
         private Task<bool> Save()
@@ -124,8 +117,9 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         public void Dispose()
         {
-            // TODO: dispose file streams
-            throw new NotImplementedException();
+            this._dbFileStream.Close();
+            this._dbFileStream.Dispose();
+            this._dbFileStream = null;
         }
     }
 }

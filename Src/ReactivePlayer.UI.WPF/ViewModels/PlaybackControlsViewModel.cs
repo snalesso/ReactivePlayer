@@ -21,7 +21,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //private readonly PlaybackHistory _playbackHistory;
         //private readonly IReadLibraryService _readLibraryService;
 
-        private CompositeDisposable _disposables = new CompositeDisposable(); // TODO: move to #region IDisposable
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isSeeking = false;
 
         #endregion

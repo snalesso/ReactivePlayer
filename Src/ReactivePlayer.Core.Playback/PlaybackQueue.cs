@@ -97,7 +97,7 @@ namespace ReactivePlayer.Core.Playback
         //    this._items.InsertRange(trackLocations, this._items.Count);
         //}
 
-        // TODO: dequeu an IAudioSource which will carry its .Location
+        // TODO: dequeue an IAudioSource which will carry its .Location
         public void Remove(Uri trackLocation)
         {
             //var head = this._queueItems.Items.FirstOrDefault();

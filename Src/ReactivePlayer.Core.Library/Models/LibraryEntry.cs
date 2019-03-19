@@ -4,17 +4,19 @@ using System.Collections.Generic;
 
 namespace ReactivePlayer.Core.Library.Models
 {
-    public abstract class LibraryEntry : Entity
+    public abstract class LibraryEntry : Entity<uint>
     {
         #region ctor
 
         public LibraryEntry(
+            uint id,
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
             ulong? fileSizeBytes,
             DateTime addedToLibraryDateTime,
-            bool isLoved)
+            bool isLoved) 
+            : base(id)
         {
             this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().Name}.{nameof(this.Location)} cannot be null."); // TODO: localize
             this.AddedToLibraryDateTime = addedToLibraryDateTime <= DateTime.Now

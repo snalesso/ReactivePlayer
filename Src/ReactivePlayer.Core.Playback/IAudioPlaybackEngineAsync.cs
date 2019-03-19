@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
 {
-    // TODO: consider making some methods SYNC, and letting the UI caller thread offloading
+    // TODO: investigate if some members are actually sync, for those the UI will handle offloading when calling
+    // TODO: is it legit to implement IDisposable from here? A class which exposes IObservable<T> fields are always IDisposable's?
     public interface IAudioPlaybackEngineAsync : IDisposable
     {
         #region methods
@@ -14,26 +14,26 @@ namespace ReactivePlayer.Core.Playback
         IObservable<bool> WhenCanLoadChanged { get; }
         IObservable<Uri> WhenAudioSourceLocationChanged { get; }
 
-        // TODO: make sync
+        // TODO: make sync?
         Task PlayAsync();
         IObservable<bool> WhenCanPlayChanged { get; }
 
-        // TODO: make sync
+        // TODO: make sync?
         Task PauseAsync();
         IObservable<bool> WhenCanPauseChanged { get; }
 
-        // TODO: make sync
+        // TODO: make sync?
         Task ResumeAsync();
         IObservable<bool> WhenCanResumeChanged { get; }
 
-        // TODO: make sync
+        // TODO: make sync?
         Task StopAsync();
         IObservable<bool> WhenCanStopChanged { get; }
 
-        Task SeekToAsync(TimeSpan position); // TODO: make SeekTo void? Or SetVolume Task? What if multiple concurrent SetVolume's?
+        // TODO: make sync/property?
+        Task SeekToAsync(TimeSpan position);
         IObservable<bool> WhenCanSeekChanged { get; }
 
-        // might be expressed as prop but setter + observable reading works better
         float Volume { get; set; }
         IObservable<float> WhenVolumeChanged { get; }
 
@@ -45,14 +45,6 @@ namespace ReactivePlayer.Core.Playback
         IObservable<TimeSpan?> WhenPositionChanged { get; }
         IObservable<TimeSpan?> WhenDurationChanged { get; }
         IObservable<PlaybackStatus> WhenStatusChanged { get; }
-
-        //IObservable<bool> WhenSomethingGoesWrong { get; } // TODO: is this enough? Use FailedEventArgs? How are exceptions handled in iobservables?
-
-        //IObservable<bool> WhenCanSwitchOutputDeviceChanged { get; }
-
-        //IObservable<IReadOnlyList<DirectSoundDeviceInfo>> WhenAvailableDevicesChanged { get; }
-
-        //Task<bool> SwitchToDevice(DirectSoundDeviceInfo device);
 
         #endregion
     }

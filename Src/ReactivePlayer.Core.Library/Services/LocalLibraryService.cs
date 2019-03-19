@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
 {
-    public class LocalLibraryService : IReadLibraryService, IWriteLibraryService // TODO: ensure IDisposable is disposed
+    public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable
     {
         private readonly ITracksRepository _tracksRepository;
 
@@ -21,7 +21,7 @@ namespace ReactivePlayer.Core.Library.Services
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
 
-            this._sourceTracks = new SourceCache<Track, Uri>(t => t.Location).DisposeWith(this._disposables);
+            this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
         }
 
         #region IConnectableService
@@ -33,7 +33,7 @@ namespace ReactivePlayer.Core.Library.Services
         }
 
         private BehaviorSubject<bool> _whenIsConnectedChangedSubject = new BehaviorSubject<bool>(false);
-        public IObservable<bool> WhenIsConnectedChanged => this._whenIsConnectedChangedSubject.AsObservable().DistinctUntilChanged();
+        public IObservable<bool> WhenIsConnectedChanged => this._whenIsConnectedChangedSubject.DistinctUntilChanged();
 
         // TODO: add concurrency protection, use async lazy?
         public async Task<bool> Connect()
@@ -46,7 +46,7 @@ namespace ReactivePlayer.Core.Library.Services
                     //    await Task.Delay(TimeSpan.FromSeconds(5));
                     //    return await 
                     this._tracksRepository.GetAllAsync();
-                    //});
+                //});
 
                 // TODO: investigate what happens if the lambda passed to .Edit is async
                 this._sourceTracks.Edit(list =>
@@ -64,8 +64,8 @@ namespace ReactivePlayer.Core.Library.Services
 
         #region IReadLibraryService
 
-        private readonly SourceCache<Track, Uri> _sourceTracks;
-        public IObservableCache<Track, Uri> Tracks => this._sourceTracks.AsObservableCache().DisposeWith(this._disposables);
+        private readonly SourceCache<Track, uint> _sourceTracks;
+        public IObservableCache<Track, uint> Tracks => this._sourceTracks.AsObservableCache().DisposeWith(this._disposables);
 
         //private readonly SourceList<Artist> _sourceArtists;
         //public IObservableList<Artist> Artists => this._sourceArtists;
@@ -98,7 +98,7 @@ namespace ReactivePlayer.Core.Library.Services
 
             try
             {
-                var newTrack = new Track(
+                var newTrack = this._tracksRepository.CreateTracksAsync(
                     command.Location,
                     command.Duration,
                     command.LastModifiedDateTime,
@@ -149,14 +149,14 @@ namespace ReactivePlayer.Core.Library.Services
 
             bool wasSuccessful;
 
-            // TODO: ensure track paths uniqueness
+            // TODO: ensure track paths uniqueness (e.g. use AddMultipleTracksCommand which gathers common changes and uses an IHashSet<> for Track.Id and/or Track.Location)
 
             var commandTracks = new List<Track>(commands.Count);
 
             try
             {
                 var newTracks = commands
-                    .Select(command => new Track(
+                    .Select(command => this._tracksRepository.CreateTracksAsync(
                         command.Location,
                         command.Duration,
                         command.LastModifiedDateTime,
@@ -178,9 +178,12 @@ namespace ReactivePlayer.Core.Library.Services
                         command.AlbumDiscNumber)))
                     .ToArray();
 
-                if (wasSuccessful = await this._tracksRepository.AddAsync(newTracks))
+                var addedTracks = await this._tracksRepository.AddAsync(newTracks);
+                wasSuccessful = (addedTracks != null);
+
+                if (wasSuccessful)
                 {
-                    this._sourceTracks.AddOrUpdate(newTracks);
+                    this._sourceTracks.AddOrUpdate(addedTracks);
                 }
             }
             catch (Exception)
@@ -198,11 +201,11 @@ namespace ReactivePlayer.Core.Library.Services
 
             try
             {
-                if (wasSuccessful = await this._tracksRepository.RemoveAsync(command.TrackLocation))
+                if (wasSuccessful = await this._tracksRepository.RemoveAsync(command.Id))
                 {
                     this._sourceTracks.Edit(cacheUpdater =>
                     {
-                        cacheUpdater.RemoveKey(command.TrackLocation);
+                        cacheUpdater.RemoveKey(command.Id);
                     });
                 }
             }
@@ -221,7 +224,7 @@ namespace ReactivePlayer.Core.Library.Services
 
             try
             {
-                var toBeRemovedIds = commands.Select(c => c.TrackLocation).ToImmutableArray();
+                var toBeRemovedIds = commands.Select(c => c.Id).ToImmutableArray();
                 if (wasSuccessful = await this._tracksRepository.RemoveAsync(toBeRemovedIds))
                 {
                     this._sourceTracks.Edit(cacheUpdater =>

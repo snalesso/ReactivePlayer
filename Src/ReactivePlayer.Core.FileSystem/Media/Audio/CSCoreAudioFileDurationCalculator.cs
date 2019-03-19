@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.FileSystem.Media.Audio
 {
-    // TODO: move to separate project?
+    // TODO: move to separate project? (along with other CS Core dependants)
     public class CSCoreAudioFileDurationCalculator : IAudioFileDurationCalculator
     {
         public Task<TimeSpan> CalculateAudioFileDurationAsync(Uri audioFileLocation)

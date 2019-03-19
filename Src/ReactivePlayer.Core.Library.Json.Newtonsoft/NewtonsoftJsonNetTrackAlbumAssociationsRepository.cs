@@ -62,11 +62,6 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
             return (filter != null ? this._arackAlbumAssociations.AsParallel().Where(filter).AsEnumerable() : this._arackAlbumAssociations).ToArray();
         }
 
-        public Task<TrackAlbumAssociation> GetByIdAsync(Uri id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> RemoveAsync(Uri identity)
         {
             throw new NotImplementedException();
@@ -124,8 +119,9 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         public void Dispose()
         {
-            // TODO: dispose file streams
-            throw new NotImplementedException();
+            this._dbFileStream.Close();
+            this._dbFileStream.Dispose();
+            this._dbFileStream = null;
         }
     }
 }

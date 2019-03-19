@@ -1,4 +1,5 @@
-﻿using ReactivePlayer.Core.Library.Models;
+﻿using ReactivePlayer.Core.Domain.Persistence;
+using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using System;
 using System.Collections.Concurrent;
@@ -36,6 +37,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
                 //    2019,
                 //    null),
                 new Track(
+                    1,
                     new Uri(@"D:\Music\Productions\300 Hz - 1.5 s.mp3"),
                     new TimeSpan(0, 4, 57),
                     DateTime.ParseExact("11/03/2019 16:57",dtf, dtFormatProvider),
@@ -51,6 +53,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
                     2019,
                     null),
                 new Track(
+                    2,
                     new Uri(@"D:\Music\Linkin Park - Iridescent.mp3"),
                     new TimeSpan(0, 4, 57),
                     DateTime.ParseExact("21/12/2016 19:10",dtf, dtFormatProvider),
@@ -79,6 +82,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
                         12,
                         1)),
                 new Track(
+                    3,
                     new Uri(@"D:\Music\Linkin Park - The messenger.mp3"),
                     new TimeSpan(0, 3, 2),
                     DateTime.ParseExact("21/12/2016 19:11",dtf, dtFormatProvider),
@@ -107,6 +111,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
                         15,
                         1)),
                 new Track(
+                    4,
                     new Uri(@"D:\Music\Linkin Park - Blackout.mp3"),
                     new TimeSpan(0, 4, 40),
                     DateTime.ParseExact("09/05/2017 11:36",dtf, dtFormatProvider),
@@ -161,7 +166,17 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public Task<IReadOnlyList<Track>> AddAsync(IEnumerable<Track> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Track CreateTracksAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, DateTime addedToLibraryDateTime, bool isLoved, string title, IEnumerable<Artist> performers, IEnumerable<Artist> composers, uint? year, TrackAlbumAssociation albumAssociation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IReadOnlyList<Track>> GetAllAsync()
         {
             return Task.FromResult(this._tracksCache.Values.ToList().AsReadOnly() as IReadOnlyList<Track>);
         }
@@ -172,6 +187,21 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         }
 
         public Task<bool> RemoveAsync(IReadOnlyList<Uri> identities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RemoveAsync(uint identity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RemoveAsync(IEnumerable<uint> identities)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Track> IEntityRepository<Track, uint>.AddAsync(Track entity)
         {
             throw new NotImplementedException();
         }

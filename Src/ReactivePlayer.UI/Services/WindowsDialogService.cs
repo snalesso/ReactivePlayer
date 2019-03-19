@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.Services
 {
-    // TODO: move to .UI.WPF
     public sealed class WindowsDialogService : IDialogService
     {
         public async Task<DialogResult<IReadOnlyList<string>>> OpenFileDialog(

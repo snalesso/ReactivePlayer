@@ -1,6 +1,6 @@
 namespace ReactivePlayer.Core
 {
-    // TODO: find a better places
+    // TODO: find a better place
     public enum SortDirection
     {
         Descending = -1,

@@ -174,7 +174,6 @@
     <Compile Include="Views\PlaybackHistoryItemView.xaml.cs">
       <DependentUpon>PlaybackHistoryItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReactiveUserControlViewFor.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -212,19 +211,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
+    <ProjectReference Include="..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
       <Project>{3358412e-6ca8-462b-883b-0a640218a4a0}</Project>
       <Name>Daedalus.ExtensionMethods</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
+    <ProjectReference Include="..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
       <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
       <Name>Daedalus.UI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj">
-      <Project>{203b0466-bee4-4ec6-8562-6bd9bb1919bb}</Project>
+    <ProjectReference Include="..\..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj">
+      <Project>{3b9502a4-95da-4fda-9b5d-806de11ff7a4}</Project>
       <Name>Caliburn.Micro.ReactiveUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">

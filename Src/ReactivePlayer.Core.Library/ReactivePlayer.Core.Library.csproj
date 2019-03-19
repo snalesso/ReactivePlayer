@@ -75,18 +75,18 @@
     <Compile Include="Models\TrackAlbumAssociation.cs" />
     <Compile Include="Persistence\ITracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AddLibraryEntryCommand.cs" />
     <Compile Include="Services\AddTrackCommand.cs" />
     <Compile Include="Services\InvalidCommandException.cs" />
     <Compile Include="Services\IReadLibraryService.cs" />
     <Compile Include="Services\IWriteLibraryService.cs" />
     <Compile Include="Services\LocalLibraryService.cs" />
     <Compile Include="Services\RemoveTrackCommand.cs" />
+    <Compile Include="Persistence\SerializedEntityRepository`2.cs" />
     <Compile Include="Services\UpdateAlbumCommand.cs" />
-    <Compile Include="Services\UpdateArtistCommand.cs" />
-    <Compile Include="Services\UpdateTrackCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
+    <ProjectReference Include="..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
       <Project>{3358412e-6ca8-462b-883b-0a640218a4a0}</Project>
       <Name>Daedalus.ExtensionMethods</Name>
     </ProjectReference>

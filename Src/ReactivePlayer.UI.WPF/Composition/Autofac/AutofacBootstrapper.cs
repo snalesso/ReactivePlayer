@@ -75,7 +75,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
             builder.Register<IDialogService>(c => new WindowsDialogService()).InstancePerLifetimeScope();
 
-            /* TODO: serializers to test
+            /* serializers to test
              * JIL              (faster with less data?)
              * Net Serializer   (faster with less data?)
              * Protobuf-NET     (might be the fastest serializer)

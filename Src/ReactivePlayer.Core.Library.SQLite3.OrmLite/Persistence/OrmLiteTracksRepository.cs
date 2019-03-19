@@ -1,4 +1,5 @@
-﻿using ReactivePlayer.Core.Library.Models;
+﻿using ReactivePlayer.Core.Domain.Persistence;
+using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -22,11 +23,12 @@ namespace ReactivePlayer.Core.Library.SQLite3.Persistence
             this._dbConnectionFactory = new ServiceStack.OrmLite.OrmLiteConnectionFactory(":memory:", SqliteDialect.Provider);
         }
 
-        public async Task<bool> AddAsync(Track track)
+        public async Task<Track> AddAsync(Track track)
         {
             // TODO: localize
             // TODO: log
-            if (track is null) throw new ArgumentNullException(nameof(track));
+            if (track is null)
+                throw new ArgumentNullException(nameof(track));
 
             using (var transaction = await this.CreateTransaction())
             {
@@ -45,30 +47,31 @@ namespace ReactivePlayer.Core.Library.SQLite3.Persistence
                 };
                 var newTrackPOCOId = await transaction.Connection.InsertAsync(trackPOCO);
 
-                return newTrackPOCOId > 0;
+                return newTrackPOCOId > 0 ? track : throw new ServiceStack.Data.DataException();
             }
         }
 
-        public Task<bool> AddAsync(IReadOnlyList<Track> tracks)
+        public Task<IReadOnlyList<Track>> AddAsync(IEnumerable<Track> tracks)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public async Task<IReadOnlyList<Track>> GetAllAsync()
         {
             using (this._dbConnection = await this._dbConnectionFactory.OpenAsync())
             using (var transaction = this._dbConnection.BeginTransaction(IsolationLevel.Serializable))
             {
-                return await transaction.Connection.SelectAsync<Track>(t => filter(t));
+                // TODO: can async load be enclosed in using?
+                return (await transaction.Connection.SelectAsync<Track>()).ToArray();
             }
         }
 
-        public Task<bool> RemoveAsync(Uri location)
+        public Task<bool> RemoveAsync(uint id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(IReadOnlyList<Uri> locations)
+        public Task<bool> RemoveAsync(IEnumerable<uint> ids)
         {
             throw new NotImplementedException();
         }
@@ -97,7 +100,6 @@ namespace ReactivePlayer.Core.Library.SQLite3.Persistence
 
         #region IDisposable
 
-        // TODO: review IDisposable impl
         public void Dispose()
         {
             if (this._dbConnection != null)
@@ -105,6 +107,11 @@ namespace ReactivePlayer.Core.Library.SQLite3.Persistence
                 this._dbConnection.Close();
                 this._dbConnection.Dispose();
             }
+        }
+
+        public Track CreateTracksAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, DateTime addedToLibraryDateTime, bool isLoved, string title, IEnumerable<Artist> performers, IEnumerable<Artist> composers, uint? year, TrackAlbumAssociation albumAssociation)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -146,7 +146,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //this.MakeUserSelectTracksToAdd = ReactiveCommand.CreateFromTask(
             //     async () =>
             //     {
-            //         // TODO: add possbility to specifiy default/last path to pick audio from
             //         var dr = await this._dialogService.OpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), true, null, "Add to library ...");
             //         return dr.Code == true ? dr.Content : null;
             //     })

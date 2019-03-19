@@ -17,7 +17,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IAudioPlaybackEngineAsync _playbackService;
         private readonly Track _track;
 
-        private CompositeDisposable _disposables = new CompositeDisposable(); // TODO: move to #region IDisposable
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
         #endregion
 
@@ -55,6 +55,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         //private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
         //public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
+
+        public uint Id => this._track.Id;
 
         public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
 

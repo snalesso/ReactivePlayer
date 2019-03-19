@@ -1,6 +1,7 @@
 using ReactivePlayer.Core.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace ReactivePlayer.Core.Library.Models
@@ -11,6 +12,7 @@ namespace ReactivePlayer.Core.Library.Models
 
         public Track(
             // LibraryEntry
+            uint id,
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
@@ -22,13 +24,12 @@ namespace ReactivePlayer.Core.Library.Models
             IEnumerable<Artist> performers,
             IEnumerable<Artist> composers,
             uint? year,
-            TrackAlbumAssociation albumAssociation
-            )
-            : base(location, duration, lastModified, fileSizeBytes, addedToLibraryDateTime, isLoved)
+            TrackAlbumAssociation albumAssociation)
+            : base(id, location, duration, lastModified, fileSizeBytes, addedToLibraryDateTime, isLoved)
         {
             this.Title = title.TrimmedOrNull();
-            this.Performers = performers.EmptyIfNull().ToList().AsReadOnly();
-            this.Composers = composers.EmptyIfNull().ToList().AsReadOnly();
+            this.Performers = performers.EmptyIfNull().ToImmutableArray();
+            this.Composers = composers.EmptyIfNull().ToImmutableArray();
             this.AlbumAssociation = albumAssociation;
             this.Year = year.ThrowIf(v => v > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
         }
@@ -44,20 +45,18 @@ namespace ReactivePlayer.Core.Library.Models
             internal set => this.SetAndRaiseIfChanged(ref this._title, value);
         }
 
-        // TODO: use immutable array? https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1, what about uniqueness?
         private IReadOnlyList<Artist> _performers;
         public IReadOnlyList<Artist> Performers
         {
             get => this._performers;
-            internal set => this.SetAndRaiseIfChanged(ref this._performers, value);
+            internal set => this.SetAndRaiseIfChanged(ref this._performers, value.ToImmutableArray());
         }
 
-        // TODO: use immutable array? https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1, what about uniqueness?
         private IReadOnlyList<Artist> _composers;
         public IReadOnlyList<Artist> Composers
         {
             get => this._composers;
-            internal set => this.SetAndRaiseIfChanged(ref this._composers, value);
+            internal set => this.SetAndRaiseIfChanged(ref this._composers, value.ToImmutableArray());
         }
 
         private uint? _year;

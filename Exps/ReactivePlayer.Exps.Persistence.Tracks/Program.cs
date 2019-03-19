@@ -26,6 +26,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
             return new[]
             {
                 new Track(
+                    1,
                     new Uri(@"D:\Music\Productions\300 Hz - 1.5 s.mp3"),
                     new TimeSpan(0, 4, 57),
                     DateTime.ParseExact("11/03/2019 16:57",dtf, dtFormatProvider),
@@ -41,6 +42,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
                     2019,
                     null),
                 new Track(
+                    2,
                     new Uri(@"D:\Music\Linkin Park - Iridescent.mp3"),
                     new TimeSpan(0, 4, 57),
                     DateTime.ParseExact("21/12/2016 19:10",dtf, dtFormatProvider),
@@ -69,6 +71,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
                         12,
                         1)),
                 new Track(
+                    3,
                     new Uri(@"D:\Music\Linkin Park - The messenger.mp3"),
                     new TimeSpan(0, 3, 2),
                     DateTime.ParseExact("21/12/2016 19:11",dtf, dtFormatProvider),
@@ -97,6 +100,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
                         15,
                         1)),
                 new Track(
+                    4,
                     new Uri(@"D:\Music\Linkin Park - Blackout.mp3"),
                     new TimeSpan(0, 4, 40),
                     DateTime.ParseExact("09/05/2017 11:36",dtf, dtFormatProvider),

@@ -55,7 +55,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\EntityTests.cs" />
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Models\TrackTests.cs" />
     <Compile Include="PointlessTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -66,9 +69,9 @@
     <Analyzer Include="..\..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Exps\ReactivePlayer.Exps\ReactivePlayer.Exps.csproj">
-      <Project>{39336567-1654-4a8e-b7d1-08c1776febbc}</Project>
-      <Name>ReactivePlayer.Exps</Name>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
+      <Project>{402feed0-76d6-4640-b261-ebe598ba6fbe}</Project>
+      <Name>ReactivePlayer.Core.Library</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
       <Project>{779EC49B-1EDB-44D4-8620-3D8C1E3D7946}</Project>

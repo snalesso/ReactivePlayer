@@ -95,7 +95,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CSCoreAudioPlaybackEngine.cs" />
     <Compile Include="CSCorePlayer.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="ShellView.xaml.cs">
@@ -134,7 +133,7 @@
     <Resource Include="CSCore.Ffmpeg ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
+    <ProjectReference Include="..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
       <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
       <Name>Daedalus.UI</Name>
     </ProjectReference>

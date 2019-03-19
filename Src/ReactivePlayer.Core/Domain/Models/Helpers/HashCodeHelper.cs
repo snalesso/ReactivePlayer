@@ -8,7 +8,6 @@ namespace ReactivePlayer.Core.Domain.Models.Helpers
 {
     internal static class HashCodeHelper
     {
-        // TODO: make IEnumerable extension method
         public static int CombineHashCodes(IEnumerable<object> objects)
         {
             // TODO: learn about unchecked

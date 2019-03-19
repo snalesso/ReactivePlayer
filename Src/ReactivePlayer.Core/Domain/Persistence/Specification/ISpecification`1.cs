@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Persistence.Specification
 {
-    interface ISpecification<T> // TODO: implement
+    interface ISpecification<T>
     {
     }
 }

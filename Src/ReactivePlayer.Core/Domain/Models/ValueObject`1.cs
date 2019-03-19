@@ -2,6 +2,7 @@ using ReactivePlayer.Core.Domain.Models.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
@@ -9,6 +10,11 @@ namespace ReactivePlayer.Core.Domain.Models
     public abstract class ValueObject<T> : IEquatable<T>
         where T : ValueObject<T>
     {
+        public ValueObject()
+        {
+            this._hashCodeCache = new Lazy<int>(() => HashCodeHelper.CombineHashCodes(this.GetValueIngredients()), LazyThreadSafetyMode.PublicationOnly);
+        }
+
         /// <summary>
         /// Returns the <see cref="object"/>s used by <see cref="GetHashCode()"/> to compose the <see cref="T"/>'s value as a <see cref="ValueObject{T}"/>.
         /// </summary>
@@ -17,13 +23,14 @@ namespace ReactivePlayer.Core.Domain.Models
         // TODO: benchmark signature with IReadOnlyList<object>, which forces to return an array, but safer
         protected abstract IEnumerable<object> GetValueIngredients();
 
+        private readonly Lazy<int> _hashCodeCache;
         /// <summary>
         /// Provides the hashcode of the the <see cref="T"/>'s value as a <see cref="ValueObject{T}"/>.
         /// </summary>
         /// <returns></returns>
         public sealed override int GetHashCode()
         {
-            return HashCodeHelper.CombineHashCodes(this.GetValueIngredients());
+            return this._hashCodeCache.Value;
         }
 
         ///// <summary>

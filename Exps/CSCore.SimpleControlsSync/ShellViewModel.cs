@@ -1,6 +1,7 @@
 ﻿using CSCore.Codecs;
 using CSCore.SoundOut;
 using ReactivePlayer.Core.Playback;
+using ReactivePlayer.Core.Playback.CSCore;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;

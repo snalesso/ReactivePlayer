@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
+    // TODO: remove
     public abstract class Entity : IEquatable<Entity>, IEntity, INotifyPropertyChanged
     {
         public override bool Equals(object obj)
@@ -60,7 +59,8 @@ namespace ReactivePlayer.Core.Domain.Models
             TProperty newValue,
             [CallerMemberName] string propertyName = null)
         {
-            if (string.IsNullOrWhiteSpace(propertyName)) throw new ArgumentNullException(nameof(propertyName));
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException(nameof(propertyName));
 
             if (EqualityComparer<TProperty>.Default.Equals(backingField, newValue))
                 return newValue;

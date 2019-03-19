@@ -5,7 +5,6 @@ using ReactiveUI;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -14,18 +13,15 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback.CSCore
 {
-    // TODO: group status events in single subscriptions grouped by status in order to have Status == Loaded => Duration update before Position update & the inverse when Status == Stopped
     // TODO: buffering support, SingleBlockNotificationStream?? Dopamine docet
-    // TODO: annotate class behavior
     // TODO: investigate IWaveSource.AppendSource
     // TODO: investigate IWaveSource.GetLength: how does it calculate duration? How accurate is it guaranteed to be?
-    // TODO: add timeout for track loading?
+    // TODO: add timeout for audio file loading?
     // TODO: consider using AsyncLock (System.Reactive.Core)
     // TODO: learn how to handle IDisposable from outside and in general how to handle interfaces which implementations may or may not be IDisposable
-    // TODO: add logger
+    // TODO: log
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
-    // TODO: investigate whether .AsObservable().DistinctUntilChanged() creates a new observable every time someone subscribes
     public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngineAsync
     {
         // TODO: study SubscribeOn VS ObserveOn, .ToProperty(x, x => x.Property, scheduler: ...), RxApp.MainThreadScheduler.Schedule(() => DoAThing())
@@ -59,7 +55,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // volume
             this._volumeSubject = new BehaviorSubject<float>(DefaultVolume).DisposeWith(this._playerScopeDisposables);
-            this.WhenVolumeChanged = this._volumeSubject.AsObservable().DistinctUntilChanged();
+            this.WhenVolumeChanged = this._volumeSubject.DistinctUntilChanged();
 
             // Status
             this._statusSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.None).DisposeWith(this._playerScopeDisposables);
@@ -70,12 +66,11 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // duration
             this._durationSubject = new BehaviorSubject<TimeSpan?>(this.__soundOut?.WaveSource?.GetLength()).DisposeWith(this._playerScopeDisposables);
-            // TODO: check whether AsObservable is still needed after ObserveOn
-            this.WhenDurationChanged = this._durationSubject.ObserveOn(RxApp.MainThreadScheduler).AsObservable().DistinctUntilChanged();
+            this.WhenDurationChanged = this._durationSubject.ObserveOn(RxApp.MainThreadScheduler).DistinctUntilChanged();
 
             // position
             this._positionSubject = new BehaviorSubject<TimeSpan?>(this.__soundOut?.WaveSource?.GetPosition()).DisposeWith(this._playerScopeDisposables);
-            this.WhenPositionChanged = this._positionSubject.ObserveOn(RxApp.MainThreadScheduler).AsObservable().DistinctUntilChanged();
+            this.WhenPositionChanged = this._positionSubject.ObserveOn(RxApp.MainThreadScheduler).DistinctUntilChanged();
 
             // handle status changes
             this.WhenStatusChanged
@@ -115,7 +110,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // can load
             this._canLoadSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanLoadPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
-            this.WhenCanLoadChanged = this._canLoadSubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanLoadChanged = this._canLoadSubject.DistinctUntilChanged();
             this.WhenStatusChanged
                 .Subscribe(status =>
                 {
@@ -125,7 +120,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // can play
             this._canPlaySubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanPlayPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
-            this.WhenCanPlayChanged = this._canPlaySubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanPlayChanged = this._canPlaySubject.DistinctUntilChanged();
             this.WhenStatusChanged
                 .Subscribe(status =>
                 {
@@ -135,7 +130,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // can pause
             this._canPauseSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanPausePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
-            this.WhenCanPauseChanged = this._canPauseSubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanPauseChanged = this._canPauseSubject.DistinctUntilChanged();
             this.WhenStatusChanged
                 .Subscribe(status =>
                 {
@@ -145,7 +140,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // can resume
             this._canResumeSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanResumePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
-            this.WhenCanResumeChanged = this._canResumeSubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanResumeChanged = this._canResumeSubject.DistinctUntilChanged();
             this.WhenStatusChanged
                 .Subscribe(status =>
                 {
@@ -155,7 +150,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // can stop
             this._canStopSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanStopPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
-            this.WhenCanStopChanged = this._canStopSubject.AsObservable().DistinctUntilChanged();
+            this.WhenCanStopChanged = this._canStopSubject.DistinctUntilChanged();
             this.WhenStatusChanged
                 .Subscribe(status =>
                 {
@@ -191,7 +186,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                         Task.Delay(TimeSpan.FromSeconds(1)),
                         Task.Run(() =>
                         {
-                            // TODO: expose and make selectable internal playback engine
+                            // TODO: make selectable internal playback engine?
                             if (WasapiOut.IsSupportedOnCurrentPlatform)
                                 this.__soundOut = new WasapiOut();
                             else
@@ -334,9 +329,9 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
                     await Task.Run(() =>
                     {
-                        // TODO: consider adding the WaitForStopped( timeout )
-                        // TODO: compare WaitForStopped which uses a WaitHandle https://github.com/filoe/cscore/blob/29410b12ae35321c4556b072c0711a8f289c0544/CSCore/Extensions.cs#L410 vs SpinWait.SpinUntil
                         this.__soundOut.Stop();
+                        // TODO: compare WaitForStopped which uses a WaitHandle https://github.com/filoe/cscore/blob/29410b12ae35321c4556b072c0711a8f289c0544/CSCore/Extensions.cs#L410 vs SpinWait.SpinUntil
+                        // TODO: consider using the timeout overload
                         this.__soundOut.WaitForStopped();
                     });
 
@@ -532,7 +527,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
             set
             {
-                // TODO: lock around or inside try-catch?
+                // TODO: try-catch inside or outside lock?
                 lock (this._volumeLock)
                 {
                     try
@@ -574,6 +569,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         // TODO: review implementation, also consider if there's some Interlocked way to do it
         public void Dispose()
         {
+            // TODO: try-catch inside or outside lock?
             try
             {
                 lock (this._playerScopeDisposingLock)

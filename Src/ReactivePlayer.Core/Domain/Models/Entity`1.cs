@@ -54,10 +54,10 @@ namespace ReactivePlayer.Core.Domain.Models
             return this.Id.Equals(other.Id);
         }
 
-        // TODO: use inlining?
         protected virtual void EnsureIsWellFormattedId(TIdentity id)
         {
-            if (object.Equals(id, default(TIdentity))) throw new ArgumentException($"{nameof(Entity<TIdentity>.Id)} cannot be set to {typeof(TIdentity).Name}'s default value.", nameof(id)); // TODO: localize
+            if (object.Equals(id, default(TIdentity)))
+                throw new ArgumentException($"{nameof(Entity<TIdentity>.Id)} cannot be set to {typeof(TIdentity).Name}'s default value.", nameof(id)); // TODO: localize
         }
 
         #endregion

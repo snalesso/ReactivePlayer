@@ -11,6 +11,7 @@ FUNCTIONALITIES:
 - taskbar playback progress
 - screensaver
 - waveform seekbar
+- distinguish special album versions (e.g. Deluxe, ...)
 - save playback track & position on app close
 - play + shift (or other modifier) plays and minimizes the player
 - skip &

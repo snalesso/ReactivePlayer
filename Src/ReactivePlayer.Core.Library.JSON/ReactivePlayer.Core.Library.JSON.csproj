@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="POCOs\Album.cs" />
     <Compile Include="POCOs\Artist.cs" />
     <Compile Include="POCOs\Track.cs" />

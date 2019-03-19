@@ -21,13 +21,15 @@ namespace Caliburn.Micro.ReactiveUI
             /// </summary>
             public class OneActive : ReactiveConductorBaseWithActiveItem<T>
             {
-                private readonly BindableCollection<T> _items;
+                private readonly ObservableCollection<T> _items = new ObservableCollection<T>();
 
                 /// <summary>
                 /// Initializes a new instance of the <see cref="Conductor&lt;T&gt;.Collection.OneActive"/> class.
                 /// </summary>
                 public OneActive()
                 {
+                    this.Items = new ReadOnlyObservableCollection<T>(this._items);
+
                     this._items.CollectionChanged += (s, e) =>
                     {
                         switch (e.Action)
@@ -52,18 +54,7 @@ namespace Caliburn.Micro.ReactiveUI
                 /// <summary>
                 /// Gets the items that are currently being conducted.
                 /// </summary>
-                public IObservableCollection<T> Items
-                {
-                    get { return this._items; }
-                }
-
-                ///// <summary>
-                ///// Gets the items that are currently being conducted as a ReactiveList.
-                ///// </summary>
-                //public ReadOnlyObservableCollection<T> ReactiveItems
-                //{
-                //    get { return _items as ReactiveList<T>; }
-                //}
+                public ReadOnlyObservableCollection<T> Items { get; }
 
                 /// <summary>
                 /// Gets the children.
@@ -194,7 +185,7 @@ namespace Caliburn.Micro.ReactiveUI
                             }
 
                             closable.OfType<IDeactivate>().Apply(x => x.Deactivate(true));
-                            this._items.RemoveRange(closable);
+                            this._items.Remove(closable);
                         }
 
                         callback(canClose);
@@ -243,7 +234,8 @@ namespace Caliburn.Micro.ReactiveUI
 
                         if (index == -1)
                             this._items.Add(newItem);
-                        else newItem = this._items[index];
+                        else
+                            newItem = this._items[index];
                     }
 
                     return base.EnsureItem(newItem);

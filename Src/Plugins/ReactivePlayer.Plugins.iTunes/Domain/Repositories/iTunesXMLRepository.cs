@@ -1,4 +1,3 @@
-using Daedalus.ExtensionMethods;
 using ReactivePlayer.Core;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Domain.Models;
@@ -8,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -19,7 +19,7 @@ namespace ReactivePlayer.Domain.Repositories
     {
         private readonly string _xmlItmlFilePath;
         // TODO: consider making AsyncLazy
-        private IReadOnlyDictionary<int, Track> _tracks = null;
+        //private IReadOnlyDictionary<int, Track> _tracks = null;
 
         public iTunesXMLRepository(string xmlItlFilePath)
         {
@@ -57,11 +57,6 @@ namespace ReactivePlayer.Domain.Repositories
         }
 
         public Task<bool> AnyAsync(Func<Track, bool> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<long> CountAsync(Func<Track, bool> filter = null)
         {
             throw new NotImplementedException();
         }
@@ -251,7 +246,7 @@ namespace ReactivePlayer.Domain.Repositories
                     }
                 }
 
-                var asdf = iTunesLocationTracksDictionary.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.ToArray() as IReadOnlyList<Track>);
+                var asdf = iTunesLocationTracksDictionary.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.ToImmutableArray() as IReadOnlyList<Track>);
                 returnedTracks = asdf;
             }
             catch (Exception ex)
@@ -261,12 +256,6 @@ namespace ReactivePlayer.Domain.Repositories
             }
 
             return returnedTracks;
-        }
-
-        public Task<Track> GetByIdAsync(int id)
-        {
-            this._tracks.TryGetValue(id, out var track);
-            return Task.FromResult(track);
         }
 
         public Task<bool> AddAsync(Track entity)
@@ -284,6 +273,8 @@ namespace ReactivePlayer.Domain.Repositories
             throw new NotImplementedException();
         }
 
+        //private long _id = 0;
+
         // TODO: make throw NotSupportedException
         public Task<Track> CreateAsync(
             Uri location,
@@ -299,6 +290,7 @@ namespace ReactivePlayer.Domain.Repositories
             TrackAlbumAssociation albumAssociation)
         {
             var newTrack = new Track(
+                0, // Convert.ToUInt32(Interlocked.Increment(ref this._id)),
                 location,
                 duration,
                 lastModified,

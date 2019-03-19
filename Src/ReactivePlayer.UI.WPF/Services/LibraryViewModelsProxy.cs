@@ -30,15 +30,16 @@ namespace ReactivePlayer.UI.WPF.Services
 
             this._trackViewModels = this._readLibraryService.Tracks
                  .Connect()
-                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track)); // TODO: Uri key is inherited from track cache, find out how to choose new select'ed cache key
+                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+                 .ChangeKey(vm => vm.Id);
             this._trackViewModels
                 .DisposeMany()
                 .Subscribe()
                 .DisposeWith(this._disposables);
         }
 
-        private readonly IObservable<IChangeSet<TrackViewModel, Uri>> _trackViewModels;
-        public IObservable<IChangeSet<TrackViewModel, Uri>> TrackViewModels => this._trackViewModels;
+        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _trackViewModels;
+        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModels => this._trackViewModels;
         //IObservableList<ArtistViewModel> Artists { get; }
         //IObservableList<AlbumViewModel> Albums { get; }
 

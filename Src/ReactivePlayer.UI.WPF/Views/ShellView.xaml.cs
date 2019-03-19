@@ -32,7 +32,7 @@ namespace ReactivePlayer.UI.WPF.Views
                 .DataContextChanged
                 .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as ShellViewModel))
                 .DisposeWith(this._disposables);
-            this.WhenViewModelChanged = this._viewModelSubject.AsObservable().DistinctUntilChanged();
+            this.WhenViewModelChanged = this._viewModelSubject.DistinctUntilChanged();
         }
 
         #endregion
