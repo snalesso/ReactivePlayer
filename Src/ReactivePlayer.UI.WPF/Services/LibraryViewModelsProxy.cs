@@ -1,16 +1,9 @@
 ﻿using DynamicData;
-using DynamicData.Binding;
-using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.Services
 {
@@ -28,20 +21,22 @@ namespace ReactivePlayer.UI.WPF.Services
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
 
-            this._trackViewModels = this._readLibraryService.Tracks
+            this.TrackViewModelsCache = this._readLibraryService.Tracks
                  .Connect()
                  .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
                  .ChangeKey(vm => vm.Id);
-            this._trackViewModels
+            this.TrackViewModelsCache
                 .DisposeMany()
                 .Subscribe()
                 .DisposeWith(this._disposables);
+            this.TrackViewModels = this.TrackViewModelsCache.RemoveKey()
+                //.Subscribe().DisposeWith(this._disposables)
+                ;
         }
 
-        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _trackViewModels;
-        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModels => this._trackViewModels;
-        //IObservableList<ArtistViewModel> Artists { get; }
-        //IObservableList<AlbumViewModel> Albums { get; }
+        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsCache { get; }
+
+        public IObservable<IChangeSet<TrackViewModel>> TrackViewModels { get; }
 
         public void Dispose()
         {

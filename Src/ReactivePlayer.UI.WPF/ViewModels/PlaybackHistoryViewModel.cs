@@ -17,7 +17,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlaybackEngineAsync _audioPlayer;
+        private readonly IAudioPlaybackEngine _audioPlayer;
         private readonly IReadLibraryService _readLibraryService;
 
         #endregion
@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constructors
 
         public PlaybackHistoryViewModel(
-            IAudioPlaybackEngineAsync audioPlaybackEngine,
+            IAudioPlaybackEngine audioPlaybackEngine,
             IReadLibraryService readLibraryService)
         {
             this._audioPlayer = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize

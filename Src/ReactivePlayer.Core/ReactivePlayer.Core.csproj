@@ -36,6 +36,11 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +53,7 @@
     <Compile Include="Domain\Models\IAggregateRoot.cs" />
     <Compile Include="Domain\Models\IEntity.cs" />
     <Compile Include="Domain\Servicing\IConnectableService.cs" />
+    <Compile Include="IDisposableMixins.cs" />
     <Compile Include="SortDirection.cs" />
     <Compile Include="Domain\Models\ValueObject`1.cs" />
     <Compile Include="Domain\Persistence\IEntityRepository`2.cs" />

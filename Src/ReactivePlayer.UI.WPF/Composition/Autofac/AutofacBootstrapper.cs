@@ -95,9 +95,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                     await e.Instance.Connect();
                 })
                 .InstancePerLifetimeScope();
-            //builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
-            builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngineAsync>().InstancePerLifetimeScope();
-            builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<LibraryViewModelsProxy>()
                 .InstancePerLifetimeScope();
@@ -109,7 +108,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.Register<Func<Track, TrackViewModel>>(ctx =>
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
-                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngineAsync>());
+                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
                 }).AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();

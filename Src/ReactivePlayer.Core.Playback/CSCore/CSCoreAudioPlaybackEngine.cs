@@ -1,7 +1,7 @@
 using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
-using ReactiveUI;
+using ReactivePlayer.Core.Library.Models;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +10,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace ReactivePlayer.Core.Playback.CSCore
 {
@@ -22,7 +23,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
     // TODO: log
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
-    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngineAsync
+    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngine
     {
         // TODO: study SubscribeOn VS ObserveOn, .ToProperty(x, x => x.Property, scheduler: ...), RxApp.MainThreadScheduler.Schedule(() => DoAThing())
 
@@ -53,6 +54,10 @@ namespace ReactivePlayer.Core.Playback.CSCore
             //this.__playbackScopeDisposables.DisposeWith(this._playerScopeDisposables);
             this._playbackActionsSemaphore.DisposeWith(this._playerScopeDisposables);
 
+            // track
+            this._trackSubject = new BehaviorSubject<Track>(null).DisposeWith(this._playerScopeDisposables);
+            this.WhenTrackChanged = this._trackSubject.DistinctUntilChanged();
+
             // volume
             this._volumeSubject = new BehaviorSubject<float>(DefaultVolume).DisposeWith(this._playerScopeDisposables);
             this.WhenVolumeChanged = this._volumeSubject.DistinctUntilChanged();
@@ -60,17 +65,18 @@ namespace ReactivePlayer.Core.Playback.CSCore
             // Status
             this._statusSubject = new BehaviorSubject<PlaybackStatus>(PlaybackStatus.None).DisposeWith(this._playerScopeDisposables);
             this.WhenStatusChanged = this._statusSubject
-                .AsObservable()
+                //.AsObservable()
                 .DistinctUntilChanged()
-                .ObserveOn(RxApp.MainThreadScheduler);
+                .ObserveOnDispatcher()
+                ;
 
             // duration
             this._durationSubject = new BehaviorSubject<TimeSpan?>(this.__soundOut?.WaveSource?.GetLength()).DisposeWith(this._playerScopeDisposables);
-            this.WhenDurationChanged = this._durationSubject.ObserveOn(RxApp.MainThreadScheduler).DistinctUntilChanged();
+            this.WhenDurationChanged = this._durationSubject/*.ObserveOnDispatcher()*/.DistinctUntilChanged();
 
             // position
             this._positionSubject = new BehaviorSubject<TimeSpan?>(this.__soundOut?.WaveSource?.GetPosition()).DisposeWith(this._playerScopeDisposables);
-            this.WhenPositionChanged = this._positionSubject.ObserveOn(RxApp.MainThreadScheduler).DistinctUntilChanged();
+            this.WhenPositionChanged = this._positionSubject/*.ObserveOnDispatcher()*/.DistinctUntilChanged();
 
             // handle status changes
             this.WhenStatusChanged
@@ -173,7 +179,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         #region engine implementation
 
-        public async Task LoadAsync(Uri audioSourceLocation)
+        public async Task LoadAsync(Track track)
         {
             await this._playbackActionsSemaphore.WaitAsync();
 
@@ -192,7 +198,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                             else
                                 this.__soundOut = new DirectSoundOut(100);
 
-                            var codec = CodecFactory.Instance.GetCodec(audioSourceLocation);
+                            var codec = CodecFactory.Instance.GetCodec(track.Location);
                             this.__soundOut.Initialize(codec);
 
                             // start listening to ISoundOut.Stopped
@@ -208,6 +214,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                     );
 
                 this._statusSubject.OnNext(PlaybackStatus.Loaded);
+                this.Track = track;
             }
             catch (Exception ex)
             {
@@ -424,7 +431,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         private void CreatePositionUpdater()
         {
             this._whenPositionChangedSubscriber = Observable
-                .Interval(this._positionUpdatesInterval, RxApp.TaskpoolScheduler)
+                .Interval(this._positionUpdatesInterval, System.Reactive.Concurrency.DispatcherScheduler.Current)
                 .Select(_ => this.__soundOut?.WaveSource?.GetPosition())
                 .DistinctUntilChanged()
                 .Publish();
@@ -554,9 +561,16 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public IObservable<Uri> WhenAudioSourceLocationChanged => throw new NotImplementedException();
-
         public IObservable<bool> WhenCanSeekChanged => throw new NotImplementedException();
+
+        private readonly BehaviorSubject<Track> _trackSubject;
+        public Track Track
+        {
+            get => this._trackSubject.Value;
+            private set => this._trackSubject.OnNext(value);
+        }
+
+        public IObservable<Track> WhenTrackChanged { get; }
 
         #endregion
 

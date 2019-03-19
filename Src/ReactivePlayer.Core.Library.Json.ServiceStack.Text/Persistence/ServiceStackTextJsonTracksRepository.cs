@@ -11,49 +11,28 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Json.ServiceStack.Text.Persistence
 {
-    public sealed class ServiceStackTextJsonTracksRepository : ITracksRepository
+    public sealed class ServiceStackTextJsonTracksRepository : SerializedEntityRepository<Track, uint>, ITracksRepository
     {
         private const string DBFileName = "tracks.json";
-        private readonly string DBFilePath;
-        private readonly List<Track> _tracks = new List<Track>();
-
-        //private FileStream _dbFileStream;
 
         public ServiceStackTextJsonTracksRepository()
+            :base(Path.Combine(Assembly.GetEntryAssembly().Location, "db", DBFileName))
         {
-            this.DBFilePath = Path.Combine(Assembly.GetEntryAssembly().Location, "db", DBFileName);
         }
 
-        public Task<bool> AddAsync(Track track)
-        {
-            this._tracks.Add(track);
+        protected override bool IsDeserialized => throw new NotImplementedException();
 
-            return this.SaveAsync();
-        }
-
-        public Task<bool> AddAsync(IReadOnlyList<Track> tracks)
-        {
-            this._tracks.AddRange(tracks);
-
-            return this.SaveAsync();
-        }
-
-        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        public Track CreateTracksAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, DateTime addedToLibraryDateTime, bool isLoved, string title, IEnumerable<Artist> performers, IEnumerable<Artist> composers, uint? year, TrackAlbumAssociation albumAssociation)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(Uri identity)
+        protected override Task DeserializeCore()
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(IReadOnlyList<Uri> identities)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Task<bool> SaveAsync()
+        protected override Task SerializeCore()
         {
             throw new NotImplementedException();
         }

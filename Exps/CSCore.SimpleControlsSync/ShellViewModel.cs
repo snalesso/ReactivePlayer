@@ -1,18 +1,14 @@
-﻿using CSCore.Codecs;
-using CSCore.SoundOut;
+﻿using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.SimpleControlsSync
 {
@@ -30,9 +26,9 @@ namespace CSCore.SimpleControlsSync
             //this.DoNothing = ReactiveCommand.Create(() => { }).DisposeWith(this._disposables);
 
             this.Load = ReactiveCommand.CreateFromTask(
-                (Uri location) =>
+                (Track track) =>
                 {
-                    return this._audioPlaybackEngineAsync.LoadAsync(location);
+                    return this._audioPlaybackEngineAsync.LoadAsync(track);
                 }
                 , Observable.CombineLatest(
                     this._audioPlaybackEngineAsync.WhenCanLoadChanged,
@@ -41,10 +37,10 @@ namespace CSCore.SimpleControlsSync
                 )
                 .DisposeWith(this._disposables);
             this.PlayFile = ReactiveCommand.CreateFromTask(
-               async (Uri location) =>
+               async (Track track) =>
                 {
                     await this._audioPlaybackEngineAsync.StopAsync();
-                    await this._audioPlaybackEngineAsync.LoadAndPlayAsync(location);
+                    await this._audioPlaybackEngineAsync.LoadAndPlayAsync(track);
                 }
                 , Observable.CombineLatest(
                     this._audioPlaybackEngineAsync.WhenCanLoadChanged,
@@ -159,8 +155,8 @@ namespace CSCore.SimpleControlsSync
         }
 
         //public ReactiveCommand<Unit, Unit> DoNothing { get; }
-        public ReactiveCommand<Uri, Unit> Load { get; }
-        public ReactiveCommand<Uri, Unit> PlayFile { get; }
+        public ReactiveCommand<Track, Unit> Load { get; }
+        public ReactiveCommand<Track, Unit> PlayFile { get; }
         public ReactiveCommand<Unit, Unit> Play { get; }
         public ReactiveCommand<Unit, Unit> Pause { get; }
         public ReactiveCommand<Unit, Unit> Resume { get; }

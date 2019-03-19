@@ -22,6 +22,9 @@ namespace ReactivePlayer.Core.Library.Services
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
 
             this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
+
+            this._whenIsBusyChanged_subject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
+            this._whenIsConnectedChangedSubject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
         }
 
         #region IConnectableService
@@ -32,7 +35,7 @@ namespace ReactivePlayer.Core.Library.Services
             private set => this._whenIsConnectedChangedSubject.OnNext(value);
         }
 
-        private BehaviorSubject<bool> _whenIsConnectedChangedSubject = new BehaviorSubject<bool>(false);
+        private readonly BehaviorSubject<bool> _whenIsConnectedChangedSubject ;
         public IObservable<bool> WhenIsConnectedChanged => this._whenIsConnectedChangedSubject.DistinctUntilChanged();
 
         // TODO: add concurrency protection, use async lazy?
@@ -82,8 +85,8 @@ namespace ReactivePlayer.Core.Library.Services
             private set => this._whenIsBusyChanged_subject.OnNext(value);
         }
 
-        private BehaviorSubject<bool> _whenIsBusyChanged_subject = new BehaviorSubject<bool>(false);
-        public IObservable<bool> WhenIsBusyChanged => this._whenIsBusyChanged_subject.AsObservable();
+        private readonly BehaviorSubject<bool> _whenIsBusyChanged_subject;
+        public IObservable<bool> WhenIsBusyChanged => this._whenIsBusyChanged_subject.DistinctUntilChanged();
 
         public Task<bool> AddTrack(AddTrackCommand command)
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
 {
-    public interface IPlaybackService : IAudioPlaybackEngineAsync, IPlaybackQueue
+    public interface IPlaybackService : IAudioPlaybackEngine
     {
     }
 }

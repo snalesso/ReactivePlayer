@@ -137,6 +137,10 @@
       <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
       <Name>Daedalus.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
+      <Project>{402FEED0-76D6-4640-B261-EBE598BA6FBE}</Project>
+      <Name>ReactivePlayer.Core.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj">
       <Project>{d35e71ae-d254-4989-ae24-12747f3dcdc8}</Project>
       <Name>ReactivePlayer.Core.Playback</Name>

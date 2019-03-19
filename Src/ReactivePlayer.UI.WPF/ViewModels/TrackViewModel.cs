@@ -4,7 +4,9 @@ using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
@@ -14,8 +16,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlaybackEngineAsync _playbackService;
-        private readonly Track _track;
+        private readonly IAudioPlaybackEngine _playbackService;
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -25,7 +26,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TrackViewModel(
             Track track,
-            IAudioPlaybackEngineAsync playbackService)
+            IAudioPlaybackEngine playbackService)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
@@ -47,6 +48,19 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //      })
             //      .ToProperty(this, nameof(this.TrackPlaybackStatus))
             //      .DisposeWith(this._disposables);
+
+            this.PlayTrack = ReactiveCommand.CreateFromTask(
+                async () =>
+                {
+                    await this._playbackService.StopAsync();
+                    await this._playbackService.LoadAndPlayAsync(this._track);
+                }
+                , Observable.CombineLatest(
+                    this._playbackService.WhenCanLoadChanged,
+                    this._playbackService.WhenCanPlayChanged,
+                    (canLoad, canPlay) => (canLoad || canPlay)))
+                .DisposeWith(this._disposables);
+            this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
         }
 
         #endregion
@@ -55,6 +69,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         //private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
         //public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
+
+        private readonly Track _track;
+        public Track Track => this._track;
 
         public uint Id => this._track.Id;
 
@@ -86,6 +103,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region commands
+
+        public ReactiveCommand<Unit, Unit> PlayTrack { get; }
+
         #endregion
     }
 }

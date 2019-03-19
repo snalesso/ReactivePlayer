@@ -16,7 +16,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         //private readonly IPlaybackService _playbackService;
-        private readonly IAudioPlaybackEngineAsync _audioPlaybackEngine;
+        private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         //private readonly PlaybackQueue _playbackQueue;
         //private readonly PlaybackHistory _playbackHistory;
         //private readonly IReadLibraryService _readLibraryService;
@@ -30,7 +30,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public PlaybackControlsViewModel(
             //IPlaybackService playbackService,
-            IAudioPlaybackEngineAsync audioPlaybackEngine
+            IAudioPlaybackEngine audioPlaybackEngine
             //PlaybackQueue playbackQueue,
             //PlaybackHistory playbackHistory,
             //IReadLibraryService readLibraryService

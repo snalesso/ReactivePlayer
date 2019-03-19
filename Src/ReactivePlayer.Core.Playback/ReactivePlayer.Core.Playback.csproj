@@ -39,30 +39,14 @@
     <Reference Include="NVorbis, Version=0.8.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NVorbis.0.8.6\lib\net35\NVorbis.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="ReactiveUI, Version=9.11.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveUI.9.11.3\lib\net461\ReactiveUI.dll</HintPath>
-    </Reference>
-    <Reference Include="Splat, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Splat.6.1.7\lib\net461\Splat.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Drawing.Primitives.4.3.0\lib\net45\System.Drawing.Primitives.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Reactive, Version=4.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -71,13 +55,14 @@
     </Compile>
     <Compile Include="CSCore\Codecs\NVorbisWaveSource.cs" />
     <Compile Include="CSCore\CSCoreAudioPlaybackEngine.cs" />
+    <Compile Include="History\PlaybackHistory.cs" />
+    <Compile Include="History\PlaybackHistoryEntry.cs" />
     <Compile Include="IAudioSource.cs" />
-    <Compile Include="IAudioPlaybackEngineAsync.cs" />
-    <Compile Include="IPlaybackQueue.cs" />
+    <Compile Include="IAudioPlaybackEngine.cs" />
     <Compile Include="IPlaybackService.cs" />
-    <Compile Include="PlaybackQueue.cs" />
-    <Compile Include="PlaybackQueueEntry.cs" />
-    <Compile Include="IAudioPlaybackEngineAsyncMixins.cs" />
+    <Compile Include="Queue\PlaybackQueue.cs" />
+    <Compile Include="Queue\PlaybackQueueEntry.cs" />
+    <Compile Include="IAudioPlaybackEngineMixins.cs" />
     <Compile Include="PlaybackStatus.cs" />
     <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +81,10 @@
     <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{402feed0-76d6-4640-b261-ebe598ba6fbe}</Project>
       <Name>ReactivePlayer.Core.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
+      <Project>{779ec49b-1edb-44d4-8620-3d8c1e3d7946}</Project>
+      <Name>ReactivePlayer.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
