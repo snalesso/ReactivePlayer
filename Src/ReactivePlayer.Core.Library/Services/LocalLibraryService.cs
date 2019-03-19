@@ -5,13 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-using System.Reactive.Joins;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Reactive.Threading;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
@@ -42,18 +38,26 @@ namespace ReactivePlayer.Core.Library.Services
         // TODO: add concurrency protection, use async lazy?
         public async Task<bool> Connect()
         {
-            if (this.IsConnected)
-                return true;
-
-            var tracks = await this._tracksRepository.GetAllAsync();
-
-            // TODO: investigate what happens if the lambda passed to .Edit is async
-            this._sourceTracks.Edit(list =>
+            if (!this.IsConnected)
             {
-                list.AddOrUpdate(tracks);
-            });
+                var tracks = await
+                    //Task.Run(async () =>
+                    //{
+                    //    await Task.Delay(TimeSpan.FromSeconds(5));
+                    //    return await 
+                    this._tracksRepository.GetAllAsync();
+                    //});
 
-            return true;
+                // TODO: investigate what happens if the lambda passed to .Edit is async
+                this._sourceTracks.Edit(list =>
+                {
+                    list.AddOrUpdate(tracks);
+                });
+
+                this.IsConnected = true;
+            }
+
+            return this.IsConnected;
         }
 
         #endregion

@@ -7,8 +7,8 @@
     <ProjectGuid>{76CBB591-EC80-4D02-B24D-57B7E683AFBB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReactivePlayer.Core.Library.JSON.Utf8Json</RootNamespace>
-    <AssemblyName>ReactivePlayer.Core.Library.JSON.Utf8Json</AssemblyName>
+    <RootNamespace>ReactivePlayer.Core.Library.Json.Utf8Json</RootNamespace>
+    <AssemblyName>ReactivePlayer.Core.Library.Json.Utf8Json</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

@@ -7,8 +7,8 @@
     <ProjectGuid>{0CB3F381-DF4B-45B7-B886-C41AE9223F04}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReactivePlayer.Core.Library.JSON.ServiceStack.Text</RootNamespace>
-    <AssemblyName>ReactivePlayer.Core.Library.JSON.ServiceStack.Text</AssemblyName>
+    <RootNamespace>ReactivePlayer.Core.Library.Json.ServiceStack.Text</RootNamespace>
+    <AssemblyName>ReactivePlayer.Core.Library.Json.ServiceStack.Text</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

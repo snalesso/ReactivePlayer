@@ -1,24 +1,25 @@
-﻿<Window x:Class="ReactivePlayer.UI.WPF.Views.ShellView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
-        xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel,
-                                         IsDesignTimeCreatable=False}"
-        d:DesignHeight="300"
-        d:DesignWidth="300"
-        mc:Ignorable="d">
+﻿<Window
+    x:Class="ReactivePlayer.UI.WPF.Views.ShellView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
+    xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    IsEnabled="{Binding IsUIEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+    mc:Ignorable="d">
 
     <Window.InputBindings>
-        <KeyBinding Key="Space"
-                    Command="{Binding PlaybackControlsViewModel.Resume}" />
-        <KeyBinding Key="Space"
-                    Command="{Binding PlaybackControlsViewModel.Pause}" />
-        <KeyBinding Key="Space"
-                    Command="{Binding PlaybackControlsViewModel.Stop}"
-                    Modifiers="Alt" />
+        <KeyBinding Key="Space" Command="{Binding PlaybackControlsViewModel.Resume}" />
+        <KeyBinding Key="Space" Command="{Binding PlaybackControlsViewModel.Pause}" />
+        <KeyBinding
+            Key="Space"
+            Command="{Binding PlaybackControlsViewModel.Stop}"
+            Modifiers="Alt" />
     </Window.InputBindings>
 
     <!--<Window.TaskbarItemInfo>
@@ -45,8 +46,7 @@
 
         <Views:TracksView DataContext="{Binding TracksViewModel}" />
 
-        <Views:PlaybackControlsView Grid.Row="1"
-                                    DataContext="{Binding PlaybackControlsViewModel}" />
+        <Views:PlaybackControlsView Grid.Row="1" DataContext="{Binding PlaybackControlsViewModel}" />
 
     </Grid>
 

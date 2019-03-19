@@ -1,8 +1,7 @@
 using DynamicData;
+using ReactivePlayer.Core.Domain.Servicing;
 using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Services;
 using System;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
 {

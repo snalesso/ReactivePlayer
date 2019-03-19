@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Library.Services
+namespace ReactivePlayer.Core.Domain.Servicing
 {
     public interface IConnectableService
     {

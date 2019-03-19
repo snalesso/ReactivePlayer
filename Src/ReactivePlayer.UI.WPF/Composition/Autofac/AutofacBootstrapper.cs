@@ -1,6 +1,5 @@
 using Autofac;
 using Caliburn.Micro;
-using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
@@ -90,7 +89,12 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             //builder.Register(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml"))
             builder.RegisterType<FakeTracksRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
+            builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>()
+                .OnActivating(async e =>
+                {
+                    await e.Instance.Connect();
+                })
+                .InstancePerLifetimeScope();
             //builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngineAsync>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();

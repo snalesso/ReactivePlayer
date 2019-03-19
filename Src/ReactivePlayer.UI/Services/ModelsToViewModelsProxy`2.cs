@@ -6,7 +6,7 @@ using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.Services
 {
-    public class LibraryViewModelsProxy<TModel, TKey, TViewModel, TViewModelKey> : IDisposable
+    public class ModelsToViewModelsProxy<TModel, TKey, TViewModel, TViewModelKey> : IDisposable
     {
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -14,7 +14,7 @@ namespace ReactivePlayer.UI.WPF.Services
         private readonly Func<TModel, TViewModel> _modelToiewModelFactoryMethod;
         private readonly Func<TViewModel, TViewModelKey> _viewModelCacheKeySelector;
 
-        public LibraryViewModelsProxy(
+        public ModelsToViewModelsProxy(
             IConnectableCache<TModel, TKey> modelsCache,
             Func<TModel, TViewModel> modelToiewModelFactoryMethod,
             Func<TViewModel, TViewModelKey> viewModelCacheKeySelector)

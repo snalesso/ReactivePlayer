@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
@@ -10,14 +11,16 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class ShellViewModel : Conductor<Caliburn.Micro.IScreen>.Collection.AllActive
+    public class ShellViewModel : ReactiveConductor<Caliburn.Micro.IScreen>.Collection.AllActive, IDisposable
     {
         #region constancts & fields
 
         //private readonly IAudioPlaybackEngine _playbackService;
+        private readonly IReadLibraryService _readLibraryService;
         //private readonly IWriteLibraryService _writeLibraryService;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
@@ -34,14 +37,18 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public ShellViewModel(
             //IAudioPlaybackEngine playbackService,
-            IWriteLibraryService writeLibraryService,
+            //IWriteLibraryService writeLibraryService,
+            IReadLibraryService readLibraryService,
             IDialogService dialogService,
             PlaybackControlsViewModel playbackControlsViewModel,
             TracksViewModel tracksViewModel)
         {
             //this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+
+            this._isUIEnabled_OAPH = this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler).ToProperty(this, nameof(this.IsUIEnabled)).DisposeWith(this._disposables);
 
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
             this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
@@ -55,6 +62,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region properties
+
+        private readonly ObservableAsPropertyHelper<bool> _isUIEnabled_OAPH;
+        public bool IsUIEnabled => this._isUIEnabled_OAPH.Value;
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
 
@@ -74,6 +84,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         {
             //this._playbackService.StopAsync().Wait(); // TODO: handle special cases: playback stop/other actions before closing fail so can close should return false
             base.CanClose(callback);
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

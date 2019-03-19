@@ -7,8 +7,8 @@
     <ProjectGuid>{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReactivePlayer.Core.Library.JSON.Newtonsoft</RootNamespace>
-    <AssemblyName>ReactivePlayer.Core.Library.JSON.Newtonsoft</AssemblyName>
+    <RootNamespace>ReactivePlayer.Core.Library.Json.Newtonsoft</RootNamespace>
+    <AssemblyName>ReactivePlayer.Core.Library.Json.Newtonsoft</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
