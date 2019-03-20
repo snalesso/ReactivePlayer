@@ -5,6 +5,7 @@ using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.Library;
 using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Services;
@@ -31,7 +32,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //private readonly IWriteLibraryService _writeLibraryService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
-        private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
+        //private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
+        private readonly IReadLibraryService _readLibraryService;
+        private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
         //private readonly PlaybackQueue _playbackQueue;
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
@@ -46,22 +49,27 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //IDialogService dialogService,
             //IAudioFileInfoProvider audioFileInfoProvider,
             //IWriteLibraryService writeLibraryService,
+            IReadLibraryService readLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
             //PlaybackQueue playbackQueue,
-            //Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            LibraryViewModelsProxy libraryViewModelsProxy
+            Func<Track, TrackViewModel> trackViewModelFactoryMethod
+            //LibraryViewModelsProxy libraryViewModelsProxy
             )
         {
             //this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService)); // TODO: localize
-            this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy)); // TODO: localize
+            //this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy)); // TODO: localize
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
+            this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             //this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
 
-            this._libraryViewModelsProxy
-                .TrackViewModelsCache
-                //.ObserveOn(RxApp.MainThreadScheduler) // TODO: when is it needed?
+            this._readLibraryService
+                .Tracks
+                .Connect()
+                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
                 .Bind(out this._filteredSortedTrackViewModels)
+                .DisposeMany() // TODO: put ALAP or ASAP?
                 .Subscribe()
                 .DisposeWith(this._disposables);
 

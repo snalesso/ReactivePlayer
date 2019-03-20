@@ -107,6 +107,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                             this.ClearPlaybackScopeObjects();
                             // we update duration after destroying everything, so the duration is null
                             this.UpdateDuration();
+                            this.Track = null;
                             break;
                     }
                 })
@@ -188,8 +189,8 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 this._statusSubject.OnNext(PlaybackStatus.Loading);
 
                 await
-                    Task.WhenAll(
-                        Task.Delay(TimeSpan.FromSeconds(1)),
+                    //Task.WhenAll(
+                    //    Task.Delay(TimeSpan.FromSeconds(1)),
                         Task.Run(() =>
                         {
                             // TODO: make selectable internal playback engine?
@@ -211,7 +212,8 @@ namespace ReactivePlayer.Core.Playback.CSCore
                             this.__soundOut.WaveSource.DisposeWith(this.__playbackScopeDisposables);
                             this.__soundOut.DisposeWith(this.__playbackScopeDisposables);
                         })
-                    );
+                    //)
+                ;
 
                 this._statusSubject.OnNext(PlaybackStatus.Loaded);
                 this.Track = track;

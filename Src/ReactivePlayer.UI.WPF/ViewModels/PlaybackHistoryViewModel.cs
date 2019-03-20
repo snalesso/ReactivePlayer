@@ -1,10 +1,9 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
+using DynamicData.PLinq;
 using DynamicData.ReactiveUI;
-using ReactivePlayer.Core.Library;
-using ReactivePlayer.Core.Library.Services;
-using ReactivePlayer.Core.Playback;
+using ReactivePlayer.Core.Playback.History;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -17,23 +16,40 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly IAudioPlaybackEngine _audioPlayer;
-        private readonly IReadLibraryService _readLibraryService;
+        //private readonly IAudioPlaybackEngine _audioPlayer;
+        //private readonly IReadLibraryService _readLibraryService;
+        private readonly PlaybackHistory _playbackHistory;
 
         #endregion
 
         #region constructors
 
         public PlaybackHistoryViewModel(
-            IAudioPlaybackEngine audioPlaybackEngine,
-            IReadLibraryService readLibraryService)
+            PlaybackHistory playbackHistory
+            //IAudioPlaybackEngine audioPlaybackEngine
+            //, IReadLibraryService readLibraryService
+            )
         {
-            this._audioPlayer = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
-            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
+            //this._audioPlayer = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
+            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
+            this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory)); // TODO: localize
+
+            var sorter = SortExpressionComparer<PlaybackHistoryEntryViewModel>.Descending(pheVM => pheVM.PlaybackEndedDateTime);
+            //var sorter2 = new SortExpressionComparer<PlaybackHistoryEntryViewModel>();
 
             // TODO: review operators order, e.g. where should .DisposeMany() be placed?
             // TODO: does this represent a subscription that should be disposed?
-            //this._audioPlayer
+            this._playbackHistory.Entries
+                 .Connect()
+                 .Transform(phe => new PlaybackHistoryEntryViewModel(phe))
+                 //.DisposeMany()
+                 .Sort(
+                    SortExpressionComparer<PlaybackHistoryEntryViewModel>.Descending(pheVM => pheVM.PlaybackEndedDateTime),
+                    SortOptions.UseBinarySearch)
+                 .Bind(out var boundEntries)
+                 .Subscribe()
+                 .DisposeWith(this._disposables);
+            this.Entries = boundEntries;
             //    .WhenAudioSourceLocationChanged
             //    .ToObservableChangeSet(10)
             //    .Transform(location => new PlaybackHistoryItemViewModel(location))
@@ -47,8 +63,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        //private ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> _items;
-        //public ReadOnlyObservableCollection<PlaybackHistoryItemViewModel> Items => this._items;
+        private ReadOnlyObservableCollection<PlaybackHistoryEntryViewModel> _entries;
+        public ReadOnlyObservableCollection<PlaybackHistoryEntryViewModel> Entries
+        {
+            get => this._entries;
+            private set => this.RaiseAndSetIfChanged(ref this._entries, value);
+        }
 
         #endregion
 

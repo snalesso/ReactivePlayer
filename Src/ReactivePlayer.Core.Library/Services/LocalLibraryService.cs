@@ -35,7 +35,7 @@ namespace ReactivePlayer.Core.Library.Services
             private set => this._whenIsConnectedChangedSubject.OnNext(value);
         }
 
-        private readonly BehaviorSubject<bool> _whenIsConnectedChangedSubject ;
+        private readonly BehaviorSubject<bool> _whenIsConnectedChangedSubject;
         public IObservable<bool> WhenIsConnectedChanged => this._whenIsConnectedChangedSubject.DistinctUntilChanged();
 
         // TODO: add concurrency protection, use async lazy?
@@ -46,8 +46,8 @@ namespace ReactivePlayer.Core.Library.Services
                 var tracks = await
                     //Task.Run(async () =>
                     //{
-                    //    await Task.Delay(TimeSpan.FromSeconds(5));
-                    //    return await 
+                        //await Task.Delay(TimeSpan.FromSeconds(2.5));
+                        //return await
                     this._tracksRepository.GetAllAsync();
                 //});
 
@@ -68,7 +68,7 @@ namespace ReactivePlayer.Core.Library.Services
         #region IReadLibraryService
 
         private readonly SourceCache<Track, uint> _sourceTracks;
-        public IObservableCache<Track, uint> Tracks => this._sourceTracks.AsObservableCache().DisposeWith(this._disposables);
+        public IObservableCache<Track, uint> Tracks => this._sourceTracks;
 
         //private readonly SourceList<Artist> _sourceArtists;
         //public IObservableList<Artist> Artists => this._sourceArtists;

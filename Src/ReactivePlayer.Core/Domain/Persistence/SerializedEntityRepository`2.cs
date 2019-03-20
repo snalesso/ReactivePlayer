@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Domain.Persistence
+namespace ReactivePlayer.Core.Library.Persistence
 {
     // TODO: save to a copy, if save failes, reload data to undo changes to in memory entities
     public abstract class SerializedEntityRepository<TEntity, TIdentity> : IEntityRepository<TEntity, TIdentity>

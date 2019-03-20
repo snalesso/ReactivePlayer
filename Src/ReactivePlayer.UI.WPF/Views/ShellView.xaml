@@ -6,10 +6,10 @@
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignWidth="680"
+    d:DesignHeight="250"
     d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel,
                                      IsDesignTimeCreatable=False}"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
     IsEnabled="{Binding IsUIEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
     mc:Ignorable="d">
 
@@ -44,7 +44,17 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Views:TracksView DataContext="{Binding TracksViewModel}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" MinWidth="220" />
+            </Grid.ColumnDefinitions>
+
+            <Views:TracksView DataContext="{Binding TracksViewModel}" />
+            <Views:PlaybackHistoryView Grid.Column="2" DataContext="{Binding PlaybackHistoryViewModel}" />
+
+        </Grid>
 
         <Views:PlaybackControlsView Grid.Row="1" DataContext="{Binding PlaybackControlsViewModel}" />
 

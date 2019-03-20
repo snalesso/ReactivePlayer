@@ -29,10 +29,28 @@
 
             <ListView.View>
                 <GridView>
+                    <!--<GridViewColumn Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding IsLoaded}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>-->
+                    <GridViewColumn Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    x:Name="btnPlay"
+                                    Command="{Binding PlayTrack}"
+                                    Content="Play" />
+
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Title">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Title}" />
+                                <TextBlock Width="150" Text="{Binding Title}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -50,10 +68,10 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Added date">
+                    <GridViewColumn Width="100" Header="Added on">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding AddedToLibraryDateTime}" />
+                                <TextBlock Text="{Binding AddedToLibraryDateTime, Mode=OneWay, StringFormat=\{0:dd/MM/yy HH:mm\}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -68,14 +86,14 @@
                         Header="Play" />
                     <Separator />
                     <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
-                    <MenuItem
+                    <!--<MenuItem
                         Command="{Binding EditTrack}"
                         CommandParameter="{Binding SelectedTrackViewModel}"
-                        Header="Edit" />
-                    <MenuItem
+                        Header="Edit" />-->
+                    <!--<MenuItem
                         Command="{Binding RemoveTrackFromLibrary}"
                         CommandParameter="{Binding SelectedTrackViewModel}"
-                        Header="Remove from library" />
+                        Header="Remove from library" />-->
                 </ContextMenu>
             </ListView.ContextMenu>
 

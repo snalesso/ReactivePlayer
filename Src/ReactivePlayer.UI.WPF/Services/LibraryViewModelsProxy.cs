@@ -21,22 +21,14 @@ namespace ReactivePlayer.UI.WPF.Services
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
 
-            this.TrackViewModelsCache = this._readLibraryService.Tracks
-                 .Connect()
-                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
-                 .ChangeKey(vm => vm.Id);
-            this.TrackViewModelsCache
-                .DisposeMany()
-                .Subscribe()
+            this.TrackViewModels = this._readLibraryService.Tracks
+                .Connect()
+                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+                .AsObservableCache()
                 .DisposeWith(this._disposables);
-            this.TrackViewModels = this.TrackViewModelsCache.RemoveKey()
-                //.Subscribe().DisposeWith(this._disposables)
-                ;
         }
 
-        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsCache { get; }
-
-        public IObservable<IChangeSet<TrackViewModel>> TrackViewModels { get; }
+        public IObservableCache<TrackViewModel, uint> TrackViewModels { get; }
 
         public void Dispose()
         {

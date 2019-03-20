@@ -58,7 +58,7 @@
                 IsMoveToPointEnabled="True"
                 Maximum="{Binding DurationAsTicks, Mode=OneWay}"
                 Minimum="0"
-                TickFrequency="1" 
+                TickFrequency="1"
                 Value="{Binding PositionAsTicks, Mode=OneWay}" />
             <ProgressBar
                 Grid.Column="2"

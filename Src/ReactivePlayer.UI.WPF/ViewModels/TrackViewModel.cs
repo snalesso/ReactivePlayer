@@ -31,23 +31,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
 
-            //this._trackPlaybackStatus_OAPH = Observable.CombineLatest(
-            //      this._playbackService.WhenAudioSourceLocationChanged,
-            //      this._playbackService.WhenStatusChanged,
-            //      (audioSourceLocation, status) =>
-            //      {
-            //          if (this.TrackLocation == audioSourceLocation)
-            //          {
-            //              if (status == PlaybackStatus.Playing)
-            //                  return TrackPlaybackStatus.Playing;
-
-            //              else if (status == PlaybackStatus.Paused)
-            //                  return TrackPlaybackStatus.Paused;
-            //          }
-            //          return TrackPlaybackStatus.NotPlaying;
-            //      })
-            //      .ToProperty(this, nameof(this.TrackPlaybackStatus))
-            //      .DisposeWith(this._disposables);
+            this._isLoaded_OAPH= this._playbackService.WhenTrackChanged
+                .Select(loadedTrack => loadedTrack == this.Track)
+                .ToProperty(this, nameof(this.IsLoaded))
+                .DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async () =>
@@ -66,9 +53,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region properties
-
-        //private ObservableAsPropertyHelper<TrackPlaybackStatus> _trackPlaybackStatus_OAPH;
-        //public TrackPlaybackStatus TrackPlaybackStatus => this._trackPlaybackStatus_OAPH.Value;
+        
+        private ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
+        public bool IsLoaded => this._isLoaded_OAPH.Value;
 
         private readonly Track _track;
         public Track Track => this._track;

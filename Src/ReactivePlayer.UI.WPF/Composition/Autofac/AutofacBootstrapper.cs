@@ -5,6 +5,7 @@ using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
+using ReactivePlayer.Core.Playback.History;
 using ReactivePlayer.Fakes.Core.Library.Persistence;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Composition.Autofac.Modules;
@@ -37,8 +38,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             // TODO settings file
             this.RootViewDIsplaySettings = new Dictionary<string, object>
             {
-                { nameof(Window.Height), 500 },
-                { nameof(Window.Width), 500 },
+                { nameof(Window.Height), 400 },
+                { nameof(Window.Width), 850 },
                 { nameof(Window.WindowState), WindowState.Normal },
                 { nameof(Window.WindowStartupLocation), WindowStartupLocation.CenterScreen }
             };
@@ -97,9 +98,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 .InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
-            //builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<LibraryViewModelsProxy>()
-                .InstancePerLifetimeScope();
+            builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<LibraryViewModelsProxy>().InstancePerLifetimeScope();
 
             // ViewModels & Views
 
@@ -114,6 +114,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsView>().As<IViewFor<PlaybackControlsViewModel>>().InstancePerLifetimeScope();
+            builder.RegisterType<PlaybackHistoryViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<PlaybackHistoryView>().AsSelf().InstancePerLifetimeScope();
         }
 
         private IEnumerable<Assembly> assemblies;

@@ -59,7 +59,9 @@
     <Compile Include="Models\LibraryEntry.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />
+    <Compile Include="Persistence\ITrackFactory.cs" />
     <Compile Include="Persistence\ITracksRepository.cs" />
+    <Compile Include="Persistence\TracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AddLibraryEntryCommand.cs" />
     <Compile Include="Services\AddTrackCommand.cs" />

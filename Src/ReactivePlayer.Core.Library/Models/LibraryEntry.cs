@@ -8,7 +8,7 @@ namespace ReactivePlayer.Core.Library.Models
     {
         #region ctor
 
-        public LibraryEntry(
+        internal LibraryEntry(
             uint id,
             Uri location,
             TimeSpan? duration,

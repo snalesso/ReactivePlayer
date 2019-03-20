@@ -152,8 +152,9 @@
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
     <Compile Include="ViewModels\EditTrackViewModel.cs" />
     <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackHistoryItemViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackHistoryEntryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackQueueSelectorViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -171,8 +172,8 @@
     <Compile Include="Views\PlaybackControlsView.xaml.cs">
       <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlaybackHistoryItemView.xaml.cs">
-      <DependentUpon>PlaybackHistoryItemView.xaml</DependentUpon>
+    <Compile Include="Views\PlaybackHistoryView.xaml.cs">
+      <DependentUpon>PlaybackHistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -278,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PlaybackHistoryItemView.xaml">
+    <Page Include="Views\PlaybackHistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

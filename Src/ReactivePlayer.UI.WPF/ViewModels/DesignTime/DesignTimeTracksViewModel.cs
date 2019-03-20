@@ -10,7 +10,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
             : base(
                   null
                   , null
-                  //, null
+                  , null
                   //, null
                   //, null
                   //, null

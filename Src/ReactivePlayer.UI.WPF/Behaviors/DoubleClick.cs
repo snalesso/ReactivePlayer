@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -32,7 +27,7 @@ namespace ReactivePlayer.UI.WPF.Behaviors
             typeof(DoubleClick));
         public static object GetCommandParameter(Control target)
         {
-            return (object)target.GetValue(CommandParameter);
+            return target.GetValue(CommandParameter);
         }
         public static void SetCommandParameter(Control target, object value)
         {
@@ -41,24 +36,36 @@ namespace ReactivePlayer.UI.WPF.Behaviors
 
         private static void OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as Control;
-            if (control == null) return;
+            if (!(d is Control control))
+                return;
 
-            control.MouseDoubleClick += new MouseButtonEventHandler(MouseDoubleClickHandler);
+            ICommand command = GetCommand(control);
+
+            if (command != null)
+            {
+                control.MouseDoubleClick += new MouseButtonEventHandler(MouseDoubleClickHandler);
+            }
+            else
+            {
+                control.MouseDoubleClick -= new MouseButtonEventHandler(MouseDoubleClickHandler);
+            }
         }
 
         private static void MouseDoubleClickHandler(object sender, MouseButtonEventArgs e)
         {
-            var control = sender as Control;
+            if (!(sender is Control control))
+                return;
+
             ICommand command = GetCommand(control);
+
+            if (command == null)
+                return;
+
             object commandParameter = GetCommandParameter(control);
 
-            if (control != null && command != null)
+            if (command.CanExecute(commandParameter))
             {
-                if (command.CanExecute(commandParameter))
-                {
-                    command.Execute(commandParameter);
-                }
+                command.Execute(commandParameter);
             }
         }
     }

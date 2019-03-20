@@ -19,7 +19,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constancts & fields
 
-        //private readonly IAudioPlaybackEngine _playbackService;
+        private readonly IAudioPlaybackEngine _playbackService;
         private readonly IReadLibraryService _readLibraryService;
         //private readonly IWriteLibraryService _writeLibraryService;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
@@ -36,14 +36,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         }
 
         public ShellViewModel(
-            //IAudioPlaybackEngine playbackService,
+            IAudioPlaybackEngine playbackService,
             //IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
             PlaybackControlsViewModel playbackControlsViewModel,
-            TracksViewModel tracksViewModel)
+            TracksViewModel tracksViewModel,
+            PlaybackHistoryViewModel playbackHistoryViewModel)
         {
-            //this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
+            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
@@ -52,11 +53,33 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
             this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
+            this.PlaybackHistoryViewModel = playbackHistoryViewModel ?? throw new ArgumentNullException(nameof(playbackHistoryViewModel));
 
             this.ActivateItem(this.PlaybackControlsViewModel);
             this.ActivateItem(this.TracksViewModel);
+            this.ActivateItem(this.PlaybackHistoryViewModel);
 
-            this.DisplayName = nameof(ReactivePlayer);
+            this._playbackService.WhenTrackChanged.Subscribe(track =>
+            {
+                var shellViewTitle = string.Empty;
+
+                if (track != null)
+                {
+                    shellViewTitle += track.Title;
+                    if (track.Performers != null)
+                    {
+                        shellViewTitle += " - ";
+                        shellViewTitle += string.Join(", ", track.Performers.Select(p => p.Name));
+                    }
+                }
+                if (shellViewTitle.Length > 0)
+                    shellViewTitle += " - ";
+
+                shellViewTitle += nameof(ReactivePlayer);
+
+                this.DisplayName = shellViewTitle;
+            })
+            .DisposeWith(this._disposables);
         }
 
         #endregion
@@ -67,8 +90,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public bool IsUIEnabled => this._isUIEnabled_OAPH.Value;
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
-
         public TracksViewModel TracksViewModel { get; }
+        public PlaybackHistoryViewModel PlaybackHistoryViewModel { get; }
 
         // artists viewmodel
 
