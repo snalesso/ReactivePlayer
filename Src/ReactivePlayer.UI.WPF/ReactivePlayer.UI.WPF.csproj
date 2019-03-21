@@ -229,17 +229,9 @@
       <Project>{f59e3c5e-8862-43b4-a59a-cf795b3912f3}</Project>
       <Name>Caliburn.Micro.ReactiveUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
-      <Project>{a45e3c4d-550f-4187-863d-c6f67e734162}</Project>
-      <Name>ReactivePlayer.Plugins.iTunes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
       <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
       <Name>ReactivePlayer.Core.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.Library.SQLite3.OrmLite\ReactivePlayer.Core.Library.SQLite3.OrmLite.csproj">
-      <Project>{AF3350EF-79FE-405A-B405-ED93F1010B14}</Project>
-      <Name>ReactivePlayer.Core.Library.SQLite3.OrmLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{d410bfe3-22c7-4ee6-ab62-9a069f2f1566}</Project>
@@ -250,7 +242,7 @@
       <Name>ReactivePlayer.Core.Playback</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj">
-      <Project>{376b6cd2-b0cf-4edd-a55d-d0a1b3674b10}</Project>
+      <Project>{376B6CD2-B0CF-4EDD-A55D-D0A1B3674B10}</Project>
       <Name>ReactivePlayer.Fakes</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.UI\ReactivePlayer.UI.csproj">

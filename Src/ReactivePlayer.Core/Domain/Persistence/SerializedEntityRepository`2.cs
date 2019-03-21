@@ -1,6 +1,7 @@
 ﻿using ReactivePlayer.Core.Domain.Models;
 using ReactivePlayer.Core.Domain.Persistence;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,16 +9,18 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Library.Persistence
 {
     // TODO: save to a copy, if save failes, reload data to undo changes to in memory entities
+    // TODO: defend from concurrent Deserialize/Serialize, ecc.
     public abstract class SerializedEntityRepository<TEntity, TIdentity> : IEntityRepository<TEntity, TIdentity>
         where TEntity : Entity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
         protected readonly string _dbFilePath;
 
-        protected IDictionary<TIdentity, TEntity> _entities;
+        protected ConcurrentDictionary<TIdentity, TEntity> _entities;
 
         public SerializedEntityRepository(string dbFilePath)
         {
+            this._dbFilePath = dbFilePath;
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
@@ -26,7 +29,11 @@ namespace ReactivePlayer.Core.Library.Persistence
 
             if (!this._entities.ContainsKey(entity.Id))
             {
-                this._entities.Add(entity.Id, entity);
+                if (!this._entities.TryAdd(entity.Id, entity))
+                {
+                    throw new Exception();
+                }
+
                 await this.Serialize();
 
                 return entity;
@@ -39,11 +46,16 @@ namespace ReactivePlayer.Core.Library.Persistence
         {
             await this.EnsureDeserialized();
 
+            // ensure NONE of the entities are already in the DB
             if (!entities.Any(t => this._entities.ContainsKey(t.Id)))
             {
+                // TODO: consider offloading to separate thread (potentially "long" process)
                 foreach (var entity in entities)
                 {
-                    this._entities.Add(entity.Id, entity);
+                    if (!this._entities.TryAdd(entity.Id, entity))
+                    {
+                        throw new Exception();
+                    }
                 }
 
                 await this.Serialize();
@@ -61,15 +73,34 @@ namespace ReactivePlayer.Core.Library.Persistence
             return this._entities.Values.ToArray();
             //return (filter != null ? this._entities.Values.AsParallel().Where(filter).AsEnumerable() : this._entities.Values).ToArray();
         }
-        
+
         public Task<bool> RemoveAsync(TIdentity identity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveAsync(IEnumerable<TIdentity> identities)
+        public async Task<bool> RemoveAsync(IEnumerable<TIdentity> identities)
         {
-            throw new NotImplementedException();
+            await this.EnsureDeserialized();
+
+            // ensure ALL IDs are valid
+            if (identities.Any(identity => !this._entities.ContainsKey(identity)))
+            {
+                // TODO: consider offloading to separate thread (potentially "long" process)
+                foreach (var identity in identities)
+                {
+                    if (!this._entities.TryRemove(identity, out var _))
+                    {
+                        throw new Exception();
+                    }
+                }
+
+                await this.Serialize();
+
+                return true;
+            }
+
+            return false;
         }
 
         protected abstract bool IsDeserialized { get; }

@@ -1,4 +1,5 @@
-﻿using ReactivePlayer.Core.Library.Json.Newtonsoft;
+﻿using ReactivePlayer.Core.Domain.Persistence;
+using ReactivePlayer.Core.Library.Json.Newtonsoft;
 using ReactivePlayer.Core.Library.Json.Utf8Json.Persistence;
 using ReactivePlayer.Core.Library.Models;
 using System;
@@ -8,17 +9,19 @@ using System.Linq;
 
 namespace ReactivePlayer.Exps.Persistence.Tracks
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
             //TestNewtonsoftArtists();
-            TestNewtonsoftTracks();
+            var repository = new NewtonsoftJsonNetTracksRepository();
+            TestTracksRepository(repository);
+            repository.Dispose();
 
             Console.ReadLine();
         }
 
-        private static Track[] GetFakeTracks()
+        static Track[] GetFakeTracks()
         {
             const string dtf = "dd/MM/yyyy HH:mm";
             var dtFormatProvider = CultureInfo.InvariantCulture;
@@ -131,17 +134,17 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
             };
         }
 
-        private static TrackAlbumAssociation[] GetFakeTrackAlbumAssociations()
+        static TrackAlbumAssociation[] GetFakeTrackAlbumAssociations()
         {
             return GetFakeTracks().Select(t => t.AlbumAssociation).Where(a => a != null).ToArray();
         }
 
-        private static Album[] GetFakeAlbums()
+        static Album[] GetFakeAlbums()
         {
             return GetFakeTracks().Select(t => t.AlbumAssociation?.Album).Where(a => a != null).ToArray();
         }
 
-        private static Artist[] GetFakeArtists()
+        static Artist[] GetFakeArtists()
         {
             var tracks = GetFakeTracks();
 
@@ -152,7 +155,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
             return c.Concat(p).Concat(aa).Distinct().ToArray();
         }
 
-        private static void Check()
+        static void Check()
         {
             //var artist1 = new Artist("ciao");
             //var artist2 = new Artist("ciao");
@@ -170,7 +173,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
             //var f43tw = album1 == album3;
         }
 
-        private static void TestArtists()
+        static void TestArtists()
         {
             IReadOnlyList<Artist> artists = null;
 
@@ -181,7 +184,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
             utf8JsonArtistsRepository.AddAsync(artists).Wait();
         }
 
-        private static void TestAlbums()
+        static void TestAlbums()
         {
             IReadOnlyList<Album> albums = null;
 
@@ -234,6 +237,17 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
 
             tracks = GetFakeTracks();
             newtonsoftJsonNetTracksRepository.AddAsync(tracks).Wait();
+        }
+
+        static void TestTracksRepository(IEntityRepository<Track, uint> tracksRepository)
+        {
+            IReadOnlyList<Track> tracks = null;
+
+            tracks = tracksRepository.GetAllAsync().Result;
+
+            tracksRepository.RemoveAsync(tracks.Select(t => t.Id)).Wait();
+            tracks = GetFakeTracks();
+            tracksRepository.AddAsync(tracks).Wait();
         }
 
         //private void Test<T>()
