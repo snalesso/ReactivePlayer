@@ -11,7 +11,7 @@ namespace ReactivePlayer.Core.Library.Persistence
 {
     // TODO: save to a copy, if save failes, reload data to undo changes to in memory entities
     // TODO: defend from concurrent Deserialize/Serialize, ecc.
-    public abstract class SerializedEntityRepository<TEntity, TIdentity> : IEntityRepository<TEntity, TIdentity>
+    public abstract class SerializingEntityRepository<TEntity, TIdentity> : IEntityRepository<TEntity, TIdentity>
         where TEntity : Entity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
@@ -22,7 +22,7 @@ namespace ReactivePlayer.Core.Library.Persistence
 
         protected ConcurrentDictionary<TIdentity, TEntity> _entities;
 
-        public SerializedEntityRepository(string dbFilePath)
+        public SerializingEntityRepository(string dbFilePath)
         {
             this._dbFilePath = dbFilePath;
         }

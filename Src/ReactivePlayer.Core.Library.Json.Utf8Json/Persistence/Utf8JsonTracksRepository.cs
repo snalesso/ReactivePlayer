@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Json.Utf8Json.Persistence
 {
-    public sealed class Utf8JsonTracksRepository : SerializedEntityRepository<Track, uint>
+    public sealed class Utf8JsonTracksRepository : SerializingEntityRepository<Track, uint>
     {
         private const string DBFileName = "tracks.json";
 

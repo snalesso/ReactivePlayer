@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 {
     // TODO: handle concurrency (connect, add, remove, ...)
-    public sealed class NewtonsoftJsonNetTracksRepository : SerializedEntityRepository<Track, uint>, IDisposable
+    public sealed class NewtonsoftJsonNetTracksRepository : SerializingEntityRepository<Track, uint>, IDisposable
     {
         private const string DBFileName = nameof(Track) + "s.json";
         private readonly Encoding _encoding = Encoding.UTF8;

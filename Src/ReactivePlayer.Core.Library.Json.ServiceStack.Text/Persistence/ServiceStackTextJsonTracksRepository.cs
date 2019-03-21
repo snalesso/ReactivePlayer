@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Json.ServiceStack.Text.Persistence
 {
-    public sealed class ServiceStackTextJsonTracksRepository : SerializedEntityRepository<Track, uint>, ITracksRepository
+    public sealed class ServiceStackTextJsonTracksRepository : SerializingEntityRepository<Track, uint>, ITracksRepository
     {
         private const string DBFileName = "tracks.json";
 
