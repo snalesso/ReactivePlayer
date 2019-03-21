@@ -226,7 +226,7 @@
       <Name>Daedalus.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj">
-      <Project>{3b9502a4-95da-4fda-9b5d-806de11ff7a4}</Project>
+      <Project>{f59e3c5e-8862-43b4-a59a-cf795b3912f3}</Project>
       <Name>Caliburn.Micro.ReactiveUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
