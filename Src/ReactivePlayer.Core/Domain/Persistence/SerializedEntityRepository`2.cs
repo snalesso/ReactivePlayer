@@ -3,6 +3,7 @@ using ReactivePlayer.Core.Domain.Persistence;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,9 @@ namespace ReactivePlayer.Core.Library.Persistence
         where TIdentity : IEquatable<TIdentity>
     {
         protected readonly string _dbFilePath;
+
+        // TODO: fix explicit buffer size and leaveopen, file lock + transient streams?
+        //protected FileStream _dbFileStream;
 
         protected ConcurrentDictionary<TIdentity, TEntity> _entities;
 
@@ -83,24 +87,24 @@ namespace ReactivePlayer.Core.Library.Persistence
         {
             await this.EnsureDeserialized();
 
-            // ensure ALL IDs are valid
-            if (identities.Any(identity => !this._entities.ContainsKey(identity)))
+            foreach (var id in identities)
             {
-                // TODO: consider offloading to separate thread (potentially "long" process)
-                foreach (var identity in identities)
-                {
-                    if (!this._entities.TryRemove(identity, out var _))
-                    {
-                        throw new Exception();
-                    }
-                }
-
-                await this.Serialize();
-
-                return true;
+                if (!this._entities.ContainsKey(id))
+                    return false;
             }
 
-            return false;
+            // TODO: consider offloading to separate thread (potentially "long" process)
+            foreach (var identity in identities)
+            {
+                if (!this._entities.TryRemove(identity, out var _))
+                {
+                    throw new Exception();
+                }
+            }
+
+            await this.Serialize();
+
+            return true;
         }
 
         protected abstract bool IsDeserialized { get; }

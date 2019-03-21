@@ -18,7 +18,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
             TestTracksRepository(repository);
             repository.Dispose();
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
 
         static Track[] GetFakeTracks()

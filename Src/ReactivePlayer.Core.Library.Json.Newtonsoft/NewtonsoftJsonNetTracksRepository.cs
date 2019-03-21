@@ -81,6 +81,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
             try
             {
+                this._dbStreamWriter.BaseStream.Position = 0;
                 var jsonTracks = JsonConvert.SerializeObject(this._entities.Values, this._jsonSerializerSettings);
                 await this._dbStreamWriter.WriteAsync(jsonTracks);
             }
@@ -92,9 +93,6 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         public void Dispose()
         {
-            this._dbFileStream?.Close();
-            this._dbFileStream?.Dispose();
-            this._dbFileStream = null;
 
             this._dbStreamReader?.Close();
             this._dbStreamReader?.Dispose();
@@ -103,6 +101,10 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
             this._dbStreamWriter?.Close();
             this._dbStreamWriter?.Dispose();
             this._dbStreamWriter = null;
+
+            this._dbFileStream?.Close();
+            this._dbFileStream?.Dispose();
+            this._dbFileStream = null;
         }
     }
 }
