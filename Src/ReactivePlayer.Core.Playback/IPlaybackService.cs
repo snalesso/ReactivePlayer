@@ -8,5 +8,6 @@ namespace ReactivePlayer.Core.Playback
 {
     public interface IPlaybackService : IAudioPlaybackEngine
     {
+        IReadOnlyList<string> SupportedAudioExtensions { get; }
     }
 }

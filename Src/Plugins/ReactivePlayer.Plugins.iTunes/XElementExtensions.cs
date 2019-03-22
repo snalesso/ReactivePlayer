@@ -40,11 +40,11 @@ namespace ReactivePlayer.Core
             return String.IsNullOrEmpty(stringValue) ? (DateTime?)null : DateTime.SpecifyKind(DateTime.Parse(stringValue, CultureInfo.InvariantCulture), DateTimeKind.Utc).ToLocalTime();
         }
 
-        public static IDictionary<string, string> XDictToDictionary(this XElement xDict)
+        public static IDictionary<string, string> ToDictionary(this XElement xElement)
         {
-            var isLocation = xDict.Descendants().Any(d => d.Value == @"file://localhost/D:/Music/P!nk%20-%20Sober.mp3");
+            var isLocation = xElement.Descendants().Any(d => d.Value == @"file://localhost/D:/Music/P!nk%20-%20Sober.mp3");
             var dict = new Dictionary<string, string>();
-            var descs = xDict
+            var descs = xElement
                 .Elements()
                 .InDocumentOrder()
                 .ToList();

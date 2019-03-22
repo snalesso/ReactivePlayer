@@ -54,7 +54,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
                     using (var sr = new StreamReader(this._dbFileStream, this._encoding, true, NewtonsoftJsonNetTracksRepository.RWBufferSize, true))
                     {
                         sr.BaseStream.Position = 0;
-                        dbContentAsString = await sr.ReadToEndAsync().ConfigureAwait(false);
+                        dbContentAsString = await sr.ReadToEndAsync();//.ConfigureAwait(false);
                     }
 
                     var deserializedTracksCollection = JsonConvert.DeserializeObject<IEnumerable<Track>>(dbContentAsString) ?? Enumerable.Empty<Track>();
@@ -77,7 +77,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
                 using (var sw = new StreamWriter(this._dbFileStream, this._encoding, NewtonsoftJsonNetTracksRepository.RWBufferSize, true))
                 {
                     sw.BaseStream.Position = 0;
-                    await sw.WriteAsync(jsonTracks).ConfigureAwait(false);
+                    await sw.WriteAsync(jsonTracks);//.ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

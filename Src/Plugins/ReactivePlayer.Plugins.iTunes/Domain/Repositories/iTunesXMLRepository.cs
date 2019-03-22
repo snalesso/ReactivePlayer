@@ -1,5 +1,7 @@
 using ReactivePlayer.Core;
+using ReactivePlayer.Core.Domain.Persistence;
 using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -14,60 +16,21 @@ using System.Xml.Linq;
 namespace ReactivePlayer.Domain.Repositories
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public sealed class iTunesXMLRepository //: ITracksRepository, ITrackFactory
+    public sealed class iTunesXMLRepository : ITracksRepository, ITrackFactory
 #pragma warning restore IDE1006 // Naming Styles
     {
-        private readonly string _xmlItmlFilePath;
+        private readonly string _xmliTunesMediaLibraryFilePath;
         // TODO: consider making AsyncLazy
         //private IReadOnlyDictionary<int, Track> _tracks = null;
 
-        public iTunesXMLRepository(string xmlItlFilePath)
+        public iTunesXMLRepository(string xmliTunesMediaLibraryFilePath)
         {
-            if (!File.Exists(xmlItlFilePath))
-                throw new FileNotFoundException(); // TODO: localize
-
-            this._xmlItmlFilePath = xmlItlFilePath;
+            this._xmliTunesMediaLibraryFilePath = xmliTunesMediaLibraryFilePath;
         }
 
-        public Task<IReadOnlyList<Track>> GetAllAsync(Func<Track, bool> filter = null)
+        private IReadOnlyList<iTunesTrack> GetiTunesTracks()
         {
-            //IReadOnlyList<Track> tracks = (this._tracks ?? (this._tracks = (await this.GetITunesXMLMediaLibraryTracks()).Values.SelectMany()));
-            //return tracks;
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> AddAsync(IReadOnlyList<Track> tracks)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<Track> FirstAsync(Func<Track, bool> filter)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<bool> RemoveAsync(IReadOnlyList<Track> tracks)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<bool> UpdateAsync(IReadOnlyList<Track> tracks)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<bool> AnyAsync(Func<Track, bool> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<IReadOnlyDictionary<Uri, IReadOnlyList<Track>>> GetITunesXMLMediaLibraryTracks()
-        {
-            IImmutableDictionary<Uri, IReadOnlyList<Track>> returnedTracks = null;
-
-            try
-            {
-                var xItTracks = XDocument.Load(this._xmlItmlFilePath)
+            var xmliTunesTracks = XDocument.Load(this._xmliTunesMediaLibraryFilePath)
                     .Element("plist")
                     .Element("dict")
                     .Elements()
@@ -75,235 +38,160 @@ namespace ReactivePlayer.Domain.Repositories
                     .Skip(1)
                     .FirstOrDefault()
                     .Elements("dict")
-                    .Select(xDict => xDict.XDictToDictionary());
+                    .Select(xElement => xElement.ToDictionary());
 
-                var iTunesTracks = xItTracks
-                    .Select(dict =>
-                    {
-                        iTunesTrack track = null;
-                        try
-                        {
-                            track = new iTunesTrack()
-                            {
-                                Album = dict.GetKeyValueIfExists("Album"),
-                                AlbumArtist = dict.GetKeyValueIfExists("Album Artist"),
-                                AlbumLoved = dict.GetValue("Album Loved", default(bool)),
-                                AlbumRating = dict.GetNullableValue("Album Rating", default(uint?)),
-                                AlbumRatingComputed = dict.GetValue("Album Rating Computed", default(bool)),
-                                Artist = dict.GetKeyValueIfExists("Artist"),
-                                ArtworkCount = dict.GetNullableValue("Artwork Count", default(uint?)),
-                                BitRate = dict.GetNullableValue("Bit Rate", default(uint?)),
-                                Comments = dict.GetKeyValueIfExists("Comments"),
-                                Compilation = dict.GetKeyValueIfExists("Compilation"),
-                                Composer = dict.GetKeyValueIfExists("Composer"),
-                                DateAdded = dict.GetValue("Date Added", default(DateTime)),
-                                DateModified = dict.GetNullableValue("Date Modified", default(DateTime?)),
-                                DiscCount = dict.GetNullableValue("Disc Count", default(uint?)),
-                                DiscNumber = dict.GetNullableValue("Disc Number", default(uint?)),
-                                Equalizer = dict.GetKeyValueIfExists("Equalizer"),
-                                FileFolderCount = dict.GetNullableValue("File Folder Count", default(int?)),
-                                Genre = dict.GetKeyValueIfExists("Genre"),
-                                Kind = dict.GetKeyValueIfExists("Kind"),
-                                LibraryFolderCount = dict.GetNullableValue("Library Folder Count", default(int?)),
-                                Location = dict.GetKeyValueIfExists("Location"),
-                                Loved = dict.GetValue("Loved", default(bool)),
-                                Name = dict.GetKeyValueIfExists("Name"),
-                                PersistentID = dict.GetKeyValueIfExists("Persistent ID"),
-                                PlayCount = dict.GetValue("Play Count", default(uint)),
-                                PlayDate = dict.GetNullableValue("Play Date", default(uint?)),
-                                PlayDateUTC = dict.GetValue("Play Date UTC", default(DateTime)),
-                                Podcast = dict.GetValue("Podcast", default(bool)),
-                                Rating = dict.GetNullableValue("Rating", default(uint?)),
-                                ReleaseDate = dict.GetNullableValue("Release Date", default(DateTime?)),
-                                SampleRate = dict.GetNullableValue("Sample Rate", default(uint?)),
-                                Size = dict.GetNullableValue("Size", default(uint?)),
-                                SkipCount = dict.GetValue("Skip Count", default(uint)),
-                                SkipDate = dict.GetNullableValue("Skip Date", default(DateTime?)),
-                                SortAlbum = dict.GetKeyValueIfExists("Sort Album"),
-                                SortAlbumArtist = dict.GetKeyValueIfExists("Sort Album Artist"),
-                                SortArtist = dict.GetKeyValueIfExists("Sort Artist"),
-                                SortComposer = dict.GetKeyValueIfExists("Sort Composer"),
-                                SortName = dict.GetKeyValueIfExists("Sort Name"),
-                                TotalTime = TimeSpan.FromMilliseconds(dict.GetValue("Total Time", default(uint))),
-                                TrackCount = dict.GetNullableValue("Track Count", default(uint?)),
-                                TrackID = dict.GetValue("Track ID", default(uint)),
-                                TrackNumber = dict.GetNullableValue("Track Number", default(uint?)),
-                                TrackType = dict.GetKeyValueIfExists("Track Type"),
-                                Unplayed = dict.GetValue("Unplayed", default(bool)),
-                                VolumeAdjustment = dict.GetNullableValue("Volume Adjustment", default(int?)),
-                                Year = dict.GetNullableValue("Year", default(uint?))
-                            };
-                        }
-                        catch (Exception ex)
-                        {
-                            var loc = dict["Location"];
-                            track = null;
-                        }
-
-                        return track;
-                    });
-
-                var artistNames = new HashSet<string>();
-
-                foreach (var name in iTunesTracks.Where(t => t.ArtistNames != null).SelectMany(t => t?.ArtistNames))
+            return xmliTunesTracks
+                .Select(xmliTunesTrack =>
                 {
-                    if (name != null)
-                        artistNames.Add(name);
-                }
-                foreach (var name in iTunesTracks.Where(t => t.AlbumArtistNames != null).SelectMany(t => t?.AlbumArtistNames))
-                {
-                    if (name != null)
-                        artistNames.Add(name);
-                }
-                foreach (var name in iTunesTracks.Where(t => t.ComposerNames != null).SelectMany(t => t?.ComposerNames))
-                {
-                    if (name != null)
-                        artistNames.Add(name);
-                }
+                    iTunesTrack iTunesTrack = null;
 
-                var artistsDictionary = new Dictionary<string, Artist>();
-                string nameExt;
-
-                foreach (var name in artistNames)
-                {
                     try
                     {
-                        nameExt = name;
-                        //Guid id;
-                        //do { id = Guid.NewGuid(); }
-                        //while (artists.Values.All(a => a.Id != id));
-
-                        var artist = new Artist(/*id,*/ name);
-                        artistsDictionary.Add(artist.Name, artist);
+                        iTunesTrack = new iTunesTrack()
+                        {
+                            Album = xmliTunesTrack.GetKeyValueIfExists("Album"),
+                            AlbumArtist = xmliTunesTrack.GetKeyValueIfExists("Album Artist"),
+                            AlbumLoved = xmliTunesTrack.GetValue("Album Loved", default(bool)),
+                            AlbumRating = xmliTunesTrack.GetNullableValue("Album Rating", default(uint?)),
+                            AlbumRatingComputed = xmliTunesTrack.GetValue("Album Rating Computed", default(bool)),
+                            Artist = xmliTunesTrack.GetKeyValueIfExists("Artist"),
+                            ArtworkCount = xmliTunesTrack.GetNullableValue("Artwork Count", default(uint?)),
+                            BitRate = xmliTunesTrack.GetNullableValue("Bit Rate", default(uint?)),
+                            Comments = xmliTunesTrack.GetKeyValueIfExists("Comments"),
+                            Compilation = xmliTunesTrack.GetKeyValueIfExists("Compilation"),
+                            Composer = xmliTunesTrack.GetKeyValueIfExists("Composer"),
+                            DateAdded = xmliTunesTrack.GetValue("Date Added", default(DateTime)),
+                            DateModified = xmliTunesTrack.GetNullableValue("Date Modified", default(DateTime?)),
+                            DiscCount = xmliTunesTrack.GetNullableValue("Disc Count", default(uint?)),
+                            DiscNumber = xmliTunesTrack.GetNullableValue("Disc Number", default(uint?)),
+                            Equalizer = xmliTunesTrack.GetKeyValueIfExists("Equalizer"),
+                            FileFolderCount = xmliTunesTrack.GetNullableValue("File Folder Count", default(int?)),
+                            Genre = xmliTunesTrack.GetKeyValueIfExists("Genre"),
+                            Kind = xmliTunesTrack.GetKeyValueIfExists("Kind"),
+                            LibraryFolderCount = xmliTunesTrack.GetNullableValue("Library Folder Count", default(int?)),
+                            Location = xmliTunesTrack.GetKeyValueIfExists("Location"),
+                            Loved = xmliTunesTrack.GetValue("Loved", default(bool)),
+                            Name = xmliTunesTrack.GetKeyValueIfExists("Name"),
+                            PersistentID = xmliTunesTrack.GetKeyValueIfExists("Persistent ID"),
+                            PlayCount = xmliTunesTrack.GetValue("Play Count", default(uint)),
+                            PlayDate = xmliTunesTrack.GetNullableValue("Play Date", default(uint?)),
+                            PlayDateUTC = xmliTunesTrack.GetValue("Play Date UTC", default(DateTime)),
+                            Podcast = xmliTunesTrack.GetValue("Podcast", default(bool)),
+                            Rating = xmliTunesTrack.GetNullableValue("Rating", default(uint?)),
+                            ReleaseDate = xmliTunesTrack.GetNullableValue("Release Date", default(DateTime?)),
+                            SampleRate = xmliTunesTrack.GetNullableValue("Sample Rate", default(uint?)),
+                            Size = xmliTunesTrack.GetNullableValue("Size", default(uint?)),
+                            SkipCount = xmliTunesTrack.GetValue("Skip Count", default(uint)),
+                            SkipDate = xmliTunesTrack.GetNullableValue("Skip Date", default(DateTime?)),
+                            SortAlbum = xmliTunesTrack.GetKeyValueIfExists("Sort Album"),
+                            SortAlbumArtist = xmliTunesTrack.GetKeyValueIfExists("Sort Album Artist"),
+                            SortArtist = xmliTunesTrack.GetKeyValueIfExists("Sort Artist"),
+                            SortComposer = xmliTunesTrack.GetKeyValueIfExists("Sort Composer"),
+                            SortName = xmliTunesTrack.GetKeyValueIfExists("Sort Name"),
+                            TotalTime = TimeSpan.FromMilliseconds(xmliTunesTrack.GetValue("Total Time", default(uint))),
+                            TrackCount = xmliTunesTrack.GetNullableValue("Track Count", default(uint?)),
+                            TrackID = xmliTunesTrack.GetValue("Track ID", default(uint)),
+                            TrackNumber = xmliTunesTrack.GetNullableValue("Track Number", default(uint?)),
+                            TrackType = xmliTunesTrack.GetKeyValueIfExists("Track Type"),
+                            Unplayed = xmliTunesTrack.GetValue("Unplayed", default(bool)),
+                            VolumeAdjustment = xmliTunesTrack.GetNullableValue("Volume Adjustment", default(int?)),
+                            Year = xmliTunesTrack.GetNullableValue("Year", default(uint?))
+                        };
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(ex.StackTrace);
+                        iTunesTrack = null;
                     }
-                }
-
-                IDictionary<Uri, IList<Track>> iTunesLocationTracksDictionary = new Dictionary<Uri, IList<Track>>();
-                List<Uri> nonLocalLocations = new List<Uri>();
-
-                foreach (var iTunesTrack in iTunesTracks)
-                {
-                    try
-                    {
-                        IEnumerable<Predicate<Track>> filters = new Predicate<Track>[]
-                        {
-                            tt => tt.Performers.EmptyIfNull().Contains(null),
-                            tt => tt.Composers.EmptyIfNull().Contains(null)
-                        };
-
-                        if (!new Uri(iTunesTrack.Location).IsFile)
-                        {
-                            nonLocalLocations.Add(new Uri(iTunesTrack.Location));
-                        }
-                        else
-                        {
-                            var performers = iTunesTrack.ArtistNames.EmptyIfNull().Select(artistName => artistsDictionary.ContainsKey(artistName) ? artistsDictionary[artistName] : throw new Exception($"Could not find performer {artistName}"));
-                            var composers = iTunesTrack.ComposerNames.EmptyIfNull().Select(artistName => artistsDictionary.ContainsKey(artistName) ? artistsDictionary[artistName] : throw new Exception($"Could not find composer {artistName}"));
-                            var albArt = iTunesTrack.AlbumArtistNames.EmptyIfNull().Select(artistName => artistsDictionary.ContainsKey(artistName) ? artistsDictionary[artistName] : throw new Exception($"Could not find album artist {artistName}"));
-
-                            var nt = await this.CreateAsync(
-                                // library entry
-                                new Uri(iTunesTrack.Location.StartsWith(@"file://localhost/")
-                                    ? iTunesTrack.Location.Remove(@"file://".Length - 1, @"localhost/".Length)
-                                    : iTunesTrack.Location),
-                                iTunesTrack.TotalTime,
-                                iTunesTrack.DateModified,
-                                null,
-                                iTunesTrack.DateAdded,
-                                false,
-                                // track
-                                iTunesTrack.Name,
-                                performers,
-                                composers,
-                                iTunesTrack.Year,
-                                new TrackAlbumAssociation(
-                                    new Album(
-                                        iTunesTrack.Album,
-                                        albArt,
-                                        iTunesTrack.TrackCount,
-                                        iTunesTrack.DiscCount),
-                                    iTunesTrack.TrackNumber,
-                                    iTunesTrack.DiscNumber));
-
-                            var fwefwefwef = filters.Any(f => f(nt));
-
-                            if (!iTunesLocationTracksDictionary.ContainsKey(nt.Location))
-                            {
-                                iTunesLocationTracksDictionary.Add(nt.Location, new List<Track>(new[] { nt }));
-                            }
-                            else
-                            {
-                                iTunesLocationTracksDictionary[nt.Location].Add(nt);
-                            }
-                        }
-                    }
-                    catch (Exception ex1)
+                    finally
                     {
                     }
-                }
 
-                var asdf = iTunesLocationTracksDictionary.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.ToImmutableArray() as IReadOnlyList<Track>);
-                returnedTracks = asdf;
-            }
-            catch (Exception ex)
+                    return iTunesTrack;
+                })
+                .ToImmutableList();
+        }
+
+        Task<Track> IEntityRepository<Track, uint>.AddAsync(Track entity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<IReadOnlyList<Track>> AddAsync(IEnumerable<Track> entities)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<bool> RemoveAsync(uint identity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Task<bool> RemoveAsync(IEnumerable<uint> identities)
+        {
+            throw new NotSupportedException();
+        }
+
+        public async Task<IReadOnlyList<Track>> GetAllAsync()
+        {
+            var iTunesTracks = await Task.Run(() => this.GetiTunesTracks());
+
+            var artistsDictionary = new Dictionary<string, Artist>();
+
+            var tracks = new List<Track>();
+
+            uint id = 0;
+
+            Artist GetArtistFromName(string artistName)
             {
-                returnedTracks = null;
-                throw;
+                if (!artistsDictionary.TryGetValue(artistName, out var artist))
+                {
+                    artist = new Artist(artistName);
+                    artistsDictionary.Add(artist.Name, artist);
+                }
+
+                return artist;
             }
 
-            return returnedTracks;
+            foreach (var iTunesTrack in iTunesTracks)
+            {
+                var trackPerformers = iTunesTrack.ArtistNames.EmptyIfNull().Select(artistName => GetArtistFromName(artistName));
+                var trackComposers = iTunesTrack.ComposerNames.EmptyIfNull().Select(artistName => GetArtistFromName(artistName));
+                var albumAuthors = iTunesTrack.AlbumArtistNames.EmptyIfNull().Select(artistName => GetArtistFromName(artistName));
+
+                var track = new Track(
+                    ++id,
+                    // library entry
+                    new Uri(iTunesTrack.Location.StartsWith(@"file://localhost/")
+                        ? iTunesTrack.Location.Remove(@"file://".Length - 1, @"localhost/".Length)
+                        : iTunesTrack.Location),
+                    iTunesTrack.TotalTime,
+                    iTunesTrack.DateModified,
+                    iTunesTrack.Size,
+                    iTunesTrack.DateAdded,
+                    iTunesTrack.Loved,
+                    // track
+                    iTunesTrack.Name,
+                    trackPerformers,
+                    trackComposers,
+                    iTunesTrack.Year,
+                    new TrackAlbumAssociation(
+                        new Album(
+                            iTunesTrack.Album,
+                            albumAuthors,
+                            iTunesTrack.TrackCount,
+                            iTunesTrack.DiscCount),
+                        iTunesTrack.TrackNumber,
+                        iTunesTrack.DiscNumber));
+
+                tracks.Add(track);
+            }
+
+            return tracks.ToImmutableList();
         }
 
-        public Task<bool> AddAsync(Track entity)
+        public Task<Track> CreateTrackAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, DateTime addedToLibraryDateTime, bool isLoved, string title, IEnumerable<Artist> performers, IEnumerable<Artist> composers, uint? year, TrackAlbumAssociation albumAssociation)
         {
             throw new NotImplementedException();
-        }
-
-        public Task<bool> RemoveAsync(int identity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> RemoveAsync(IReadOnlyList<int> identities)
-        {
-            throw new NotImplementedException();
-        }
-
-        //private long _id = 0;
-
-        // TODO: make throw NotSupportedException
-        public Task<Track> CreateAsync(
-            Uri location,
-            TimeSpan? duration,
-            DateTime? lastModified,
-            uint? fileSizeBytes,
-            DateTime addedToLibraryDateTime,
-            bool isLoved,
-            string title,
-            IEnumerable<Artist> performers,
-            IEnumerable<Artist> composers,
-            uint? year,
-            TrackAlbumAssociation albumAssociation)
-        {
-            var newTrack = new Track(
-                0, // Convert.ToUInt32(Interlocked.Increment(ref this._id)),
-                location,
-                duration,
-                lastModified,
-                fileSizeBytes,
-                addedToLibraryDateTime,
-                isLoved,
-                title,
-                performers,
-                composers,
-                year,
-                albumAssociation);
-
-            return Task.FromResult(newTrack);
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="ReactivePlayer.UI.WPF.Views.ShellMenuView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Daedalus.UI.Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
+    xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=ViewModels:ShellMenuViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Daedalus.UI.Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Menu>
+        <Menu.Items>
+            <MenuItem Header="Playback">
+                <MenuItem.Items>
+                    <!--<MenuItem Command="{Binding TracksViewModel.PlayAll}" Header="Play all" />-->
+                    <MenuItem Command="{Binding PlaybackControlsViewModel.Resume}" Header="Resume" />
+                    <MenuItem Command="{Binding PlaybackControlsViewModel.Pause}" Header="Pause" />
+                    <MenuItem Command="{Binding PlaybackControlsViewModel.Stop}" Header="Stop" />
+                    <!--<Separator />
+                    <MenuItem Header="Previous" />
+                    <MenuItem Header="Next" />-->
+                </MenuItem.Items>
+            </MenuItem>
+        </Menu.Items>
+    </Menu>
+</UserControl>

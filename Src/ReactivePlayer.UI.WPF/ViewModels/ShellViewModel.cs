@@ -42,18 +42,27 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IDialogService dialogService,
             PlaybackControlsViewModel playbackControlsViewModel,
             TracksViewModel tracksViewModel,
-            PlaybackHistoryViewModel playbackHistoryViewModel)
+            PlaybackHistoryViewModel playbackHistoryViewModel,
+            ShellMenuViewModel shellMenuViewModel)
         {
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
-            this._isUIEnabled_OAPH = this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler).ToProperty(this, nameof(this.IsUIEnabled)).DisposeWith(this._disposables);
+            this._isUIEnabled_OAPH =
+
+                //Observable.CombineLatest(
+                    this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler)
+                    //, this._writeLibraryService.WhenIsBusyChanged.ObserveOn(RxApp.MainThreadScheduler)
+                    //, (isReadLibraryServiceConnected, isWriteLibraryServiceBusy) => isReadLibraryServiceConnected && !isWriteLibraryServiceBusy)
+                    .ToProperty(this, nameof(this.IsUIEnabled))
+                    .DisposeWith(this._disposables);
 
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
             this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
             this.PlaybackHistoryViewModel = playbackHistoryViewModel ?? throw new ArgumentNullException(nameof(playbackHistoryViewModel));
+            this.ShellMenuViewModel = shellMenuViewModel ?? throw new ArgumentNullException(nameof(shellMenuViewModel));
 
             this.ActivateItem(this.PlaybackControlsViewModel);
             this.ActivateItem(this.TracksViewModel);
@@ -92,6 +101,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
         public TracksViewModel TracksViewModel { get; }
         public PlaybackHistoryViewModel PlaybackHistoryViewModel { get; }
+        public ShellMenuViewModel ShellMenuViewModel { get; }
 
         // artists viewmodel
 

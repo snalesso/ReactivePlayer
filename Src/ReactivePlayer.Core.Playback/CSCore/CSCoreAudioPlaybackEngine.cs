@@ -3,6 +3,8 @@ using CSCore.Codecs;
 using CSCore.SoundOut;
 using ReactivePlayer.Core.Library.Models;
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -189,8 +191,8 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 this._statusSubject.OnNext(PlaybackStatus.Loading);
 
                 await
-                    //Task.WhenAll(
-                    //    Task.Delay(TimeSpan.FromSeconds(1)),
+                        //Task.WhenAll(
+                        //    Task.Delay(TimeSpan.FromSeconds(1)),
                         Task.Run(() =>
                         {
                             // TODO: make selectable internal playback engine?
@@ -212,7 +214,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                             this.__soundOut.WaveSource.DisposeWith(this.__playbackScopeDisposables);
                             this.__soundOut.DisposeWith(this.__playbackScopeDisposables);
                         })
-                    //)
+                //)
                 ;
 
                 this._statusSubject.OnNext(PlaybackStatus.Loaded);
@@ -573,6 +575,8 @@ namespace ReactivePlayer.Core.Playback.CSCore
         }
 
         public IObservable<Track> WhenTrackChanged { get; }
+
+        public IReadOnlyList<string> SupportedExtensions => CodecFactory.Instance.GetSupportedFileExtensions();
 
         #endregion
 

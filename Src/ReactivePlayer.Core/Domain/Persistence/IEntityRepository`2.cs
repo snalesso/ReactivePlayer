@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Persistence
 {
+    // TODO: nonsense interface
     public interface IEntityRepository<TEntity, TIdentity>
         where TEntity : Entity<TIdentity>
         where TIdentity : IEquatable<TIdentity>

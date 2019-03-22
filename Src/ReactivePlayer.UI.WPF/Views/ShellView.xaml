@@ -6,21 +6,21 @@
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignWidth="680"
-    d:DesignHeight="250"
     d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeShellViewModel,
                                      IsDesignTimeCreatable=False}"
+    d:DesignHeight="250"
+    d:DesignWidth="680"
     IsEnabled="{Binding IsUIEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
     mc:Ignorable="d">
 
-    <Window.InputBindings>
+    <!--<Window.InputBindings>
         <KeyBinding Key="Space" Command="{Binding PlaybackControlsViewModel.Resume}" />
         <KeyBinding Key="Space" Command="{Binding PlaybackControlsViewModel.Pause}" />
         <KeyBinding
             Key="Space"
             Command="{Binding PlaybackControlsViewModel.Stop}"
             Modifiers="Alt" />
-    </Window.InputBindings>
+    </Window.InputBindings>-->
 
     <!--<Window.TaskbarItemInfo>
         <TaskbarItemInfo x:Name="taskBarItemInfo1"
@@ -40,15 +40,19 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid>
+        <Views:ShellMenuView DataContext="{Binding ShellMenuViewModel}" />
+
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" MinWidth="220" />
+                <ColumnDefinition Width="Auto" MinWidth="280" />
             </Grid.ColumnDefinitions>
 
             <Views:TracksView DataContext="{Binding TracksViewModel}" />
@@ -56,7 +60,7 @@
 
         </Grid>
 
-        <Views:PlaybackControlsView Grid.Row="1" DataContext="{Binding PlaybackControlsViewModel}" />
+        <Views:PlaybackControlsView Grid.Row="3" DataContext="{Binding PlaybackControlsViewModel}" />
 
     </Grid>
 

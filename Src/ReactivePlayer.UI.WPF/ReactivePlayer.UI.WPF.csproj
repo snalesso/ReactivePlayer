@@ -156,6 +156,7 @@
     <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueSelectorViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
+    <Compile Include="ViewModels\ShellMenuViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TracksSubsetViewModel.cs" />
@@ -174,6 +175,9 @@
     </Compile>
     <Compile Include="Views\PlaybackHistoryView.xaml.cs">
       <DependentUpon>PlaybackHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShellMenuView.xaml.cs">
+      <DependentUpon>ShellMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -229,6 +233,10 @@
       <Project>{f59e3c5e-8862-43b4-a59a-cf795b3912f3}</Project>
       <Name>Caliburn.Micro.ReactiveUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
+      <Project>{A45E3C4D-550F-4187-863D-C6F67E734162}</Project>
+      <Name>ReactivePlayer.Plugins.iTunes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
       <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
       <Name>ReactivePlayer.Core.FileSystem</Name>
@@ -272,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlaybackHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ShellMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

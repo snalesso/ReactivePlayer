@@ -1,12 +1,14 @@
 ﻿using ReactivePlayer.Core.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Persistence
 {
     public interface ITrackFactory
     {
-        Track CreateTracksAsync(
+        // TODO: merge with ITracksRepository, add bulk overload
+        Task<Track> CreateTrackAsync(
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,

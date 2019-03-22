@@ -29,10 +29,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         //private readonly IDialogService _dialogService;
-        //private readonly IWriteLibraryService _writeLibraryService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         //private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
+        private readonly IWriteLibraryService _writeLibraryService;
         private readonly IReadLibraryService _readLibraryService;
         private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
         //private readonly PlaybackQueue _playbackQueue;
@@ -48,7 +48,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public TracksViewModel(
             //IDialogService dialogService,
             //IAudioFileInfoProvider audioFileInfoProvider,
-            //IWriteLibraryService writeLibraryService,
+            IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
             //PlaybackQueue playbackQueue,
@@ -58,7 +58,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         {
             //this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService)); // TODO: localize
             //this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy)); // TODO: localize
-            //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
@@ -68,6 +68,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Tracks
                 .Connect()
                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+                .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime))
                 .Bind(out this._filteredSortedTrackViewModels)
                 .DisposeMany() // TODO: put ALAP or ASAP?
                 .Subscribe()
@@ -89,6 +90,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .DisposeWith(this._disposables);
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
 
+            //this.ShowAddTracksDialog = ReactiveCommand.CreateFromTask(
+            //    async () =>
+            //    {
+            //        var initialDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic, Environment.SpecialFolderOption.DoNotVerify);
+            //        var extensionsAndLabels = new[]
+            //        {
+            //            Tuple.Create(  this._audioPlaybackEngine.SupportedExtensions, "Audio files") // TODO: localize
+            //        };
+            //        var title = "Select songs to add";
+
+            //        var dialogResult = await this._dialogService.OpenFileDialog(initialDirectoryPath, true, extensionsAndLabels, title);
+
+            //        return dialogResult.Code == true ? dialogResult.Content : null;
+            //    })
+            //.DisposeWith(this._disposables);
+            //this.ShowAddTracksDialog.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.ToString())).DisposeWith(this._disposables);
         }
 
         #endregion
@@ -130,11 +147,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public ReactiveCommand<TrackViewModel, Unit> PlayTrack { get; }
+        public ReactiveCommand<Unit, Unit> PlayAll { get; }
+
         //public ReactiveCommand<Unit, Unit> PlaySelectedTrack => this.SelectedTrackViewModel?.PlayTrack;
         //public ReactiveCommand<Unit, Unit> PlayAll { get; }
         //public ReactiveCommand<Unit, Unit> PlayAllRandomly { get; }
 
-        //public ReactiveCommand<Unit, IReadOnlyList<string>> MakeUserSelectTracksToAdd { get; }
+        //public ReactiveCommand<Unit, IReadOnlyList<string>> ShowAddTracksDialog { get; }
         //public ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromLibrary { get; }
 
         //public ReactiveCommand<TrackViewModel, Unit> EditTrack { get; }

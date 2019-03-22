@@ -6,6 +6,7 @@ using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactivePlayer.Core.Playback.History;
+using ReactivePlayer.Domain.Repositories;
 using ReactivePlayer.Fakes.Core.Library.Persistence;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Composition.Autofac.Modules;
@@ -38,8 +39,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             // TODO settings file
             this.RootViewDIsplaySettings = new Dictionary<string, object>
             {
-                { nameof(Window.Height), 400 },
-                { nameof(Window.Width), 850 },
+                { nameof(Window.Width), 1650 },
+                { nameof(Window.Height), 850 },
                 { nameof(Window.WindowState), WindowState.Normal },
                 { nameof(Window.WindowStartupLocation), WindowStartupLocation.CenterScreen }
             };
@@ -88,8 +89,12 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
              */
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
-            //builder.Register(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml"))
-            builder.RegisterType<FakeTracksRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
+            builder
+                .Register(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml"))
+                //.RegisterType<FakeTracksRepository>()
+                .As<ITracksRepository>()
+                .As<ITrackFactory>()
+                .InstancePerLifetimeScope();
             builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>()
                 .OnActivating(async e =>
                 {
@@ -105,17 +110,24 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             builder.RegisterType<ShellViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<ShellView>().As<IViewFor<ShellViewModel>>().InstancePerLifetimeScope();
+
             builder.Register<Func<Track, TrackViewModel>>(ctx =>
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
                     return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
                 }).AsSelf().InstancePerLifetimeScope();
+
             builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();
+
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsView>().As<IViewFor<PlaybackControlsViewModel>>().InstancePerLifetimeScope();
+
             builder.RegisterType<PlaybackHistoryViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackHistoryView>().AsSelf().InstancePerLifetimeScope();
+
+            builder.RegisterType<ShellMenuViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<ShellMenuView>().AsSelf().InstancePerLifetimeScope();
         }
 
         private IEnumerable<Assembly> assemblies;

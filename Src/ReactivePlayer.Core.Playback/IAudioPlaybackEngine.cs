@@ -1,5 +1,6 @@
 using ReactivePlayer.Core.Library.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
@@ -9,6 +10,8 @@ namespace ReactivePlayer.Core.Playback
     public interface IAudioPlaybackEngine : IDisposable
     {
         #region methods
+
+        IReadOnlyList<string> SupportedExtensions { get; }
 
         // TODO: add cancellation token
         Task LoadAsync(Track track);

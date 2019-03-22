@@ -15,11 +15,14 @@ namespace ReactivePlayer.Core.Library.Services
     public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable
     {
         private readonly ITracksRepository _tracksRepository;
+        private readonly ITrackFactory _trackFactory;
 
         public LocalLibraryService(
-            ITracksRepository tracksRepository)
+            ITracksRepository tracksRepository,
+            ITrackFactory trackFactory)
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
+            this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory)); // TODO: localize
 
             this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
 
@@ -46,8 +49,8 @@ namespace ReactivePlayer.Core.Library.Services
                 var tracks = await
                     //Task.Run(async () =>
                     //{
-                        //await Task.Delay(TimeSpan.FromSeconds(2.5));
-                        //return await
+                    //await Task.Delay(TimeSpan.FromSeconds(2.5));
+                    //return await
                     this._tracksRepository.GetAllAsync();
                 //});
 
@@ -88,20 +91,18 @@ namespace ReactivePlayer.Core.Library.Services
         private readonly BehaviorSubject<bool> _whenIsBusyChanged_subject;
         public IObservable<bool> WhenIsBusyChanged => this._whenIsBusyChanged_subject.DistinctUntilChanged();
 
-        public Task<bool> AddTrack(AddTrackCommand command)
+        public async Task<Track> AddTrackAsync(AddTrackCommand command)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
             this.IsBusy = true;
 
-            bool wasSuccessful;
-
             // TODO: ensure track paths uniqueness
 
             try
             {
-                var newTrack = this._tracksRepository.CreateTracksAsync(
+                var newTrack = await this._trackFactory.CreateTrackAsync(
                     command.Location,
                     command.Duration,
                     command.LastModifiedDateTime,
@@ -122,26 +123,24 @@ namespace ReactivePlayer.Core.Library.Services
                          command.AlbumDiscNumber)
                     );
 
-                //if (wasSuccessful = await this._tracksRepository.AddAsync(newTrack))
-                //{
+                var addedTrack = await this._tracksRepository.AddAsync(newTrack);
+
                 this._sourceTracks.AddOrUpdate(newTrack);
-                wasSuccessful = true;
-                //}
+
+                return addedTrack;
             }
             catch (Exception)
             {
-                wasSuccessful = false;
                 // TODO: log
+                return null;
             }
             finally
             {
                 this.IsBusy = false;
             }
-
-            return Task.FromResult(wasSuccessful);
         }
 
-        public async Task<bool> AddTracks(IReadOnlyList<AddTrackCommand> commands)
+        public async Task<IReadOnlyList<Track>> AddTracksAsync(IReadOnlyList<AddTrackCommand> commands)
         {
             if (commands == null)
                 throw new ArgumentNullException(nameof(commands));
@@ -150,52 +149,54 @@ namespace ReactivePlayer.Core.Library.Services
             if (!commands.Any())
                 throw new ArgumentOutOfRangeException(nameof(commands));
 
-            bool wasSuccessful;
-
             // TODO: ensure track paths uniqueness (e.g. use AddMultipleTracksCommand which gathers common changes and uses an IHashSet<> for Track.Id and/or Track.Location)
 
             var commandTracks = new List<Track>(commands.Count);
 
             try
             {
-                var newTracks = commands
-                    .Select(command => this._tracksRepository.CreateTracksAsync(
-                        command.Location,
-                        command.Duration,
-                        command.LastModifiedDateTime,
-                        command.FileSizeBytes,
-                        DateTime.Now,
-                        false,
-
-                        command.Title,
-                        command.PerformersNames.Select(performerName => new Artist(performerName)).ToArray(),
-                        command.ComposersNames.Select(composerName => new Artist(composerName)).ToArray(),
-                        command.Year,
-                        new TrackAlbumAssociation(
-                            new Album(
-                                command.Title,
-                                command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToArray(),
-                                command.AlbumTracksCount,
-                                command.AlbumDiscsCount),
-                            command.AlbumTrackNumber,
-                        command.AlbumDiscNumber)))
+                // TODO: consider using TPL
+                var newTracks = (await Task.WhenAll(commands
+                    .Select(command => this._trackFactory.CreateTrackAsync(
+                       command.Location,
+                       command.Duration,
+                       command.LastModifiedDateTime,
+                       command.FileSizeBytes,
+                       DateTime.Now,
+                       false,
+                       command.Title,
+                       command.PerformersNames.Select(performerName => new Artist(performerName)).ToArray(),
+                       command.ComposersNames.Select(composerName => new Artist(composerName)).ToArray(),
+                       command.Year,
+                       new TrackAlbumAssociation(
+                           new Album(
+                               command.Title,
+                               command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToArray(),
+                               command.AlbumTracksCount,
+                               command.AlbumDiscsCount),
+                           command.AlbumTrackNumber,
+                       command.AlbumDiscNumber)))))
                     .ToArray();
 
                 var addedTracks = await this._tracksRepository.AddAsync(newTracks);
-                wasSuccessful = (addedTracks != null);
 
-                if (wasSuccessful)
+                // TODO: .Edit vs AddOrUpdate
+                this._sourceTracks.Edit(list =>
                 {
-                    this._sourceTracks.AddOrUpdate(addedTracks);
-                }
+                    list.AddOrUpdate(addedTracks);
+                });
+
+                return addedTracks;
             }
             catch (Exception)
             {
-                wasSuccessful = false;
                 // TODO: log
+                return null;
             }
+            finally
+            {
 
-            return wasSuccessful;
+            }
         }
 
         public async Task<bool> RemoveTrackAsync(RemoveTrackCommand command)

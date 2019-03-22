@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Fakes.Core.Library.Persistence
 {
-    public class FakeTracksRepository : ITracksRepository
+    public class FakeTracksRepository : ITracksRepository, ITrackFactory
     {
         private readonly ConcurrentDictionary<Uri, Track> _tracksCache;
 
@@ -202,6 +202,11 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         }
 
         Task<Track> IEntityRepository<Track, uint>.AddAsync(Track entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Track> ITrackFactory.CreateTrackAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, DateTime addedToLibraryDateTime, bool isLoved, string title, IEnumerable<Artist> performers, IEnumerable<Artist> composers, uint? year, TrackAlbumAssociation albumAssociation)
         {
             throw new NotImplementedException();
         }

@@ -15,6 +15,7 @@ Serializers
 
 	Binary
 
+	- rikimaru0345/Ceras					https://github.com/rikimaru0345/Ceras
 	- mchidk/BinaryRage						https://github.com/mchidk/BinaryRage
 
 	Protocol Buffers
@@ -39,6 +40,7 @@ Key-Value Stores
 
 Databases
 
+	- BrightstarDB/BrightstarDB				https://github.com/BrightstarDB/BrightstarDB
 	- symisc/unqlite						https://github.com/symisc/unqlite
 	- hhblaze/DBreeze						https://github.com/hhblaze/DBreeze
 	- mbdavid/LiteDB						https://github.com/mbdavid/LiteDB
