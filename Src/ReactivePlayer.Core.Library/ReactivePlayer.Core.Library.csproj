@@ -70,7 +70,6 @@
     <Compile Include="Services\IWriteLibraryService.cs" />
     <Compile Include="Services\LocalLibraryService.cs" />
     <Compile Include="Services\RemoveTrackCommand.cs" />
-    <Compile Include="Persistence\SerializedEntityRepository`2.cs" />
     <Compile Include="Services\UpdateAlbumCommand.cs" />
   </ItemGroup>
   <ItemGroup>
