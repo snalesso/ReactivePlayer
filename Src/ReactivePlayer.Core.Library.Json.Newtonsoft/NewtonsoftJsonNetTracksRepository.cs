@@ -18,6 +18,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
     public sealed class NewtonsoftJsonNetTracksRepository : SerializingEntityRepository<Track, uint>, IDisposable
     {
         private const string DBFileName = nameof(Track) + "s.json";
+        private const int RWBufferSize = 4096;
         private readonly Encoding _encoding = Encoding.UTF8;
         private readonly IFormatProvider _formatProvider = CultureInfo.InvariantCulture;
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings()
@@ -29,10 +30,8 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         // TODO: fix explicit buffer size and leaveopen, file lock + transient streams?
         private FileStream _dbFileStream;
-        private StreamWriter _dbStreamWriter;
-        private StreamReader _dbStreamReader;
 
-        protected override bool IsDeserialized => this._dbStreamReader != null && this._entities != null;
+        protected override bool IsDeserialized => this._dbFileStream != null && this._entities != null;
 
         public NewtonsoftJsonNetTracksRepository()
             : base(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), DBFileName))
@@ -41,49 +40,45 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         protected override async Task DeserializeCore()
         {
-            if (this._dbFileStream == null)
+            try
             {
-                this._dbFileStream = new FileStream(this._dbFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-            }
-
-            if (this._dbStreamReader == null)
-            {
-                this._dbStreamReader = new StreamReader(this._dbFileStream, this._encoding);
-            }
-
-            if (this._entities == null)
-            {
-                //byte[] bytes = new byte[this._dbStreamReader.BaseStream.Length];
-                this._dbStreamReader.BaseStream.Position = 0;
-                this._dbStreamReader.DiscardBufferedData();
-                var dbContentAsString = await this._dbStreamReader.ReadToEndAsync();
-
-                try
+                if (this._dbFileStream == null)
                 {
+                    this._dbFileStream = new FileStream(this._dbFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+                }
+
+                if (this._entities == null)
+                {
+                    string dbContentAsString;
+
+                    using (var sr = new StreamReader(this._dbFileStream, this._encoding, true, NewtonsoftJsonNetTracksRepository.RWBufferSize, true))
+                    {
+                        sr.BaseStream.Position = 0;
+                        dbContentAsString = await sr.ReadToEndAsync().ConfigureAwait(false);
+                    }
+
                     var deserializedTracksCollection = JsonConvert.DeserializeObject<IEnumerable<Track>>(dbContentAsString) ?? Enumerable.Empty<Track>();
                     var kvps = deserializedTracksCollection.Select(t => new KeyValuePair<uint, Track>(t.Id, t));
                     this._entities = new ConcurrentDictionary<uint, Track>(kvps);
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
             }
         }
 
         protected override async Task SerializeCore()
         {
-            if (this._dbStreamWriter == null)
-            {
-                this._dbStreamWriter = new StreamWriter(this._dbFileStream, this._encoding);
-                this._dbStreamWriter.AutoFlush = true;
-            }
-
             try
             {
-                this._dbStreamWriter.BaseStream.Position = 0;
                 var jsonTracks = JsonConvert.SerializeObject(this._entities.Values, this._jsonSerializerSettings);
-                await this._dbStreamWriter.WriteAsync(jsonTracks);
+
+                using (var sw = new StreamWriter(this._dbFileStream, this._encoding, NewtonsoftJsonNetTracksRepository.RWBufferSize, true))
+                {
+                    sw.BaseStream.Position = 0;
+                    await sw.WriteAsync(jsonTracks).ConfigureAwait(false);
+                }
             }
             catch (Exception ex)
             {
@@ -93,15 +88,6 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         public void Dispose()
         {
-
-            this._dbStreamReader?.Close();
-            this._dbStreamReader?.Dispose();
-            this._dbStreamReader = null;
-
-            this._dbStreamWriter?.Close();
-            this._dbStreamWriter?.Dispose();
-            this._dbStreamWriter = null;
-
             this._dbFileStream?.Close();
             this._dbFileStream?.Dispose();
             this._dbFileStream = null;

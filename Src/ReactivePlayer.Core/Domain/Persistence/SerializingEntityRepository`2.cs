@@ -78,18 +78,30 @@ namespace ReactivePlayer.Core.Library.Persistence
             //return (filter != null ? this._entities.Values.AsParallel().Where(filter).AsEnumerable() : this._entities.Values).ToArray();
         }
 
-        public Task<bool> RemoveAsync(TIdentity identity)
+        public async Task<bool> RemoveAsync(TIdentity identity)
         {
-            throw new NotImplementedException();
+            await this.EnsureDeserialized();
+
+            if (!this._entities.ContainsKey(identity))
+                return false;
+
+            if (!this._entities.TryRemove(identity, out var _))
+            {
+                throw new Exception();
+            }
+
+            await this.Serialize();
+
+            return true;
         }
 
         public async Task<bool> RemoveAsync(IEnumerable<TIdentity> identities)
         {
             await this.EnsureDeserialized();
 
-            foreach (var id in identities)
+            foreach (var identity in identities)
             {
-                if (!this._entities.ContainsKey(id))
+                if (!this._entities.ContainsKey(identity))
                     return false;
             }
 
