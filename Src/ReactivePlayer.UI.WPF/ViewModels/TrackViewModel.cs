@@ -31,7 +31,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
 
-            this._isLoaded_OAPH= this._playbackService.WhenTrackChanged
+            this._isLoaded_OAPH = this._playbackService.WhenTrackChanged
                 .Select(loadedTrack => loadedTrack == this.Track)
                 .ToProperty(this, nameof(this.IsLoaded))
                 .DisposeWith(this._disposables);
@@ -53,7 +53,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region properties
-        
+
         private ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
         public bool IsLoaded => this._isLoaded_OAPH.Value;
 
