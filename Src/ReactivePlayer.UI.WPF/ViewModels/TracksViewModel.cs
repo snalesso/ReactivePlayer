@@ -85,8 +85,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this.WhenAnyValue(t => t.SelectedTrackViewModel),
                     this._audioPlaybackEngine.WhenCanLoadChanged,
                     this._audioPlaybackEngine.WhenCanPlayChanged,
-                    //this._audioPlaybackEngine.WhenCanStopChanged,
-                    (selectedTrackViewModel, canLoad, canPlay/*, canStop*/) => selectedTrackViewModel != null && (canLoad || canPlay /*|| canStop*/)))
+                    this._audioPlaybackEngine.WhenCanStopChanged,
+                    (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)))
                 .DisposeWith(this._disposables);
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
 
