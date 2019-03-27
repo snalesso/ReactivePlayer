@@ -15,8 +15,10 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 {
     // TODO: handle concurrency (connect, add, remove, ...)
-    public sealed class NewtonsoftJsonNetTracksRepository : SerializingEntityRepository<Track, uint>, IDisposable
+    public sealed class NewtonsoftJsonNetTracksRepository : SerializingTracksRepository, IDisposable
     {
+        #region constants & fields
+
         private const string DBFileName = nameof(Track) + "s.json";
         private const int RWBufferSize = 4096;
         private readonly Encoding _encoding = Encoding.UTF8;
@@ -28,18 +30,24 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
             MissingMemberHandling = MissingMemberHandling.Ignore
         };
 
-        // TODO: fix explicit buffer size and leaveopen, file lock + transient streams?
         private FileStream _dbFileStream;
 
-        protected override bool IsDeserialized => this._dbFileStream != null && this._entities != null;
+        #endregion
+
+        #region ctor
 
         public NewtonsoftJsonNetTracksRepository()
             : base(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), DBFileName))
         {
         }
 
+        #endregion
+
+        #region SerializingTracksRepository
+
         protected override async Task DeserializeCore()
         {
+            // TODO: use .Core.Persistence exceptions and move try-catch to base class
             try
             {
                 if (this._dbFileStream == null)
@@ -70,6 +78,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         protected override async Task SerializeCore()
         {
+            // TODO: use .Core.Persistence exceptions and move try-catch to base class
             try
             {
                 var jsonTracks = JsonConvert.SerializeObject(this._entities.Values, this._jsonSerializerSettings);
@@ -86,11 +95,17 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
             }
         }
 
+        #endregion
+
+        #region IDisposable
+
         public void Dispose()
         {
             this._dbFileStream?.Close();
             this._dbFileStream?.Dispose();
             this._dbFileStream = null;
         }
+
+        #endregion
     }
 }

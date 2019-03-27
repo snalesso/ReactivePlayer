@@ -15,7 +15,7 @@ namespace ReactivePlayer.Core.Library.Models
             DateTime? lastModified,
             ulong? fileSizeBytes,
             DateTime addedToLibraryDateTime,
-            bool isLoved) 
+            bool isLoved)
             : base(id)
         {
             this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().Name}.{nameof(this.Location)} cannot be null."); // TODO: localize
@@ -77,6 +77,13 @@ namespace ReactivePlayer.Core.Library.Models
         }
 
         #region Entity
+
+        protected override void EnsureIsWellFormattedId(uint id)
+        {
+            if (id.Equals(uint.MinValue))
+                // TODO: create ad-hoc exception (e.g. InvalidIdValueException)
+                throw new ArgumentException($"{this.GetType().FullName}.{nameof(this.Id)} cannot be set to {id}.", nameof(id)); // TODO: localize
+        }
 
         #endregion
 

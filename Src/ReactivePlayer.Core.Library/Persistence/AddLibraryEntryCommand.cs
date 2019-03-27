@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ReactivePlayer.Core.Library.Services
+namespace ReactivePlayer.Core.Library.Persistence
 {
     public abstract class AddLibraryEntryCommand
     {

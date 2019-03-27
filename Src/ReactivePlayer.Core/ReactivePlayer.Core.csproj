@@ -50,8 +50,7 @@
     <Compile Include="Domain\Models\Entity.cs" />
     <Compile Include="Domain\Models\Entity`1.cs" />
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
-    <Compile Include="Domain\Models\IAggregateRoot.cs" />
-    <Compile Include="Domain\Models\IEntity.cs" />
+    <Compile Include="Domain\Persistence\SerializingRepository`2.cs" />
     <Compile Include="Domain\Persistence\SerializingEntityRepository`2.cs" />
     <Compile Include="Domain\Servicing\IConnectableService.cs" />
     <Compile Include="IDisposableMixins.cs" />

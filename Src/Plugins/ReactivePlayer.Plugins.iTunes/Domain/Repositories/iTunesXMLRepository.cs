@@ -4,6 +4,7 @@ using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Domain.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -16,14 +17,14 @@ using System.Xml.Linq;
 namespace ReactivePlayer.Domain.Repositories
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public sealed class iTunesXMLRepository : ITracksRepository, ITrackFactory
+    public sealed class iTunesXMLRepository : SerializingTracksRepository
 #pragma warning restore IDE1006 // Naming Styles
     {
         private readonly string _xmliTunesMediaLibraryFilePath;
         // TODO: consider making AsyncLazy
         //private IReadOnlyDictionary<int, Track> _tracks = null;
 
-        public iTunesXMLRepository(string xmliTunesMediaLibraryFilePath)
+        public iTunesXMLRepository(string xmliTunesMediaLibraryFilePath) : base(xmliTunesMediaLibraryFilePath)
         {
             this._xmliTunesMediaLibraryFilePath = xmliTunesMediaLibraryFilePath;
         }
@@ -111,27 +112,7 @@ namespace ReactivePlayer.Domain.Repositories
                 .ToImmutableList();
         }
 
-        Task<Track> IEntityRepository<Track, uint>.AddAsync(Track entity)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<IReadOnlyList<Track>> AddAsync(IEnumerable<Track> entities)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<bool> RemoveAsync(uint identity)
-        {
-            throw new NotSupportedException();
-        }
-
-        public Task<bool> RemoveAsync(IEnumerable<uint> identities)
-        {
-            throw new NotSupportedException();
-        }
-
-        public async Task<IReadOnlyList<Track>> GetAllAsync()
+        protected override async Task DeserializeCore()
         {
             var iTunesTracks = await Task.Run(() => this.GetiTunesTracks());
 
@@ -186,12 +167,20 @@ namespace ReactivePlayer.Domain.Repositories
                 tracks.Add(track);
             }
 
-            return tracks.ToImmutableList();
+            this._entities = new ConcurrentDictionary<uint, Track>(tracks.Select(t => new KeyValuePair<uint, Track>(t.Id, t)));
+
+            //foreach (var track in tracks)
+            //{
+            //    if (!this._entities.TryAdd(track.Id, track))
+            //    {
+            //        throw new Exception();
+            //    }
+            //}
         }
 
-        public Task<Track> CreateTrackAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, DateTime addedToLibraryDateTime, bool isLoved, string title, IEnumerable<Artist> performers, IEnumerable<Artist> composers, uint? year, TrackAlbumAssociation albumAssociation)
+        protected override Task SerializeCore()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

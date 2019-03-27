@@ -82,10 +82,10 @@ namespace ReactivePlayer.Core.Library.Models
 
         #region Entity
 
-        protected override IEnumerable<object> GetIdentityIngredients()
-        {
-            yield return this.Location;
-        }
+        //protected override IEnumerable<object> GetIdentityIngredients()
+        //{
+        //    yield return this.Location;
+        //}
 
         #endregion
     }

@@ -1,6 +1,7 @@
 using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library;
+using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
@@ -50,10 +51,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
-            this._isUIEnabled_OAPH =
-
-                //Observable.CombineLatest(
-                    this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler)
+            this._isUIEnabled_OAPH = Observable.Return(true)
+                    //Observable.CombineLatest(
+                    //this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler)
                     //, this._writeLibraryService.WhenIsBusyChanged.ObserveOn(RxApp.MainThreadScheduler)
                     //, (isReadLibraryServiceConnected, isWriteLibraryServiceBusy) => isReadLibraryServiceConnected && !isWriteLibraryServiceBusy)
                     .ToProperty(this, nameof(this.IsUIEnabled))
@@ -68,27 +68,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.ActivateItem(this.TracksViewModel);
             this.ActivateItem(this.PlaybackHistoryViewModel);
 
-            this._playbackService.WhenTrackChanged.Subscribe(track =>
-            {
-                var shellViewTitle = string.Empty;
-
-                if (track != null)
-                {
-                    shellViewTitle += track.Title;
-                    if (track.Performers != null)
-                    {
-                        shellViewTitle += " - ";
-                        shellViewTitle += string.Join(", ", track.Performers.Select(p => p.Name));
-                    }
-                }
-                if (shellViewTitle.Length > 0)
-                    shellViewTitle += " - ";
-
-                shellViewTitle += nameof(ReactivePlayer);
-
-                this.DisplayName = shellViewTitle;
-            })
-            .DisposeWith(this._disposables);
+            this._playbackService.WhenTrackChanged
+                .Subscribe(track => this.UpdateDisplayName(track))
+                .DisposeWith(this._disposables);
         }
 
         #endregion
@@ -112,6 +94,27 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region methods
+
+        private void UpdateDisplayName(Track track)
+        {
+            var shellViewTitle = string.Empty;
+
+            if (track != null)
+            {
+                shellViewTitle += track.Title;
+                if (track.Performers != null)
+                {
+                    shellViewTitle += " - ";
+                    shellViewTitle += string.Join(", ", track.Performers.Select(p => p.Name));
+                }
+            }
+            if (shellViewTitle.Length > 0)
+                shellViewTitle += " - ";
+
+            shellViewTitle += nameof(ReactivePlayer);
+
+            this.DisplayName = shellViewTitle;
+        }
 
         public override void CanClose(Action<bool> callback)
         {

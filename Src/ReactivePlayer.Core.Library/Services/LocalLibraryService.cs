@@ -15,18 +15,14 @@ namespace ReactivePlayer.Core.Library.Services
     public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable
     {
         private readonly ITracksRepository _tracksRepository;
-        private readonly ITrackFactory _trackFactory;
 
         public LocalLibraryService(
-            ITracksRepository tracksRepository,
-            ITrackFactory trackFactory)
+            ITracksRepository tracksRepository)
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
-            this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory)); // TODO: localize
 
             this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
 
-            this._whenIsBusyChanged_subject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
             this._whenIsConnectedChangedSubject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
         }
 
@@ -70,7 +66,7 @@ namespace ReactivePlayer.Core.Library.Services
 
         #region IReadLibraryService
 
-        private readonly SourceCache<Track, uint> _sourceTracks;
+        private SourceCache<Track, uint> _sourceTracks;
         public IObservableCache<Track, uint> Tracks => this._sourceTracks;
 
         //private readonly SourceList<Artist> _sourceArtists;
@@ -82,50 +78,21 @@ namespace ReactivePlayer.Core.Library.Services
 
         #region IWriteLibraryService
 
-        public bool IsBusy
-        {
-            get => this._whenIsBusyChanged_subject.Value;
-            private set => this._whenIsBusyChanged_subject.OnNext(value);
-        }
-
-        private readonly BehaviorSubject<bool> _whenIsBusyChanged_subject;
-        public IObservable<bool> WhenIsBusyChanged => this._whenIsBusyChanged_subject.DistinctUntilChanged();
-
         public async Task<Track> AddTrackAsync(AddTrackCommand command)
         {
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            this.IsBusy = true;
-
             // TODO: ensure track paths uniqueness
 
             try
             {
-                var newTrack = await this._trackFactory.CreateTrackAsync(
-                    command.Location,
-                    command.Duration,
-                    command.LastModifiedDateTime,
-                    command.FileSizeBytes,
-                    DateTime.Now,
-                    false,
-                    command.Title,
-                    command.PerformersNames?.Select(performerName => new Artist(performerName)).ToImmutableArray(),
-                    command.ComposersNames?.Select(composerName => new Artist(composerName)).ToImmutableArray(),
-                    command.Year,
-                    new TrackAlbumAssociation(
-                         new Album(
-                             command.AlbumTitle,
-                             command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToImmutableArray(),
-                             command.AlbumTracksCount,
-                             command.AlbumDiscsCount),
-                         command.AlbumTrackNumber,
-                         command.AlbumDiscNumber)
-                    );
+                var addedTrack = await this._tracksRepository.CreateAndAddAsync(command);
 
-                var addedTrack = await this._tracksRepository.AddAsync(newTrack);
-
-                this._sourceTracks.AddOrUpdate(newTrack);
+                this._sourceTracks.Edit(list =>
+                {
+                    list.AddOrUpdate(addedTrack);
+                });
 
                 return addedTrack;
             }
@@ -136,66 +103,6 @@ namespace ReactivePlayer.Core.Library.Services
             }
             finally
             {
-                this.IsBusy = false;
-            }
-        }
-
-        public async Task<IReadOnlyList<Track>> AddTracksAsync(IReadOnlyList<AddTrackCommand> commands)
-        {
-            if (commands == null)
-                throw new ArgumentNullException(nameof(commands));
-            if (commands.Count <= 0)
-                throw new InvalidCommandException(); // TODO: create a better exception
-            if (!commands.Any())
-                throw new ArgumentOutOfRangeException(nameof(commands));
-
-            // TODO: ensure track paths uniqueness (e.g. use AddMultipleTracksCommand which gathers common changes and uses an IHashSet<> for Track.Id and/or Track.Location)
-
-            var commandTracks = new List<Track>(commands.Count);
-
-            try
-            {
-                // TODO: consider using TPL
-                var newTracks = (await Task.WhenAll(commands
-                    .Select(command => this._trackFactory.CreateTrackAsync(
-                       command.Location,
-                       command.Duration,
-                       command.LastModifiedDateTime,
-                       command.FileSizeBytes,
-                       DateTime.Now,
-                       false,
-                       command.Title,
-                       command.PerformersNames.Select(performerName => new Artist(performerName)).ToArray(),
-                       command.ComposersNames.Select(composerName => new Artist(composerName)).ToArray(),
-                       command.Year,
-                       new TrackAlbumAssociation(
-                           new Album(
-                               command.Title,
-                               command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToArray(),
-                               command.AlbumTracksCount,
-                               command.AlbumDiscsCount),
-                           command.AlbumTrackNumber,
-                       command.AlbumDiscNumber)))))
-                    .ToArray();
-
-                var addedTracks = await this._tracksRepository.AddAsync(newTracks);
-
-                // TODO: .Edit vs AddOrUpdate
-                this._sourceTracks.Edit(list =>
-                {
-                    list.AddOrUpdate(addedTracks);
-                });
-
-                return addedTracks;
-            }
-            catch (Exception)
-            {
-                // TODO: log
-                return null;
-            }
-            finally
-            {
-
             }
         }
 

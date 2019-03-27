@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 namespace ReactivePlayer.Core.Domain.Models
 {
     // TODO: remove
-    public abstract class Entity : IEquatable<Entity>, IEntity, INotifyPropertyChanged
+    public abstract class Entity : IEquatable<Entity>, INotifyPropertyChanged
     {
         public override bool Equals(object obj)
         {

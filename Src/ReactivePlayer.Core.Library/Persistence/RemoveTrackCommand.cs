@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReactivePlayer.Core.Library.Services
+namespace ReactivePlayer.Core.Library.Persistence
 {
     public class RemoveTrackCommand
     {

@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
-    public abstract class Entity<TIdentity> : Entity, IEntity, IEquatable<Entity<TIdentity>>
+    public abstract class Entity<TIdentity> : /*Entity, IEntity,*/ IEquatable<Entity<TIdentity>>, INotifyPropertyChanged
         where TIdentity : IEquatable<TIdentity>
     {
         #region artificial id
@@ -22,14 +24,14 @@ namespace ReactivePlayer.Core.Domain.Models
 
         #endregion
 
-        #region Entity<TIdentity>
+        //#region Entity
 
-        protected override IEnumerable<object> GetIdentityIngredients()
-        {
-            yield return this.Id;
-        }
+        //protected override IEnumerable<object> GetIdentityIngredients()
+        //{
+        //    yield return this.Id;
+        //}
 
-        #endregion
+        //#endregion
 
         #region Entity<TIdentity>
 
@@ -54,11 +56,7 @@ namespace ReactivePlayer.Core.Domain.Models
             return this.Id.Equals(other.Id);
         }
 
-        protected virtual void EnsureIsWellFormattedId(TIdentity id)
-        {
-            if (object.Equals(id, default(TIdentity)))
-                throw new ArgumentException($"{nameof(Entity<TIdentity>.Id)} cannot be set to {typeof(TIdentity).Name}'s default value.", nameof(id)); // TODO: localize
-        }
+        protected abstract void EnsureIsWellFormattedId(TIdentity id);
 
         #endregion
 
@@ -75,6 +73,29 @@ namespace ReactivePlayer.Core.Domain.Models
         public static bool operator !=(Entity<TIdentity> left, Entity<TIdentity> right)
         {
             return !(left == right);
+        }
+
+        #endregion
+
+        #region INPC
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public TProperty SetAndRaiseIfChanged<TProperty>(
+            ref TProperty backingField,
+            TProperty newValue,
+            [CallerMemberName] string propertyName = null)
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentNullException(nameof(propertyName));
+
+            if (EqualityComparer<TProperty>.Default.Equals(backingField, newValue))
+                return newValue;
+
+            backingField = newValue;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+            return newValue;
         }
 
         #endregion
