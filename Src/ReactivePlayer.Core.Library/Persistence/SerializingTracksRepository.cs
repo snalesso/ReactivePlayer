@@ -10,25 +10,19 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Library.Persistence
 {
     // TODO: change creation strategy from .Create() + .Add() to .Add(args[]) only
-    public abstract class SerializingTracksRepository : SerializingRepository<Track, uint>, ITracksRepository
+    public abstract class SerializingTracksRepository : /*SerializingRepository<Track, uint>,*/ ITracksRepository
     {
-        #region ctor
+        #region SerializingRepository
 
-        public SerializingTracksRepository(string dbFilePath) : base(dbFilePath)
-        {
-        }
+        private readonly EntitySerializer<Track, uint> _serializer;
 
         #endregion
 
-        #region SerializingRepository
+        #region ctor
 
-        private int _nextIntId = 0;
-
-        protected override Task<uint> GetNewIdentity()
+        public SerializingTracksRepository(EntitySerializer<Track, uint> serializer) 
         {
-            int nextIntId = Interlocked.Increment(ref this._nextIntId);
-            var nextUIntId = unchecked((uint)nextIntId);
-            return Task.FromResult(nextUIntId);
+            this._serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         }
 
         #endregion
@@ -37,7 +31,7 @@ namespace ReactivePlayer.Core.Library.Persistence
 
         public async Task<Track> CreateAndAddAsync(AddTrackCommand command)
         {
-            var id = await this.GetNewIdentity();
+            var id = await this._serializer.GetNewIdentity();
 
             var track = new Track(
                 id,
@@ -60,22 +54,22 @@ namespace ReactivePlayer.Core.Library.Persistence
                     command.AlbumTrackNumber,
                     command.AlbumDiscNumber));
 
-            return track;
+            return await this._serializer.AddAsync(track);
         }
 
         public Task<IReadOnlyList<Track>> GetAllAsync()
         {
-            return base.DeserializeAndGetAllAsync();
+            return this._serializer.GetAllAsync();
         }
 
         public Task<bool> RemoveAsync(uint trackId)
         {
-            return base.RemoveAndSerializeAsync(trackId);
+            return this._serializer.RemoveAsync(trackId);
         }
 
         public Task<bool> RemoveAsync(IEnumerable<uint> trackIds)
         {
-            return base.RemoveAndSerializeAsync(trackIds);
+            return this._serializer.RemoveAsync(trackIds);
         }
 
         #endregion

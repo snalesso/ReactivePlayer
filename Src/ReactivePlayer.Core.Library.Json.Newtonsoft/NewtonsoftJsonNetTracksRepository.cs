@@ -10,12 +10,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 {
     // TODO: handle concurrency (connect, add, remove, ...)
-    public sealed class NewtonsoftJsonNetTracksRepository : SerializingTracksRepository, IDisposable
+    public sealed class NewtonsoftJsonNetTracksRepository : EntitySerializer<Track, uint>, IDisposable
     {
         #region constants & fields
 
@@ -43,7 +44,17 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         #endregion
 
-        #region SerializingTracksRepository
+        #region EntitySerializer
+
+        private int _lastId_Int = 0;
+
+        public override Task<uint> GetNewIdentity()
+        {
+            int nextId_Int = Interlocked.Increment(ref this._lastId_Int);
+            var nextId_UInt = unchecked((uint)nextId_Int);
+
+            return Task.FromResult(nextId_UInt);
+        }
 
         protected override async Task DeserializeCore()
         {
@@ -68,6 +79,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
                     var deserializedTracksCollection = JsonConvert.DeserializeObject<IEnumerable<Track>>(dbContentAsString) ?? Enumerable.Empty<Track>();
                     var kvps = deserializedTracksCollection.Select(t => new KeyValuePair<uint, Track>(t.Id, t));
                     this._entities = new ConcurrentDictionary<uint, Track>(kvps);
+                    this._lastId_Int = unchecked((int)this._entities.Max(t => t.Key));
                 }
             }
             catch (Exception ex)

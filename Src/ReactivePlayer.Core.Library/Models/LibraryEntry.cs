@@ -18,7 +18,7 @@ namespace ReactivePlayer.Core.Library.Models
             bool isLoved)
             : base(id)
         {
-            this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().Name}.{nameof(this.Location)} cannot be null."); // TODO: localize
+            this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().FullName}.{nameof(this.Location)} cannot be null."); // TODO: localize
             this.AddedToLibraryDateTime = addedToLibraryDateTime <= DateTime.Now
                 ? addedToLibraryDateTime
                 : throw new ArgumentOutOfRangeException(nameof(addedToLibraryDateTime)); // TODO: localize

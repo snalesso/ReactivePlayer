@@ -9,15 +9,17 @@ namespace ReactivePlayer.Core.Library.Models
     {
         public TrackAlbumAssociation(
             Album album,
-            uint? trackNumber, 
+            uint? trackNumber,
             uint? discNumber)
         {
             this.Album = album ?? throw new ArgumentNullException(nameof(album));
-            if (trackNumber > album.TracksCount) throw new ArgumentOutOfRangeException(nameof(trackNumber)); // TODO: localize
-            if (discNumber > album.DiscsCount) throw new ArgumentOutOfRangeException(nameof(discNumber)); // TODO: localize
+            if (trackNumber > album.TracksCount)
+                throw new ArgumentOutOfRangeException(nameof(trackNumber)); // TODO: localize
+            if (discNumber > album.DiscsCount)
+                throw new ArgumentOutOfRangeException(nameof(discNumber)); // TODO: localize
 
-            this.TrackNumber = trackNumber;
-            this.DiscNumber = discNumber;
+            this.TrackNumber = trackNumber.NullIf(x => x <= 0); // ThrowIf(x => x == 0, () => new ArgumentOutOfRangeException(nameof(trackNumber)));
+            this.DiscNumber = discNumber.NullIf(x => x <= 0); // ThrowIf(x => x == 0, () => new ArgumentOutOfRangeException(nameof(discNumber)));
         }
 
         public Album Album { get; }

@@ -89,7 +89,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             builder
-                .Register(c => new iTunesXMLRepository(@"D:\Music\iTunes\iTunes Music Library.xml"))
+                .Register(c => new iTunesXMLTracksDeserializer(@"D:\Music\iTunes\iTunes Music Library.xml"))
                 //.RegisterType<FakeTracksRepository>()
                 .As<ITracksRepository>()
                 .InstancePerLifetimeScope();

@@ -28,11 +28,11 @@ namespace ReactivePlayer.Core.Library.Models
             TrackAlbumAssociation albumAssociation)
             : base(id, location, duration, lastModified, fileSizeBytes, addedToLibraryDateTime, isLoved)
         {
-            this.Title = title.TrimmedOrNull();
+            this.Title = title.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(title)); // TODO: localize;
             this.Performers = performers.EmptyIfNull().ToImmutableArray();
             this.Composers = composers.EmptyIfNull().ToImmutableArray();
             this.AlbumAssociation = albumAssociation;
-            this.Year = year.ThrowIf(v => v > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
+            this.Year = year.ThrowIf(x => x > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
         }
 
         #endregion
