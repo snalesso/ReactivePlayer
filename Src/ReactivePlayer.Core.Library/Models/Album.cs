@@ -13,7 +13,7 @@ namespace ReactivePlayer.Core.Library.Models
         // TODO: update ctor constraints: might not have all tags
         public Album(
             string title,
-            IEnumerable<Artist> authors,
+            IEnumerable<string> authors,
             uint? tracksCount,
             uint? discsCount)
         {
@@ -28,7 +28,7 @@ namespace ReactivePlayer.Core.Library.Models
         #region properties
 
         public string Title { get; }
-        public IReadOnlyList<Artist> Authors { get; }
+        public IReadOnlyList<string> Authors { get; }
         public uint? TracksCount { get; }
         public uint? DiscsCount { get; }
 

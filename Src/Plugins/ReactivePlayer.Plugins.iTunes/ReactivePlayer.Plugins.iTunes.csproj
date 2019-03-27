@@ -68,7 +68,7 @@
     <Compile Include="iTunesDateTimeHelper.cs" />
     <Compile Include="XElementExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Domain\Repositories\iTunesXMLRepository.cs" />
+    <Compile Include="Domain\Repositories\iTunesXMLTracksDeserializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">

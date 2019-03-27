@@ -17,16 +17,16 @@ namespace ReactivePlayer.Core.Library.Models
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
-            uint? fileSizeBytes,
-            DateTime addedToLibraryDateTime,
-            bool isLoved,
+            ulong? fileSizeBytes,
             // Track
             string title,
-            IEnumerable<Artist> performers,
-            IEnumerable<Artist> composers,
+            IEnumerable<string> performers,
+            IEnumerable<string> composers,
             uint? year,
-            TrackAlbumAssociation albumAssociation)
-            : base(id, location, duration, lastModified, fileSizeBytes, addedToLibraryDateTime, isLoved)
+            TrackAlbumAssociation albumAssociation,
+            bool isLoved,
+            DateTime addedToLibraryDateTime)
+            : base(id, location, duration, lastModified, fileSizeBytes, isLoved, addedToLibraryDateTime)
         {
             this.Title = title.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(title)); // TODO: localize;
             this.Performers = performers.EmptyIfNull().ToImmutableArray();
@@ -34,6 +34,23 @@ namespace ReactivePlayer.Core.Library.Models
             this.AlbumAssociation = albumAssociation;
             this.Year = year.ThrowIf(x => x > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
         }
+
+        //public Track(
+        //    // LibraryEntry
+        //    uint id,
+        //    Uri location,
+        //    TimeSpan? duration,
+        //    DateTime? lastModified,
+        //    ulong? fileSizeBytes,
+        //    // Track
+        //    string title,
+        //    IEnumerable<string> performers,
+        //    IEnumerable<string> composers,
+        //    uint? year,
+        //    TrackAlbumAssociation albumAssociation)
+        //    : this(id, location, duration, lastModified, fileSizeBytes, title, performers, composers, year, albumAssociation, false, DateTime.Now)
+        //{
+        //}
 
         #endregion
 
@@ -46,15 +63,15 @@ namespace ReactivePlayer.Core.Library.Models
             internal set => this.SetAndRaiseIfChanged(ref this._title, value);
         }
 
-        private IReadOnlyList<Artist> _performers;
-        public IReadOnlyList<Artist> Performers
+        private IReadOnlyList<string> _performers;
+        public IReadOnlyList<string> Performers
         {
             get => this._performers;
             internal set => this.SetAndRaiseIfChanged(ref this._performers, value.ToImmutableArray());
         }
 
-        private IReadOnlyList<Artist> _composers;
-        public IReadOnlyList<Artist> Composers
+        private IReadOnlyList<string> _composers;
+        public IReadOnlyList<string> Composers
         {
             get => this._composers;
             internal set => this.SetAndRaiseIfChanged(ref this._composers, value.ToImmutableArray());

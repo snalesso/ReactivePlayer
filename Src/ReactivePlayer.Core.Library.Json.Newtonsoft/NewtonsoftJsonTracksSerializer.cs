@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 {
     // TODO: handle concurrency (connect, add, remove, ...)
-    public sealed class NewtonsoftJsonNetTracksRepository : EntitySerializer<Track, uint>, IDisposable
+    public sealed class NewtonsoftJsonTracksSerializer : EntitySerializer<Track, uint>, IDisposable
     {
         #region constants & fields
 
@@ -26,7 +26,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
         private readonly IFormatProvider _formatProvider = CultureInfo.InvariantCulture;
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings()
         {
-            Formatting = Formatting.None,
+            Formatting = Formatting.Indented,
             StringEscapeHandling = StringEscapeHandling.Default,
             MissingMemberHandling = MissingMemberHandling.Ignore
         };
@@ -37,7 +37,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         #region ctor
 
-        public NewtonsoftJsonNetTracksRepository()
+        public NewtonsoftJsonTracksSerializer()
             : base(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), DBFileName))
         {
         }
@@ -46,14 +46,14 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         #region EntitySerializer
 
-        private int _lastId_Int = 0;
+        private int _lastId_int = 0;
 
         public override Task<uint> GetNewIdentity()
         {
-            int nextId_Int = Interlocked.Increment(ref this._lastId_Int);
-            var nextId_UInt = unchecked((uint)nextId_Int);
+            int nextId_int = Interlocked.Increment(ref this._lastId_int);
+            var nextId_uint = unchecked((uint)nextId_int);
 
-            return Task.FromResult(nextId_UInt);
+            return Task.FromResult(nextId_uint);
         }
 
         protected override async Task DeserializeCore()
@@ -70,7 +70,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
                 {
                     string dbContentAsString;
 
-                    using (var sr = new StreamReader(this._dbFileStream, this._encoding, true, NewtonsoftJsonNetTracksRepository.RWBufferSize, true))
+                    using (var sr = new StreamReader(this._dbFileStream, this._encoding, true, NewtonsoftJsonTracksSerializer.RWBufferSize, true))
                     {
                         sr.BaseStream.Position = 0;
                         dbContentAsString = await sr.ReadToEndAsync();//.ConfigureAwait(false);
@@ -79,7 +79,8 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
                     var deserializedTracksCollection = JsonConvert.DeserializeObject<IEnumerable<Track>>(dbContentAsString) ?? Enumerable.Empty<Track>();
                     var kvps = deserializedTracksCollection.Select(t => new KeyValuePair<uint, Track>(t.Id, t));
                     this._entities = new ConcurrentDictionary<uint, Track>(kvps);
-                    this._lastId_Int = unchecked((int)this._entities.Max(t => t.Key));
+                    var maxId_int = this._entities.Any() ? this._entities.Max(t => t.Key) : 0;
+                    this._lastId_int = unchecked((int)maxId_int);
                 }
             }
             catch (Exception ex)
@@ -95,7 +96,7 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
             {
                 var jsonTracks = JsonConvert.SerializeObject(this._entities.Values, this._jsonSerializerSettings);
 
-                using (var sw = new StreamWriter(this._dbFileStream, this._encoding, NewtonsoftJsonNetTracksRepository.RWBufferSize, true))
+                using (var sw = new StreamWriter(this._dbFileStream, this._encoding, NewtonsoftJsonTracksSerializer.RWBufferSize, true))
                 {
                     sw.BaseStream.Position = 0;
                     await sw.WriteAsync(jsonTracks);//.ConfigureAwait(false);
@@ -111,11 +112,13 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         #region IDisposable
 
-        public void Dispose()
+        public new void Dispose()
         {
             this._dbFileStream?.Close();
             this._dbFileStream?.Dispose();
             this._dbFileStream = null;
+
+            base.Dispose();
         }
 
         #endregion

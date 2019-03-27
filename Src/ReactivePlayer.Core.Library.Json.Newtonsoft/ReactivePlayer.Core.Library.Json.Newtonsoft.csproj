@@ -42,12 +42,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AlbumConverter.cs" />
-    <Compile Include="ArtistConverter.cs" />
-    <Compile Include="NewtonsoftJsonNetTracksRepository.cs" />
-    <Compile Include="NewtonsoftJsonNetTrackAlbumAssociationsRepository.cs" />
-    <Compile Include="NewtonsoftJsonNetAlbumsRepository.cs" />
-    <Compile Include="NewtonsoftJsonNetArtistsRepository.cs" />
+    <Compile Include="NewtonsoftJsonTracksSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

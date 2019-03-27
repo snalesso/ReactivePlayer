@@ -15,11 +15,14 @@ namespace ReactivePlayer.Core.Library.Services
     public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable
     {
         private readonly ITracksRepository _tracksRepository;
+        private readonly ITrackFactory _trackFactory;
 
         public LocalLibraryService(
-            ITracksRepository tracksRepository)
+            ITracksRepository tracksRepository,
+            ITrackFactory trackFactory)
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
+            this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory)); // TODO: localize
 
             this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
 
@@ -87,7 +90,18 @@ namespace ReactivePlayer.Core.Library.Services
 
             try
             {
-                var addedTrack = await this._tracksRepository.CreateAndAddAsync(command);
+                var newTrack = await this._trackFactory.CreateAsync(
+                    command.Location,
+                    command.Duration,
+                    command.LastModifiedDateTime,
+                    command.FileSizeBytes,
+                    command.Title,
+                    command.Performers,
+                    command.Composers,
+                    command.Year,
+                    command.AlbumAssociation);
+
+               var addedTrack = await this._tracksRepository.AddAsync(newTrack);
 
                 this._sourceTracks.Edit(list =>
                 {
@@ -96,7 +110,7 @@ namespace ReactivePlayer.Core.Library.Services
 
                 return addedTrack;
             }
-            catch (Exception)
+            catch //(Exception ex)
             {
                 // TODO: log
                 return null;

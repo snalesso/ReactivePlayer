@@ -31,66 +31,55 @@ namespace ReactivePlayer.Domain.Repositories
         {
             var iTunesTracks = await Task.Run(() => this.GetiTunesTracks());
 
+            iTunesTracks = iTunesTracks.Where(t => new Uri(t.Location).IsFile).ToArray();
+
             var artistsDictionary = new Dictionary<string, Artist>();
 
             var tracks = new List<Track>();
 
+            // TODO: parallelize
             uint id = 0;
 
-            Artist GetArtistFromName(string artistName)
+            for (int i = 0; i < iTunesTracks.Count; i++)
             {
-                if (!artistsDictionary.TryGetValue(artistName, out var artist))
+                var iTunesTrack = iTunesTracks[i];
+
+                try
                 {
-                    artist = new Artist(artistName);
-                    artistsDictionary.Add(artist.Name, artist);
+                    var track = new Track(
+                        ++id,
+                        // library entry
+                        new Uri(iTunesTrack.Location.StartsWith(@"file://localhost/")
+                            ? iTunesTrack.Location.Remove(@"file://".Length - 1, @"localhost/".Length)
+                            : iTunesTrack.Location),
+                        iTunesTrack.TotalTime,
+                        iTunesTrack.DateModified,
+                        iTunesTrack.Size,
+                        // track
+                        iTunesTrack.Name,
+                        iTunesTrack.ArtistNames,
+                        iTunesTrack.ComposerNames,
+                        iTunesTrack.Year,
+                        new TrackAlbumAssociation(
+                            new Album(
+                                iTunesTrack.Album,
+                                iTunesTrack.AlbumArtistNames,
+                                iTunesTrack.TrackCount,
+                                iTunesTrack.DiscCount),
+                            iTunesTrack.TrackNumber,
+                            iTunesTrack.DiscNumber),
+                        iTunesTrack.Loved,
+                        iTunesTrack.DateAdded);
+
+                    tracks.Add(track);
                 }
+                catch (Exception ex)
+                {
 
-                return artist;
-            }
-
-            foreach (var iTunesTrack in iTunesTracks)
-            {
-                var trackPerformers = iTunesTrack.ArtistNames.EmptyIfNull().Select(artistName => GetArtistFromName(artistName));
-                var trackComposers = iTunesTrack.ComposerNames.EmptyIfNull().Select(artistName => GetArtistFromName(artistName));
-                var albumAuthors = iTunesTrack.AlbumArtistNames.EmptyIfNull().Select(artistName => GetArtistFromName(artistName));
-
-                var track = new Track(
-                    ++id,
-                    // library entry
-                    new Uri(iTunesTrack.Location.StartsWith(@"file://localhost/")
-                        ? iTunesTrack.Location.Remove(@"file://".Length - 1, @"localhost/".Length)
-                        : iTunesTrack.Location),
-                    iTunesTrack.TotalTime,
-                    iTunesTrack.DateModified,
-                    iTunesTrack.Size,
-                    iTunesTrack.DateAdded,
-                    iTunesTrack.Loved,
-                    // track
-                    iTunesTrack.Name,
-                    trackPerformers,
-                    trackComposers,
-                    iTunesTrack.Year,
-                    new TrackAlbumAssociation(
-                        new Album(
-                            iTunesTrack.Album,
-                            albumAuthors,
-                            iTunesTrack.TrackCount,
-                            iTunesTrack.DiscCount),
-                        iTunesTrack.TrackNumber,
-                        iTunesTrack.DiscNumber));
-
-                tracks.Add(track);
+                }
             }
 
             this._entities = new ConcurrentDictionary<uint, Track>(tracks.Select(t => new KeyValuePair<uint, Track>(t.Id, t)));
-
-            //foreach (var track in tracks)
-            //{
-            //    if (!this._entities.TryAdd(track.Id, track))
-            //    {
-            //        throw new Exception();
-            //    }
-            //}
         }
 
         protected override Task SerializeCore()

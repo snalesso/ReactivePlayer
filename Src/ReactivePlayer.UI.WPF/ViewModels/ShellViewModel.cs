@@ -105,7 +105,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 if (track.Performers != null)
                 {
                     shellViewTitle += " - ";
-                    shellViewTitle += string.Join(", ", track.Performers.Select(p => p.Name));
+                    shellViewTitle += string.Join(", ", track.Performers);
                 }
             }
             if (shellViewTitle.Length > 0)

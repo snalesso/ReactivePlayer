@@ -64,10 +64,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
 
-        private IReadOnlyList<string> _performersNames;
-        public IReadOnlyList<string> PerformersNames =>
-            this._performersNames
-            ?? (this._performersNames = (this._track.Performers).EmptyIfNull().Select(p => p.Name).ToList().AsReadOnly());
+        public IReadOnlyList<string> PerformersNames =>this._track.Performers;
 
         public string AlbumTitle => this._track.AlbumAssociation?.Album?.Title;
 

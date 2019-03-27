@@ -14,8 +14,8 @@ namespace ReactivePlayer.Core.Library.Models
             TimeSpan? duration,
             DateTime? lastModified,
             ulong? fileSizeBytes,
-            DateTime addedToLibraryDateTime,
-            bool isLoved)
+            bool isLoved,
+            DateTime addedToLibraryDateTime)
             : base(id)
         {
             this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().FullName}.{nameof(this.Location)} cannot be null."); // TODO: localize

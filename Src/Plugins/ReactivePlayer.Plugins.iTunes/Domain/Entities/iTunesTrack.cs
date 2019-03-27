@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace ReactivePlayer.Domain.Models
 {
+#pragma warning disable IDE1006 // Naming Styles
     internal sealed class iTunesTrack
+#pragma warning restore IDE1006 // Naming Styles
     {
         public const char iTunesFeaturingArtistsSplitter = '/';
         // TODO: handle AC/DC splitting
@@ -48,7 +50,7 @@ namespace ReactivePlayer.Domain.Models
         public uint? Rating { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public uint? SampleRate { get; set; }
-        public uint? Size { get; set; }
+        public ulong? Size { get; set; }
         public uint SkipCount { get; set; }
         public DateTime? SkipDate { get; set; }
         public string SortAlbum { get; set; }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ReactivePlayer.Core.Library.Persistence
 {
     // TODO: change creation strategy from .Create() + .Add() to .Add(args[]) only
-    public abstract class SerializingTracksRepository : /*SerializingRepository<Track, uint>,*/ ITracksRepository
+    public class SerializingTracksRepository : /*SerializingRepository<Track, uint>,*/ ITracksRepository, ITrackFactory
     {
         #region SerializingRepository
 
@@ -20,7 +20,7 @@ namespace ReactivePlayer.Core.Library.Persistence
 
         #region ctor
 
-        public SerializingTracksRepository(EntitySerializer<Track, uint> serializer) 
+        public SerializingTracksRepository(EntitySerializer<Track, uint> serializer)
         {
             this._serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         }
@@ -29,32 +29,40 @@ namespace ReactivePlayer.Core.Library.Persistence
 
         #region ITracksRepository
 
-        public async Task<Track> CreateAndAddAsync(AddTrackCommand command)
+        public Task<Track> AddAsync(Track track)
         {
-            var id = await this._serializer.GetNewIdentity();
+            return this._serializer.AddAsync(track);
+        }
 
-            var track = new Track(
-                id,
-                command.Location,
-                command.Duration,
-                command.LastModifiedDateTime,
-                command.FileSizeBytes,
-                DateTime.Now,
+        public Task<IReadOnlyList<Track>> AddAsync(IEnumerable<Track> tracks)
+        {
+            return this._serializer.AddAsync(tracks);
+        }
+
+        public async Task<Track> CreateAsync(
+            Uri location,
+            TimeSpan? duration,
+            DateTime? lastModified,
+            ulong? fileSizeBytes,
+            string title,
+            IEnumerable<string> performers,
+            IEnumerable<string> composers,
+            uint? year,
+            TrackAlbumAssociation albumAssociation)
+        {
+            return new Track(
+                await this._serializer.GetNewIdentity(),
+                location,
+                duration,
+                lastModified,
+                fileSizeBytes,
+                title,
+                performers,
+                composers,
+                year,
+                albumAssociation,
                 false,
-                command.Title,
-                command.PerformersNames?.Select(performerName => new Artist(performerName)).ToImmutableArray(),
-                command.ComposersNames?.Select(composerName => new Artist(composerName)).ToImmutableArray(),
-                command.Year,
-                new TrackAlbumAssociation(
-                    new Album(
-                        command.AlbumTitle,
-                        command.AlbumAuthorsNames.Select(authorName => new Artist(authorName)).ToImmutableArray(),
-                        command.AlbumTracksCount,
-                        command.AlbumDiscsCount),
-                    command.AlbumTrackNumber,
-                    command.AlbumDiscNumber));
-
-            return await this._serializer.AddAsync(track);
+                DateTime.Now);
         }
 
         public Task<IReadOnlyList<Track>> GetAllAsync()

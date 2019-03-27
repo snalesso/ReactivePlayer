@@ -53,6 +53,7 @@
     <Compile Include="Models\LibraryEntry.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />
+    <Compile Include="Persistence\ITrackFactory.cs" />
     <Compile Include="Persistence\ITracksRepository.cs" />
     <Compile Include="Persistence\SerializingTracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

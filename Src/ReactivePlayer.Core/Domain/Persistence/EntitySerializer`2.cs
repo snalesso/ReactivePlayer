@@ -1,11 +1,9 @@
 ﻿using ReactivePlayer.Core.Domain.Models;
-using ReactivePlayer.Core.Domain.Persistence;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +11,7 @@ namespace ReactivePlayer.Core.Library.Persistence
 {
     // TODO: save to a copy, if save failes, reload data to undo changes to in memory entities
     // TODO: defend from concurrent Deserialize/Serialize, ecc.
-    public abstract class EntitySerializer<TEntity, TIdentity>
+    public abstract class EntitySerializer<TEntity, TIdentity> : IDisposable
         where TEntity : Entity<TIdentity> // TODO: in order to provide rollback to handle updates' failures without reloading in memory cached data to undo changes, add constraint: where TEntity : IEditableObject
         where TIdentity : IEquatable<TIdentity>
     {
@@ -178,6 +176,17 @@ namespace ReactivePlayer.Core.Library.Persistence
         protected abstract Task SerializeCore();
 
         #endregion
+
+        #endregion
+
+        #region IDisposable
+
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        public void Dispose()
+        {
+            this._serializationSemaphore.Dispose();
+        }
 
         #endregion
     }
