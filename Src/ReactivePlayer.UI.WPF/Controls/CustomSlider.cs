@@ -1,21 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace ReactivePlayer.UI.WPF.Controls
 {
-    public abstract class SliderBase : Control
+    public abstract class CustomSlider : Control //RangeBase
     {
-        #region Variables
-
         protected Canvas sliderCanvas;
         protected Rectangle sliderTrack;
         protected Rectangle sliderBar;
@@ -23,70 +18,102 @@ namespace ReactivePlayer.UI.WPF.Controls
         protected bool isCalculating;
         protected bool isDragging;
 
-        #endregion
-
-        #region Properties
-
-        public static readonly DependencyProperty ChangeValueWhileDraggingProperty = DependencyProperty.Register(nameof(ChangeValueWhileDragging), typeof(bool), typeof(SliderBase), new PropertyMetadata(false));
         public bool ChangeValueWhileDragging
         {
-            get { return Convert.ToBoolean(this.GetValue(ChangeValueWhileDraggingProperty)); }
-            set { this.SetValue(ChangeValueWhileDraggingProperty, value); }
+            get => Convert.ToBoolean(this.GetValue(ChangeValueWhileDraggingProperty));
+            set => this.SetValue(ChangeValueWhileDraggingProperty, value);
         }
 
-        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(nameof(Minimum), typeof(double), typeof(SliderBase), new PropertyMetadata(0.0, MinMaxChangedCallback));
+        public static readonly DependencyProperty ChangeValueWhileDraggingProperty = DependencyProperty.Register(
+            nameof(ChangeValueWhileDragging),
+            typeof(bool),
+            typeof(CustomSlider),
+            new PropertyMetadata(false));
+
         public double Minimum
         {
-            get { return Convert.ToDouble(this.GetValue(MinimumProperty)); }
-            set { this.SetValue(MinimumProperty, value); }
+            get => Convert.ToDouble(this.GetValue(MinimumProperty));
+            set => this.SetValue(MinimumProperty, value);
         }
 
-        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(nameof(Maximum), typeof(double), typeof(SliderBase), new PropertyMetadata(100.0, MinMaxChangedCallback));
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
+            nameof(Minimum),
+            typeof(double),
+            typeof(CustomSlider),
+            new PropertyMetadata(0.0, OnMinMaxChanged));
+
         public double Maximum
         {
-            get { return Convert.ToDouble(this.GetValue(MaximumProperty)); }
-            set { this.SetValue(MaximumProperty, value); }
+            get => Convert.ToDouble(this.GetValue(MaximumProperty));
+            set => this.SetValue(MaximumProperty, value);
         }
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(double), typeof(SliderBase), new PropertyMetadata(0.0, ValueChangedCallback));
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
+            nameof(Maximum),
+            typeof(double),
+            typeof(CustomSlider),
+            new PropertyMetadata(100.0, OnMinMaxChanged));
+
         public double Value
         {
-            get { return Convert.ToDouble(this.GetValue(ValueProperty)); }
-            set { this.SetValue(ValueProperty, value); }
+            get => Convert.ToDouble(this.GetValue(ValueProperty));
+            set => this.SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(nameof(Position), typeof(double), typeof(SliderBase), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+            nameof(Value),
+            typeof(double),
+            typeof(CustomSlider),
+            new PropertyMetadata(0.0, OnValueChanged));
+
         [EditorBrowsable(EditorBrowsableState.Never)]
         public double Position
         {
-            get { return Convert.ToDouble(this.GetValue(PositionProperty)); }
-            set { this.SetValue(PositionProperty, value); }
+            get => Convert.ToDouble(this.GetValue(PositionProperty));
+            set => this.SetValue(PositionProperty, value);
         }
 
-        public static readonly DependencyProperty TrackBackgroundProperty = DependencyProperty.Register(nameof(TrackBackground), typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+            nameof(Position),
+            typeof(double),
+            typeof(CustomSlider),
+            new PropertyMetadata(0.0));
+
         public Brush TrackBackground
         {
-            get { return (Brush)this.GetValue(TrackBackgroundProperty); }
-            set { this.SetValue(TrackBackgroundProperty, value); }
+            get => (Brush)this.GetValue(TrackBackgroundProperty);
+            set => this.SetValue(TrackBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty BarBackgroundProperty = DependencyProperty.Register(nameof(BarBackground), typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty TrackBackgroundProperty = DependencyProperty.Register(
+            nameof(TrackBackground),
+            typeof(Brush),
+            typeof(CustomSlider),
+            new PropertyMetadata(null));
+
         public Brush BarBackground
         {
-            get { return (Brush)this.GetValue(BarBackgroundProperty); }
-            set { this.SetValue(BarBackgroundProperty, value); }
+            get => (Brush)this.GetValue(BarBackgroundProperty);
+            set => this.SetValue(BarBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(nameof(ButtonBackground), typeof(Brush), typeof(SliderBase), new PropertyMetadata(null));
+        public static readonly DependencyProperty BarBackgroundProperty = DependencyProperty.Register(
+            nameof(BarBackground),
+            typeof(Brush),
+            typeof(CustomSlider),
+            new PropertyMetadata(null));
+
         public Brush ButtonBackground
         {
-            get { return (Brush)this.GetValue(ButtonBackgroundProperty); }
-            set { this.SetValue(ButtonBackgroundProperty, value); }
+            get => (Brush)this.GetValue(ButtonBackgroundProperty);
+            set => this.SetValue(ButtonBackgroundProperty, value);
         }
 
-        #endregion
-
-        #region Events
+        public static readonly DependencyProperty ButtonBackgroundProperty = DependencyProperty.Register(
+            nameof(ButtonBackground),
+            typeof(Brush),
+            typeof(CustomSlider),
+            new PropertyMetadata(null));
 
         public event EventHandler ValueChanged = delegate { };
 
@@ -95,18 +122,19 @@ namespace ReactivePlayer.UI.WPF.Controls
             this.ValueChanged(this, null);
         }
 
-        #endregion
-
-        #region Overrides
+        private const string PART_Canvas = nameof(PART_Canvas);
+        private const string PART_Track = nameof(PART_Track);
+        private const string PART_Bar = nameof(PART_Bar);
+        private const string PART_Button = nameof(PART_Button);
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            this.sliderCanvas = (Canvas)this.GetTemplateChild("PART_Canvas");
-            this.sliderTrack = (Rectangle)this.GetTemplateChild("PART_Track");
-            this.sliderBar = (Rectangle)this.GetTemplateChild("PART_Bar");
-            this.sliderButton = (Button)this.GetTemplateChild("PART_Button");
+            this.sliderCanvas = (Canvas)this.GetTemplateChild(CustomSlider.PART_Canvas);
+            this.sliderTrack = (Rectangle)this.GetTemplateChild(CustomSlider.PART_Track);
+            this.sliderBar = (Rectangle)this.GetTemplateChild(CustomSlider.PART_Bar);
+            this.sliderButton = (Button)this.GetTemplateChild(CustomSlider.PART_Button);
 
             this.sliderCanvas.SizeChanged += this.SizeChangedHandler;
             this.sliderCanvas.Loaded += this.LoadedHandler;
@@ -124,17 +152,9 @@ namespace ReactivePlayer.UI.WPF.Controls
             }
         }
 
-        #endregion
-
-        #region Abstract
-
         protected abstract void UpdatePosition();
         protected abstract void CalculatePosition();
         protected abstract void CalculateValue();
-
-        #endregion
-
-        #region Event Handlers
 
         private void LoadedHandler(object sender, RoutedEventArgs e)
         {
@@ -179,23 +199,17 @@ namespace ReactivePlayer.UI.WPF.Controls
             }
         }
 
-        #endregion
-
-        #region Callbacks
-
-        private static void MinMaxChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnMinMaxChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            SliderBase slider = sender as SliderBase;
+            CustomSlider slider = sender as CustomSlider;
             slider.CalculatePosition();
         }
 
-        private static void ValueChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        private static void OnValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            SliderBase slider = sender as SliderBase;
+            CustomSlider slider = sender as CustomSlider;
             slider.CalculatePosition();
             slider.OnValueChanged();
         }
-
-        #endregion
     }
 }

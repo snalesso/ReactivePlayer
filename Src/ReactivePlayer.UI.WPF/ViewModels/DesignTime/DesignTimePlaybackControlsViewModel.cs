@@ -5,7 +5,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
         public DesignTimePlaybackControlsViewModel()
             : base(
                   null
-                  //, null
+                  , null
                   //, null
                   //, null
                   )

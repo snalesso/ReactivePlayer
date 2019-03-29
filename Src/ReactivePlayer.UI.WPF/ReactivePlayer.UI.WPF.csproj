@@ -142,6 +142,7 @@
     <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
     <Compile Include="Controls\CustomSlider.cs" />
     <Compile Include="Controls\GridLengthSwitcher.cs" />
+    <Compile Include="Controls\HorizontalSlider.cs" />
     <Compile Include="Controls\PlaybackBox.xaml.cs">
       <DependentUpon>PlaybackBox.xaml</DependentUpon>
     </Compile>
@@ -157,6 +158,7 @@
     <Compile Include="ViewModels\PlaybackQueueSelectorViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
     <Compile Include="ViewModels\ShellMenuViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackTimelineViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TracksSubsetViewModel.cs" />
@@ -175,6 +177,9 @@
     </Compile>
     <Compile Include="Views\PlaybackHistoryView.xaml.cs">
       <DependentUpon>PlaybackHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlaybackTimelineView.xaml.cs">
+      <DependentUpon>PlaybackTimelineView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellMenuView.xaml.cs">
       <DependentUpon>ShellMenuView.xaml</DependentUpon>
@@ -271,6 +276,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\HorizontalSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EditTrackViewModel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -280,6 +289,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlaybackHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlaybackTimelineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

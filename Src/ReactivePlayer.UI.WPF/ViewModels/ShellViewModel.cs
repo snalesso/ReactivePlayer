@@ -26,8 +26,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
 
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
         #endregion
 
         #region ctor
@@ -51,12 +49,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
-            this._isUIEnabled_OAPH = Observable.Return(true)
+            this._isEnabled_OAPH = Observable.Return(true)
                     //Observable.CombineLatest(
                     //this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler)
                     //, this._writeLibraryService.WhenIsBusyChanged.ObserveOn(RxApp.MainThreadScheduler)
                     //, (isReadLibraryServiceConnected, isWriteLibraryServiceBusy) => isReadLibraryServiceConnected && !isWriteLibraryServiceBusy)
-                    .ToProperty(this, nameof(this.IsUIEnabled))
+                    .ToProperty(this, nameof(this.IsEnabled))
                     .DisposeWith(this._disposables);
 
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
@@ -77,8 +75,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        private readonly ObservableAsPropertyHelper<bool> _isUIEnabled_OAPH;
-        public bool IsUIEnabled => this._isUIEnabled_OAPH.Value;
+        private readonly ObservableAsPropertyHelper<bool> _isEnabled_OAPH;
+        public bool IsEnabled => this._isEnabled_OAPH.Value;
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
         public TracksViewModel TracksViewModel { get; }
@@ -122,14 +120,39 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             base.CanClose(callback);
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
 
         #region commands
+
+        #endregion
+
+        #region IDisposable Support
+
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                this.disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
+        }
 
         #endregion
     }

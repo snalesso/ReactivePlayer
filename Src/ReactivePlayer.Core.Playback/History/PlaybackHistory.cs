@@ -1,20 +1,10 @@
 ﻿using DynamicData;
-using DynamicData.Aggregation;
 using DynamicData.Binding;
-using DynamicData.Cache;
-using DynamicData.Experimental;
-using DynamicData.Kernel;
-using DynamicData.List;
-using DynamicData.Operators;
 using DynamicData.PLinq;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback.History
 {
@@ -29,7 +19,7 @@ namespace ReactivePlayer.Core.Playback.History
             this.Entries = this._audioPlaybackEngine.WhenTrackChanged
                 .SkipLast(1)
                 .Where(t => t!= null)
-                .ToObservableChangeSet(3)
+                .ToObservableChangeSet(50)
                 //.Replay(3)
                 //.Select(track => new PlaybackHistoryEntry(track))
                 .Transform(track => new PlaybackHistoryEntry(track))

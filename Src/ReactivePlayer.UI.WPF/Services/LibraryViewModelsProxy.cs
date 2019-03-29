@@ -32,7 +32,6 @@ namespace ReactivePlayer.UI.WPF.Services
 
         public void Dispose()
         {
-            // TODO: check if CompositeDisposable needs to be set = null after disposing
             this._disposables.Dispose();
         }
     }

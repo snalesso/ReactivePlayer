@@ -34,45 +34,7 @@
             <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
 
-        <Grid
-            Grid.Row="1"
-            Grid.Column="1"
-            IsEnabled="{Binding IsPositionKnown}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" />
-            <Slider
-                x:Name="PlaybackPositionSlider"
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                IsEnabled="False"
-                IsMoveToPointEnabled="True"
-                Maximum="{Binding DurationAsTicks, Mode=OneWay}"
-                Minimum="0"
-                TickFrequency="1"
-                Value="{Binding PositionAsTicks, Mode=OneWay}" />
-            <ProgressBar
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                IsIndeterminate="True"
-                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <TextBlock
-                Grid.Column="4"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, TargetNullValue=--:--}" />
-
-        </Grid>
+        <Views:PlaybackTimelineView Grid.Row="1" Grid.Column="1" DataContext="{Binding PlaybackTimelineViewModel}" />
 
         <Grid Grid.Row="3" Grid.Column="1">
             <Grid.ColumnDefinitions>

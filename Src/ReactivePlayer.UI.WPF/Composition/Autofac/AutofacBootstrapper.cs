@@ -124,6 +124,9 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackControlsView>().As<IViewFor<PlaybackControlsViewModel>>().InstancePerLifetimeScope();
 
+            builder.RegisterType<PlaybackTimelineViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<PlaybackTimelineView>().As<IViewFor<PlaybackTimelineViewModel>>().InstancePerLifetimeScope();
+
             builder.RegisterType<PlaybackHistoryViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackHistoryView>().AsSelf().InstancePerLifetimeScope();
 

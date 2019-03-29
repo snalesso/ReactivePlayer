@@ -10,7 +10,7 @@
                                      IsDesignTimeCreatable=False}"
     d:DesignHeight="250"
     d:DesignWidth="680"
-    IsEnabled="{Binding IsUIEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+    IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
     mc:Ignorable="d">
 
     <!--<Window.InputBindings>
