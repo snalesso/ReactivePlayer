@@ -512,9 +512,11 @@ namespace ReactivePlayer.Core.Playback.CSCore
         public IObservable<bool> WhenCanStopChanged { get; }
 
         private readonly BehaviorSubject<TimeSpan?> _durationSubject;
+        public TimeSpan? Duration => this._durationSubject.Value;
         public IObservable<TimeSpan?> WhenDurationChanged { get; }
 
         private readonly BehaviorSubject<TimeSpan?> _positionSubject;
+        public TimeSpan? Position => this._positionSubject.Value;
         public IObservable<TimeSpan?> WhenPositionChanged { get; }
 
         private readonly BehaviorSubject<float> _volumeSubject;

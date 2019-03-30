@@ -9,8 +9,6 @@ namespace ReactivePlayer.Core.Playback
     // TODO: is it legit to implement IDisposable from here? A class which exposes IObservable<T> fields are always IDisposable's?
     public interface IAudioPlaybackEngine
     {
-        #region methods
-
         IReadOnlyList<string> SupportedExtensions { get; }
 
         // TODO: add cancellation token
@@ -43,15 +41,13 @@ namespace ReactivePlayer.Core.Playback
         float Volume { get; set; }
         IObservable<float> WhenVolumeChanged { get; }
 
-        #endregion
-
-        #region observable events
-
         // TODO: move outside? e.g. service/UI polls position
+        TimeSpan? Position { get; }
         IObservable<TimeSpan?> WhenPositionChanged { get; }
-        IObservable<TimeSpan?> WhenDurationChanged { get; }
-        IObservable<PlaybackStatus> WhenStatusChanged { get; }
 
-        #endregion
+        TimeSpan? Duration { get; }
+        IObservable<TimeSpan?> WhenDurationChanged { get; }
+
+        IObservable<PlaybackStatus> WhenStatusChanged { get; }
     }
 }
