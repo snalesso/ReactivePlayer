@@ -525,47 +525,41 @@ namespace ReactivePlayer.Core.Playback.CSCore
         private readonly BehaviorSubject<bool> _canSeekSubject;
         public IObservable<bool> WhenCanSeekChanged { get; }
 
-        // TODO: ensure concurrency management is good
-        private object _volumeLock = new object();
         private const float DefaultVolume = 0.25F;
         public float Volume
         {
             get
             {
-                lock (this._volumeLock)
+                this._playbackActionsSemaphore.Wait();
+
+                if (this._soundOut != null)
                 {
-                    if (this._soundOut != null)
-                    {
-                        this._soundOut.Volume = this._volumeSubject.Value;
-                    }
-                    return this._volumeSubject.Value;
+                    this._soundOut.Volume = this._volumeSubject.Value;
                 }
+
+                this._playbackActionsSemaphore.Release();
+
+                return this._volumeSubject.Value;
             }
             set
             {
-                // TODO: try-catch inside or outside lock?
-                lock (this._volumeLock)
+                try
                 {
-                    try
-                    {
-                        if (this._soundOut != null)
-                        {
-                            this._soundOut.Volume = value;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(this.Volume)}: {ex.Message}");
-                        // swallow (might happen that the ISoundOut is "not initialized yet"
-                        // TODO: find out why CSCore source code
+                    this._playbackActionsSemaphore.Wait();
 
-                        // if not swallow ->
-                        // this.__volumeSubject.OnError(ex);
-                    }
-                    finally
+                    if (this._soundOut != null)
                     {
-                        this._volumeSubject.OnNext(value);
+                        this._soundOut.Volume = value;
                     }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(this.Volume)}: {ex.Message}");
+                }
+                finally
+                {
+                    this._volumeSubject.OnNext(value);
+                    this._playbackActionsSemaphore.Release();
                 }
             }
         }
