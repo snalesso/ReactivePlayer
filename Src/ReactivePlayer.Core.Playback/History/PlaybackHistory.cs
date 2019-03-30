@@ -33,28 +33,34 @@ namespace ReactivePlayer.Core.Playback.History
 
         public IObservableList<PlaybackHistoryEntry> Entries { get; }
 
-        private object _disposingLock = new object();
-        private CompositeDisposable _disposables = new CompositeDisposable();
+        #region IDisposable Support
 
-        public void Dispose()
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            // TODO: try-catch inside or outside lock?
-            try
+            if (!this.disposedValue)
             {
-                lock (this._disposingLock)
+                if (disposing)
                 {
-                    if (this._disposables != null && !this._disposables.IsDisposed)
-                    {
-                        this._disposables?.Dispose();
-                        this._disposables = null;
-                    }
+                    this._disposables.Dispose();
                 }
-            }
-            catch (Exception ex)
-            {
-                // TODO: log
-                throw ex;
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
             }
         }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
+        }
+
+        #endregion
     }
 }

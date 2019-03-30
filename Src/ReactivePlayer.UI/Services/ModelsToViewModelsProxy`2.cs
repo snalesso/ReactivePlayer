@@ -8,8 +8,6 @@ namespace ReactivePlayer.UI.WPF.Services
 {
     public class ModelsToViewModelsProxy<TModel, TKey, TViewModel, TViewModelKey> : IDisposable
     {
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
         private readonly IConnectableCache<TModel, TKey> _modelsCache;
         private readonly Func<TModel, TViewModel> _modelToiewModelFactoryMethod;
         private readonly Func<TViewModel, TViewModelKey> _viewModelCacheKeySelector;
@@ -26,7 +24,7 @@ namespace ReactivePlayer.UI.WPF.Services
             this.ViewModels = this._modelsCache
                  .Connect()
                  .Transform(model => this._modelToiewModelFactoryMethod.Invoke(model))
-                 .ChangeKey(vm=>this._viewModelCacheKeySelector.Invoke(vm));
+                 .ChangeKey(vm => this._viewModelCacheKeySelector.Invoke(vm));
 
             var cacheTransformerSubscription = (typeof(TViewModel).IsAssignableFrom(typeof(IDisposable))
                     ? this.ViewModels.DisposeMany()
@@ -38,10 +36,34 @@ namespace ReactivePlayer.UI.WPF.Services
 
         public IObservable<IChangeSet<TViewModel, TViewModelKey>> ViewModels { get; }
 
+        #region IDisposable Support
+
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // TODO: check if CompositeDisposable needs to be set = null after disposing
-            this._disposables.Dispose();
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
+
+        #endregion
     }
 }

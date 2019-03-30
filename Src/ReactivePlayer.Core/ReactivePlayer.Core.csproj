@@ -47,7 +47,6 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Domain\Models\Entity.cs" />
     <Compile Include="Domain\Models\Entity`1.cs" />
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
     <Compile Include="Domain\Persistence\EntitySerializer`2.cs" />

@@ -123,31 +123,32 @@ namespace ReactivePlayer.Core.Playback.Queue
 
         #endregion
 
-        #region IDisposable
+        #region IDisposable Support
 
-        private CompositeDisposable _disposables = new CompositeDisposable();
-        private object _disposingLock = new object();
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool disposedValue = false; // To detect redundant calls
 
-        // TODO: review implementation, also consider if there's some Interlocked way to do it
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            try
-            {
-                lock (this._disposingLock)
-                {
-                    if (this._disposables != null && !this._disposables.IsDisposed)
-                    {
-                        this._disposables?.Dispose();
-                        this._disposables = null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // TODO: log
-                Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(Dispose)}: {ex.Message}");
-                throw ex;
-            }
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
 
         #endregion

@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 {
-    // TODO: handle concurrency (connect, add, remove, ...)
     public sealed class NewtonsoftJsonTracksSerializer : EntitySerializer<Track, uint>, IDisposable
     {
         #region constants & fields
@@ -110,15 +109,36 @@ namespace ReactivePlayer.Core.Library.Json.Newtonsoft
 
         #endregion
 
-        #region IDisposable
+        #region IDisposable Support
 
+        //private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._dbFileStream?.Close();
+                    this._dbFileStream?.Dispose();
+                    this._dbFileStream = null;
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
+
+                base.Dispose();
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public new void Dispose()
         {
-            this._dbFileStream?.Close();
-            this._dbFileStream?.Dispose();
-            this._dbFileStream = null;
-
-            base.Dispose();
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
 
         #endregion

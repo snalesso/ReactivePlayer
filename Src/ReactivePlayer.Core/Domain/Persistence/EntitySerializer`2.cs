@@ -27,6 +27,8 @@ namespace ReactivePlayer.Core.Library.Persistence
         public EntitySerializer(string dbFilePath)
         {
             this._dbFilePath = dbFilePath;
+
+            this._serializationSemaphore = new SemaphoreSlim(1, 1).DisposeWith(this._disposables);
         }
 
         #endregion
@@ -139,7 +141,7 @@ namespace ReactivePlayer.Core.Library.Persistence
         #region serialization
 
         private bool _isDeserialized = false;
-        private readonly SemaphoreSlim _serializationSemaphore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _serializationSemaphore;
 
         protected async Task EnsureDeserialized()
         {
@@ -179,13 +181,32 @@ namespace ReactivePlayer.Core.Library.Persistence
 
         #endregion
 
-        #region IDisposable
+        #region IDisposable Support
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool disposedValue = false; // To detect redundant calls
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            this._serializationSemaphore.Dispose();
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
 
         #endregion

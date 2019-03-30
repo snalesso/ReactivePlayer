@@ -7,7 +7,7 @@ namespace ReactivePlayer.Core.Playback
 {
     // TODO: investigate if some members are actually sync, for those the UI will handle offloading when calling
     // TODO: is it legit to implement IDisposable from here? A class which exposes IObservable<T> fields are always IDisposable's?
-    public interface IAudioPlaybackEngine : IDisposable
+    public interface IAudioPlaybackEngine
     {
         #region methods
 

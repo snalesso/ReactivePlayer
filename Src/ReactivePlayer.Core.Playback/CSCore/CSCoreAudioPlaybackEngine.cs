@@ -21,7 +21,6 @@ namespace ReactivePlayer.Core.Playback.CSCore
     // TODO: investigate IWaveSource.GetLength: how does it calculate duration? How accurate is it guaranteed to be?
     // TODO: add timeout for audio file loading?
     // TODO: consider using AsyncLock (System.Reactive.Core)
-    // TODO: learn how to handle IDisposable from outside and in general how to handle interfaces which implementations may or may not be IDisposable
     // TODO: log
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
@@ -311,7 +310,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             try
             {
-            await this._playbackActionsSemaphore.WaitAsync();
+                await this._playbackActionsSemaphore.WaitAsync();
 
                 if (this._canSeekSubject.Value)
                 {
@@ -526,7 +525,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         // TODO: ensure concurrency management is good
         private object _volumeLock = new object();
-        private const float DefaultVolume = 0.5F;
+        private const float DefaultVolume = 0.01F;
         public float Volume
         {
             get
@@ -584,32 +583,33 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         #region IDisposable
 
-        private object _playerScopeDisposingLock = new object();
         private readonly CompositeDisposable _playerScopeDisposables = new CompositeDisposable();
         private readonly CompositeDisposable __playbackScopeDisposables = new CompositeDisposable();
 
         // TODO: review implementation, also consider if there's some Interlocked way to do it
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._playerScopeDisposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // TODO: try-catch inside or outside lock?
-            try
-            {
-                lock (this._playerScopeDisposingLock)
-                {
-                    if (this._playerScopeDisposables != null && !this._playerScopeDisposables.IsDisposed)
-                    {
-                        // no need to ISoundOut.Stop() because the CompositeDisposable disposes the SoundOut which internally calls .Stop()
-                        this._playerScopeDisposables?.Dispose();
-                        //this._playerScopeDisposables = null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // TODO: log
-                Debug.WriteLine(Environment.NewLine + $"{ex.GetType().Name} thrown in {this.GetType().Name}.{nameof(Dispose)}: {ex.Message}");
-                throw ex;
-            }
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
 
         #endregion

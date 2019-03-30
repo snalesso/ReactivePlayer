@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Persistence
 {
-    // TODO: change creation strategy from .Create() + .Add() to .Add(args[]) only
     public interface ITracksRepository : IEntityRepository<Track, uint>//, ITrackFactory
     {
     }

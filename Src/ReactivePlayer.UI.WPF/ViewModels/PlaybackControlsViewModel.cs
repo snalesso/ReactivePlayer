@@ -11,7 +11,7 @@ using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class PlaybackControlsViewModel : ReactiveScreen, IDisposable // ReactiveObject
+    public class PlaybackControlsViewModel : ReactiveScreen, IDisposable
     {
         #region constants & fields
 
@@ -147,8 +147,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this._disposables.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
 
                 this.disposedValue = true;
             }

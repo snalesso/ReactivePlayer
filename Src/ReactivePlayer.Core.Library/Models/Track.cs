@@ -10,7 +10,6 @@ namespace ReactivePlayer.Core.Library.Models
     {
         #region ctor
 
-        // TODO: make internal to allow only repository to create it
         public Track(
             // LibraryEntry
             uint id,
