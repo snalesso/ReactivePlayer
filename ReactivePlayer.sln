@@ -106,6 +106,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B9711239
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveformTimeline.Tests", "Src\WaveformTimeline.Tests\WaveformTimeline.Tests.csproj", "{8A8C0A4D-CE2D-42B3-9A4B-27263DE172AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSoundVisualizationLib", "Src\WPFSoundVisualizationLibrary\WPFSoundVisualizationLib.csproj", "{90F96222-1C39-4A19-ABE8-1B00FB330985}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -290,6 +292,14 @@ Global
 		{8A8C0A4D-CE2D-42B3-9A4B-27263DE172AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8A8C0A4D-CE2D-42B3-9A4B-27263DE172AA}.Release|x64.ActiveCfg = Release|Any CPU
 		{8A8C0A4D-CE2D-42B3-9A4B-27263DE172AA}.Release|x64.Build.0 = Release|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Debug|x64.Build.0 = Debug|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|x64.ActiveCfg = Release|Any CPU
+		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -319,6 +329,7 @@ Global
 		{F59E3C5E-8862-43B4-A59A-CF795B3912F3} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{8F005A5D-9325-4CB5-8359-53A7203B9DAF} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{8A8C0A4D-CE2D-42B3-9A4B-27263DE172AA} = {B9711239-ED08-4BDD-AB92-CD17D1B0BC01}
+		{90F96222-1C39-4A19-ABE8-1B00FB330985} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89BD77AF-A336-4C8F-A1F9-E89FF141FEC5}
