@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:PlaybackTimelineViewModel,
                                      IsDesignTimeCreatable=False}"
-    d:DesignWidth="550"
+    d:DesignWidth="300"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -18,41 +18,45 @@
         <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
     </UserControl.Resources>
 
-    <Grid
-        Grid.Row="1"
-        Grid.Column="1"
-        IsEnabled="{Binding IsPositionKnown}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+    <Grid IsEnabled="{Binding IsPositionKnown}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" />
-        <Slider
-            x:Name="PlaybackPositionSlider"
-            Grid.Column="2"
-            VerticalAlignment="Center"
-            IsMoveToPointEnabled="False"
-            Maximum="{Binding DurationAsTicks, Mode=OneWay}"
-            Minimum="0"
-            Value="{Binding PositionAsTicks, Mode=OneWay}" />
-        <ProgressBar
-            Grid.Column="2"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            IsIndeterminate="True"
-            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <TextBlock
-            Grid.Column="4"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, TargetNullValue=--:--}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" />
+            <Slider
+                x:Name="PlaybackPositionSlider"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                IsMoveToPointEnabled="False"
+                Maximum="{Binding DurationAsTicks, Mode=OneWay}"
+                Minimum="0"
+                Value="{Binding PositionAsTicks, Mode=OneWay}" />
+            <ProgressBar
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                IsIndeterminate="True"
+                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <TextBlock
+                Grid.Column="4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, TargetNullValue=--:--}" />
+        </Grid>
 
     </Grid>
 </UserControl>

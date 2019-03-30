@@ -74,7 +74,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Subscribe()
                 .DisposeWith(this._disposables);
 
-
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackVM) =>
                 {

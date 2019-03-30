@@ -1,4 +1,5 @@
-﻿using ReactivePlayer.UI.WPF.ViewModels;
+﻿using ReactivePlayer.UI.WPF.Services;
+using ReactivePlayer.UI.WPF.ViewModels;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
@@ -17,8 +18,15 @@ namespace ReactivePlayer.UI.WPF.Views
     /// </summary>
     public partial class PlaybackTimelineView : UserControl, IViewFor<PlaybackTimelineViewModel>, IDisposable
     {
-        public PlaybackTimelineView()
+        // TODO: move to VM?
+        //private readonly WaveformTimelineSoundPlayer _waveformTimelineSoundPlayer;
+
+        public PlaybackTimelineView(
+            //WaveformTimelineSoundPlayer waveformTimelineSoundPlayer
+            )
         {
+            //this._waveformTimelineSoundPlayer = waveformTimelineSoundPlayer.DisposeWith(this._disposables);
+
             //this.Events().DataContextChanged
             //    .DistinctUntilChanged()
             //    .WithLatestFrom(
@@ -41,7 +49,10 @@ namespace ReactivePlayer.UI.WPF.Views
                 {
                     // TODO: remove handlers and attach again when datacontext changes
                     if (dcdp.NewValue != null)
+                    {
                         this.AttachSeekingCommandsToSlider(this.PlaybackPositionSlider);
+                        //this.AttachPlaybackServiceToTimeline();
+                    }
                 });
 
             this.InitializeComponent();
@@ -76,81 +87,93 @@ namespace ReactivePlayer.UI.WPF.Views
             Track sliderTrack = slider.Template.FindName("PART_Track", slider) as Track;
             Thumb sliderThumb = sliderTrack?.Thumb;
 
-            if (sliderThumb != null)
-            {
-                this._whenDragStartedSubscriber = Observable
-                    .FromEventPattern<DragStartedEventHandler, DragStartedEventArgs>(
-                    h => sliderThumb.DragStarted += h,
-                    h => sliderThumb.DragStarted -= h)
-                    .Do(x => Debug.WriteLine("Drag started"))
-                    //.Select(_ => Convert.ToInt64(slider.Value))
-                    .Select(_ => Unit.Default)
-                    .Publish();
+            if (sliderThumb == null)
+                return;
 
-                this._whenDragDeltaSubscriber = Observable
-                    .FromEventPattern<DragDeltaEventHandler, DragDeltaEventArgs>(
-                    h => sliderThumb.DragDelta += h,
-                    h => sliderThumb.DragDelta -= h)
-                    .Do(x => Debug.WriteLine("Drag delta"))
-                    .Select(_ => Convert.ToInt64(slider.Value))
-                    .DistinctUntilChanged()
-                    .Throttle(TimeSpan.FromMilliseconds(250))
-                    .Publish();
+            this._whenDragStartedSubscriber = Observable
+                .FromEventPattern<DragStartedEventHandler, DragStartedEventArgs>(
+                h => sliderThumb.DragStarted += h,
+                h => sliderThumb.DragStarted -= h)
+                .Do(x => Debug.WriteLine("Drag started"))
+                //.Select(_ => Convert.ToInt64(slider.Value))
+                .Select(_ => Unit.Default)
+                .Publish();
 
-                this._whenDragCompletedSubscriber = Observable
-                    .FromEventPattern<DragCompletedEventHandler, DragCompletedEventArgs>(
-                    h => sliderThumb.DragCompleted += h,
-                    h => sliderThumb.DragCompleted -= h)
-                    .Do(x => Debug.WriteLine("Drag completed"))
-                    .Select(_ => Convert.ToInt64(slider.Value))
-                    //.Select(_ => Unit.Default)
-                    //.Take(1)
-                    .Publish();
+            this._whenDragDeltaSubscriber = Observable
+                .FromEventPattern<DragDeltaEventHandler, DragDeltaEventArgs>(
+                h => sliderThumb.DragDelta += h,
+                h => sliderThumb.DragDelta -= h)
+                .Do(x => Debug.WriteLine("Drag delta"))
+                .Select(_ => Convert.ToInt64(slider.Value))
+                .DistinctUntilChanged()
+                .Throttle(TimeSpan.FromMilliseconds(250))
+                .Publish();
 
-                // ------------------
+            this._whenDragCompletedSubscriber = Observable
+                .FromEventPattern<DragCompletedEventHandler, DragCompletedEventArgs>(
+                h => sliderThumb.DragCompleted += h,
+                h => sliderThumb.DragCompleted -= h)
+                .Do(x => Debug.WriteLine("Drag completed"))
+                .Select(_ => Convert.ToInt64(slider.Value))
+                //.Select(_ => Unit.Default)
+                //.Take(1)
+                .Publish();
 
-                //this._whenDragStartedSubscriber
-                //    .Subscribe(_ => this._dragDeltaSubscription = this._whenDragDeltaSubscriber.Connect().DisposeWith(this._disposables))
-                //    .DisposeWith(this._disposables);
-                //this._whenDragStartedSubscriber
-                //    .Subscribe(_ => this._dragCompletedSubscription = this._whenDragCompletedSubscriber.Connect().DisposeWith(this._disposables))
-                //    .DisposeWith(this._disposables);
+            // ------------------
 
-                // --------------
+            //this._whenDragStartedSubscriber
+            //    .Subscribe(_ => this._dragDeltaSubscription = this._whenDragDeltaSubscriber.Connect().DisposeWith(this._disposables))
+            //    .DisposeWith(this._disposables);
+            //this._whenDragStartedSubscriber
+            //    .Subscribe(_ => this._dragCompletedSubscription = this._whenDragCompletedSubscriber.Connect().DisposeWith(this._disposables))
+            //    .DisposeWith(this._disposables);
 
-                this._whenDragStartedSubscriber
-                    .InvokeCommand(this.ViewModel, vm => vm.StartSeeking)
-                    .DisposeWith(this._disposables);
+            // --------------
 
-                this._whenDragDeltaSubscriber
-                   .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
-                   .DisposeWith(this._disposables);
+            this._whenDragStartedSubscriber
+                .InvokeCommand(this.ViewModel, vm => vm.StartSeeking)
+                .DisposeWith(this._disposables);
 
-                //this._whenDragCompletedSubscriber
-                //    .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
-                //    .DisposeWith(this._disposables);
+            this._whenDragDeltaSubscriber
+               .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
+               .DisposeWith(this._disposables);
 
-                this._whenDragCompletedSubscriber
-                    .InvokeCommand(this.ViewModel, vm => vm.EndSeeking)
-                    .DisposeWith(this._disposables);
+            //this._whenDragCompletedSubscriber
+            //    .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
+            //    .DisposeWith(this._disposables);
 
-                this._whenDragStartedSubscriber.Connect();
-                //this._whenDragDeltaSubscriber.Connect();
-                this._whenDragCompletedSubscriber.Connect();
+            this._whenDragCompletedSubscriber
+                .InvokeCommand(this.ViewModel, vm => vm.EndSeeking)
+                .DisposeWith(this._disposables);
 
-                //this._whenDragCompletedSubscriber
-                //    .Subscribe(_ => this._dragDeltaSubscription = null)
-                //    .DisposeWith(this._disposables);
+            this._whenDragStartedSubscriber.Connect();
+            //this._whenDragDeltaSubscriber.Connect();
+            this._whenDragCompletedSubscriber.Connect();
 
-                //this._whenDragCompletedSubscriber
-                //    .Subscribe(_ =>
-                //    {
-                //        this._dragDeltaSubscription?.Dispose();
-                //        this._dragCompletedSubscription = null;
-                //    })
-                //    .DisposeWith(this._disposables);
-            }
+            //this._whenDragCompletedSubscriber
+            //    .Subscribe(_ => this._dragDeltaSubscription = null)
+            //    .DisposeWith(this._disposables);
+
+            //this._whenDragCompletedSubscriber
+            //    .Subscribe(_ =>
+            //    {
+            //        this._dragDeltaSubscription?.Dispose();
+            //        this._dragCompletedSubscription = null;
+            //    })
+            //    .DisposeWith(this._disposables);            
         }
+
+        #endregion
+
+        #region waveform timeline
+
+        //private void AttachPlaybackServiceToTimeline()
+        //{
+        //    if (this.WaveformTimeline == null)
+        //        return;
+
+        //    this.WaveformTimeline.RegisterSoundPlayer(this._waveformTimelineSoundPlayer);
+        //}
 
         #endregion
 
