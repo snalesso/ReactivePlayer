@@ -38,8 +38,7 @@
             x:Name="PlaybackPositionSlider"
             Grid.Column="2"
             VerticalAlignment="Center"
-            IsEnabled="False"
-            IsMoveToPointEnabled="True"
+            IsMoveToPointEnabled="False"
             Maximum="{Binding DurationAsTicks, Mode=OneWay}"
             Minimum="0"
             Value="{Binding PositionAsTicks, Mode=OneWay}" />

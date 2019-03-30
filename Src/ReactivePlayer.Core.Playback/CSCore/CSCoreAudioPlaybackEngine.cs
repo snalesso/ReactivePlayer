@@ -525,7 +525,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         // TODO: ensure concurrency management is good
         private object _volumeLock = new object();
-        private const float DefaultVolume = 0.01F;
+        private const float DefaultVolume = 0.25F;
         public float Volume
         {
             get

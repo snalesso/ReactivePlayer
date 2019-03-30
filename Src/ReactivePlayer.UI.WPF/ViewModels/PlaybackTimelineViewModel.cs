@@ -9,6 +9,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
@@ -17,12 +18,16 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
 
+        private readonly SemaphoreSlim _seekingSemaphore;
         private bool _isSeeking = false;
+        private long? _lastSoughtTicks = null;
 
         public PlaybackTimelineViewModel(
             IAudioPlaybackEngine audioPlaybackEngine)
         {
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
+
+            this._seekingSemaphore = new SemaphoreSlim(1, 1).DisposeWith(this._disposables);
 
             // timespans
             this._positionOAPH = this._audioPlaybackEngine.WhenPositionChanged.ToProperty(this, nameof(this.Position)).DisposeWith(this._disposables);
@@ -31,12 +36,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._positionAsTickssOAPH = this._audioPlaybackEngine
                 .WhenPositionChanged
                 .Where(p => !this._isSeeking) // TODO: use an observable to toggle observing
-                .Select(p => p != null && p.HasValue ? Convert.ToUInt64(p.Value.Ticks) : 0UL)
+                .Select(p => p != null && p.HasValue ? Convert.ToInt64(p.Value.Ticks) : 0L)
                 .ToProperty(this, nameof(this.PositionAsTicks))
                 .DisposeWith(this._disposables);
             this._durationAsTicksOAPH = this._audioPlaybackEngine
                 .WhenDurationChanged
-                .Select(p => p != null && p.HasValue ? Convert.ToUInt64(p.Value.Ticks) : 0UL)
+                .Select(p => p != null && p.HasValue ? Convert.ToInt64(p.Value.Ticks) : 0L)
                 .ToProperty(this, nameof(this.DurationAsTicks))
                 .DisposeWith(this._disposables);
 
@@ -72,9 +77,53 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .ToProperty(this, nameof(this.IsLoading))
                 .DisposeWith(this._disposables);
 
-            this.StartSeeking = ReactiveCommand.Create(() => { this._isSeeking = true; }, this._audioPlaybackEngine.WhenCanSeekChanged).DisposeWith(this._disposables);
-            this.EndSeeking = ReactiveCommand.Create(() => { this._isSeeking = false; }, this._audioPlaybackEngine.WhenCanSeekChanged).DisposeWith(this._disposables);
-            this.SeekTo = ReactiveCommand.CreateFromTask<long>(position => this._audioPlaybackEngine.SeekToAsync(TimeSpan.FromTicks(position)), this._audioPlaybackEngine.WhenCanSeekChanged).DisposeWith(this._disposables);
+            this.StartSeeking = ReactiveCommand
+                .CreateFromTask(async () =>
+                {
+                    await this._seekingSemaphore.WaitAsync();
+                    this._isSeeking = true;
+                    this._lastSoughtTicks = null;
+                    this._seekingSemaphore.Release();
+                }
+                //.Create(() => { this._isSeeking = true; }
+                , this._audioPlaybackEngine.WhenCanSeekChanged)
+                .DisposeWith(this._disposables);
+
+            this.SeekTo = ReactiveCommand.CreateFromTask<long>(
+                async ticks =>
+                {
+                    await this._seekingSemaphore.WaitAsync();
+                    if (this._isSeeking)
+                    {
+                        this._lastSoughtTicks = ticks;
+                        await this._audioPlaybackEngine.SeekToAsync(TimeSpan.FromTicks(ticks));
+                    }
+                    this._seekingSemaphore.Release();
+                },
+                this._audioPlaybackEngine.WhenCanSeekChanged)
+                .DisposeWith(this._disposables);
+
+            this.EndSeeking = ReactiveCommand
+                //.CreateFromTask<long>(async () => { this._isSeeking = false; await this._audioPlaybackEngine.ResumeAsync(); }
+                .CreateFromTask<long>(async ticks =>
+                {
+                    await this._seekingSemaphore.WaitAsync();
+
+                    //if (!this._lastSoughtTicks.HasValue || this._lastSoughtTicks.Value != ticks)
+                    //{
+                        await this._audioPlaybackEngine.SeekToAsync(TimeSpan.FromTicks(ticks));
+                    //}
+
+                    this._isSeeking = false;
+
+                    this._seekingSemaphore.Release();
+                }
+                , this._audioPlaybackEngine.WhenCanSeekChanged)
+                .DisposeWith(this._disposables);
+
+            this.StartSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString()));
+            this.SeekTo.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString()));
+            this.EndSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString()));
 
             // loggings
 
@@ -82,11 +131,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //this.EndSeeking.Do(s => Debug.WriteLine(nameof(this.EndSeeking)));
         }
 
-        private ObservableAsPropertyHelper<ulong> _positionAsTickssOAPH;
-        public ulong PositionAsTicks => this._positionAsTickssOAPH.Value;
+        private ObservableAsPropertyHelper<long> _positionAsTickssOAPH;
+        public long PositionAsTicks => this._positionAsTickssOAPH.Value;
 
-        private ObservableAsPropertyHelper<ulong> _durationAsTicksOAPH;
-        public ulong DurationAsTicks => this._durationAsTicksOAPH.Value;
+        private ObservableAsPropertyHelper<long> _durationAsTicksOAPH;
+        public long DurationAsTicks => this._durationAsTicksOAPH.Value;
 
         private ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
         public TimeSpan? Position => this._positionOAPH.Value;
@@ -105,7 +154,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public ReactiveCommand<Unit, Unit> StartSeeking { get; }
         public ReactiveCommand<long, Unit> SeekTo { get; }
-        public ReactiveCommand<Unit, Unit> EndSeeking { get; }
+        // TODO: consider end seeking accept a long to tell on which tick the seeking ends
+        public ReactiveCommand<long, Unit> EndSeeking { get; }
 
         #region IDisposable Support
 
@@ -121,8 +171,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this._disposables.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
 
                 this.disposedValue = true;
             }

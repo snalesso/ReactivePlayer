@@ -3,6 +3,7 @@ using ReactiveUI;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -18,18 +19,40 @@ namespace ReactivePlayer.UI.WPF.Views
     {
         public PlaybackTimelineView()
         {
-            //this.Events().Initialized.Take(1).Subscribe(a => this.ConfigureTrackbar(this.PlaybackPositionSlider));
+            //this.Events().DataContextChanged
+            //    .DistinctUntilChanged()
+            //    .WithLatestFrom(
+            //        this.Events().Loaded.Take(1),
+            //        (dc, loaded) => dc)
+            //    .Subscribe(dc =>
+            //    {
+            //        // TODO: remove handlers and attach again when datacontext changes
+            //        this.AttachSeekingCommandsToSlider(this.PlaybackPositionSlider);
+            //    });
+
+            var plan = this.Events()
+                .DataContextChanged
+                .DistinctUntilChanged()
+                .And(this.Events().Loaded.Take(1))
+                .Then((a, b) => a);
+
+            Observable.When(plan)
+                .Subscribe(dcdp =>
+                {
+                    // TODO: remove handlers and attach again when datacontext changes
+                    if (dcdp.NewValue != null)
+                        this.AttachSeekingCommandsToSlider(this.PlaybackPositionSlider);
+                });
 
             this.InitializeComponent();
         }
 
         #region IViewFor
 
-        private PlaybackTimelineViewModel _viewModel;
         public PlaybackTimelineViewModel ViewModel
         {
-            get => this._viewModel;
-            set => this._viewModel = value ?? throw new ArgumentNullException(nameof(value)); // TODO: localize
+            get => this.DataContext as PlaybackTimelineViewModel;
+            set => this.DataContext = value ?? throw new ArgumentNullException(nameof(value)); // TODO: localize
         }
 
         object IViewFor.ViewModel
@@ -42,81 +65,90 @@ namespace ReactivePlayer.UI.WPF.Views
 
         #region time slider
 
-        private IConnectableObservable<long> _dragDeltaSubscriber;
-        private IConnectableObservable<long> _dragCompletedSubscriber;
-        private IDisposable _dragDeltaSubscription;
-        private IDisposable _dragCompletedSubscription;
+        private IConnectableObservable<Unit> _whenDragStartedSubscriber;
+        private IConnectableObservable<long> _whenDragDeltaSubscriber;
+        private IConnectableObservable<long> _whenDragCompletedSubscriber;
+        //private IDisposable _dragDeltaSubscription;
+        //private IDisposable _dragCompletedSubscription;
 
-        private void ConfigureTrackbar(Slider slider)
+        private void AttachSeekingCommandsToSlider(Slider slider)
         {
-            var a = slider.Template.FindName("Track", slider);
-            var b = slider.Template.FindName("PART_Track", slider);
-            var thumb = (a as Track)?.Thumb;
-            if (thumb != null)
+            Track sliderTrack = slider.Template.FindName("PART_Track", slider) as Track;
+            Thumb sliderThumb = sliderTrack?.Thumb;
+
+            if (sliderThumb != null)
             {
-                this._dragDeltaSubscriber = Observable
-                    .FromEventPattern<DragDeltaEventHandler, DragDeltaEventArgs>(
-                    h => thumb.DragDelta += h,
-                    h => thumb.DragDelta -= h)
-                    .Select(_ => Convert.ToInt64(slider.Value))
-                    .DistinctUntilChanged()
-                    .Throttle(TimeSpan.FromMilliseconds(100))
-                    //.Do(ticks => Debug.WriteLine($"Drag\tDelta\tThrottled value {ticks}"))
-                    .Publish();
-                this._dragDeltaSubscriber
-                    .Do(ticks => Debug.WriteLine($"Drag\tDelta\tSeekTo({ticks})"))
-                    .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
-                    .DisposeWith(this._disposables);
-
-                this._dragCompletedSubscriber = Observable
-                    .FromEventPattern<DragCompletedEventHandler, DragCompletedEventArgs>(
-                    h => thumb.DragCompleted += h,
-                    h => thumb.DragCompleted -= h)
-                    .Select(_ => Convert.ToInt64(slider.Value))
-                    .DistinctUntilChanged()
-                    .Take(1)
-                    .Publish();
-                this._dragCompletedSubscriber
-                    //.Do(_ => Debug.WriteLine($"Drag\tCompleted\tUnsubscribing from DragDelta (to ignore throttled value after DragCompleted value)"))
-                    .Subscribe(_ => this._dragDeltaSubscription?.Dispose())
-                    .DisposeWith(this._disposables);
-                this._dragCompletedSubscriber
-                    .Do(ticks => Debug.WriteLine($"Drag\tCompleted\tSeekTo({ticks}"))
-                    .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
-                    .DisposeWith(this._disposables);
-                this._dragCompletedSubscriber
-                    //.Do(_ => Debug.WriteLine($"Drag\tCompleted\tvm.EndSeeking"))
-                    //.Select(_ => Unit.Default)
-                    .InvokeCommand(this.ViewModel, vm => vm.EndSeeking)
-                    .DisposeWith(this._disposables);
-                this._dragCompletedSubscriber
-                    //.Do(_ => Debug.WriteLine($"Drag\tCompleted\tSetting to null DragDelta subscription"))
-                    .Subscribe(_ => this._dragDeltaSubscription = null)
-                    .DisposeWith(this._disposables);
-                this._dragCompletedSubscriber
-                    //.Do(_ => Debug.WriteLine($"Drag\tCompleted\tSetting to null DragCompleted subscription"))
-                    .Subscribe(_ => this._dragCompletedSubscription = null)
-                    .DisposeWith(this._disposables);
-
-                var start = Observable
+                this._whenDragStartedSubscriber = Observable
                     .FromEventPattern<DragStartedEventHandler, DragStartedEventArgs>(
-                    h => thumb.DragStarted += h,
-                    h => thumb.DragStarted -= h)
+                    h => sliderThumb.DragStarted += h,
+                    h => sliderThumb.DragStarted -= h)
+                    .Do(x => Debug.WriteLine("Drag started"))
+                    //.Select(_ => Convert.ToInt64(slider.Value))
+                    .Select(_ => Unit.Default)
+                    .Publish();
+
+                this._whenDragDeltaSubscriber = Observable
+                    .FromEventPattern<DragDeltaEventHandler, DragDeltaEventArgs>(
+                    h => sliderThumb.DragDelta += h,
+                    h => sliderThumb.DragDelta -= h)
+                    .Do(x => Debug.WriteLine("Drag delta"))
                     .Select(_ => Convert.ToInt64(slider.Value))
-                    .DistinctUntilChanged();
-                start
-                    //.Do(_ => Debug.WriteLine($"Drag\tStarted\tvm.StartSeeking"))
+                    .DistinctUntilChanged()
+                    .Throttle(TimeSpan.FromMilliseconds(250))
+                    .Publish();
+
+                this._whenDragCompletedSubscriber = Observable
+                    .FromEventPattern<DragCompletedEventHandler, DragCompletedEventArgs>(
+                    h => sliderThumb.DragCompleted += h,
+                    h => sliderThumb.DragCompleted -= h)
+                    .Do(x => Debug.WriteLine("Drag completed"))
+                    .Select(_ => Convert.ToInt64(slider.Value))
                     //.Select(_ => Unit.Default)
+                    //.Take(1)
+                    .Publish();
+
+                // ------------------
+
+                //this._whenDragStartedSubscriber
+                //    .Subscribe(_ => this._dragDeltaSubscription = this._whenDragDeltaSubscriber.Connect().DisposeWith(this._disposables))
+                //    .DisposeWith(this._disposables);
+                //this._whenDragStartedSubscriber
+                //    .Subscribe(_ => this._dragCompletedSubscription = this._whenDragCompletedSubscriber.Connect().DisposeWith(this._disposables))
+                //    .DisposeWith(this._disposables);
+
+                // --------------
+
+                this._whenDragStartedSubscriber
                     .InvokeCommand(this.ViewModel, vm => vm.StartSeeking)
                     .DisposeWith(this._disposables);
-                start
-                    //.Do(_ => Debug.WriteLine($"Drag\tStarted\tSubscribing to DragDelta"))
-                    .Subscribe(_ => this._dragDeltaSubscription = this._dragDeltaSubscriber.Connect().DisposeWith(this._disposables))
+
+                this._whenDragDeltaSubscriber
+                   .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
+                   .DisposeWith(this._disposables);
+
+                //this._whenDragCompletedSubscriber
+                //    .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
+                //    .DisposeWith(this._disposables);
+
+                this._whenDragCompletedSubscriber
+                    .InvokeCommand(this.ViewModel, vm => vm.EndSeeking)
                     .DisposeWith(this._disposables);
-                start
-                    //.Do(l => Debug.WriteLine($"Drag\tStarted\tSubscribing to DragCompleted"))
-                    .Subscribe(_ => this._dragCompletedSubscription = this._dragCompletedSubscriber.Connect().DisposeWith(this._disposables))
-                    .DisposeWith(this._disposables);
+
+                this._whenDragStartedSubscriber.Connect();
+                //this._whenDragDeltaSubscriber.Connect();
+                this._whenDragCompletedSubscriber.Connect();
+
+                //this._whenDragCompletedSubscriber
+                //    .Subscribe(_ => this._dragDeltaSubscription = null)
+                //    .DisposeWith(this._disposables);
+
+                //this._whenDragCompletedSubscriber
+                //    .Subscribe(_ =>
+                //    {
+                //        this._dragDeltaSubscription?.Dispose();
+                //        this._dragCompletedSubscription = null;
+                //    })
+                //    .DisposeWith(this._disposables);
             }
         }
 
@@ -136,8 +168,8 @@ namespace ReactivePlayer.UI.WPF.Views
                     this._disposables.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
 
                 this.disposedValue = true;
             }
