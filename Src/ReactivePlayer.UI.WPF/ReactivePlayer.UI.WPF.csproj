@@ -158,6 +158,7 @@
     <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueSelectorViewModel.cs" />
     <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
+    <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\ShellMenuViewModel.cs" />
     <Compile Include="ViewModels\PlaybackTimelineViewModel.cs" />
     <Compile Include="ViewModels\TracksViewModel.cs" />

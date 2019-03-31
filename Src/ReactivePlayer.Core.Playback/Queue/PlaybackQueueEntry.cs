@@ -5,13 +5,11 @@ namespace ReactivePlayer.Core.Playback.Queue
 {
     public class PlaybackQueueEntry
     {
-        public PlaybackQueueEntry(LibraryEntry libraryEntry)
+        public PlaybackQueueEntry(Track track)
         {
-            this.LibraryEntry = libraryEntry ?? throw new ArgumentNullException(nameof(libraryEntry));
+            this.Track = track ?? throw new ArgumentNullException(nameof(track));
         }
 
-        public LibraryEntry LibraryEntry { get; }
-
-        public Uri Location => this.LibraryEntry.Location;
+        public Track Track { get; }
     }
 }

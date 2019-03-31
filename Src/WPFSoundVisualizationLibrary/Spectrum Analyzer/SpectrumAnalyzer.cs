@@ -1082,7 +1082,9 @@ namespace WPFSoundVisualizationLib
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool disposedValue = false; // To detect redundant calls
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected virtual void Dispose(bool disposing)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             if (!this.disposedValue)
             {
@@ -1099,7 +1101,9 @@ namespace WPFSoundVisualizationLib
         }
 
         // This code added to correctly implement the disposable pattern.
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public void Dispose()
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);

@@ -49,10 +49,6 @@
       <Project>{1afe2b64-d7e6-4897-8e90-96c17c1b952d}</Project>
       <Name>ReactivePlayer.Core.Library.Json.Newtonsoft</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library.Json.Utf8Json\ReactivePlayer.Core.Library.Json.Utf8Json.csproj">
-      <Project>{76cbb591-ec80-4d02-b24d-57b7e683afbb}</Project>
-      <Name>ReactivePlayer.Core.Library.Json.Utf8Json</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{402FEED0-76D6-4640-B261-EBE598BA6FBE}</Project>
       <Name>ReactivePlayer.Core.Library</Name>

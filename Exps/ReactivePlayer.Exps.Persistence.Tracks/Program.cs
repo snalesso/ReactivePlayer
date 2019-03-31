@@ -1,6 +1,5 @@
 ﻿using ReactivePlayer.Core.Domain.Persistence;
 using ReactivePlayer.Core.Library.Json.Newtonsoft;
-using ReactivePlayer.Core.Library.Json.Utf8Json.Persistence;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using System;

@@ -33,7 +33,9 @@ namespace WPFSoundVisualizationLib
         ///// <summary>
         ///// Gets whether the sound player is currently playing audio.
         ///// </summary>
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         bool IsPlaying { get; }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <summary>
         /// 

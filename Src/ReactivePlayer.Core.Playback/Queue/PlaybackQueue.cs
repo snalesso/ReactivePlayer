@@ -2,10 +2,14 @@ using DynamicData;
 using ReactivePlayer.Core.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
+using System.Reactive.Joins;
 using System.Reactive.Linq;
+using System.Reactive.Threading;
 
 namespace ReactivePlayer.Core.Playback.Queue
 {
@@ -26,21 +30,16 @@ namespace ReactivePlayer.Core.Playback.Queue
         {
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
 
-            Observable
-                .CombineLatest(
-                    this._audioPlayer.WhenStatusChanged,
-                    this._audioPlayer.WhenCanPlayChanged,
-                    (status, canPlay) => status == PlaybackStatus.PlayedToEnd && canPlay == true)
-                .Where(canPlayNext => canPlayNext == true)
+            this._audioPlayer.WhenCanLoadChanged
                 .Subscribe(async (s) =>
                 {
-                    var next = this._queueEntries.Items.FirstOrDefault();
+                    var next = this._playlistEntries.Items.FirstOrDefault();
 
                     if (next != null)
                     {
-                        this._queueEntries.RemoveAt(0);
+                        this._playlistEntries.RemoveAt(0);
 
-                        switch (next.LibraryEntry)
+                        switch (next.Track)
                         {
                             case Track nextTrack:
                                 await this._audioPlayer.LoadAsync(nextTrack);
@@ -54,20 +53,28 @@ namespace ReactivePlayer.Core.Playback.Queue
                     }
                 })
                 .DisposeWith(this._disposables);
+
+            //this._upNextEntries = new SourceList<PlaybackQueueEntry>().DisposeWith(this._disposables);
+            this._playlistEntries = new SourceList<PlaybackQueueEntry>().DisposeWith(this._disposables);
+
+            //this._upNextEntries.Connect().Bind(out this._upNextEntriesROOC);
+            this._playlistEntries.Connect().Bind(out this._playlistEntriesROOC);
         }
 
         #endregion
 
         #region properties
 
-        //private ConcurrentQueue<Uri> _queue;
-        private SourceList<PlaybackQueueEntry> _queueEntries = new SourceList<PlaybackQueueEntry>();
-        public IObservableList<PlaybackQueueEntry> Entries => this._queueEntries;
+        private IObservableList<Track> _tracksSource;
+        private ISourceList<PlaybackQueueEntry> _sourcedEntries;
 
-        //public IObservable<bool> IsEmpty => this.Items.Connect().IsEmpty();
+        //private readonly SourceList<PlaybackQueueEntry> _upNextEntries = new SourceList<PlaybackQueueEntry>();
+        //private readonly ReadOnlyObservableCollection<PlaybackQueueEntry> _upNextEntriesROOC;
+        //public ReadOnlyObservableCollection<PlaybackQueueEntry> UpNextEntriesROOC => this._upNextEntriesROOC;
 
-        //public BehaviorSubject<Uri> _currentlyPlayingSubject = new BehaviorSubject<Uri>(null);
-        //public IObservable<Uri> CurrentlyPlaying => this._audioPlayer.WhenTrackLocationChanged;
+        private readonly ISourceList<PlaybackQueueEntry> _playlistEntries = new SourceList<PlaybackQueueEntry>();
+        private readonly ReadOnlyObservableCollection<PlaybackQueueEntry> _playlistEntriesROOC;
+        public ReadOnlyObservableCollection<PlaybackQueueEntry> PlaylistEntriesROOC => this._playlistEntriesROOC;
 
         #endregion
 
@@ -75,51 +82,38 @@ namespace ReactivePlayer.Core.Playback.Queue
 
         public void Clear()
         {
-            this._queueEntries.Clear();
+            this._sourcedEntries.Clear();
+            this._playlistEntries.Clear();
         }
 
-        public void Enqueue(IEnumerable<PlaybackQueueEntry> trackLocations)
-        {
-            this._queueEntries.AddRange(trackLocations);
-        }
+        //public void Enqueue(IEnumerable<PlaybackQueueEntry> trackLocations)
+        //{
+        //    this._queueEntries.AddRange(trackLocations);
+        //}
 
-        private IObservableList<PlaybackQueueEntry> _playlist;
-        public void SetPlaylist(IObservableList<PlaybackQueueEntry> playlist)
+        public void SetTracksSource(IObservableList<Track> tracksSource)
         {
-            this._playlist = playlist;
+            this._playlistEntries.Clear();
+
+            this._tracksSource = tracksSource;
+            this._tracksSource.Connect().Transform(t => new PlaybackQueueEntry(t)).DisposeMany().PopulateInto(this._sourcedEntries).DisposeWith(this._disposables);
+            this._tracksSource
+                .Connect()
+                //.Transform(t => new PlaybackQueueEntry(t))
+                .Subscribe(
+                null,
+                () => {
+                    this.Clear();
+                });
 
             // TODO: if the currently playing track is removed from the playlist from which its playback was started, ask if stop playback
 
             //return Task.CompletedTask;
         }
 
-        //public void Enqueue(Uri trackLocation)
-        //{
-        //    this._items.Insert(this._items.Count, trackLocation);
-        //}
-
-        //public void Enqueue(IReadOnlyList<Uri> trackLocations)
-        //{
-        //    this._items.InsertRange(trackLocations, this._items.Count);
-        //}
-
-        // TODO: dequeue an IAudioSource which will carry its .Location
-        public void Remove(PlaybackQueueEntry queueEntry)
+        public void RemoveFromSourcedQueue(PlaybackQueueEntry queueEntry)
         {
-            //var head = this._queueItems.Items.FirstOrDefault();
-
-            this._queueEntries.RemoveAt(0);
-
-            //return head;
         }
-
-        //private readonly BehaviorSubject<bool> _isShuffling;
-        //public IObservable<bool> WhenIsShufflingChanged => this._isShuffling.AsObservable();
-
-        //public void SetIsShuffling(bool isShuffling)
-        //{
-        //    this._isShuffling.OnNext(isShuffling);
-        //}
 
         #endregion
 
