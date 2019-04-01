@@ -8,6 +8,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -25,37 +26,59 @@ namespace ReactivePlayer.UI.WPF.Views
             //WaveformTimelineSoundPlayer waveformTimelineSoundPlayer
             )
         {
-            //this._waveformTimelineSoundPlayer = waveformTimelineSoundPlayer.DisposeWith(this._disposables);
+            var whenDataContextChangedAndViewLoaded =
+                this.Events().DataContextChanged
+                //.Do(dc =>
+                //{
+                //    var ndctn = (dc.NewValue != null) ? dc.NewValue.ToString() : "null";
+                //    Debug.WriteLine($"dc changed: {ndctn}");
+                //})
+                .And(this.Events().Loaded.Repeat())
+                .Then((dataContextChangedEventArgs, loadedEventArgs) => dataContextChangedEventArgs);
 
-            //this.Events().DataContextChanged
-            //    .DistinctUntilChanged()
-            //    .WithLatestFrom(
-            //        this.Events().Loaded.Take(1),
-            //        (dc, loaded) => dc)
-            //    .Subscribe(dc =>
-            //    {
-            //        // TODO: remove handlers and attach again when datacontext changes
-            //        this.AttachSeekingCommandsToSlider(this.PlaybackPositionSlider);
-            //    });
-
-            var plan = this.Events()
-                .DataContextChanged
-                .DistinctUntilChanged()
-                .And(this.Events().Loaded.Take(1))
-                .Then((a, b) => a);
-
-            Observable.When(plan)
-                .Subscribe(dcdp =>
+            Observable
+                .When(whenDataContextChangedAndViewLoaded)
+                .Subscribe(dataContextChangedEventArgs =>
                 {
-                    // TODO: remove handlers and attach again when datacontext changes
-                    if (dcdp.NewValue != null)
+                    if (dataContextChangedEventArgs.OldValue != null)
+                    {
+                        // TODO: remove event handler from old viewmodel
+                    }
+
+                    if (this.ViewModel != null)
                     {
                         this.AttachSeekingCommandsToSlider(this.PlaybackPositionSlider);
-                        //this.AttachPlaybackServiceToTimeline();
                     }
-                });
+                })
+                .DisposeWith(this._disposables);
 
             this.InitializeComponent();
+
+            //Observable.Interval(TimeSpan.FromSeconds(2))
+            //    .Select(x =>
+            //    {
+            //        string name = null;
+
+            //        switch (x % 3)
+            //        {
+            //            case 0:
+            //                name = $"dio";
+            //                break;
+            //            case 1:
+            //                name = $"cane";
+            //                break;
+            //            case 2:
+            //                name = $"ladro";
+            //                break;
+            //        }
+
+            //        return $"{name}-{x}";
+            //    })
+            //    .ObserveOnDispatcher()
+            //    .Subscribe(x =>
+            //    {
+            //        this.DataContext = x;
+            //    });
         }
 
         #region IViewFor
@@ -84,8 +107,11 @@ namespace ReactivePlayer.UI.WPF.Views
 
         private void AttachSeekingCommandsToSlider(Slider slider)
         {
-            Track sliderTrack = slider.Template.FindName("PART_Track", slider) as Track;
-            Thumb sliderThumb = sliderTrack?.Thumb;
+            Track sliderTrack = null;
+            Thumb sliderThumb = null;
+
+            sliderTrack = slider.Template.FindName("PART_Track", slider) as Track;
+            sliderThumb = sliderTrack?.Thumb;
 
             if (sliderThumb == null)
                 return;
