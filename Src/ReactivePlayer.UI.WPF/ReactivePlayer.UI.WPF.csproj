@@ -138,6 +138,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\DoubleClick.cs" />
+    <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
     <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
     <Compile Include="Controls\CustomSlider.cs" />
