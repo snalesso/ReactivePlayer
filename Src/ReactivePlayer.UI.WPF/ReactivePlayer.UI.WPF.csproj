@@ -152,8 +152,10 @@
     <Compile Include="Services\LibraryViewModelsProxy.cs" />
     <Compile Include="Services\WaveformTimelineSoundPlayer.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
+    <Compile Include="ViewModels\AllTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
     <Compile Include="ViewModels\EditTrackViewModel.cs" />
+    <Compile Include="ViewModels\LibraryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
     <Compile Include="ViewModels\PlaybackHistoryEntryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
@@ -171,9 +173,11 @@
     <Compile Include="Services\CustomWindowManager.cs" />
     <Compile Include="Composition\Autofac\Modules\EventAggregationAutoSubscriptionModule.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimePlaybackControlsViewModel.cs" />
-    <Compile Include="ViewModels\DesignTime\DesignTimeShellViewModel.cs" />
     <Compile Include="Views\EditTrackViewModel.xaml.cs">
       <DependentUpon>EditTrackViewModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LibraryView.xaml.cs">
+      <DependentUpon>LibraryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlaybackControlsView.xaml.cs">
       <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
@@ -284,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditTrackViewModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LibraryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

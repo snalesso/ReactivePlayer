@@ -26,9 +26,14 @@ namespace ReactivePlayer.Core.Playback.Queue
 
         #region ctor
 
-        public PlaybackQueue(IAudioPlaybackEngine audioPlayer)
+        public PlaybackQueue(
+            IAudioPlaybackEngine audioPlayer
+            //, IObservable<IChangeSet<Track> tracksCacheChanges
+            )
         {
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
+
+            this._sourcedEntries = new SourceList<PlaybackQueueEntry>().DisposeWith(this._disposables);
 
             this._audioPlayer.WhenCanLoadChanged
                 .Subscribe(async (s) =>
@@ -102,7 +107,8 @@ namespace ReactivePlayer.Core.Playback.Queue
                 //.Transform(t => new PlaybackQueueEntry(t))
                 .Subscribe(
                 null,
-                () => {
+                () =>
+                {
                     this.Clear();
                 });
 

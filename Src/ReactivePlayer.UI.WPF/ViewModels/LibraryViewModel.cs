@@ -1,23 +1,30 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro;
+using Caliburn.Micro.ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class ShellMenuViewModel : ReactiveScreen
+    public class LibraryViewModel : Conductor<ReactiveScreen>.Collection.OneActive
     {
-        public ShellMenuViewModel(
-            PlaybackControlsViewModel playbackControlsViewModel,
+        #region ctor
+
+        public LibraryViewModel(
             AllTracksViewModel allTracksViewModel)
         {
-            this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
             this.AllTracksViewModel = allTracksViewModel ?? throw new ArgumentNullException(nameof(allTracksViewModel));
+
+            this.ActivateItem(this.AllTracksViewModel);
         }
 
-        public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
+        #endregion
+
         public AllTracksViewModel AllTracksViewModel { get; }
+
+        public ReadOnlyObservableCollection<PlaylistViewModel> PlaylistViewModels { get; }
     }
 }

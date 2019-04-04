@@ -7,6 +7,7 @@
     xmlns:Daedalus.UI.Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
     xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
     xmlns:System="clr-namespace:System;assembly=System"
+    xmlns:i="clr-namespace:System.Windows;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeTracksViewModel,
@@ -92,6 +93,11 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+
+            <!--<ListView.ItemTemplate>
+                <DataTemplate>
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
 
             <ListView.ContextMenu>
                 <ContextMenu>

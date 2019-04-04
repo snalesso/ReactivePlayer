@@ -1,13 +1,13 @@
 namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
 {
-    internal class DesignTimeTracksViewModel : TracksViewModel
+    internal abstract class DesignTimeTracksViewModel : TracksViewModel
     {
         public DesignTimeTracksViewModel()
             : base(
                   null
                   , null
                   , null
-                  , null
+                  //, null
                   //, null
                   //, null
                   //, null

@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Models
 {
-    public class TrackPlaylist
+    public class Playlist
     {
-        public TrackPlaylist(IEnumerable<uint> trackIds) { }
+        public Playlist(IEnumerable<uint> ids) {
 
+        }
+
+        private SourceList<uint> _trackIdsList;
         public IObservableList<uint> TrackIds { get; }
     }
 }

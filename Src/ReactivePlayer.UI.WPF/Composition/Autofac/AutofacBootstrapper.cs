@@ -118,20 +118,22 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                     return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
                 }).AsSelf().InstancePerLifetimeScope();
 
-            builder.RegisterType<TracksViewModel>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<TracksView>().As<IViewFor<TracksViewModel>>().InstancePerLifetimeScope();
+            builder.RegisterType<AllTracksViewModel>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<TracksView>().As<IViewFor<AllTracksViewModel>>().InstancePerLifetimeScope();
 
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<PlaybackControlsView>().As<IViewFor<PlaybackControlsViewModel>>().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackControlsView>().As<IViewFor<PlaybackControlsViewModel>>().InstancePerLifetimeScope();
 
             builder.RegisterType<PlaybackTimelineViewModel>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<PlaybackTimelineView>().As<IViewFor<PlaybackTimelineViewModel>>().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackTimelineView>().As<IViewFor<PlaybackTimelineViewModel>>().InstancePerLifetimeScope();
 
             builder.RegisterType<PlaybackHistoryViewModel>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<PlaybackHistoryView>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackHistoryView>().As<IViewFor<PlaybackHistoryViewModel>>().InstancePerLifetimeScope();
+
+            builder.RegisterType<LibraryViewModel>().AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<ShellMenuViewModel>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<ShellMenuView>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<ShellMenuView>().As<IViewFor<ShellMenuViewModel>>().InstancePerLifetimeScope();
         }
 
         private IEnumerable<Assembly> assemblies;

@@ -20,11 +20,12 @@ using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class TracksViewModel : ReactiveConductor<Caliburn.Micro.IScreen>.Collection.AllActive// ReactiveObject
+    public abstract class TracksViewModel : ReactiveScreen// ReactiveObject
     {
         #region constants & fields
 
@@ -32,7 +33,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         //private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
-        private readonly IWriteLibraryService _writeLibraryService;
+        //private readonly IWriteLibraryService _writeLibraryService;
         private readonly IReadLibraryService _readLibraryService;
         private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
         //private readonly PlaybackQueue _playbackQueue;
@@ -48,7 +49,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public TracksViewModel(
             //IDialogService dialogService,
             //IAudioFileInfoProvider audioFileInfoProvider,
-            IWriteLibraryService writeLibraryService,
+            //IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
             //PlaybackQueue playbackQueue,
@@ -58,16 +59,28 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         {
             //this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService)); // TODO: localize
             //this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy)); // TODO: localize
-            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             //this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
 
-            this._readLibraryService
-                .Tracks
-                .Connect()
-                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+            //this._trackVMFilterSubject = new BehaviorSubject<Func<TrackViewModel, bool>>(initialFilter).DisposeWith(this._disposables);
+
+            var trackVMsFlow =
+                this._readLibraryService.Tracks
+                 .Connect()
+                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+                 ;
+
+            if (this.Filter != null)
+            {
+                trackVMsFlow = trackVMsFlow
+                .Filter(this.Filter)
+            ;
+            }
+
+            trackVMsFlow
                 .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime))
                 .Bind(out this._filteredSortedTrackViewModels)
                 .DisposeMany() // TODO: put ALAP or ASAP?
@@ -87,7 +100,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this._audioPlaybackEngine.WhenCanStopChanged,
                     (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)))
                 .DisposeWith(this._disposables);
-            this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
+
+            this.PlayTrack.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
 
             //this.ShowAddTracksDialog = ReactiveCommand.CreateFromTask(
             //    async () =>
@@ -106,6 +122,18 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //.DisposeWith(this._disposables);
             //this.ShowAddTracksDialog.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.ToString())).DisposeWith(this._disposables);
         }
+
+        #endregion
+
+        #region filtering
+
+        protected abstract Func<TrackViewModel, bool> Filter { get; }
+
+        //private BehaviorSubject<Func<TrackViewModel, bool>> _trackVMFilterSubject;
+        //public IObservable<Func<TrackViewModel, bool>> WhenTrackVMFilterChanged => this._trackVMFilterSubject;
+
+        //private Subject<Unit> _trackVMFilterIsManuallyUpdatedSubject;
+        //protected readonly IObservable<Unit> WhenTrackVMFilterIsManuallyUpdated => this._trackVMFilterIsManuallyUpdatedSubject;
 
         #endregion
 
@@ -128,13 +156,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region methods
-
-        protected virtual IObservable<IChangeSet<TrackViewModel>> ApplyFilters(IObservable<IChangeSet<TrackViewModel>> trackViewModels)
-        {
-            return trackViewModels
-                //.FilterOnProperty(vm=> vm.PerformersNames, vm => vm.PerformersNames.Count > 0)                
-                ;
-        }
 
         public override void CanClose(Action<bool> callback)
         {

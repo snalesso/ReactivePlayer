@@ -50,7 +50,7 @@
     </Compile>
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
-    <Compile Include="Models\TrackPlaylist.cs" />
+    <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\LibraryEntry.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />

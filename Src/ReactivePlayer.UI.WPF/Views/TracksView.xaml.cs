@@ -87,5 +87,10 @@ namespace ReactivePlayer.UI.WPF.Views
         }
 
         #endregion
+
+        private void faewfawe(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("fewofjowjefwe");
+        }
     }
 }

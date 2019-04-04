@@ -30,45 +30,38 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region ctor
 
-        protected ShellViewModel()
-        {
-        }
-
         public ShellViewModel(
             IAudioPlaybackEngine playbackService,
             //IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
+            LibraryViewModel libraryViewModel,
             PlaybackControlsViewModel playbackControlsViewModel,
-            TracksViewModel tracksViewModel,
             PlaybackHistoryViewModel playbackHistoryViewModel,
             ShellMenuViewModel shellMenuViewModel)
         {
-            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
+            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-
-            this._isEnabled_OAPH = Observable.Return(true)
-                    //Observable.CombineLatest(
-                    //this._readLibraryService.WhenIsConnectedChanged.ObserveOn(RxApp.MainThreadScheduler)
-                    //, this._writeLibraryService.WhenIsBusyChanged.ObserveOn(RxApp.MainThreadScheduler)
-                    //, (isReadLibraryServiceConnected, isWriteLibraryServiceBusy) => isReadLibraryServiceConnected && !isWriteLibraryServiceBusy)
-                    .ToProperty(this, nameof(this.IsEnabled))
-                    .DisposeWith(this._disposables);
-
+            this.LibraryViewModel = libraryViewModel ?? throw new ArgumentNullException(nameof(libraryViewModel));
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
-            this.TracksViewModel = tracksViewModel ?? throw new ArgumentNullException(nameof(tracksViewModel));
             this.PlaybackHistoryViewModel = playbackHistoryViewModel ?? throw new ArgumentNullException(nameof(playbackHistoryViewModel));
             this.ShellMenuViewModel = shellMenuViewModel ?? throw new ArgumentNullException(nameof(shellMenuViewModel));
 
-            this.ActivateItem(this.PlaybackControlsViewModel);
-            this.ActivateItem(this.TracksViewModel);
-            this.ActivateItem(this.PlaybackHistoryViewModel);
+            this._isEnabled_OAPH = Observable
+                .Return(true)
+                .ToProperty(this, nameof(this.IsEnabled))
+                .DisposeWith(this._disposables);
 
             this._playbackService.WhenTrackChanged
                 .Subscribe(track => this.UpdateDisplayName(track))
                 .DisposeWith(this._disposables);
+
+            this.ActivateItem(this.PlaybackControlsViewModel);
+            this.ActivateItem(this.LibraryViewModel);
+            this.ActivateItem(this.PlaybackHistoryViewModel);
+            this.ActivateItem(this.ShellMenuViewModel);
         }
 
         #endregion
@@ -79,15 +72,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public bool IsEnabled => this._isEnabled_OAPH.Value;
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
-        public TracksViewModel TracksViewModel { get; }
+        public LibraryViewModel LibraryViewModel { get; }
         public PlaybackHistoryViewModel PlaybackHistoryViewModel { get; }
         public ShellMenuViewModel ShellMenuViewModel { get; }
-
-        // artists viewmodel
-
-        // albums viewmodel
-
-        // playlists viewmodel
 
         #endregion
 
