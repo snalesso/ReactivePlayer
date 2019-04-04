@@ -23,9 +23,6 @@ namespace ReactivePlayer.UI.WPF.Views
     public partial class TracksView : UserControl, IViewFor<TracksViewModel>
     {
         #region constants & fields
-
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
         #endregion
 
         #region ctor
@@ -81,16 +78,34 @@ namespace ReactivePlayer.UI.WPF.Views
 
         #region IDisposable
 
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        // TODO: review implementation, also consider if there's some Interlocked way to do it
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this.disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
 
         #endregion
-
-        private void faewfawe(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("fewofjowjefwe");
-        }
     }
 }
