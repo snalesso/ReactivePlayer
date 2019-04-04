@@ -35,7 +35,7 @@ Serializers
 Key-Value Stores
 
 	- lmdb									https://symas.com/lmdb/
-		GitHub								https://github.com/LMDB/lmdb
+											https://github.com/LMDB/lmdb
 	- spotify/sparkey						https://github.com/spotify/sparkey/
 
 Databases

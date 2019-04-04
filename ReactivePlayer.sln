@@ -1,12 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F745F881-EE04-4005-99AD-0CF762F91C13}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\.NET docs.txt = Docs\.NET docs.txt
-		Docs\App design notes.txt = Docs\App design notes.txt
 		Docs\Data stores.txt = Docs\Data stores.txt
 		Docs\DDD.txt = Docs\DDD.txt
 		Docs\Features.txt = Docs\Features.txt
@@ -15,14 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F745F881-E
 		Docs\Optimizations.txt = Docs\Optimizations.txt
 		Docs\Playback libraries.txt = Docs\Playback libraries.txt
 		Docs\Player samples.txt = Docs\Player samples.txt
-		Docs\Reactive.txt = Docs\Reactive.txt
-		Docs\Rx Design Guidelines.pdf = Docs\Rx Design Guidelines.pdf
-		Docs\Spotify API.txt = Docs\Spotify API.txt
-		Docs\SQLite.txt = Docs\SQLite.txt
 		Docs\TAGs.txt = Docs\TAGs.txt
 		Docs\Unit test.txt = Docs\Unit test.txt
 		Docs\Visual Studio doc comments.txt = Docs\Visual Studio doc comments.txt
-		Docs\YouTube.txt = Docs\YouTube.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{8191942A-59BD-4149-84AA-B800AE9604F3}"
