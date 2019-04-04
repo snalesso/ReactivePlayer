@@ -40,6 +40,7 @@ Key-Value Stores
 
 Databases
 
+	- ttu/json-flatfile-datastore			https://github.com/ttu/json-flatfile-datastore
 	- BrightstarDB/BrightstarDB				https://github.com/BrightstarDB/BrightstarDB
 	- symisc/unqlite						https://github.com/symisc/unqlite
 	- hhblaze/DBreeze						https://github.com/hhblaze/DBreeze
