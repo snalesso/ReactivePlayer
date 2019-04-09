@@ -1,10 +1,11 @@
 using System;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.FileSystem.Media.Audio
 {
     public interface IAudioFileTagger
     {
-        AudioFileTags ReadTags(Uri trackLocation);
-        bool WriteTags(Uri trackLocation, TrackTags tags);
+        Task<AudioFileTags> ReadTagsAsync(Uri trackLocation);
+        Task<bool> WriteTags(Uri trackLocation, TrackTags tags);
     }
 }

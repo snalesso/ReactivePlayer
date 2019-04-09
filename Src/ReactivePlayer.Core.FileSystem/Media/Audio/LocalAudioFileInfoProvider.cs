@@ -9,10 +9,14 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
     public class LocalAudioFileInfoProvider : IAudioFileInfoProvider
     {
         private readonly IAudioFileTagger _tagger;
+        private readonly IAudioFileDurationCalculator _audioFileDurationCalculator;
 
-        public LocalAudioFileInfoProvider(IAudioFileTagger tagger)
+        public LocalAudioFileInfoProvider(
+            IAudioFileTagger tagger,
+            IAudioFileDurationCalculator audioFileDurationCalculator)
         {
             this._tagger = tagger ?? throw new ArgumentNullException(nameof(tagger)); // TODO: localize
+            this._audioFileDurationCalculator = audioFileDurationCalculator ?? throw new ArgumentNullException(nameof(audioFileDurationCalculator)); // TODO: localize
         }
 
         public async Task<AudioFileInfo> ExtractAudioFileInfo(Uri trackLocation)
@@ -22,13 +26,16 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
 
             var waveSource = await Task.Run(() => CodecFactory.Instance.GetCodec(trackLocation));
             var fileInfo = new FileInfo(trackLocation.LocalPath);
+            var duration = await this._audioFileDurationCalculator.GetDurationAsync(trackLocation);
+            var tags = await this._tagger.ReadTagsAsync(trackLocation);
 
             return
                 new AudioFileInfo(
-                    trackLocation, fileInfo.LastWriteTime,
+                    trackLocation,
+                    fileInfo.LastWriteTime,
                     Convert.ToUInt32(fileInfo.Length),
-                    waveSource.GetLength(),
-                    this._tagger.ReadTags(trackLocation));
+                    duration,
+                    tags);
         }
 
         public bool IsHostSupported(Uri location)

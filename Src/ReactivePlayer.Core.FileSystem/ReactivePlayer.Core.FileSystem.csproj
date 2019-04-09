@@ -67,7 +67,7 @@
     <Compile Include="Media\Audio\AudioChannels.cs" />
     <Compile Include="Media\Audio\AudioFileInfo.cs" />
     <Compile Include="Media\Audio\AudioFileTags.cs" />
-    <Compile Include="Media\Audio\CSCoreAudioFileDurationCalculator.cs" />
+    <Compile Include="Media\Audio\CSCore\CSCoreAudioFileDurationCalculator.cs" />
     <Compile Include="Media\Audio\IAudioFileDurationCalculator.cs" />
     <Compile Include="Media\Audio\IAudioFileInfoProvider.cs" />
     <Compile Include="Media\Audio\IAudioFileTagger.cs" />

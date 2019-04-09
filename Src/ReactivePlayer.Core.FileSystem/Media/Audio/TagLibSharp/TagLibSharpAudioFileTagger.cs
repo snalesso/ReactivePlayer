@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp
 {
@@ -8,9 +9,9 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp
         {
         }
 
-        public AudioFileTags ReadTags(Uri trackLocation)
+        public async Task<AudioFileTags> ReadTagsAsync(Uri trackLocation)
         {
-            var tagLibFile = TagLib.File.Create(trackLocation.LocalPath);
+            var tagLibFile = await Task.Run(() => TagLib.File.Create(trackLocation.LocalPath));
             var tagLibTags = tagLibFile.Tag;
 
             if (tagLibTags == null)
@@ -32,7 +33,7 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp
             return aft;
         }
 
-        public bool WriteTags(Uri trackLocation, TrackTags tags)
+        public Task<bool> WriteTags(Uri trackLocation, TrackTags tags)
         {
             throw new NotImplementedException();
         }
