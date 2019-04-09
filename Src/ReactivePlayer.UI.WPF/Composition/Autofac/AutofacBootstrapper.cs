@@ -1,6 +1,7 @@
 using Autofac;
 using Caliburn.Micro;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
+using ReactivePlayer.Core.FileSystem.Media.Audio.CSCore;
 using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
 using ReactivePlayer.Core.Library.Json.Newtonsoft;
 using ReactivePlayer.Core.Library.Models;
@@ -78,6 +79,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
             builder.Register<IDialogService>(c => new WindowsDialogService()).InstancePerLifetimeScope();
+            builder.RegisterType<CSCoreAudioFileDurationCalculator>().As<IAudioFileDurationCalculator>().InstancePerLifetimeScope();
             builder.RegisterType<TagLibSharpAudioFileTagger>().As<IAudioFileTagger>().InstancePerLifetimeScope();
             builder.RegisterType<LocalAudioFileInfoProvider>().As<IAudioFileInfoProvider>().InstancePerLifetimeScope();
 
