@@ -37,13 +37,13 @@ namespace ReactivePlayer.UI.WPF.Controls
             {
                 this.isCalculating = true;
 
-                if ((this.Maximum - this.Minimum) > 0 && this.sliderCanvas.ActualWidth > 0)
+                if ((this.Maximum - this.Minimum) > 0.0 && this.sliderCanvas.ActualWidth > 0.0)
                 {
                     this.Position = ((this.Value - this.Minimum) / (this.Maximum - this.Minimum)) * this.sliderCanvas.ActualWidth;
                 }
                 else
                 {
-                    this.Position = 0;
+                    this.Position = 0.0;
                 }
 
                 this.isCalculating = false;
@@ -59,13 +59,13 @@ namespace ReactivePlayer.UI.WPF.Controls
             {
                 this.isCalculating = true;
 
-                if (this.sliderCanvas.ActualWidth > 0)
+                if (this.sliderCanvas.ActualWidth > 0.0)
                 {
                     this.Value = ((this.Position * (this.Maximum - this.Minimum)) / this.sliderCanvas.ActualWidth) + this.Minimum;
                 }
                 else
                 {
-                    this.Value = 0;
+                    this.Value = 0.0;
                 }
 
                 this.isCalculating = false;
