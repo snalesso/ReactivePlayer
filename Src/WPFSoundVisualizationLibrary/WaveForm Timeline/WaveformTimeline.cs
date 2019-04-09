@@ -16,12 +16,11 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
+// DEALINGS IN THE SOFTWARE. 
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -62,7 +61,7 @@ namespace WPFSoundVisualizationLib
         private Point mouseDownPoint;
         private Point currentPoint;
         private double startLoopRegion = -1;
-        private double endLoopRegion = -1;
+        private double endLoopRegion = -1;        
         #endregion
 
         #region Constants
@@ -124,8 +123,14 @@ namespace WPFSoundVisualizationLib
         public Brush LeftLevelBrush
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Brush)this.GetValue(LeftLevelBrushProperty);
-            set => this.SetValue(LeftLevelBrushProperty, value);
+            get
+            {
+                return (Brush)this.GetValue(LeftLevelBrushProperty);
+            }
+            set
+            {
+                this.SetValue(LeftLevelBrushProperty, value);
+            }
         }
         #endregion
 
@@ -179,8 +184,14 @@ namespace WPFSoundVisualizationLib
         public Brush RightLevelBrush
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Brush)this.GetValue(RightLevelBrushProperty);
-            set => this.SetValue(RightLevelBrushProperty, value);
+            get
+            {
+                return (Brush)this.GetValue(RightLevelBrushProperty);
+            }
+            set
+            {
+                this.SetValue(RightLevelBrushProperty, value);
+            }
         }
         #endregion
 
@@ -236,8 +247,14 @@ namespace WPFSoundVisualizationLib
         public Brush ProgressBarBrush
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Brush)this.GetValue(ProgressBarBrushProperty);
-            set => this.SetValue(ProgressBarBrushProperty, value);
+            get
+            {
+                return (Brush)this.GetValue(ProgressBarBrushProperty);
+            }
+            set
+            {
+                this.SetValue(ProgressBarBrushProperty, value);
+            }
         }
         #endregion
 
@@ -292,8 +309,14 @@ namespace WPFSoundVisualizationLib
         public double ProgressBarThickness
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (double)this.GetValue(ProgressBarThicknessProperty);
-            set => this.SetValue(ProgressBarThicknessProperty, value);
+            get
+            {
+                return (double)this.GetValue(ProgressBarThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(ProgressBarThicknessProperty, value);
+            }
         }
         #endregion
 
@@ -347,8 +370,14 @@ namespace WPFSoundVisualizationLib
         public Brush CenterLineBrush
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Brush)this.GetValue(CenterLineBrushProperty);
-            set => this.SetValue(CenterLineBrushProperty, value);
+            get
+            {
+                return (Brush)this.GetValue(CenterLineBrushProperty);
+            }
+            set
+            {
+                this.SetValue(CenterLineBrushProperty, value);
+            }
         }
         #endregion
 
@@ -403,8 +432,14 @@ namespace WPFSoundVisualizationLib
         public double CenterLineThickness
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (double)this.GetValue(CenterLineThicknessProperty);
-            set => this.SetValue(CenterLineThicknessProperty, value);
+            get
+            {
+                return (double)this.GetValue(CenterLineThicknessProperty);
+            }
+            set
+            {
+                this.SetValue(CenterLineThicknessProperty, value);
+            }
         }
         #endregion
 
@@ -458,8 +493,14 @@ namespace WPFSoundVisualizationLib
         public Brush RepeatRegionBrush
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Brush)this.GetValue(RepeatRegionBrushProperty);
-            set => this.SetValue(RepeatRegionBrushProperty, value);
+            get
+            {
+                return (Brush)this.GetValue(RepeatRegionBrushProperty);
+            }
+            set
+            {
+                this.SetValue(RepeatRegionBrushProperty, value);
+            }
         }
 
         #endregion
@@ -517,11 +558,17 @@ namespace WPFSoundVisualizationLib
         public bool AllowRepeatRegions
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (bool)this.GetValue(AllowRepeatRegionsProperty);
-            set => this.SetValue(AllowRepeatRegionsProperty, value);
+            get
+            {
+                return (bool)this.GetValue(AllowRepeatRegionsProperty);
+            }
+            set
+            {
+                this.SetValue(AllowRepeatRegionsProperty, value);
+            }
         }
         #endregion
-
+        
         #region TimelineTickBrush
         /// <summary>
         /// Identifies the <see cref="TimelineTickBrush" /> dependency property. 
@@ -571,8 +618,14 @@ namespace WPFSoundVisualizationLib
         public Brush TimelineTickBrush
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Brush)this.GetValue(TimelineTickBrushProperty);
-            set => this.SetValue(TimelineTickBrushProperty, value);
+            get
+            {
+                return (Brush)this.GetValue(TimelineTickBrushProperty);
+            }
+            set
+            {
+                this.SetValue(TimelineTickBrushProperty, value);
+            }
         }
         #endregion
 
@@ -635,8 +688,14 @@ namespace WPFSoundVisualizationLib
         public bool AutoScaleWaveformCache
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (bool)this.GetValue(AutoScaleWaveformCacheProperty);
-            set => this.SetValue(AutoScaleWaveformCacheProperty, value);
+            get
+            {
+                return (bool)this.GetValue(AutoScaleWaveformCacheProperty);
+            }
+            set
+            {
+                this.SetValue(AutoScaleWaveformCacheProperty, value);
+            }
         }
         #endregion
         #endregion
@@ -662,7 +721,7 @@ namespace WPFSoundVisualizationLib
 
             this.timelineCanvas = this.GetTemplateChild("PART_Timeline") as Canvas;
             this.timelineCanvas.Children.Add(this.timelineBackgroundRegion);
-            this.timelineCanvas.SizeChanged += this.TimelineCanvas_SizeChanged;
+            this.timelineCanvas.SizeChanged += this.timelineCanvas_SizeChanged;
 
             this.repeatCanvas = this.GetTemplateChild("PART_Repeat") as Canvas;
             this.repeatCanvas.Children.Add(this.repeatRegion);
@@ -671,8 +730,8 @@ namespace WPFSoundVisualizationLib
             this.progressCanvas.Children.Add(this.progressIndicator);
             this.progressCanvas.Children.Add(this.progressLine);
 
-            this.UpdateWaveformCacheScaling();
-        }
+            this.UpdateWaveformCacheScaling();            
+        }            
 
         /// <summary>
         /// Called whenever the control's template changes. 
@@ -682,16 +741,16 @@ namespace WPFSoundVisualizationLib
         protected override void OnTemplateChanged(ControlTemplate oldTemplate, ControlTemplate newTemplate)
         {
             base.OnTemplateChanged(oldTemplate, newTemplate);
-            if (this.waveformCanvas != null)
+            if(this.waveformCanvas != null)
                 this.waveformCanvas.Children.Clear();
             if (this.timelineCanvas != null)
             {
-                this.timelineCanvas.SizeChanged -= this.TimelineCanvas_SizeChanged;
+                this.timelineCanvas.SizeChanged -= this.timelineCanvas_SizeChanged;
                 this.timelineCanvas.Children.Clear();
             }
-            if (this.repeatCanvas != null)
+            if(this.repeatCanvas != null)
                 this.repeatCanvas.Children.Clear();
-            if (this.progressCanvas != null)
+            if(this.progressCanvas != null)
                 this.progressCanvas.Children.Clear();
         }
         #endregion
@@ -712,13 +771,12 @@ namespace WPFSoundVisualizationLib
         public void RegisterSoundPlayer(IWaveformPlayer soundPlayer)
         {
             this.soundPlayer = soundPlayer;
-            //soundPlayer.PropertyChanged += this.soundPlayer_PropertyChanged;
-            soundPlayer.WhenIsPlayingChanged.Subscribe(isPlaying => { }).DisposeWith(this._disposables);
+            soundPlayer.PropertyChanged += this.soundPlayer_PropertyChanged;
         }
         #endregion
 
         #region Event Handlers
-        private void SoundPlayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void soundPlayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -744,10 +802,10 @@ namespace WPFSoundVisualizationLib
             }
         }
 
-        private void TimelineCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void timelineCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.UpdateTimeline();
-        }
+        }       
         #endregion
 
         #region Event Overrides
@@ -780,7 +838,7 @@ namespace WPFSoundVisualizationLib
         /// <param name="e">The MouseButtonEventArgs that contains the event data. The event data reports that the left mouse button was released.</param>
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            base.OnMouseLeftButtonUp(e);
+            base.OnMouseLeftButtonUp(e);            
             if (!this.isMouseDown)
                 return;
 
@@ -849,7 +907,7 @@ namespace WPFSoundVisualizationLib
                 }
                 this.UpdateRepeatRegion();
             }
-        }
+        }        
         #endregion
 
         #region Private Utiltiy Methods
@@ -930,7 +988,7 @@ namespace WPFSoundVisualizationLib
             double endPercent = this.endLoopRegion / this.soundPlayer.ChannelLength;
             double endXLocation = endPercent * this.repeatCanvas.RenderSize.Width;
 
-            if (this.soundPlayer.ChannelLength == 0 ||
+            if (this.soundPlayer.ChannelLength == 0 || 
                 endXLocation <= startXLocation)
             {
                 this.repeatRegion.Width = 0;
@@ -1169,39 +1227,6 @@ namespace WPFSoundVisualizationLib
                 this.leftPath.Data = null;
                 this.rightPath.Data = null;
             }
-        }
-        #endregion
-
-        #region IDisposable Support
-
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected virtual void Dispose(bool disposing)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-        {
-            if (!this.disposedValue)
-            {
-                if (disposing)
-                {
-                    this._disposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this.disposedValue = true;
-            }
-        }
-
-        // This code added to correctly implement the disposable pattern.
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public void Dispose()
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            this.Dispose(true);
         }
         #endregion
     }

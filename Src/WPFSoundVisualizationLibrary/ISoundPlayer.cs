@@ -16,9 +16,9 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
+// DEALINGS IN THE SOFTWARE. 
 
-using System;
+using System.ComponentModel;
 
 namespace WPFSoundVisualizationLib
 {
@@ -28,18 +28,11 @@ namespace WPFSoundVisualizationLib
     /// </summary>
     /// <seealso cref="IWaveformPlayer"/>
     /// <seealso cref="ISpectrumPlayer"/>
-    public interface ISoundPlayer //: INotifyPropertyChanged
+    public interface ISoundPlayer : INotifyPropertyChanged
     {
-        ///// <summary>
-        ///// Gets whether the sound player is currently playing audio.
-        ///// </summary>
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        bool IsPlaying { get; }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
         /// <summary>
-        /// 
+        /// Gets whether the sound player is currently playing audio.
         /// </summary>
-        IObservable<bool> WhenIsPlayingChanged { get; }
+        bool IsPlaying { get; }
     }
 }

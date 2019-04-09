@@ -1,4 +1,5 @@
-﻿namespace WPFSoundVisualizationLib
+﻿
+namespace WPFSoundVisualizationLib
 {
     /// <summary>
     /// The various FFT dataset sizes that can be used for processing. Note that
@@ -35,5 +36,6 @@
         /// A 16384 point FFT. Real data will be 8192 floating point values.
         /// </summary>
         FFT16384 = 16384
+
     }
 }

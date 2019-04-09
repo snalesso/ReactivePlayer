@@ -16,11 +16,10 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-// DEALINGS IN THE SOFTWARE.
+// DEALINGS IN THE SOFTWARE. 
 
 
 using System;
-using System.Reactive;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -28,7 +27,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Reactive.Disposables;
 
 namespace WPFSoundVisualizationLib
 {
@@ -38,8 +36,8 @@ namespace WPFSoundVisualizationLib
     [DisplayName("Spectrum Analyzer")]
     [Description("Displays audio level and frequency data.")]
     [ToolboxItem(true)]
-    [TemplatePart(Name = "PART_SpectrumCanvas", Type = typeof(Canvas))]
-    public class SpectrumAnalyzer : Control, IDisposable
+    [TemplatePart(Name = "PART_SpectrumCanvas", Type = typeof(Canvas))]     
+    public class SpectrumAnalyzer : Control
     {
         #region Fields
         private readonly DispatcherTimer animationTimer;
@@ -122,8 +120,14 @@ namespace WPFSoundVisualizationLib
         public int MaximumFrequency
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (int)this.GetValue(MaximumFrequencyProperty);
-            set => this.SetValue(MaximumFrequencyProperty, value);
+            get
+            {
+                return (int)this.GetValue(MaximumFrequencyProperty);
+            }
+            set
+            {
+                this.SetValue(MaximumFrequencyProperty, value);
+            }
         }
         #endregion
 
@@ -179,8 +183,14 @@ namespace WPFSoundVisualizationLib
         public int MinimumFrequency
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (int)this.GetValue(MinimumFrequencyProperty);
-            set => this.SetValue(MinimumFrequencyProperty, value);
+            get
+            {
+                return (int)this.GetValue(MinimumFrequencyProperty);
+            }
+            set
+            {
+                this.SetValue(MinimumFrequencyProperty, value);
+            }
         }
 
         #endregion
@@ -237,8 +247,14 @@ namespace WPFSoundVisualizationLib
         public int BarCount
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (int)this.GetValue(BarCountProperty);
-            set => this.SetValue(BarCountProperty, value);
+            get
+            {
+                return (int)this.GetValue(BarCountProperty);
+            }
+            set
+            {
+                this.SetValue(BarCountProperty, value);
+            }
         }
         #endregion
 
@@ -292,8 +308,14 @@ namespace WPFSoundVisualizationLib
         public double BarSpacing
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (double)this.GetValue(BarSpacingProperty);
-            set => this.SetValue(BarSpacingProperty, value);
+            get
+            {
+                return (double)this.GetValue(BarSpacingProperty);
+            }
+            set
+            {
+                this.SetValue(BarSpacingProperty, value);
+            }
         }
         #endregion
 
@@ -350,8 +372,14 @@ namespace WPFSoundVisualizationLib
         public int PeakFallDelay
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (int)this.GetValue(PeakFallDelayProperty);
-            set => this.SetValue(PeakFallDelayProperty, value);
+            get
+            {
+                return (int)this.GetValue(PeakFallDelayProperty);
+            }
+            set
+            {
+                this.SetValue(PeakFallDelayProperty, value);
+            }
         }
         #endregion
 
@@ -409,8 +437,14 @@ namespace WPFSoundVisualizationLib
         public bool IsFrequencyScaleLinear
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (bool)this.GetValue(IsFrequencyScaleLinearProperty);
-            set => this.SetValue(IsFrequencyScaleLinearProperty, value);
+            get
+            {
+                return (bool)this.GetValue(IsFrequencyScaleLinearProperty);
+            }
+            set
+            {
+                this.SetValue(IsFrequencyScaleLinearProperty, value);
+            }
         }
         #endregion
 
@@ -463,8 +497,14 @@ namespace WPFSoundVisualizationLib
         public BarHeightScalingStyles BarHeightScaling
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (BarHeightScalingStyles)this.GetValue(BarHeightScalingProperty);
-            set => this.SetValue(BarHeightScalingProperty, value);
+            get
+            {
+                return (BarHeightScalingStyles)this.GetValue(BarHeightScalingProperty);
+            }
+            set
+            {
+                this.SetValue(BarHeightScalingProperty, value);
+            }
         }
         #endregion
 
@@ -519,8 +559,14 @@ namespace WPFSoundVisualizationLib
         public bool AveragePeaks
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (bool)this.GetValue(AveragePeaksProperty);
-            set => this.SetValue(AveragePeaksProperty, value);
+            get
+            {
+                return (bool)this.GetValue(AveragePeaksProperty);
+            }
+            set
+            {
+                this.SetValue(AveragePeaksProperty, value);
+            }
         }
         #endregion
 
@@ -572,8 +618,14 @@ namespace WPFSoundVisualizationLib
         public Style BarStyle
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Style)this.GetValue(BarStyleProperty);
-            set => this.SetValue(BarStyleProperty, value);
+            get
+            {
+                return (Style)this.GetValue(BarStyleProperty);
+            }
+            set
+            {
+                this.SetValue(BarStyleProperty, value);
+            }
         }
         #endregion
 
@@ -627,8 +679,14 @@ namespace WPFSoundVisualizationLib
         public Style PeakStyle
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (Style)this.GetValue(PeakStyleProperty);
-            set => this.SetValue(PeakStyleProperty, value);
+            get
+            {
+                return (Style)this.GetValue(PeakStyleProperty);
+            }
+            set
+            {
+                this.SetValue(PeakStyleProperty, value);
+            }
         }
         #endregion
 
@@ -680,8 +738,14 @@ namespace WPFSoundVisualizationLib
         public double ActualBarWidth
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (double)this.GetValue(ActualBarWidthProperty);
-            protected set => this.SetValue(ActualBarWidthProperty, value);
+            get
+            {
+                return (double)this.GetValue(ActualBarWidthProperty);
+            }
+            protected set
+            {
+                this.SetValue(ActualBarWidthProperty, value);
+            }
         }
         #endregion
 
@@ -738,9 +802,15 @@ namespace WPFSoundVisualizationLib
         public int RefreshInterval
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (int)this.GetValue(RefreshIntervalProperty);
-            set => this.SetValue(RefreshIntervalProperty, value);
-        }
+            get
+            {
+                return (int)this.GetValue(RefreshIntervalProperty);
+            }
+            set
+            {
+                this.SetValue(RefreshIntervalProperty, value);
+            }
+        }               
         #endregion
 
         #region FFTComplexity
@@ -771,7 +841,7 @@ namespace WPFSoundVisualizationLib
         /// <param name="value">The value that was set on <see cref="FFTComplexity"/></param>
         /// <returns>The adjusted value of <see cref="FFTComplexity"/></returns>
         protected virtual FFTDataSize OnCoerceFFTComplexity(FFTDataSize value)
-        {
+        {            
             return value;
         }
 
@@ -793,8 +863,14 @@ namespace WPFSoundVisualizationLib
         public FFTDataSize FFTComplexity
         {
             // IMPORTANT: To maintain parity between setting a property in XAML and procedural code, do not touch the getter and setter inside this dependency property!
-            get => (FFTDataSize)this.GetValue(FFTComplexityProperty);
-            set => this.SetValue(FFTComplexityProperty, value);
+            get
+            {
+                return (FFTDataSize)this.GetValue(FFTComplexityProperty);
+            }
+            set
+            {
+                this.SetValue(FFTComplexityProperty, value);
+            }
         }
         #endregion
 
@@ -808,9 +884,9 @@ namespace WPFSoundVisualizationLib
         public override void OnApplyTemplate()
         {
             this.spectrumCanvas = this.GetTemplateChild("PART_SpectrumCanvas") as Canvas;
-            this.spectrumCanvas.SizeChanged += this.SpectrumCanvas_SizeChanged;
+            this.spectrumCanvas.SizeChanged += this.spectrumCanvas_SizeChanged;
             this.UpdateBarLayout();
-        }
+        }        
 
         /// <summary>
         /// Called whenever the control's template changes. 
@@ -821,7 +897,7 @@ namespace WPFSoundVisualizationLib
         {
             base.OnTemplateChanged(oldTemplate, newTemplate);
             if (this.spectrumCanvas != null)
-                this.spectrumCanvas.SizeChanged -= this.SpectrumCanvas_SizeChanged;
+                this.spectrumCanvas.SizeChanged -= this.spectrumCanvas_SizeChanged;        
         }
         #endregion
 
@@ -840,7 +916,7 @@ namespace WPFSoundVisualizationLib
             {
                 Interval = TimeSpan.FromMilliseconds(defaultUpdateInterval),
             };
-            this.animationTimer.Tick += this.AnimationTimer_Tick;
+            this.animationTimer.Tick += this.animationTimer_Tick;
         }
         #endregion
 
@@ -853,12 +929,7 @@ namespace WPFSoundVisualizationLib
         public void RegisterSoundPlayer(ISpectrumPlayer soundPlayer)
         {
             this.soundPlayer = soundPlayer;
-            //soundPlayer.PropertyChanged += this.SoundPlayer_PropertyChanged;
-            soundPlayer.WhenIsPlayingChanged.Subscribe(isPlaying =>
-            {
-                if (isPlaying && !this.animationTimer.IsEnabled)
-                    this.animationTimer.Start();
-            }).DisposeWith(this._disposables);
+            soundPlayer.PropertyChanged += this.soundPlayer_PropertyChanged;
             this.UpdateBarLayout();
             this.animationTimer.Start();
         }
@@ -901,6 +972,7 @@ namespace WPFSoundVisualizationLib
 
             this.UpdateSpectrumShapes();
         }
+
 
         private void UpdateSpectrumShapes()
         {
@@ -1051,11 +1123,10 @@ namespace WPFSoundVisualizationLib
 
             this.ActualBarWidth = this.barWidth;
         }
-
         #endregion
 
         #region Event Handlers
-        private void SoundPlayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void soundPlayer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -1066,47 +1137,14 @@ namespace WPFSoundVisualizationLib
             }
         }
 
-        private void AnimationTimer_Tick(object sender, EventArgs e)
+        private void animationTimer_Tick(object sender, EventArgs e)
         {
             this.UpdateSpectrum();
         }
 
-        private void SpectrumCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void spectrumCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.UpdateBarLayout();
-        }
-        #endregion
-
-        #region IDisposable Support
-
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected virtual void Dispose(bool disposing)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-        {
-            if (!this.disposedValue)
-            {
-                if (disposing)
-                {
-                    this._disposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this.disposedValue = true;
-            }
-        }
-
-        // This code added to correctly implement the disposable pattern.
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        public void Dispose()
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            this.Dispose(true);
         }
         #endregion
     }
