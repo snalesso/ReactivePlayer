@@ -22,10 +22,18 @@ namespace ReactivePlayer.Domain.Repositories
     {
         private readonly string _xmliTunesMediaLibraryFilePath;
 
+        #region ctor
+
         public iTunesXMLTracksDeserializer(string xmliTunesMediaLibraryFilePath) : base(xmliTunesMediaLibraryFilePath)
         {
             this._xmliTunesMediaLibraryFilePath = xmliTunesMediaLibraryFilePath;
         }
+
+        public iTunesXMLTracksDeserializer() : this(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "iTunes", "iTunes Music Library.xml"))
+        {
+        }
+
+        #endregion
 
         protected override async Task DeserializeCore()
         {
