@@ -10,3 +10,7 @@ NAudio
 - Ideas & tips	http://markheath.net/
 
 BASS.NET
+
+Waveform
+
+http://mark-dot-net.blogspot.com/2009/07/audio-waveform-drawing-using-wpf.html
