@@ -13,7 +13,7 @@ namespace ReactivePlayer.Core.Library.Models
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
-            ulong? fileSizeBytes,
+            uint? fileSizeBytes,
             bool isLoved,
             DateTime addedToLibraryDateTime)
             : base(id)
@@ -54,8 +54,8 @@ namespace ReactivePlayer.Core.Library.Models
             internal set => this.SetAndRaiseIfChanged(ref this._duration, value);
         }
 
-        private ulong? _fileSizeBytes;
-        public ulong? FileSizeBytes
+        private uint? _fileSizeBytes;
+        public uint? FileSizeBytes
         {
             get => this._fileSizeBytes;
             internal set => this.SetAndRaiseIfChanged(ref this._fileSizeBytes, value);

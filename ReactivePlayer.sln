@@ -102,6 +102,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveformTimeline.Tests", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSoundVisualizationLib", "Src\WPFSoundVisualizationLibrary\WPFSoundVisualizationLib.csproj", "{90F96222-1C39-4A19-ABE8-1B00FB330985}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.WPFSoundVisualizationLibrary", "Src\ReactivePlayer.WPFSoundVisualizationLibrary\ReactivePlayer.WPFSoundVisualizationLibrary.csproj", "{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.SQLite3.Akavache", "Src\ReactivePlayer.SQLite3.Akavache\ReactivePlayer.SQLite3.Akavache.csproj", "{11FFED5E-B152-427E-B925-F281BC9472CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -294,6 +298,22 @@ Global
 		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|Any CPU.Build.0 = Release|Any CPU
 		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|x64.ActiveCfg = Release|Any CPU
 		{90F96222-1C39-4A19-ABE8-1B00FB330985}.Release|x64.Build.0 = Release|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Debug|x64.Build.0 = Debug|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Release|x64.ActiveCfg = Release|Any CPU
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28}.Release|x64.Build.0 = Release|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Debug|x64.Build.0 = Debug|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|x64.ActiveCfg = Release|Any CPU
+		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -324,6 +344,8 @@ Global
 		{8F005A5D-9325-4CB5-8359-53A7203B9DAF} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{8A8C0A4D-CE2D-42B3-9A4B-27263DE172AA} = {B9711239-ED08-4BDD-AB92-CD17D1B0BC01}
 		{90F96222-1C39-4A19-ABE8-1B00FB330985} = {8191942A-59BD-4149-84AA-B800AE9604F3}
+		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28} = {8191942A-59BD-4149-84AA-B800AE9604F3}
+		{11FFED5E-B152-427E-B925-F281BC9472CD} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89BD77AF-A336-4C8F-A1F9-E89FF141FEC5}

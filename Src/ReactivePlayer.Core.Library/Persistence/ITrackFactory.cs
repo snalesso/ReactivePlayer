@@ -11,7 +11,7 @@ namespace ReactivePlayer.Core.Library.Persistence
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
-            ulong? fileSizeBytes,
+            uint? fileSizeBytes,
             // Track
             string title,
             IEnumerable<string> performers,

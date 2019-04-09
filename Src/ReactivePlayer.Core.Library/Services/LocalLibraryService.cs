@@ -72,6 +72,8 @@ namespace ReactivePlayer.Core.Library.Services
         private SourceCache<Track, uint> _sourceTracks;
         public IObservableCache<Track, uint> Tracks => this._sourceTracks;
 
+        public IObservableList<Playlist> Playlists => throw new NotImplementedException();
+
         //private readonly SourceList<Artist> _sourceArtists;
         //public IObservableList<Artist> Artists => this._sourceArtists;
 
@@ -101,7 +103,7 @@ namespace ReactivePlayer.Core.Library.Services
                     command.Year,
                     command.AlbumAssociation);
 
-               var addedTrack = await this._tracksRepository.AddAsync(newTrack);
+                var addedTrack = await this._tracksRepository.AddAsync(newTrack);
 
                 this._sourceTracks.Edit(list =>
                 {
@@ -118,6 +120,55 @@ namespace ReactivePlayer.Core.Library.Services
             finally
             {
             }
+        }
+
+        public async Task<IReadOnlyList<Track>> AddTracksAsync(IEnumerable<AddTrackCommand> commands)
+        {
+            if (commands == null)
+                throw new ArgumentNullException(nameof(commands));
+
+            // TODO: ensure track paths uniqueness
+
+            IReadOnlyList<Track> result = null;
+
+            try
+            {
+                var newTracks = new List<Track>();
+
+                foreach (var command in commands)
+                {
+                    var newTrack = await this._trackFactory.CreateAsync(
+                        command.Location,
+                        command.Duration,
+                        command.LastModifiedDateTime,
+                        command.FileSizeBytes,
+                        command.Title,
+                        command.Performers,
+                        command.Composers,
+                        command.Year,
+                        command.AlbumAssociation);
+                    newTracks.Add(newTrack);
+                }
+
+                var addedTracks = await this._tracksRepository.AddAsync(newTracks);
+
+                this._sourceTracks.Edit(list =>
+                {
+                    list.AddOrUpdate(addedTracks);
+                });
+
+                result = addedTracks.ToImmutableList();
+            }
+            catch //(Exception ex)
+            {
+                // TODO: log
+                result = null;
+            }
+            finally
+            {
+            }
+
+            return result;
         }
 
         public async Task<bool> RemoveTrackAsync(RemoveTrackCommand command)
@@ -143,7 +194,7 @@ namespace ReactivePlayer.Core.Library.Services
             return wasSuccessful;
         }
 
-        public async Task<bool> RemoveTracksAsync(IReadOnlyList<RemoveTrackCommand> commands)
+        public async Task<bool> RemoveTracksAsync(IEnumerable<RemoveTrackCommand> commands)
         {
             bool wasSuccessful;
 

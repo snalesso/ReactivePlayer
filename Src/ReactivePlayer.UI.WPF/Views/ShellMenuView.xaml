@@ -17,6 +17,15 @@
 
     <Menu>
         <Menu.Items>
+            <MenuItem Header="Library">
+                <MenuItem.Items>
+                    <!--<MenuItem Command="{Binding TracksViewModel.PlayAll}" Header="Play all" />-->
+                    <MenuItem Command="{Binding LibraryViewModel.ShowFilePicker}" Header="Add ..." />
+                    <!--<Separator />
+                    <MenuItem Header="Previous" />
+                    <MenuItem Header="Next" />-->
+                </MenuItem.Items>
+            </MenuItem>
             <MenuItem Header="Playback">
                 <MenuItem.Items>
                     <!--<MenuItem Command="{Binding TracksViewModel.PlayAll}" Header="Play all" />-->

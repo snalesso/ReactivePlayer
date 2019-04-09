@@ -42,7 +42,7 @@ namespace ReactivePlayer.Core.Library.Persistence
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
-            ulong? fileSizeBytes,
+            uint? fileSizeBytes,
             string title,
             IEnumerable<string> performers,
             IEnumerable<string> composers,

@@ -50,7 +50,7 @@ namespace ReactivePlayer.Domain.Models
         public uint? Rating { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public uint? SampleRate { get; set; }
-        public ulong? Size { get; set; }
+        public uint? Size { get; set; }
         public uint SkipCount { get; set; }
         public DateTime? SkipDate { get; set; }
         public string SortAlbum { get; set; }

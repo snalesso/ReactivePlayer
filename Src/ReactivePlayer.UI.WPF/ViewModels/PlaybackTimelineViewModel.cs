@@ -73,7 +73,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._isLoadingOAPH = this._audioPlaybackEngine.WhenStatusChanged
                 .ObserveOn(RxApp.MainThreadScheduler) // TODO: can remove? should others use it?
                 .Select(status => status == PlaybackStatus.Loading)
-                .Do(isLoading => { if (isLoading) Debug.WriteLine($"{this.GetType().Name}.{nameof(this.IsLoading)} == {isLoading}"); })
+                //.Do(isLoading => { if (isLoading) Debug.WriteLine($"{this.GetType().Name}.{nameof(this.IsLoading)} == {isLoading}"); })
                 .ToProperty(this, nameof(this.IsLoading))
                 .DisposeWith(this._disposables);
 
@@ -154,7 +154,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public ReactiveCommand<Unit, Unit> StartSeeking { get; }
         public ReactiveCommand<long, Unit> SeekTo { get; }
-        // TODO: consider end seeking accept a long to tell on which tick the seeking ends
         public ReactiveCommand<long, Unit> EndSeeking { get; }
 
         #region IDisposable Support

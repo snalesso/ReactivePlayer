@@ -69,6 +69,8 @@
     <Compile Include="PlaybackStatus.cs" />
     <Compile Include="PlaybackStatusHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpectrumChannel.cs" />
+    <Compile Include="SpectrumStyle.cs" />
     <Compile Include="TrackPlaybackStatus.cs" />
   </ItemGroup>
   <ItemGroup>

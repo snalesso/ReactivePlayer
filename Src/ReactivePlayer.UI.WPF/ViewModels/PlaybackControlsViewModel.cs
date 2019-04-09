@@ -21,8 +21,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //private readonly PlaybackHistory _playbackHistory;
         //private readonly IReadLibraryService _readLibraryService;
 
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
         #endregion
 
         #region constructors
@@ -136,6 +134,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region IDisposable Support
 
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -160,6 +159,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
         }
+
         #endregion
     }
 }

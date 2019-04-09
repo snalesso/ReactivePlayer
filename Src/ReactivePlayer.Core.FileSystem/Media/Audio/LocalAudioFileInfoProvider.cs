@@ -1,10 +1,7 @@
 using CSCore;
 using CSCore.Codecs;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.FileSystem.Media.Audio
@@ -29,7 +26,7 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
             return
                 new AudioFileInfo(
                     trackLocation, fileInfo.LastWriteTime,
-                    Convert.ToUInt64(fileInfo.Length),
+                    Convert.ToUInt32(fileInfo.Length),
                     waveSource.GetLength(),
                     this._tagger.ReadTags(trackLocation));
         }

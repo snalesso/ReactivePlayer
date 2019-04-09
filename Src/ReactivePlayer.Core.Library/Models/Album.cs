@@ -18,7 +18,7 @@ namespace ReactivePlayer.Core.Library.Models
             uint? discsCount)
         {
             this.Title = title.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
-            this.Authors = authors.EmptyIfNull().ToImmutableArray();
+            this.Authors = authors.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.TracksCount = tracksCount.NullIf(v => v <= 0);
             this.DiscsCount = discsCount.NullIf(v => v <= 0);
         }

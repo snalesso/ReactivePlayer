@@ -7,7 +7,7 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
         public AudioFileInfo(
             Uri location,
             DateTime? lastModifiedDateTime,
-            ulong? sizeBytes,
+            uint? sizeBytes,
             TimeSpan? duration,
             AudioFileTags tags)
             : base(location, lastModifiedDateTime, sizeBytes, duration)

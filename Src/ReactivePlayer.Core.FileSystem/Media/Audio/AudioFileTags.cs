@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace ReactivePlayer.Core.FileSystem.Media.Audio
@@ -10,20 +11,27 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
             string title,
             IEnumerable<string> performersNames,
             IEnumerable<string> composersNames,
+            uint? year,
+            //string lyrics,
             string albumTitle,
-            uint? albumYear,
+            IReadOnlyList<string> albumAuthors,
             uint? albumTrackNumber,
+            uint? albumTracksCount,
             uint? albumDiscNumber,
-            string lyrics)
+            uint? albumDiscsCount)
         {
             this.Title = title.TrimmedOrNull();
-            this.PerformersNames = performersNames.Select(n => n.TrimmedOrNull()).Where(n => n != null).ToList().AsReadOnly();
-            this.ComposersNames = composersNames.Select(n => n.TrimmedOrNull()).Where(n => n != null).ToList().AsReadOnly();
+            this.PerformersNames = performersNames.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
+            this.ComposersNames = composersNames.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
+            this.Year = year.ThrowIf(ay => ay > DateTime.Today.Year, () => new ArgumentOutOfRangeException(nameof(year))); // TODO: localize
+
             this.AlbumTitle = albumTitle.TrimmedOrNull();
-            this.AlbumYear = albumYear.ThrowIf(ay => ay > DateTime.Today.Year, () => new ArgumentOutOfRangeException(nameof(albumYear))); // TODO: localize
+            this.AlbumAuthors = albumAuthors.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
+            this.AlbumTracksCount = albumTracksCount.NullIf(x => x <= 0);
             this.AlbumTrackNumber = albumTrackNumber.NullIf(atn => atn <= 0);
+            this.AlbumDiscsCount = albumDiscsCount.NullIf(x => x <= 0);
             this.AlbumDiscNumber = albumDiscNumber.NullIf(adn => adn <= 0);
-            this.Lyrics = lyrics.TrimmedOrNull();
+            //this.Lyrics = lyrics.TrimmedOrNull();
         }
 
         #region track
@@ -31,15 +39,18 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
         public string Title { get; }
         public IReadOnlyList<string> PerformersNames { get; }
         public IReadOnlyList<string> ComposersNames { get; }
-        public string Lyrics { get; }
+        //public string Lyrics { get; }
+        public uint? Year { get; }
 
         #endregion
 
         #region album
 
         public string AlbumTitle { get; }
-        public uint? AlbumYear { get; }
+        public IReadOnlyList<string> AlbumAuthors { get; }
+        public uint? AlbumTracksCount { get; }
         public uint? AlbumTrackNumber { get; }
+        public uint? AlbumDiscsCount { get; }
         public uint? AlbumDiscNumber { get; }
 
         #endregion

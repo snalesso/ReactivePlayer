@@ -24,20 +24,20 @@
 
         <Views:ShellMenuView DataContext="{Binding ShellMenuViewModel}" />
 
-        <Grid Grid.Row="2">
+        <!--<Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" MinWidth="280" />
-            </Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>-->
 
-            <Views:LibraryView DataContext="{Binding LibraryViewModel}"/>
-            
-            <GridSplitter Grid.Column="1" Background="Transparent" Width="8" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"></GridSplitter>
-            
-            <Views:PlaybackHistoryView Grid.Column="2" DataContext="{Binding PlaybackHistoryViewModel}" />
+        <Views:LibraryView Grid.Row="2" DataContext="{Binding LibraryViewModel}" />
 
-        </Grid>
+        <!--<GridSplitter Grid.Column="1" Background="Transparent" Width="8" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"></GridSplitter>
+
+            <Views:PlaybackHistoryView Grid.Column="2" DataContext="{Binding PlaybackHistoryViewModel}" />-->
+
+        <!--</Grid>-->
 
         <Views:PlaybackControlsView Grid.Row="3" DataContext="{Binding PlaybackControlsViewModel}" />
 

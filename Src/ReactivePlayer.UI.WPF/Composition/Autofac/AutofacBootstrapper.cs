@@ -1,5 +1,8 @@
 using Autofac;
 using Caliburn.Micro;
+using ReactivePlayer.Core.FileSystem.Media.Audio;
+using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
+using ReactivePlayer.Core.Library.Json.Newtonsoft;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
@@ -75,6 +78,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
             builder.Register<IDialogService>(c => new WindowsDialogService()).InstancePerLifetimeScope();
+            builder.RegisterType<TagLibSharpAudioFileTagger>().As<IAudioFileTagger>().InstancePerLifetimeScope();
+            builder.RegisterType<LocalAudioFileInfoProvider>().As<IAudioFileInfoProvider>().InstancePerLifetimeScope();
 
             /* serializers to test
              * JIL              (faster with less data?)
@@ -88,7 +93,9 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
              */
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
-            builder.Register(c => new iTunesXMLTracksDeserializer(@"D:\Music\iTunes\iTunes Music Library.xml"))
+            builder
+                //.Register(c => new iTunesXMLTracksDeserializer())
+                .Register(c => new NewtonsoftJsonTracksSerializer())
                 .As<EntitySerializer<Track, uint>>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<SerializingTracksRepository>()

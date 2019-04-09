@@ -16,7 +16,7 @@ namespace ReactivePlayer.Core.Library.Models
             Uri location,
             TimeSpan? duration,
             DateTime? lastModified,
-            ulong? fileSizeBytes,
+            uint? fileSizeBytes,
             // Track
             string title,
             IEnumerable<string> performers,
@@ -28,8 +28,8 @@ namespace ReactivePlayer.Core.Library.Models
             : base(id, location, duration, lastModified, fileSizeBytes, isLoved, addedToLibraryDateTime)
         {
             this.Title = title.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(title)); // TODO: localize;
-            this.Performers = performers.EmptyIfNull().ToImmutableArray();
-            this.Composers = composers.EmptyIfNull().ToImmutableArray();
+            this.Performers = performers.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
+            this.Composers = composers.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.AlbumAssociation = albumAssociation;
             this.Year = year.ThrowIf(x => x > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
         }

@@ -9,7 +9,7 @@ namespace ReactivePlayer.Core.FileSystem.Media
         public PlayableFileInfo(
             Uri location,
             DateTime? lastModifiedDateTime,
-            ulong? fileSizeBytes,
+            uint? fileSizeBytes,
             TimeSpan? duration)
             : base(location, lastModifiedDateTime, fileSizeBytes)
         {

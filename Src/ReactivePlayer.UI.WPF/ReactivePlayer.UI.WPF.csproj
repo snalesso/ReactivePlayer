@@ -142,11 +142,7 @@
     <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
     <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
     <Compile Include="Controls\CustomSlider.cs" />
-    <Compile Include="Controls\GridLengthSwitcher.cs" />
     <Compile Include="Controls\HorizontalSlider.cs" />
-    <Compile Include="Controls\PlaybackBox.xaml.cs">
-      <DependentUpon>PlaybackBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converters\StringEnumerableJoiner.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Services\LibraryViewModelsProxy.cs" />
@@ -253,6 +249,10 @@
       <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
       <Name>ReactivePlayer.Core.FileSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core.Library.Json.Newtonsoft\ReactivePlayer.Core.Library.Json.Newtonsoft.csproj">
+      <Project>{1AFE2B64-D7E6-4897-8E90-96C17C1B952D}</Project>
+      <Name>ReactivePlayer.Core.Library.Json.Newtonsoft</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{d410bfe3-22c7-4ee6-ab62-9a069f2f1566}</Project>
       <Name>ReactivePlayer.Core.Library</Name>
@@ -275,10 +275,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\PlaybackBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

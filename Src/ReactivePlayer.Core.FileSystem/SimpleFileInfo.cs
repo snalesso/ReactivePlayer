@@ -7,7 +7,7 @@ namespace ReactivePlayer.Core.FileSystem
         public SimpleFileInfo(
             Uri location,
             DateTime? lastModifiedDateTime,
-            ulong? sizeBytes)
+            uint? sizeBytes)
         {
             this.Location = location ?? throw new ArgumentNullException(); // TODO: localize
             this.LastModifiedDateTime = lastModifiedDateTime;
@@ -16,6 +16,6 @@ namespace ReactivePlayer.Core.FileSystem
 
         public Uri Location { get; }
         public DateTime? LastModifiedDateTime { get; }
-        public ulong? SizeBytes { get; }
+        public uint? SizeBytes { get; }
     }
 }
