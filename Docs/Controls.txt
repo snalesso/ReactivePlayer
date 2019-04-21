@@ -1,0 +1,12 @@
+Tokenizing control
+https://blog.pixelingene.com/2010/10/tokenizing-control-convert-text-to-tokens
+
+2moveit/WPFTagControl
+https://github.com/2moveit/WPFTagControl
+
+punker76/gong-wpf-dragdrop
+https://github.com/punker76/gong-wpf-dragdrop
+
+https://stackoverflow.com/questions/2108712/wpf-reorder-wrappanel-content-via-drag-and-drop
+
+https://stackoverflow.com/questions/36642622/rearrange-customcontrol-inside-wrappanel-in-wpf-c-sharp
