@@ -11,7 +11,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
 {
     static class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             TestNewtonsoftTracks();
 

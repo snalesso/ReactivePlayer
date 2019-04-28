@@ -3,6 +3,7 @@ using DynamicData;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
+using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IObservableList<uint> _trackIds;
 
         public PlaylistViewModel(
+            IDialogService dialogService,
+            //IAudioFileInfoProvider audioFileInfoProvider,
+            //IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
+            //PlaybackQueue playbackQueue,
             Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            IObservableList<uint> trackIds) : base(readLibraryService, audioPlaybackEngine, trackViewModelFactoryMethod)
+            Func<Track, EditTrackTagsViewModel> editTrackTagsViewModelFactoryMethod,
+            IObservableList<uint> trackIds) : base(
+                dialogService,
+                readLibraryService,
+                audioPlaybackEngine,
+                trackViewModelFactoryMethod,
+                editTrackTagsViewModelFactoryMethod)
         {
             this._trackIds = trackIds ?? throw new ArgumentNullException(nameof(trackIds));
         }

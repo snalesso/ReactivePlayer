@@ -7,9 +7,21 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio.CSCore
     // TODO: move to separate project? (along with other CS Core dependants)
     public class CSCoreAudioFileDurationCalculator : IAudioFileDurationCalculator
     {
-        public Task<TimeSpan> GetDurationAsync(Uri audioFileLocation)
+        public async Task<TimeSpan?> GetDurationAsync(Uri audioFileLocation)
         {
-            return Task.Run(() => global::CSCore.Codecs.CodecFactory.Instance.GetCodec(audioFileLocation).GetLength());
+            TimeSpan? duration = null;
+
+            try
+            {
+                duration = await Task.Run(() => global::CSCore.Codecs.CodecFactory.Instance.GetCodec(audioFileLocation).GetLength());
+            }
+            catch //(Exception ex)
+            {
+                // TODO: log
+                duration = null;
+            }
+
+            return duration;
         }
     }
 }

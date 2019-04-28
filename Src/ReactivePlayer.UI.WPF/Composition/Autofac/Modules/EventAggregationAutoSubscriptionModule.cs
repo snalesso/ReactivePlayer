@@ -13,8 +13,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac.Modules
 
         private static void OnComponentActivated(object sender, ActivatedEventArgs<object> e)
         {
-            var handle = e?.Instance as IHandle;
-            if (handle == null) return;
+            if (!(e?.Instance is IHandle handle))
+                return;
 
             e.Context.Resolve<IEventAggregator>().Subscribe(handle);
         }

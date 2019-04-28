@@ -125,7 +125,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         // TODO: investigate whether sound out generation should be offloaded
         private ISoundOut GetNewSoundOut()
         {
-            ISoundOut soundOut = null;
+            ISoundOut soundOut;
 
             // TODO: make selectable internal playback engine?
             if (WasapiOut.IsSupportedOnCurrentPlatform)
@@ -583,11 +583,11 @@ namespace ReactivePlayer.Core.Playback.CSCore
         private readonly CompositeDisposable __playbackScopeDisposables = new CompositeDisposable();
 
         // TODO: review implementation, also consider if there's some Interlocked way to do it
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
@@ -597,11 +597,10 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 // free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // set large fields to null.
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

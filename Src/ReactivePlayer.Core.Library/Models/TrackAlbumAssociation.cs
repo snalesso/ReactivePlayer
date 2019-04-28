@@ -9,8 +9,8 @@ namespace ReactivePlayer.Core.Library.Models
     {
         public TrackAlbumAssociation(
             Album album,
-            uint? trackNumber,
-            uint? discNumber)
+            uint? trackNumber = null,
+            uint? discNumber = null)
         {
             this.Album = album ?? throw new ArgumentNullException(nameof(album));
             if (trackNumber > album.TracksCount)

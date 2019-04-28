@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Models;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._title; }
             set
             {
-                this.SetAndRaiseIfChanged(ref this._title, value);
+                this.RaiseAndSetIfChanged(ref this._title, value);
                 this.GetAlbum();
             }
         }
@@ -47,7 +48,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public IReadOnlyList<string> Authors
         {
             get { return this._authors; }
-            set { this.SetAndRaiseIfChanged(ref this._authors, value); }
+            set { this.RaiseAndSetIfChanged(ref this._authors, value); }
         }
 
         private uint? _tracksCount;
@@ -56,7 +57,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._tracksCount; }
             set
             {
-                this.SetAndRaiseIfChanged(ref this._tracksCount, value);
+                this.RaiseAndSetIfChanged(ref this._tracksCount, value);
                 this.GetAlbum();
             }
         }
@@ -67,7 +68,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._discsCount; }
             set
             {
-                this.SetAndRaiseIfChanged(ref this._discsCount, value);
+                this.RaiseAndSetIfChanged(ref this._discsCount, value);
                 this.GetAlbum();
             }
         }

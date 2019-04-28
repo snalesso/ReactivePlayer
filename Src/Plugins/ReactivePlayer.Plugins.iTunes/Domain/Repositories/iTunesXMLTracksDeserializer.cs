@@ -54,9 +54,34 @@ namespace ReactivePlayer.Domain.Repositories
 
                 try
                 {
+                    Album album = null;
+                    TrackAlbumAssociation trackAlbumAssociation = null;
+
+                    try
+                    {
+                        album = new Album(
+                                iTunesTrack.Album,
+                                iTunesTrack.AlbumArtistNames,
+                                iTunesTrack.TrackCount,
+                                iTunesTrack.DiscCount);
+                    }
+                    catch (Exception ex)
+                    {
+                        album = null;
+                    }
+
+                    if (album != null)
+                    {
+                        trackAlbumAssociation = new TrackAlbumAssociation(
+                        album,
+                        iTunesTrack.TrackNumber,
+                        iTunesTrack.DiscNumber);
+                    }
+
                     var track = new Track(
                         ++id,
                         // library entry
+                        // TODO: this should be fixed in CSCore ... Anyways, this should be closer to CSCore, not here
                         new Uri(iTunesTrack.Location.StartsWith(@"file://localhost/")
                             ? iTunesTrack.Location.Remove(@"file://".Length - 1, @"localhost/".Length)
                             : iTunesTrack.Location),
@@ -68,14 +93,7 @@ namespace ReactivePlayer.Domain.Repositories
                         iTunesTrack.ArtistNames,
                         iTunesTrack.ComposerNames,
                         iTunesTrack.Year,
-                        new TrackAlbumAssociation(
-                            new Album(
-                                iTunesTrack.Album,
-                                iTunesTrack.AlbumArtistNames,
-                                iTunesTrack.TrackCount,
-                                iTunesTrack.DiscCount),
-                            iTunesTrack.TrackNumber,
-                            iTunesTrack.DiscNumber),
+                        trackAlbumAssociation,
                         iTunesTrack.Loved,
                         iTunesTrack.DateAdded);
 

@@ -10,6 +10,11 @@ namespace ReactivePlayer.UI.WPF.Views
     /// </summary>
     public partial class CrashView : UserControl, IViewFor<CrashViewModel>
     {
+        public CrashView()
+        {
+            this.InitializeComponent();
+        }
+
         #region IViewFor
 
         private CrashViewModel _viewModel;
@@ -26,10 +31,5 @@ namespace ReactivePlayer.UI.WPF.Views
         }
 
         #endregion
-
-        public CrashView()
-        {
-            this.InitializeComponent();
-        }
     }
 }

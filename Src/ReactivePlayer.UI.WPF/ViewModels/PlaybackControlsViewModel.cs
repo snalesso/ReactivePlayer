@@ -92,17 +92,17 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        private ObservableAsPropertyHelper<float> _volumeOAPH;
+        private readonly ObservableAsPropertyHelper<float> _volumeOAPH;
         public float Volume
         {
             get => this._volumeOAPH.Value;
             set => this._audioPlaybackEngine.Volume = value;
         }
 
-        private ObservableAsPropertyHelper<bool> _canResumeOAPH;
+        private readonly ObservableAsPropertyHelper<bool> _canResumeOAPH;
         public bool CanResume => this._canResumeOAPH.Value;
 
-        private ObservableAsPropertyHelper<bool> _canPauseOAPH;
+        private readonly ObservableAsPropertyHelper<bool> _canPauseOAPH;
         public bool CanPause => this._canPauseOAPH.Value;
 
         public PlaybackTimelineViewModel PlaybackTimelineViewModel { get; }
@@ -132,14 +132,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #endregion
 
-        #region IDisposable Support
+        #region IDisposable
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
@@ -149,11 +149,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 // free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // set large fields to null.
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

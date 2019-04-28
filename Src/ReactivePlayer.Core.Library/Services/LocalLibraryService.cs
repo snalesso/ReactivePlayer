@@ -69,7 +69,7 @@ namespace ReactivePlayer.Core.Library.Services
 
         #region IReadLibraryService
 
-        private SourceCache<Track, uint> _sourceTracks;
+        private readonly SourceCache<Track, uint> _sourceTracks;
         public IObservableCache<Track, uint> Tracks => this._sourceTracks;
 
         public IObservableList<Playlist> Playlists => throw new NotImplementedException();
@@ -157,7 +157,7 @@ namespace ReactivePlayer.Core.Library.Services
                     list.AddOrUpdate(addedTracks);
                 });
 
-                result = addedTracks.ToImmutableList();
+                result = addedTracks;
             }
             catch //(Exception ex)
             {
@@ -289,14 +289,14 @@ namespace ReactivePlayer.Core.Library.Services
 
         #endregion
 
-        #region IDisposable Support
+        #region IDisposable
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
@@ -306,11 +306,10 @@ namespace ReactivePlayer.Core.Library.Services
                 // free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // set large fields to null.
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

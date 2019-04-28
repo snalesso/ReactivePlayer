@@ -131,35 +131,35 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //this.EndSeeking.Do(s => Debug.WriteLine(nameof(this.EndSeeking)));
         }
 
-        private ObservableAsPropertyHelper<long> _positionAsTickssOAPH;
+        private readonly ObservableAsPropertyHelper<long> _positionAsTickssOAPH;
         public long PositionAsTicks => this._positionAsTickssOAPH.Value;
 
-        private ObservableAsPropertyHelper<long> _durationAsTicksOAPH;
+        private readonly ObservableAsPropertyHelper<long> _durationAsTicksOAPH;
         public long DurationAsTicks => this._durationAsTicksOAPH.Value;
 
-        private ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
+        private readonly ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
         public TimeSpan? Position => this._positionOAPH.Value;
 
-        private ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
+        private readonly ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
         public TimeSpan? Duration => this._durationOAPH.Value;
 
-        private ObservableAsPropertyHelper<bool> _isDurationKnownOAPH;
+        private readonly ObservableAsPropertyHelper<bool> _isDurationKnownOAPH;
         public bool IsDurationKnown => this._isDurationKnownOAPH.Value;
 
-        private ObservableAsPropertyHelper<bool> _isPositionKnownOAPH;
+        private readonly ObservableAsPropertyHelper<bool> _isPositionKnownOAPH;
         public bool IsPositionKnown => this._isPositionKnownOAPH.Value;
 
-        private ObservableAsPropertyHelper<bool> _isLoadingOAPH;
+        private readonly ObservableAsPropertyHelper<bool> _isLoadingOAPH;
         public bool IsLoading => this._isLoadingOAPH.Value;
 
         public ReactiveCommand<Unit, Unit> StartSeeking { get; }
         public ReactiveCommand<long, Unit> SeekTo { get; }
         public ReactiveCommand<long, Unit> EndSeeking { get; }
 
-        #region IDisposable Support
+        #region IDisposable
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue = false;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -177,7 +177,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

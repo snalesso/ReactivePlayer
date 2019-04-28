@@ -17,7 +17,7 @@ namespace ReactivePlayer.Core.Library.Models
             this._trackIdsList = new SourceList<uint>(ObservableChangeSet.Create<uint>(list => () => list.AddRange(ids)));
         }
 
-        private SourceList<uint> _trackIdsList;
+        private readonly SourceList<uint> _trackIdsList;
         public IObservableList<uint> TrackIds => this._trackIdsList;
 
         protected override void EnsureIsWellFormattedId(uint id)

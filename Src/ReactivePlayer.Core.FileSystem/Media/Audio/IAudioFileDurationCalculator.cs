@@ -10,6 +10,6 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
     public interface IAudioFileDurationCalculator
     {
         // TODO: find a better name
-        Task<TimeSpan> GetDurationAsync(Uri audioFileLocation);
+        Task<TimeSpan?> GetDurationAsync(Uri audioFileLocation);
     }
 }

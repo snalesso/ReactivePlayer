@@ -143,12 +143,24 @@
     <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
     <Compile Include="Controls\CustomSlider.cs" />
     <Compile Include="Controls\HorizontalSlider.cs" />
+    <Compile Include="Controls\StringListEditor.cs" />
     <Compile Include="Converters\StringEnumerableJoiner.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Services\LibraryViewModelsProxy.cs" />
     <Compile Include="Services\WaveformTimelineSoundPlayer.cs" />
+    <Compile Include="Services\WindowsDialogService.cs" />
+    <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\AllTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
+    <Compile Include="ViewModels\DialogWithResultViewModel`1.cs" />
+    <Compile Include="ViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\EditAlbumViewModel.cs" />
+    <Compile Include="ViewModels\PlaybackProgressViewModel.cs" />
+    <Compile Include="ViewModels\StringSetEditorViewModel+StringContainer.cs" />
+    <Compile Include="ViewModels\StringSetEditorViewModel.cs" />
+    <Compile Include="ViewModels\TrackAlbumAssociationViewModel.cs" />
+    <Compile Include="ViewModels\EditTrackAlbumAssociationViewModel.cs" />
+    <Compile Include="ViewModels\EditTrackTagsViewModel.cs" />
     <Compile Include="ViewModels\EditTrackViewModel.cs" />
     <Compile Include="ViewModels\LibraryViewModel.cs" />
     <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
@@ -168,8 +180,17 @@
     <Compile Include="Services\CustomWindowManager.cs" />
     <Compile Include="Composition\Autofac\Modules\EventAggregationAutoSubscriptionModule.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimePlaybackControlsViewModel.cs" />
-    <Compile Include="Views\EditTrackViewModel.xaml.cs">
-      <DependentUpon>EditTrackViewModel.xaml</DependentUpon>
+    <Compile Include="Views\EditAlbumView.xaml.cs">
+      <DependentUpon>EditAlbumView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditTrackAlbumAssociationView.xaml.cs">
+      <DependentUpon>EditTrackAlbumAssociationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditTrackTagsView.xaml.cs">
+      <DependentUpon>EditTrackTagsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditTrackView.xaml.cs">
+      <DependentUpon>EditTrackView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LibraryView.xaml.cs">
       <DependentUpon>LibraryView.xaml</DependentUpon>
@@ -195,6 +216,7 @@
     <Compile Include="Views\CrashView.xaml.cs">
       <DependentUpon>CrashView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewsConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -282,7 +304,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditTrackViewModel.xaml">
+    <Page Include="Themes\StringListEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditAlbumView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditTrackAlbumAssociationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditTrackTagsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditTrackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

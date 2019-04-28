@@ -32,6 +32,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService)); // TODO: localize
 
+            this.EditTrackTagsViewModel = new EditTrackTagsViewModel(this._track);
+
             this.FakeEdit = ReactiveCommand.Create(
                 (TrackViewModel trackVM) =>
                 {
@@ -43,7 +45,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        public string Title => this._track.Title;
+        public EditTrackTagsViewModel EditTrackTagsViewModel { get; }
 
         #endregion
 

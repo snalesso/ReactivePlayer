@@ -4,8 +4,10 @@ using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
+using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -22,61 +24,66 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IWriteLibraryService _writeLibraryService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
+        private readonly IDialogService _dialogService;
 
         #region ctor
 
         public LibraryViewModel(
-            AllTracksViewModel allTracksViewModel,
             IAudioFileInfoProvider audioFileInfoProvider,
             IWriteLibraryService writeLibraryService,
-            IAudioPlaybackEngine audioPlaybackEngine)
+            IAudioPlaybackEngine audioPlaybackEngine,
+            IDialogService dialogService,
+            AllTracksViewModel allTracksViewModel)
         {
-            this.AllTracksViewModel = allTracksViewModel ?? throw new ArgumentNullException(nameof(allTracksViewModel));
             this._audioFileInfoProvider = audioFileInfoProvider ?? throw new ArgumentNullException(nameof(audioFileInfoProvider));
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
+            this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+
+            this.AllTracksViewModel = allTracksViewModel ?? throw new ArgumentNullException(nameof(allTracksViewModel));
 
             this.ShowFilePicker = ReactiveCommand.CreateFromTask(
                 async () =>
                 {
-                    var extList = string.Join(", ", this._audioPlaybackEngine.SupportedExtensions);
-                    var extFilters = string.Join(";", this._audioPlaybackEngine.SupportedExtensions.Select(ext => "*" + ext));
+                    var openFileDialogResult = this._dialogService.OpenFileDialog(
+                        "Add files to library ...",
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+                        true,
+                        new Dictionary<string, IReadOnlyCollection<string>>
+                        {
+                            { "Audio files", this._audioPlaybackEngine.SupportedExtensions }
+                        });
 
-                    var fbd = new Microsoft.Win32.OpenFileDialog()
-                    {
-                        Filter = $"Audio files ({extList})|{extFilters}",
-                        InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
-                        Multiselect = true,
-                        Title = "Add files to library ..."
-                    };
-
-                    var result = fbd.ShowDialog();
-
-                    if (result != true)
+                    if (openFileDialogResult.IsConfirmed != true)
                         return;
 
                     IList<AddTrackCommand> atc = new List<AddTrackCommand>();
 
-                    foreach (var fn in fbd.FileNames)
+                    foreach (var filePath in openFileDialogResult.Content)
                     {
-                        var afi = await this._audioFileInfoProvider.ExtractAudioFileInfo(new Uri(fn));
+                        var audioFileInfo = await this._audioFileInfoProvider.ExtractAudioFileInfo(new Uri(filePath));
+                        if (audioFileInfo == null)
+                        {
+                            // TODO: handle & log
+                        }
+
                         atc.Add(new AddTrackCommand(
-                            afi.Location,
-                            afi.Duration,
-                            afi.LastModifiedDateTime,
-                            afi.SizeBytes,
-                            afi.Tags.Title,
-                            afi.Tags.PerformersNames,
-                            afi.Tags.ComposersNames,
-                            afi.Tags.Year,
+                            audioFileInfo.Location,
+                            audioFileInfo.Duration,
+                            audioFileInfo.LastModifiedDateTime,
+                            audioFileInfo.SizeBytes,
+                            audioFileInfo.Tags.Title,
+                            audioFileInfo.Tags.PerformersNames,
+                            audioFileInfo.Tags.ComposersNames,
+                            audioFileInfo.Tags.Year,
                             new Core.Library.Models.TrackAlbumAssociation(
                                 new Core.Library.Models.Album(
-                                    afi.Tags.AlbumTitle,
-                                    afi.Tags.AlbumAuthors,
-                                    afi.Tags.AlbumTracksCount,
-                                    afi.Tags.AlbumDiscsCount),
-                                afi.Tags.AlbumTrackNumber,
-                                afi.Tags.AlbumDiscNumber)));
+                                    audioFileInfo.Tags.AlbumTitle,
+                                    audioFileInfo.Tags.AlbumAuthors,
+                                    audioFileInfo.Tags.AlbumTracksCount,
+                                    audioFileInfo.Tags.AlbumDiscsCount),
+                                audioFileInfo.Tags.AlbumTrackNumber,
+                                audioFileInfo.Tags.AlbumDiscNumber)));
                     }
 
                     //var addedTracks =
@@ -99,16 +106,17 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public ReadOnlyObservableCollection<PlaylistViewModel> PlaylistViewModels { get; }
 
+        // TODO: rename to ShowAddToLibraryFilePicker
         public ReactiveCommand<Unit, Unit> ShowFilePicker { get; }
 
-        #region IDisposable Support
+        #region IDisposable
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
@@ -118,11 +126,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 // free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // set large fields to null.
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

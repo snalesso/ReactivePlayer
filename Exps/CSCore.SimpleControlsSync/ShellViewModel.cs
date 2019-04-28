@@ -16,10 +16,9 @@ namespace CSCore.SimpleControlsSync
     {
         private const string DefaultSongFilePath = @"D:\Music\Productions\300 Hz - 1.5 s.mp3";
 
-        private CompositeDisposable _disposables = new CompositeDisposable();
         //private ISoundOut _soundOut;
         //CSCorePlayer _csCorePlayer = new CSCorePlayer();
-        CSCoreAudioPlaybackEngine _audioPlaybackEngineAsync = new CSCoreAudioPlaybackEngine();
+        readonly CSCoreAudioPlaybackEngine _audioPlaybackEngineAsync = new CSCoreAudioPlaybackEngine();
 
         public ShellViewModel()
         {
@@ -126,19 +125,19 @@ namespace CSCore.SimpleControlsSync
             }));
         }
 
-        private ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
+        private readonly ObservableAsPropertyHelper<TimeSpan?> _positionOAPH;
         public TimeSpan? Position => this._positionOAPH.Value;
 
-        private ObservableAsPropertyHelper<ulong> _positionAsTicksOAPH;
+        private readonly ObservableAsPropertyHelper<ulong> _positionAsTicksOAPH;
         public ulong PositionAsTicks => this._positionAsTicksOAPH.Value;
 
-        private ObservableAsPropertyHelper<ulong> _durationAsTicksOAPH;
+        private readonly ObservableAsPropertyHelper<ulong> _durationAsTicksOAPH;
         public ulong DurationAsTicks => this._durationAsTicksOAPH.Value;
 
-        private ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
+        private readonly ObservableAsPropertyHelper<TimeSpan?> _durationOAPH;
         public TimeSpan? Duration => this._durationOAPH.Value;
 
-        private ObservableAsPropertyHelper<float> _volumeOAPH;
+        private readonly ObservableAsPropertyHelper<float> _volumeOAPH;
         public float Volume
         {
             get => this._volumeOAPH.Value;
@@ -162,9 +161,34 @@ namespace CSCore.SimpleControlsSync
         public ReactiveCommand<Unit, Unit> Resume { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }
 
+
+        #region IDisposable
+
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool _isDisposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._isDisposed)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this._isDisposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            this._disposables.Dispose();
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
+
+        #endregion
     }
 }

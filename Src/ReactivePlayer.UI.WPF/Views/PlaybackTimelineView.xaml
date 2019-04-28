@@ -15,56 +15,31 @@
 
     <UserControl.Resources>
         <Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Converters:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
         <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
     </UserControl.Resources>
 
-    <Grid IsEnabled="{Binding IsPositionKnown}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <StackPanel Orientation="Vertical">
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <Slider
+            x:Name="PlaybackPositionSlider"
+            Height="18"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            IsEnabled="{Binding IsPositionKnown}"
+            IsMoveToPointEnabled="False"
+            Maximum="{Binding DurationAsTicks, Mode=OneWay}"
+            Minimum="0"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityInverter}}"
+            Value="{Binding PositionAsTicks, Mode=OneWay}" />
 
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{Binding Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" />
+        <ProgressBar
+            Height="18"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            IsIndeterminate="True"
+            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-            <Slider
-                x:Name="PlaybackPositionSlider"
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                IsMoveToPointEnabled="False"
-                Maximum="{Binding DurationAsTicks, Mode=OneWay}"
-                Minimum="0"
-                Value="{Binding PositionAsTicks, Mode=OneWay}" />
+    </StackPanel>
 
-            <!--<wpfsvl:WaveformTimeline
-                x:Name="WaveformTimeline"
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center" />-->
-
-            <ProgressBar
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                IsIndeterminate="True"
-                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" />
-            <TextBlock
-                Grid.Column="4"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{Binding Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" />
-        </Grid>
-
-    </Grid>
 </UserControl>

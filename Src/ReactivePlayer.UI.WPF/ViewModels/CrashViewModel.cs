@@ -7,7 +7,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         public CrashViewModel(Exception exception)
         {
-
+            this.Exception = exception;
         }
+
+        public Exception Exception { get; }
     }
 }

@@ -13,11 +13,11 @@ namespace ReactivePlayer.Core.Library.Models
         // TODO: update ctor constraints: might not have all tags
         public Album(
             string title,
-            IEnumerable<string> authors,
-            uint? tracksCount,
-            uint? discsCount)
+            IEnumerable<string> authors = null,
+            uint? tracksCount = null,
+            uint? discsCount = null)
         {
-            this.Title = title.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(name), $"An {this.GetType().Name}'s {nameof(Name)} cannot be null."); // TODO: localize ;
+            this.Title = title.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(this.Title), $"An {this.GetType().Name}'s {nameof(this.Title)} cannot be null."); // TODO: localize
             this.Authors = authors.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.TracksCount = tracksCount.NullIf(v => v <= 0);
             this.DiscsCount = discsCount.NullIf(v => v <= 0);

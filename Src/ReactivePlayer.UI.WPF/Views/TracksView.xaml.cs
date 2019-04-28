@@ -81,11 +81,11 @@ namespace ReactivePlayer.UI.WPF.Views
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
         // TODO: review implementation, also consider if there's some Interlocked way to do it
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
@@ -95,11 +95,10 @@ namespace ReactivePlayer.UI.WPF.Views
                 // free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // set large fields to null.
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

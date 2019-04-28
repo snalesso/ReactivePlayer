@@ -16,9 +16,7 @@ namespace ReactivePlayer.Core.Playback.Queue
     public class PlaybackQueue : IDisposable
     {
         #region constants & fields
-
-        private const ushort HistoryMaxLength = 10;
-
+        
         private readonly IAudioPlaybackEngine _audioPlayer;
         //private readonly Random _random = new Random((int)DateTime.Now.Ticks);
 
@@ -71,7 +69,7 @@ namespace ReactivePlayer.Core.Playback.Queue
         #region properties
 
         private IObservableList<Track> _tracksSource;
-        private ISourceList<PlaybackQueueEntry> _sourcedEntries;
+        private readonly ISourceList<PlaybackQueueEntry> _sourcedEntries;
 
         //private readonly SourceList<PlaybackQueueEntry> _upNextEntries = new SourceList<PlaybackQueueEntry>();
         //private readonly ReadOnlyObservableCollection<PlaybackQueueEntry> _upNextEntriesROOC;
@@ -123,14 +121,14 @@ namespace ReactivePlayer.Core.Playback.Queue
 
         #endregion
 
-        #region IDisposable Support
+        #region IDisposable
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool disposedValue = false; // To detect redundant calls
+        private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
@@ -140,11 +138,10 @@ namespace ReactivePlayer.Core.Playback.Queue
                 // free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // set large fields to null.
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

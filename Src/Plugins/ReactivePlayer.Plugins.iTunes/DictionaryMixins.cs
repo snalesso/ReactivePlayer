@@ -18,7 +18,7 @@ namespace ReactivePlayer.Core
                 TValue value = dictionary.GetKeyValueIfExists(key);
                 return value != null ? (TRet)Convert.ChangeType(value, typeof(TRet)) : fallbackValue;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -32,7 +32,7 @@ namespace ReactivePlayer.Core
                 var type = Nullable.GetUnderlyingType(typeof(TRet));
                 return value != null ? (TRet)Convert.ChangeType(value, type) : fallbackValue;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

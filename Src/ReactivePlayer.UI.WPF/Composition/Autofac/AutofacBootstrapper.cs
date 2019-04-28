@@ -40,7 +40,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
         public AutofacBootstrapper()
         {
             // TODO settings file
-            this.RootViewDIsplaySettings = new Dictionary<string, object>
+            this.RootViewDisplaySettings = new Dictionary<string, object>
             {
                 { nameof(Window.Width), 1650 },
                 { nameof(Window.Height), 850 },
@@ -78,7 +78,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             // CORE COMPONENTS
 
             builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
-            builder.Register<IDialogService>(c => new WindowsDialogService()).InstancePerLifetimeScope();
+            builder.RegisterType<WindowsDialogService>().As<IDialogService>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioFileDurationCalculator>().As<IAudioFileDurationCalculator>().InstancePerLifetimeScope();
             builder.RegisterType<TagLibSharpAudioFileTagger>().As<IAudioFileTagger>().InstancePerLifetimeScope();
             builder.RegisterType<LocalAudioFileInfoProvider>().As<IAudioFileInfoProvider>().InstancePerLifetimeScope();
@@ -91,13 +91,12 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
              * LiteDB           (seems lite & fast)
              * RethinkDB        (well supported)
              * VelocityDB       (???)
-             * DBreeze          (???)
              */
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             builder
-                //.Register(c => new iTunesXMLTracksDeserializer())
-                .Register(c => new NewtonsoftJsonTracksSerializer())
+                .Register(c => new iTunesXMLTracksDeserializer())
+                //.Register(c => new NewtonsoftJsonTracksSerializer())
                 .As<EntitySerializer<Track, uint>>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<SerializingTracksRepository>()
@@ -122,10 +121,17 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.RegisterType<ShellView>().As<IViewFor<ShellViewModel>>().InstancePerLifetimeScope();
 
             builder.Register<Func<Track, TrackViewModel>>(ctx =>
-                {
-                    var ctxInternal = ctx.Resolve<IComponentContext>();
-                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
-                }).AsSelf().InstancePerLifetimeScope();
+            {
+                var ctxInternal = ctx.Resolve<IComponentContext>();
+                return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
+            }).AsSelf().InstancePerLifetimeScope();
+
+            builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.Register<Func<Track, EditTrackViewModel>>(ctx =>
+            {
+                var ctxInternal = ctx.Resolve<IComponentContext>();
+                return (Track t) => new EditTrackViewModel(t, ctxInternal.Resolve<IReadLibraryService>(), ctxInternal.Resolve<IWriteLibraryService>());
+            }).AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<AllTracksViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<TracksView>().As<IViewFor<AllTracksViewModel>>().InstancePerLifetimeScope();

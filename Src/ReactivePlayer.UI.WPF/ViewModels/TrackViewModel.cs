@@ -12,13 +12,11 @@ using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public sealed class TrackViewModel : ReactiveScreen
+    public class TrackViewModel : ReactiveScreen, IDisposable
     {
         #region constants & fields
 
         private readonly IAudioPlaybackEngine _playbackService;
-
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
         #endregion
 
@@ -54,7 +52,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        private ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
+        private readonly ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
         public bool IsLoaded => this._isLoaded_OAPH.Value;
 
         private readonly Track _track;
@@ -64,7 +62,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
 
-        public IReadOnlyList<string> PerformersNames =>this._track.Performers;
+        public IReadOnlyList<string> PerformersNames => this._track.Performers;
 
         public string AlbumTitle => this._track.AlbumAssociation?.Album?.Title;
 
@@ -89,6 +87,35 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public ReactiveCommand<Unit, Unit> PlayTrack { get; }
+
+        #endregion
+
+        #region IDisposable
+
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool _isDisposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this._isDisposed)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this._isDisposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
+        }
 
         #endregion
     }

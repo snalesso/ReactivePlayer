@@ -7,8 +7,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
                   null
                   , null
                   , null
-                  //, null
-                  //, null
+                  , null
+                  , null
                   //, null
                   //, null
                   )

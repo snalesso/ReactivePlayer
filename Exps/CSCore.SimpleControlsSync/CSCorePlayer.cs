@@ -20,7 +20,7 @@ namespace CSCore.SimpleControlsSync
         private static CSCorePlayer instance;
 
         // ISPectrumPlayer
-        private List<EventHandler<SingleBlockReadEventArgs>> inputStreamList = new List<EventHandler<SingleBlockReadEventArgs>>();
+        private readonly List<EventHandler<SingleBlockReadEventArgs>> inputStreamList = new List<EventHandler<SingleBlockReadEventArgs>>();
 
         // IPlayer
         private string filename;
@@ -45,8 +45,8 @@ namespace CSCore.SimpleControlsSync
         private bool isPlaying;
         private bool supportsWindowsMediaFoundation = false;
 
-        // To detect redundant calls
-        private bool disposedValue = false;
+       
+        private bool _isDisposed = false;
 
         public CSCorePlayer()
         {
@@ -425,18 +425,17 @@ namespace CSCore.SimpleControlsSync
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposedValue)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
                     this.CloseSoundOut();
                 }
 
-                this.disposedValue = true;
+                this._isDisposed = true;
             }
         }
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             this.Dispose(true);

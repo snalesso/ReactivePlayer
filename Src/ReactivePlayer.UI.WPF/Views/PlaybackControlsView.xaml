@@ -17,6 +17,7 @@
         <Converters:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
         <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
         <Converters:BooleanInverter x:Key="BooleanInverter" />
+        <Converters:MultiBooleanAllToVisibilityConverter x:Key="MultiBooleanAllToVisibilityConverter" />
         <!--<Converters:MultiBooleanAnyToVisibilityConverter x:Key="MultiBooleanAnyToVisibilityConverter" />-->
     </UserControl.Resources>
 
@@ -51,6 +52,8 @@
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="8" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -90,12 +93,33 @@
 
             <Slider
                 Grid.Column="10"
-                Width="100" SmallChange="0.01" LargeChange="0.05"
+                Width="100"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
+                LargeChange="0.05"
                 Maximum="1"
                 Minimum="0"
+                SmallChange="0.01"
                 Value="{Binding Volume}" />
+
+            <StackPanel
+                Grid.Column="12"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Text="{Binding PlaybackTimelineViewModel.Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Text=" / ">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MultiBooleanAllToVisibilityConverter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="PlaybackTimelineViewModel.IsDurationKnown" />
+                                <Binding Path="PlaybackTimelineViewModel.IsPositionKnown" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </TextBlock.Visibility>
+                </TextBlock>
+                <TextBlock Text="{Binding PlaybackTimelineViewModel.Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsDurationKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </StackPanel>
 
         </Grid>
 

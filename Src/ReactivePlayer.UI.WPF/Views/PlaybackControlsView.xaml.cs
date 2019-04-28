@@ -1,16 +1,8 @@
 using ReactivePlayer.UI.WPF.ViewModels;
 using ReactiveUI;
 using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Shell;
 
 namespace ReactivePlayer.UI.WPF.Views
 {
@@ -19,7 +11,7 @@ namespace ReactivePlayer.UI.WPF.Views
     /// </summary>
     public partial class PlaybackControlsView : UserControl, IViewFor<PlaybackControlsViewModel>
     {
-        private CompositeDisposable _disposables = new CompositeDisposable();
+        //private CompositeDisposable _disposables = new CompositeDisposable();
 
         public PlaybackControlsView(/*PlaybackControlsViewModel viewModel*/)
         {

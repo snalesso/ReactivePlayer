@@ -125,7 +125,7 @@ namespace ReactivePlayer.UI.WPF.Services
             var view = this.EnsureWindow(rootModel, ViewLocator.LocateForModel(rootModel, null, context), isDialog);
             ViewModelBinder.Bind(rootModel, view, context);
 
-            if (rootModel is IHaveDisplayName haveDisplayName && !ConventionManager.HasBinding(view, Window.TitleProperty))
+            if (rootModel is IHaveDisplayName && !ConventionManager.HasBinding(view, Window.TitleProperty))
             {
                 var binding = new Binding(nameof(IHaveDisplayName.DisplayName)) { Mode = BindingMode.TwoWay };
                 view.SetBinding(Window.TitleProperty, binding);
@@ -148,9 +148,8 @@ namespace ReactivePlayer.UI.WPF.Services
         protected virtual Window EnsureWindow(object model, object view, bool isDialog)
         {
             //var window = view as WindowEx;
-            var window = view as Window;
 
-            if (window == null)
+            if (!(view is Window window))
             {
                 //window = new WindowEx()
                 window = new Window()
@@ -255,9 +254,7 @@ namespace ReactivePlayer.UI.WPF.Services
         /// <returns>The page.</returns>
         protected virtual Page EnsurePage(object model, object view)
         {
-            var page = view as Page;
-
-            if (page == null)
+            if (!(view is Page page))
             {
                 page = new Page { Content = view };
                 page.SetValue(View.IsGeneratedProperty, true);

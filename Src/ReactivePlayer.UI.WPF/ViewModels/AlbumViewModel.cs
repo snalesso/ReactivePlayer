@@ -12,7 +12,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private Album _album;
+        //private readonly Album _album;
 
         #endregion
 
@@ -21,11 +21,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public AlbumViewModel(
             Album album)
         {
-            this._album = album ?? throw new ArgumentNullException(nameof(album));
-
-            this.Title = this._album.Title;
-            this.TracksCount = this._album.TracksCount;
-            this.DiscsCount = this._album.DiscsCount;
+            this.Album = album ?? throw new ArgumentNullException(nameof(album));
         }
 
         #endregion
@@ -34,26 +30,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public Album Album { get; }
 
-        //private string _title;
-        public string Title { get; }
-        //{
-        //    get { return this._title; }
-        //    set { this.SetAndRaiseIfChanged(ref this._title, value); }
-        //}
-
-        //private uint? _tracksCount;
-        public uint? TracksCount { get; }
-        //{
-        //    get { return this._tracksCount; }
-        //    set { this.SetAndRaiseIfChanged(ref this._tracksCount, value); }
-        //}
-
-        //private uint? _discsCount;
-        public uint? DiscsCount { get; }
-        //{
-        //    get { return this._discsCount; }
-        //    set { this.SetAndRaiseIfChanged(ref this._discsCount, value); }
-        //}
+        public string Title => this.Album.Title;
+        public IReadOnlyList<string> Authors => this.Album.Authors;
+        public uint? TracksCount => this.Album.TracksCount;
+        public uint? DiscsCount => this.Album.DiscsCount;
 
         #endregion
 

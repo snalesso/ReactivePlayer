@@ -49,19 +49,31 @@ namespace ReactivePlayer.Core.Library.Persistence
             uint? year,
             TrackAlbumAssociation albumAssociation)
         {
-            return new Track(
-                await this._serializer.GetNewIdentity(),
-                location,
-                duration,
-                lastModified,
-                fileSizeBytes,
-                title,
-                performers,
-                composers,
-                year,
-                albumAssociation,
-                false,
-                DateTime.Now);
+            Track newTrack;
+
+            //try
+            //{
+                newTrack = new Track(
+                   await this._serializer.GetNewIdentity(),
+                   location,
+                   duration,
+                   lastModified,
+                   fileSizeBytes,
+                   title,
+                   performers,
+                   composers,
+                   year,
+                   albumAssociation,
+                   false,
+                   DateTime.Now);
+            //}
+            //catch //(Exception ex)
+            //{
+            //    // TODO: log
+            //    newTrack = null;
+            //}
+
+            return newTrack;
         }
 
         public Task<IReadOnlyList<Track>> GetAllAsync()

@@ -55,6 +55,8 @@
     <Compile Include="Models\LibraryEntry.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackAlbumAssociation.cs" />
+    <Compile Include="Persistence\EditLibraryEntryCommand.cs" />
+    <Compile Include="Persistence\EditTrackCommand.cs" />
     <Compile Include="Persistence\IArtworksCache.cs" />
     <Compile Include="Persistence\ITrackFactory.cs" />
     <Compile Include="Persistence\ITracksRepository.cs" />

@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Models;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,21 +43,21 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public AlbumViewModel AlbumViewModel
         {
             get { return this._albumViewModel; }
-            set { this.SetAndRaiseIfChanged(ref this._albumViewModel, value); }
+            set { this.RaiseAndSetIfChanged(ref this._albumViewModel, value); }
         }
 
         private uint? _trackNumber;
         public uint? TrackNumber
         {
             get { return this._trackNumber; }
-            set { this.SetAndRaiseIfChanged(ref this._trackNumber, value); }
+            set { this.RaiseAndSetIfChanged(ref this._trackNumber, value); }
         }
 
         private uint? _discNumber;
         public uint? DiscNumber
         {
             get { return this._discNumber; }
-            set { this.SetAndRaiseIfChanged(ref this._discNumber, value); }
+            set { this.RaiseAndSetIfChanged(ref this._discNumber, value); }
         }
 
         #endregion

@@ -11,24 +11,27 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp
 
         public async Task<AudioFileTags> ReadTagsAsync(Uri trackLocation)
         {
-            var tagLibFile = await Task.Run(() => TagLib.File.Create(trackLocation.LocalPath));
-            var tagLibTags = tagLibFile.Tag;
+            AudioFileTags aft = null;
 
-            if (tagLibTags == null)
-                return null;
+            using (var tagLibFile = await Task.Run(() => TagLib.File.Create(trackLocation.LocalPath)))
+            {
+                var tagLibTags = tagLibFile.Tag;
 
-            var aft = new AudioFileTags(
-                tagLibTags.Title,
-                tagLibTags.Performers,
-                tagLibTags.Composers,
-                tagLibTags.Year,
+                if (tagLibTags == null)
+                    return null;
 
-                tagLibTags.Album,
-                tagLibTags.AlbumArtists,
-                tagLibTags.Track,
-                tagLibTags.TrackCount,
-                tagLibTags.Disc,
-                tagLibTags.DiscCount);
+                aft = new AudioFileTags(
+                    tagLibTags.Title,
+                    tagLibTags.Performers,
+                    tagLibTags.Composers,
+                    tagLibTags.Year,
+                    tagLibTags.Album,
+                    tagLibTags.AlbumArtists,
+                    tagLibTags.Track,
+                    tagLibTags.TrackCount,
+                    tagLibTags.Disc,
+                    tagLibTags.DiscCount);
+            }
 
             return aft;
         }
