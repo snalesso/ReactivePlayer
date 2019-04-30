@@ -20,7 +20,7 @@ namespace ReactivePlayer.UI.WPF.Views
     /// <summary>
     /// Interaction logic for TracksView.xaml
     /// </summary>
-    public partial class TracksView : UserControl, IViewFor<TracksViewModel>
+    public partial class TracksView : UserControl, IDisposable, IViewFor<TracksViewModel>
     {
         #region constants & fields
         #endregion
