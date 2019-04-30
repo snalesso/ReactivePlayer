@@ -21,22 +21,15 @@ namespace ReactivePlayer.UI.WPF.Views
         // TODO: move to VM?
         //private readonly WaveformTimelineSoundPlayer _waveformTimelineSoundPlayer;
 
-        public PlaybackTimelineView(
-            //WaveformTimelineSoundPlayer waveformTimelineSoundPlayer
-            )
+        public PlaybackTimelineView()
         {
-            var whenDataContextChangedAndViewLoaded =
+            var when_DataContextChanged_And_ViewLoaded =
                 this.Events().DataContextChanged
-                //.Do(dc =>
-                //{
-                //    var ndctn = (dc.NewValue != null) ? dc.NewValue.ToString() : "null";
-                //    Debug.WriteLine($"dc changed: {ndctn}");
-                //})
-                .And(this.Events().Loaded.Repeat())
+                .And(this.Events().Loaded)
                 .Then((dataContextChangedEventArgs, loadedEventArgs) => dataContextChangedEventArgs);
 
             Observable
-                .When(whenDataContextChangedAndViewLoaded)
+                .When(when_DataContextChanged_And_ViewLoaded)
                 .Subscribe(dataContextChangedEventArgs =>
                 {
                     if (dataContextChangedEventArgs.OldValue != null)
@@ -52,32 +45,6 @@ namespace ReactivePlayer.UI.WPF.Views
                 .DisposeWith(this._disposables);
 
             this.InitializeComponent();
-
-            //Observable.Interval(TimeSpan.FromSeconds(2))
-            //    .Select(x =>
-            //    {
-            //        string name = null;
-
-            //        switch (x % 3)
-            //        {
-            //            case 0:
-            //                name = $"dio";
-            //                break;
-            //            case 1:
-            //                name = $"cane";
-            //                break;
-            //            case 2:
-            //                name = $"ladro";
-            //                break;
-            //        }
-
-            //        return $"{name}-{x}";
-            //    })
-            //    .ObserveOnDispatcher()
-            //    .Subscribe(x =>
-            //    {
-            //        this.DataContext = x;
-            //    });
         }
 
         #region IViewFor
@@ -98,6 +65,7 @@ namespace ReactivePlayer.UI.WPF.Views
 
         #region time slider
 
+        // TODO: who disposes this shit? caliburn? autofac?
         private IConnectableObservable<Unit> _whenDragStartedSubscriber;
         private IConnectableObservable<long> _whenDragDeltaSubscriber;
         private IConnectableObservable<long> _whenDragCompletedSubscriber;

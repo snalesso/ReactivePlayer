@@ -29,8 +29,6 @@ namespace ReactivePlayer.UI.WPF.Views
 
         public TracksView()
         {
-            this.InitializeComponent();
-
             this._viewModelSubject = new BehaviorSubject<TracksViewModel>(this.DataContext as TracksViewModel).DisposeWith(this._disposables);
             this.WhenViewModelChanged = this._viewModelSubject.DistinctUntilChanged();
 
@@ -39,21 +37,7 @@ namespace ReactivePlayer.UI.WPF.Views
                 .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as TracksViewModel))
                 .DisposeWith(this._disposables);
 
-            //this.Events()
-            //    .Loaded
-            //    .Take(1)
-            //    .Subscribe(ae=>
-            //    {
-            //        //this.WhenViewModelChanged
-            //        //    .Where(vm => vm != null)
-            //        //    .Subscribe(vm=>vm.close)
-
-            //        this.WhenViewModelChanged
-            //            .Where(vm => vm != null)
-            //            .Select(vm => Unit.Default)
-            //            .InvokeCommand(this.ViewModel.ReloadTracks)
-            //            .DisposeWith(this._disposables);
-            //    });
+            this.InitializeComponent();
         }
 
         #endregion
@@ -79,8 +63,6 @@ namespace ReactivePlayer.UI.WPF.Views
         #region IDisposable
 
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
-        // TODO: review implementation, also consider if there's some Interlocked way to do it
         private bool _isDisposed = false;
 
         protected virtual void Dispose(bool disposing)

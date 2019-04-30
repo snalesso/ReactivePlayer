@@ -2,7 +2,9 @@
     x:Class="ReactivePlayer.UI.WPF.Views.EditArtistsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ReactiveUI="http://reactiveui.net"
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
+    xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:EditArtistsViewModel,
@@ -24,7 +26,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBox Text="{Binding SelectedEditArtistViewModel.ArtistName}" />
+        <TextBox x:Name="txbArtistName" Text="{Binding SelectedEditArtistViewModel.ArtistName, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button
             Grid.Column="2"
@@ -36,6 +38,7 @@
         <ListBox
             Grid.Row="2"
             Height="Auto"
+            MinHeight="0"
             ItemsSource="{Binding EditArtistViewModels}"
             SelectedItem="{Binding SelectedEditArtistViewModel}">
             <ListBox.ItemTemplate>

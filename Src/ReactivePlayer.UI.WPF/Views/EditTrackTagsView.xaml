@@ -42,29 +42,31 @@
         <TextBlock
             Grid.Row="1"
             Grid.Column="1"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Text="Title" />
         <TextBox
             Grid.Row="1"
-            Grid.Column="3" Text="{Binding Title}"
+            Grid.Column="3"
             MinWidth="150"
             VerticalAlignment="Center"
-            VerticalContentAlignment="Center" />
+            VerticalContentAlignment="Center"
+            Text="{Binding Title}" />
 
         <TextBlock
             Grid.Row="3"
             Grid.Column="1"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Text="Performers" />
         <Views:EditArtistsView
             Grid.Row="3"
             Grid.Column="3"
+            Height="Auto"
             DataContext="{Binding EditPerformersViewModel}" />
 
         <TextBlock
             Grid.Row="5"
             Grid.Column="1"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Text="Composers" />
         <TextBox
             Grid.Row="5"
@@ -76,7 +78,7 @@
         <TextBlock
             Grid.Row="7"
             Grid.Column="1"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Text="Year" />
         <TextBox
             Grid.Row="7"

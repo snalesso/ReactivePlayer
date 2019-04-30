@@ -15,22 +15,21 @@ namespace ReactivePlayer.UI.WPF.Views
     public partial class ShellView : Window, IViewFor<ShellViewModel>, IDisposable
     {
         #region constants & fields
-        
+
         #endregion
 
         #region ctor
 
         public ShellView()
         {
-            this.InitializeComponent();
-
             this._viewModelSubject = new BehaviorSubject<ShellViewModel>(this.DataContext as ShellViewModel);
             // when .DataContext changes => update .ViewModel
             this.Events()
                 .DataContextChanged
                 .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as ShellViewModel))
                 .DisposeWith(this._disposables);
-            this.WhenViewModelChanged = this._viewModelSubject.DistinctUntilChanged();
+
+            this.InitializeComponent();
         }
 
         #endregion
@@ -43,7 +42,6 @@ namespace ReactivePlayer.UI.WPF.Views
             get => this._viewModelSubject.Value;
             set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value))); // TODO: localize
         }
-        public IObservable<ShellViewModel> WhenViewModelChanged { get; }
 
         object IViewFor.ViewModel
         {
