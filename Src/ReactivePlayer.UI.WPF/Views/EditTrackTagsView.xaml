@@ -5,7 +5,6 @@
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:EditTrackTagsViewModel,
                                      IsDesignTimeCreatable=False}"
@@ -47,39 +46,20 @@
             Text="Title" />
         <TextBox
             Grid.Row="1"
-            Grid.Column="3"
+            Grid.Column="3" Text="{Binding Title}"
             MinWidth="150"
             VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Text="{Binding Title}" />
+            VerticalContentAlignment="Center" />
 
         <TextBlock
             Grid.Row="3"
             Grid.Column="1"
             VerticalAlignment="Center"
             Text="Performers" />
-        <Grid Grid.Row="3" Grid.Column="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="8" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <TextBox MinWidth="250" />
-
-            <ItemsControl
-                Grid.Row="2"
-                MinWidth="150"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                ItemsSource="{Binding Performers}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
+        <Views:EditArtistsView
+            Grid.Row="3"
+            Grid.Column="3"
+            DataContext="{Binding EditPerformersViewModel}" />
 
         <TextBlock
             Grid.Row="5"
@@ -91,8 +71,7 @@
             Grid.Column="3"
             MinWidth="150"
             VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Text="{Binding Composers}" />
+            VerticalContentAlignment="Center" />
 
         <TextBlock
             Grid.Row="7"
@@ -105,7 +84,6 @@
             MinWidth="150"
             VerticalAlignment="Center"
             VerticalContentAlignment="Center"
-            Text="{Binding Year}"
             TextAlignment="Right" />
 
         <Grid

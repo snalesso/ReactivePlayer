@@ -3,60 +3,87 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.Collections
 {
-    public class ObservableSet<T> : ISet<T>, INotifyCollectionChanged
+    public class ObservableOrderedSet<T> : ISet<T>
     {
-        private readonly ISet<T> _set;
-        private readonly ObservableCollection<T> _observableCollection;
+        #region constants & fields
 
-        public ObservableSet()
+        private readonly IDictionary<T, int> _indexesByKey;
+        private readonly IList<T> _keysByIndex;
+
+        #endregion
+
+        #region ctors
+
+        public ObservableOrderedSet(ISet<T> initialItems)
+        {
+            var capacity = initialItems != null ? initialItems.Count : 0;
+
+            this._indexesByKey = new Dictionary<T, int>(capacity);
+            foreach (var item in initialItems)
+            {
+                this.SilentAdd(item);
+            }
+
+            this._keysByIndex = new List<T>(initialItems);
+        }
+
+        public ObservableOrderedSet() : this(null)
         {
         }
 
-        public ObservableSet(ISet<T> items)
+        #endregion
+
+        #region methods
+
+        private bool SilentAdd(T item)
         {
-            this._set = items ?? new HashSet<T>();
-            this._observableCollection = new ObservableCollection<T>(this._set);
+            if (this._indexesByKey.ContainsKey(item))
+                return false;
+
+            this._keysByIndex.Add(item);
+            this._indexesByKey.Add(item, this._keysByIndex.Count);
+
+            return true;
         }
 
-        public int Count => this._set.Count;
+        #endregion
 
-        public bool IsReadOnly => this._set.IsReadOnly;
+        #region ISet<T>
 
-        public event NotifyCollectionChangedEventHandler CollectionChanged
-        {
-            add => this._observableCollection.CollectionChanged += value;
-            remove => this._observableCollection.CollectionChanged -= value;
-        }
+        public int Count => throw new NotImplementedException();
+
+        public bool IsReadOnly => false;
 
         public bool Add(T item)
         {
-            var wasAdded = this._set.Add(item);
-            if (wasAdded)
-                this._observableCollection.Add(item);
+            var wasAdded = this.SilentAdd(item);
+
+            //if (wasAdded)
 
             return wasAdded;
         }
 
         public void Clear()
         {
-            this._set.Clear();
-            this._observableCollection.Clear();
+            this._keysByIndex.Clear();
+            this._indexesByKey.Clear();
         }
 
         public bool Contains(T item)
         {
-            return this._set.Contains(item);
+            return this._indexesByKey.ContainsKey(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            this._set.CopyTo(array, arrayIndex);
+            throw new NotImplementedException();
         }
 
         public void ExceptWith(IEnumerable<T> other)
@@ -66,7 +93,7 @@ namespace ReactivePlayer.UI.Collections
 
         public IEnumerator<T> GetEnumerator()
         {
-            return this._set.GetEnumerator();
+            return this._keysByIndex.GetEnumerator();
         }
 
         public void IntersectWith(IEnumerable<T> other)
@@ -101,10 +128,12 @@ namespace ReactivePlayer.UI.Collections
 
         public bool Remove(T item)
         {
-            var wasRemoved = this._set.Remove(item);
+            if (!this._indexesByKey.TryGetValue(item, out var index))
+                return false;
 
+            var wasRemoved = this._indexesByKey.Remove(item);
             if (wasRemoved)
-                this._observableCollection.Remove(item);
+                this._keysByIndex.RemoveAt(index);
 
             return wasRemoved;
         }
@@ -126,12 +155,14 @@ namespace ReactivePlayer.UI.Collections
 
         void ICollection<T>.Add(T item)
         {
-            (this._set as ICollection<T>).Add(item);
+            throw new NotImplementedException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (this._set as IEnumerable).GetEnumerator();
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

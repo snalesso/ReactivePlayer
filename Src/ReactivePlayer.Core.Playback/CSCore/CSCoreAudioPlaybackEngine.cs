@@ -450,18 +450,18 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         #region position updater
 
-        private IConnectableObservable<TimeSpan?> _whenPositionChanged;
+        private IConnectableObservable<TimeSpan?> _positionPoller;
         private IDisposable __when_POSITION_ChangedSubscription;
 
         private void CreatePositionUpdater()
         {
-            this._whenPositionChanged = Observable
+            this._positionPoller = Observable
                 .Interval(this._positionUpdatesInterval, System.Reactive.Concurrency.DispatcherScheduler.Current) // TODO: use taskpool scheduler?
                 .Select(_ => this._soundOut?.WaveSource?.GetPosition())
-                .DistinctUntilChanged()
+                .DistinctUntilChanged() // TODO: does this duc filter equal value in respect to a subscription which contains a startwith like the one here below?
                 .Publish();
 
-            this._whenPositionChanged
+            this._positionPoller
                 .StartWith(this._soundOut?.WaveSource?.GetPosition()) // startwith here in this block so it gets current position of when subscription is connected
                 .Subscribe(position => this._positionSubject.OnNext(position))
                 .DisposeWith(this._playerScopeDisposables);
@@ -471,7 +471,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         {
             if (this.__when_POSITION_ChangedSubscription == null)
             {
-                this.__when_POSITION_ChangedSubscription = this._whenPositionChanged.Connect();
+                this.__when_POSITION_ChangedSubscription = this._positionPoller.Connect();
             }
         }
 

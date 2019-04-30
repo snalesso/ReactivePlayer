@@ -82,6 +82,9 @@
     <Reference Include="ReactiveUI.Events.WPF, Version=9.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReactiveUI.Events.WPF.9.13.1\lib\net461\ReactiveUI.Events.WPF.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveUI.Validation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ReactiveUI.Validation.1.0.13\lib\net461\ReactiveUI.Validation.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI.WPF, Version=9.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReactiveUI.WPF.9.13.1\lib\net461\ReactiveUI.WPF.dll</HintPath>
     </Reference>
@@ -132,10 +135,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
@@ -162,8 +165,8 @@
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\EditAlbumViewModel.cs" />
     <Compile Include="ViewModels\PlaybackProgressViewModel.cs" />
-    <Compile Include="ViewModels\StringSetEditorViewModel+StringContainer.cs" />
-    <Compile Include="ViewModels\StringSetEditorViewModel.cs" />
+    <Compile Include="ViewModels\EditArtistViewModel.cs" />
+    <Compile Include="ViewModels\EditArtistsViewModel.cs" />
     <Compile Include="ViewModels\TrackAlbumAssociationViewModel.cs" />
     <Compile Include="ViewModels\EditTrackAlbumAssociationViewModel.cs" />
     <Compile Include="ViewModels\EditTrackTagsViewModel.cs" />
@@ -222,7 +225,14 @@
     <Compile Include="Views\CrashView.xaml.cs">
       <DependentUpon>CrashView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditArtistsView.xaml.cs">
+      <DependentUpon>EditArtistsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ViewsConstants.cs" />
+    <Page Include="Views\EditArtistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

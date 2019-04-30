@@ -18,21 +18,24 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IReadLibraryService _readLibraryService;
         private readonly IWriteLibraryService _writeLibraryService;
         private readonly Track _track;
+        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
 
         #endregion
 
         #region constructors
 
         public EditTrackViewModel(
-            Track track,
             IReadLibraryService readLibraryService,
-            IWriteLibraryService writeLibraryService)
+            IWriteLibraryService writeLibraryService,
+            Track track,
+            Func<Track, EditTrackTagsViewModel> editTrackTagsViewModelFactoryMethod)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService)); // TODO: localize
+            this._editTrackTagsViewModelFactoryMethod = editTrackTagsViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackTagsViewModelFactoryMethod)); // TODO: localize
 
-            this.EditTrackTagsViewModel = new EditTrackTagsViewModel(this._track);
+            this.EditTrackTagsViewModel = this._editTrackTagsViewModelFactoryMethod.Invoke(this._track);
 
             this.FakeEdit = ReactiveCommand.Create(
                 (TrackViewModel trackVM) =>

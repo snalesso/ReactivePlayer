@@ -3,7 +3,6 @@ using Caliburn.Micro;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.FileSystem.Media.Audio.CSCore;
 using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
-using ReactivePlayer.Core.Library.Json.Newtonsoft;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
@@ -130,7 +129,11 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.Register<Func<Track, EditTrackViewModel>>(ctx =>
             {
                 var ctxInternal = ctx.Resolve<IComponentContext>();
-                return (Track t) => new EditTrackViewModel(t, ctxInternal.Resolve<IReadLibraryService>(), ctxInternal.Resolve<IWriteLibraryService>());
+                return (Track t) => new EditTrackViewModel(
+                    ctxInternal.Resolve<IReadLibraryService>(),
+                    ctxInternal.Resolve<IWriteLibraryService>(),
+                    t,
+                    ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
             }).AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<AllTracksViewModel>().AsSelf().InstancePerLifetimeScope();
@@ -149,6 +152,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             builder.RegisterType<ShellMenuViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<ShellMenuView>().As<IViewFor<ShellMenuViewModel>>().InstancePerLifetimeScope();
+
+            builder.RegisterType<EditArtistsViewModel>().AsSelf().InstancePerDependency();
         }
 
         private IEnumerable<Assembly> assemblies;

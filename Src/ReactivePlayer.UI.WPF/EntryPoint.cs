@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
 
@@ -16,7 +15,6 @@ namespace ReactivePlayer.UI.WPF
             if (_wasCreatedNew && _mutex.WaitOne(TimeSpan.Zero, true))
             {
                 var app = new App();
-
                 app.Run();
 
                 _mutex.ReleaseMutex();
