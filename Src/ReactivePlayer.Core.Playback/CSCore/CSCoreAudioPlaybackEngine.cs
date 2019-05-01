@@ -24,7 +24,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
     // TODO: log
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
-    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngine
+    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngine, IDisposable
     {
         // TODO: study SubscribeOn VS ObserveOn, .ToProperty(x, x => x.Property, scheduler: ...), RxApp.MainThreadScheduler.Schedule(() => DoAThing())
 
