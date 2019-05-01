@@ -77,6 +77,13 @@ namespace ReactivePlayer.UI.WPF.Composition
             this.DisplayRootViewFor<TShellViewModel>(this.RootViewDisplaySettings);
         }
 
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            base.OnExit(sender, e);
+
+            this.Container.Dispose();
+        }
+
         #endregion
     }
 }
