@@ -7,6 +7,7 @@ using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Windows.Shell;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -48,6 +49,56 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .ToProperty(this, nameof(this.IsEnabled))
                 .DisposeWith(this._disposables);
 
+            this._taskbarProgressState_OAPH = Observable.CombineLatest(
+                    this._playbackService.WhenStatusChanged,
+                    this._playbackService.WhenDurationChanged,
+                    this._playbackService.WhenPositionChanged,
+                    (status, duration, position) =>
+                    {
+                        switch (status)
+                        {
+                            case PlaybackStatus.Loaded:
+                            case PlaybackStatus.PlayedToEnd:
+                            case PlaybackStatus.ManuallyInterrupted:
+                            case PlaybackStatus.None:
+                                return TaskbarItemProgressState.None;
+
+                            case PlaybackStatus.Playing:
+                                if (duration.HasValue && position.HasValue)
+                                    return TaskbarItemProgressState.Normal;
+                                return TaskbarItemProgressState.Indeterminate;
+
+                            case PlaybackStatus.Paused:
+                                return TaskbarItemProgressState.Paused;
+
+                            case PlaybackStatus.Loading:
+                                return TaskbarItemProgressState.Indeterminate;
+
+                            case PlaybackStatus.Exploded:
+                                return TaskbarItemProgressState.Error;
+
+                            default:
+                                return TaskbarItemProgressState.None;
+                        }
+                    })
+                .DistinctUntilChanged()
+                .ToProperty(this, nameof(this.TaskbarProgressState))
+                .DisposeWith(this._disposables);
+
+            this._taskbarProgressValue_OAPH = Observable.CombineLatest(
+                    this._playbackService.WhenDurationChanged,
+                    this._playbackService.WhenPositionChanged,
+                    (duration, position) =>
+                    {
+                        if (duration.HasValue && position.HasValue)
+                            return (position.Value.TotalMilliseconds / duration.Value.TotalMilliseconds);
+
+                        return Double.NaN;
+                    })
+                .DistinctUntilChanged()
+                .ToProperty(this, nameof(this.TaskbarProgressValue))
+                .DisposeWith(this._disposables);
+
             this._playbackService.WhenTrackChanged
                 .Subscribe(track => this.UpdateDisplayName(track))
                 .DisposeWith(this._disposables);
@@ -62,13 +113,19 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        private readonly ObservableAsPropertyHelper<bool> _isEnabled_OAPH;
-        public bool IsEnabled => this._isEnabled_OAPH.Value;
-
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
         public LibraryViewModel LibraryViewModel { get; }
         public PlaybackHistoryViewModel PlaybackHistoryViewModel { get; }
         public ShellMenuViewModel ShellMenuViewModel { get; }
+
+        private readonly ObservableAsPropertyHelper<bool> _isEnabled_OAPH;
+        public bool IsEnabled => this._isEnabled_OAPH.Value;
+
+        private readonly ObservableAsPropertyHelper<TaskbarItemProgressState> _taskbarProgressState_OAPH;
+        public TaskbarItemProgressState TaskbarProgressState => this._taskbarProgressState_OAPH.Value;
+
+        private readonly ObservableAsPropertyHelper<double> _taskbarProgressValue_OAPH;
+        public double TaskbarProgressValue => this._taskbarProgressValue_OAPH.Value;
 
         #endregion
 

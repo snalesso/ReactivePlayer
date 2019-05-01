@@ -28,10 +28,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
     // Autofac Documentation:   http://autofac.readthedocs.org/en/latest/index.html
     // Autofac source code:     https://github.com/autofac/Autofac
 
-    // TODO: dispose services when shutting down/no longer needed, maybe in OnExit?
-    // TODO: MAKE SURE IDisposables implementations which implement interfaces none of which implements IDisposable GET DISPOSED
     // TODO: separate configuration from DisplayRootViewFor
-    // TODO: export shell config
     internal sealed class AutofacBootstrapper : CustomBootstrapperBase<ShellViewModel>
     {
         #region ctor

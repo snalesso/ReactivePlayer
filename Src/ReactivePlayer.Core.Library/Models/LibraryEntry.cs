@@ -24,7 +24,7 @@ namespace ReactivePlayer.Core.Library.Models
                 : throw new ArgumentOutOfRangeException(nameof(addedToLibraryDateTime)); // TODO: localize
             this.IsLoved = isLoved;
             this.Duration = duration;
-            this.LastModifiedDateTime = lastModified; // TODO: add lastModified value validation
+            this.LastModifiedDateTime = lastModified; // TODO: add lastModified value validation?
             this.FileSizeBytes = fileSizeBytes;
         }
 

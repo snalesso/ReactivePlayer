@@ -158,6 +158,7 @@
     <Compile Include="Services\LibraryViewModelsProxy.cs" />
     <Compile Include="Services\WaveformTimelineSoundPlayer.cs" />
     <Compile Include="Services\WindowsDialogService.cs" />
+    <Compile Include="Services\WindowsTaskbarService.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\AllTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />

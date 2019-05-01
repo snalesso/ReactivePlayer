@@ -14,6 +14,20 @@
     IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
     mc:Ignorable="d">
 
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="{Binding TaskbarProgressState}" ProgressValue="{Binding TaskbarProgressValue}">
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfoCollection>
+                    <ThumbButtonInfo Command="{Binding Pause}" />
+                    <ThumbButtonInfo Command="{Binding Resume}" />
+                    <ThumbButtonInfo Command="{Binding Stop}" />
+                    <!--<ThumbButtonInfo Command="{Binding Mute}"></ThumbButtonInfo>
+                    <ThumbButtonInfo Command="{Binding UnMute}"></ThumbButtonInfo>-->
+                </ThumbButtonInfoCollection>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

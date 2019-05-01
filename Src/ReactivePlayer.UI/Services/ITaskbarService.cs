@@ -12,8 +12,16 @@ namespace ReactivePlayer.UI.Services
         // jumplist buttons
         // thumb buttons
         // possible dependencies: IVisualizerService -> show animation in thumbnail
-        void SetTaskbarProgressValue(double value);
+        void SetTaskbarProgressValue(double? progressPercentValue);
 
-        void SetTaskbarProgressStatus();
+        void SetTaskbarProgressStatus( TaskbarProgressStatus status);
+    }
+
+    public enum TaskbarProgressStatus
+    {
+        None,
+        Advancing,
+        Stopped,
+        Failed
     }
 }
