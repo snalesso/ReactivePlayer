@@ -28,7 +28,7 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            VerticalAlignment="Center"
+            VerticalAlignment="Top"
             Text="Album" />
         <Grid
             Grid.Row="0"
@@ -43,13 +43,15 @@
             <Button
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Content="New" VerticalContentAlignment="Center" />
+                VerticalContentAlignment="Center"
+                Content="New" />
             <ComboBox
                 Grid.Column="2"
                 MinWidth="150"
                 VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
                 ItemsSource="{Binding AlbumViewModels}"
-                SelectedItem="{Binding AlbumViewModel}" VerticalContentAlignment="Center">
+                SelectedItem="{Binding AlbumViewModel}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
@@ -64,24 +66,30 @@
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            Text="Track #" VerticalAlignment="Center" />
+            VerticalAlignment="Top"
+            Text="Track #" />
         <TextBox
             Grid.Row="2"
             Grid.Column="2"
             MinWidth="150"
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
             Text="{Binding TrackNumber}"
-            TextAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            TextAlignment="Right" />
 
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            Text="Disc #" VerticalAlignment="Center" />
+            VerticalAlignment="Top"
+            Text="Disc #" />
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
             MinWidth="150"
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
             Text="{Binding DiscNumber}"
-            TextAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            TextAlignment="Right" />
 
     </Grid>
 </UserControl>

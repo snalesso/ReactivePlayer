@@ -35,7 +35,7 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            Text="Title" VerticalAlignment="Center" />
+            Text="Title" VerticalAlignment="Top" />
         <TextBox
             Grid.Row="0"
             Grid.Column="2"
@@ -45,17 +45,17 @@
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            Text="Authors" VerticalAlignment="Center" />
-        <TextBox
+            Text="Authors" VerticalAlignment="Top" />
+        <Views:EditArtistsView
             Grid.Row="2"
             Grid.Column="2"
             MinWidth="150"
-            Text="{Binding Authors}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            DataContext="{Binding EditAuthorsViewModel}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
 
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            Text="Tracks" VerticalAlignment="Center" />
+            Text="Tracks" VerticalAlignment="Top" />
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
@@ -66,7 +66,7 @@
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
-            Text="Discs" VerticalAlignment="Center" />
+            Text="Discs" VerticalAlignment="Top" />
         <TextBox
             Grid.Row="6"
             Grid.Column="2"

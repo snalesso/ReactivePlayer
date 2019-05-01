@@ -126,15 +126,19 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             }).AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerDependency();
+
             builder.Register<Func<Track, EditTrackViewModel>>(ctx =>
             {
                 var ctxInternal = ctx.Resolve<IComponentContext>();
+
                 return (Track t) => new EditTrackViewModel(
                     ctxInternal.Resolve<IReadLibraryService>(),
                     ctxInternal.Resolve<IWriteLibraryService>(),
                     t,
                     ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
-            }).AsSelf().InstancePerLifetimeScope();
+            }).AsSelf().InstancePerDependency();
+
+            builder.RegisterType<EditTrackAlbumAssociationViewModel>().AsSelf().InstancePerDependency();
 
             builder.RegisterType<AllTracksViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<TracksView>().As<IViewFor<AllTracksViewModel>>().InstancePerLifetimeScope();

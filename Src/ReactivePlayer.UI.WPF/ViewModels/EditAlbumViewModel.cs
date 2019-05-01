@@ -14,17 +14,21 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         private readonly Album _album;
+        private readonly Func<IEnumerable<string>, EditArtistsViewModel> _editArtistsViewModelViewModelFactoryMethod;
 
         #endregion
 
         #region ctors
 
-        public EditAlbumViewModel(Album album)
+        public EditAlbumViewModel(
+            Album album,
+            Func<IEnumerable<string>, EditArtistsViewModel> editArtistsViewModelViewModelFactoryMethod)
         {
             this._album = album ?? throw new ArgumentNullException(nameof(album));
+            this._editArtistsViewModelViewModelFactoryMethod = editArtistsViewModelViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editArtistsViewModelViewModelFactoryMethod));
 
             this.Title = this._album.Title;
-            this.Authors = this._album.Authors;
+            this.EditAuthorsViewModel = this._editArtistsViewModelViewModelFactoryMethod.Invoke(this._album.Authors);
             this.TracksCount = this._album.TracksCount;
             this.DiscsCount = this._album.DiscsCount;
         }
@@ -44,12 +48,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             }
         }
 
-        private IReadOnlyList<string> _authors;
-        public IReadOnlyList<string> Authors
-        {
-            get { return this._authors; }
-            set { this.RaiseAndSetIfChanged(ref this._authors, value); }
-        }
+        public EditArtistsViewModel EditAuthorsViewModel { get; }
 
         private uint? _tracksCount;
         public uint? TracksCount
@@ -81,7 +80,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         {
             return new Album(
                 this.Title,
-                this.Authors,
+                this.EditAuthorsViewModel.EditArtistViewModels.Select(x=>x.ArtistName).ToArray(),
                 this.TracksCount,
                 this.DiscsCount);
         }
