@@ -35,11 +35,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             //this._performers = new ObservableCollection<string>(this._track.Performers);
             this.EditPerformersViewModel = this._editArtistsViewModelViewModelFactoryMethod.Invoke(this._track.Performers);
+            this.EditComposersViewModel = this._editArtistsViewModelViewModelFactoryMethod.Invoke(this._track.Composers);
 
             //this._composers = new ObservableCollection<string>(this._track.Composers);
             //this.Composers = new ReadOnlyObservableCollection<string>(this._composers);
 
-            //this.Year = this._track.Year;
+            this.Year = this._track.Year;
         }
 
         #endregion
@@ -52,8 +53,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get => this._title;
             set => this.RaiseAndSetIfChanged(ref this._title, value);
         }
-        
+
         public EditArtistsViewModel EditPerformersViewModel { get; }
+
+        public EditArtistsViewModel EditComposersViewModel { get; }
 
         //public UniqueStringsListEditorViewModel PerformersEditor { get; }
         ////{
@@ -68,12 +71,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         ////    set => this.SetAndRaiseIfChanged(ref this._composers, value);
         ////}
 
-        //private uint? _year;
-        //public uint? Year
-        //{
-        //    get => this._year;
-        //    set => this.RaiseAndSetIfChanged(ref this._year, value);
-        //}
+        private uint? _year;
+        public uint? Year
+        {
+            get => this._year;
+            set => this.RaiseAndSetIfChanged(ref this._year, value);
+        }
 
         //private EditTrackAlbumAssociationViewModel _editTrackAlbumAssociationViewModel;
         //public EditTrackAlbumAssociationViewModel EditTrackAlbumAssociationViewModel

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ReactivePlayer.UI.Collections;
 using DynamicData;
 using System.Collections.Specialized;
+using System.Reactive.Concurrency;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -42,62 +43,101 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Subscribe()
                 .DisposeWith(this._disposables);
 
-            this.AddNew = ReactiveCommand.Create(() =>
-            {
-                var newEditArtistViewModel = new EditArtistViewModel(null);
+            this.WhenSelectedEditArtistViewModelChanged = this.WhenAnyValue(x => x.SelectedEditArtistViewModel).DistinctUntilChanged();
 
-                this._editArtistViewModelsSourceList.Edit(list => list.Add(newEditArtistViewModel));
-                this.SelectedEditArtistViewModel = newEditArtistViewModel;
+            this._hasEditArtistViewModelSelectionOAPH = this.WhenSelectedEditArtistViewModelChanged
+                .Select(x => x != null)
+                .DistinctUntilChanged()
+                .ToProperty(this, nameof(this.HasEditArtistViewModelSelection)
+                //, true // works
+                //, false
+                , scheduler: Scheduler.Immediate
+                )
+                .DisposeWith(this._disposables);
 
-                return newEditArtistViewModel;
-            });
-
-            this.MoveUp = ReactiveCommand.Create(
-                (EditArtistViewModel vm) =>
+            this.WhenSelectedEditArtistViewModelChanged.Subscribe(
+                selectedEAVM =>
                 {
-                    if (vm == null)
-                        return;
+                    if (selectedEAVM != null)
+                        this.NewArtistName = null;
+                })
+                .DisposeWith(this._disposables);
+
+            this.AddNew = ReactiveCommand.Create(
+                () =>
+                {
+                    var newEditArtistViewModel = new EditArtistViewModel(this.NewArtistName);
+                    this.NewArtistName = null;
+
+                    this._editArtistViewModelsSourceList.Edit(list => list.Add(newEditArtistViewModel));
+                    //this.SelectedEditArtistViewModel = newEditArtistViewModel;
+
+                    //return newEditArtistViewModel;
+                },
+                this.WhenAnyValue(x => x.NewArtistName)/*.Throttle(TimeSpan.FromMilliseconds(200))*/.Select(nan => this.IsValidNewArtistName(nan)))
+                .DisposeWith(this._disposables);
+
+            this.MoveSelectedUp = ReactiveCommand.Create(
+                () =>
+                {
+                    var selection = this.SelectedEditArtistViewModel;
 
                     this._editArtistViewModelsSourceList.Edit(list =>
                     {
-                        var oldIndex = list.IndexOf(vm);
-                        if (oldIndex > 0 && list.Remove(vm))
+                        var oldIndex = list.IndexOf(selection);
+                        if (oldIndex > 0 && list.Remove(selection))
                         {
-                            list.Insert(oldIndex - 1, vm);
+                            list.Insert(oldIndex - 1, selection);
                         }
                     });
 
-                    this.SelectedEditArtistViewModel = vm;
+                    this.SelectedEditArtistViewModel = selection;
                 },
-                this.WhenAnyValue(x => x.SelectedEditArtistViewModel).Select(x => x != null && !this.IsFirst(x)))
+                this.WhenSelectedEditArtistViewModelChanged.Select(x => x != null && !this.IsFirst(x)))
                 .DisposeWith(this._disposables);
 
-            this.MoveDown = ReactiveCommand.Create(
-                (EditArtistViewModel vm) =>
+            this.MoveSelectedDown = ReactiveCommand.Create(
+                () =>
                 {
-                    if (vm == null)
-                        return;
+                    var selection = this.SelectedEditArtistViewModel;
 
                     this._editArtistViewModelsSourceList.Edit(list =>
                     {
-                        var oldIndex = list.IndexOf(vm);
-                        if (oldIndex < (list.Count - 1) && list.Remove(vm))
+                        var oldIndex = list.IndexOf(selection);
+                        if (oldIndex < (list.Count - 1) && list.Remove(selection))
                         {
-                            list.Insert(oldIndex + 1, vm);
+                            list.Insert(oldIndex + 1, selection);
                         }
                     });
 
-                    this.SelectedEditArtistViewModel = vm;
+                    this.SelectedEditArtistViewModel = selection;
                 },
-                this.WhenAnyValue(x => x.SelectedEditArtistViewModel).Select(x => x != null && !this.IsLast(x)))
+                this.WhenSelectedEditArtistViewModelChanged.Select(x => x != null && !this.IsLast(x)))
                 .DisposeWith(this._disposables);
 
-            this.Remove = ReactiveCommand.Create(
+            this.TryRemove = ReactiveCommand.Create(
                 (EditArtistViewModel vm) =>
+                {
+                    bool wasRemoved = false;
+
+                    this._editArtistViewModelsSourceList.Edit(list =>
+                    {
+                        wasRemoved = list.Remove(vm);
+                    });
+
+                    return wasRemoved;
+                })
+                .DisposeWith(this._disposables);
+
+            this.RemoveSelected = ReactiveCommand.Create(
+                () =>
                 {
                     this._editArtistViewModelsSourceList.Edit(list =>
                     {
-                        list.Remove(vm);
+                        if (!list.Remove(this.SelectedEditArtistViewModel))
+                        {
+                            // TODO: throw exception if passed element is not contained in the list
+                        }
                     });
                 },
                 this.WhenAnyValue(x => x.SelectedEditArtistViewModel).Select(x => x != null))
@@ -121,10 +161,28 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._selectedEditArtistViewModel; }
             set { this.RaiseAndSetIfChanged(ref this._selectedEditArtistViewModel, value); }
         }
+        public IObservable<EditArtistViewModel> WhenSelectedEditArtistViewModelChanged { get; }
+
+        private ObservableAsPropertyHelper<bool> _hasEditArtistViewModelSelectionOAPH;
+        public bool HasEditArtistViewModelSelection => this._hasEditArtistViewModelSelectionOAPH.Value;
+
+        private string _newArtistName;
+        public string NewArtistName
+        {
+            get { return this._newArtistName; }
+            set { this.RaiseAndSetIfChanged(ref this._newArtistName, value); }
+        }
 
         #endregion
 
         #region methods
+
+        private bool IsValidNewArtistName(string newArtistName)
+        {
+            return
+                !string.IsNullOrWhiteSpace(newArtistName)
+                && !this._editArtistViewModelsSourceList.Items.Any(an => an.ArtistName == newArtistName);
+        }
 
         private bool IsLast(EditArtistViewModel vm)
         {
@@ -145,11 +203,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region commands
 
-        public ReactiveCommand<Unit, EditArtistViewModel> AddNew { get; }
-        public ReactiveCommand<EditArtistViewModel, Unit> Remove { get; }
+        public ReactiveCommand<Unit, Unit> AddNew { get; }
+        public ReactiveCommand<EditArtistViewModel, bool> TryRemove { get; }
 
-        public ReactiveCommand<EditArtistViewModel, Unit> MoveDown { get; }
-        public ReactiveCommand<EditArtistViewModel, Unit> MoveUp { get; }
+        public ReactiveCommand<Unit, Unit> RemoveSelected { get; }
+        public ReactiveCommand<Unit, Unit> MoveSelectedDown { get; }
+        public ReactiveCommand<Unit, Unit> MoveSelectedUp { get; }
 
         #endregion
 

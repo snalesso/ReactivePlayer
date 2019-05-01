@@ -60,7 +60,6 @@
         <Views:EditArtistsView
             Grid.Row="3"
             Grid.Column="3"
-            Height="Auto"
             DataContext="{Binding EditPerformersViewModel}" />
 
         <TextBlock
@@ -68,12 +67,10 @@
             Grid.Column="1"
             VerticalAlignment="Top"
             Text="Composers" />
-        <TextBox
+        <Views:EditArtistsView
             Grid.Row="5"
             Grid.Column="3"
-            MinWidth="150"
-            VerticalAlignment="Center"
-            VerticalContentAlignment="Center" />
+            DataContext="{Binding EditComposersViewModel}" />
 
         <TextBlock
             Grid.Row="7"
@@ -86,6 +83,7 @@
             MinWidth="150"
             VerticalAlignment="Center"
             VerticalContentAlignment="Center"
+            Text="{Binding Year}"
             TextAlignment="Right" />
 
         <Grid

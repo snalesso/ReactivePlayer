@@ -125,7 +125,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
             }).AsSelf().InstancePerLifetimeScope();
 
-            builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerDependency();
             builder.Register<Func<Track, EditTrackViewModel>>(ctx =>
             {
                 var ctxInternal = ctx.Resolve<IComponentContext>();

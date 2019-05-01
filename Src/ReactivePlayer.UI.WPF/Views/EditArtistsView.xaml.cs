@@ -2,11 +2,13 @@
 using ReactiveUI;
 using System;
 using System.Diagnostics;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ReactivePlayer.UI.WPF.Views
 {
@@ -20,7 +22,10 @@ namespace ReactivePlayer.UI.WPF.Views
     {
         #region constants & fields
 
-        private IDisposable _addNewCommandSubscription = null;
+        private readonly CompositeDisposable _viewModelSubscriptionsDisposables;
+        //private IDisposable _viewModel_AddNew_Subscription;
+        //private IDisposable _artistNameTextBox_KeyPressed_Esc_Subscription;
+        //private IDisposable _artistNameTextBox_KeyPressed_Enter_Subscription;
 
         #endregion
 
@@ -28,30 +33,39 @@ namespace ReactivePlayer.UI.WPF.Views
 
         public EditArtistsView()
         {
+            this._viewModelSubscriptionsDisposables = new CompositeDisposable().DisposeWith(this._disposables);
+
             this.WhenViewModelChanged = this.Events().DataContextChanged
-                .Select(dc => (OldValue: (EditArtistsViewModel)dc.OldValue, NewaValue: (EditArtistsViewModel)dc.NewValue))
+                .Select(dc => (EditArtistsViewModel)dc.NewValue)
                 .DistinctUntilChanged();
 
-            var when_ViewModelChanged_And_ViewLoaded =
-                this.WhenViewModelChanged
-                .And(this.Events().Loaded)
-                .Then((viewModelChangedEventArgs, viewLoadedEventArgs) => viewModelChangedEventArgs);
+            var when_ViewLoaded_And_ViewModelChanged =
+                this.Events().Loaded
+                .And(this.WhenViewModelChanged)
+                .Then((viewLoadedEventArgs, newViewModel) => newViewModel);
 
             //this.Events().DataContextChanged.Do(x => Debug.WriteLine("dc changed " + (x.NewValue != null))).Subscribe();
 
             Observable
-                .When(when_ViewModelChanged_And_ViewLoaded)
-                .Subscribe(vmcea =>
+                .When(when_ViewLoaded_And_ViewModelChanged)
+                .Subscribe(newViewModel =>
                 {
-                    if (vmcea.OldViewModel != null)
-                    {
-                        this._addNewCommandSubscription?.Dispose();
-                    }
+                    this._viewModelSubscriptionsDisposables?.Clear();
 
-                    if (vmcea.NewViewModel != null)
-                    {
-                        this._addNewCommandSubscription = vmcea.NewViewModel.AddNew.Subscribe(newArtistVM => this.txbArtistName.Focus()).DisposeWith(this._disposables);
-                    }
+                    if (newViewModel == null)
+                        return;
+
+                    // when the viewmodel executes the add, focus the txtbox again
+                    newViewModel.AddNew.Subscribe(_ => this.txbNewArtistName.Focus()).DisposeWith(this._viewModelSubscriptionsDisposables);
+
+                    // when txt new artist name receives enter, execute the add
+                     Observable.FromEventPattern<KeyEventHandler, KeyEventArgs>(
+                        h => this.txbNewArtistName.KeyDown += h,
+                        h => this.txbNewArtistName.KeyDown -= h)
+                        .Where(key => key.EventArgs.Key == Key.Enter)
+                        .Select(_ => Unit.Default)
+                        .InvokeCommand(newViewModel, x => x.AddNew)
+                        .DisposeWith(this._viewModelSubscriptionsDisposables);
                 })
                 .DisposeWith(this._disposables);
 
@@ -78,7 +92,7 @@ namespace ReactivePlayer.UI.WPF.Views
             set => this.DataContext = value;
         }
 
-        public IObservable<(EditArtistsViewModel OldViewModel, EditArtistsViewModel NewViewModel)> WhenViewModelChanged { get; }
+        public IObservable<EditArtistsViewModel> WhenViewModelChanged { get; }
 
         object IViewFor.ViewModel
         {
