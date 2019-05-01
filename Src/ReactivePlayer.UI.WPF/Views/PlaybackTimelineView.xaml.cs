@@ -67,7 +67,7 @@ namespace ReactivePlayer.UI.WPF.Views
 
         // TODO: who disposes this shit? caliburn? autofac?
         private IConnectableObservable<Unit> _whenDragStartedSubscriber;
-        private IConnectableObservable<long> _whenDragDeltaSubscriber;
+        //private IConnectableObservable<long> _whenDragDeltaSubscriber;
         private IConnectableObservable<long> _whenDragCompletedSubscriber;
         //private IDisposable _dragDeltaSubscription;
         //private IDisposable _dragCompletedSubscription;
@@ -87,26 +87,26 @@ namespace ReactivePlayer.UI.WPF.Views
                 .FromEventPattern<DragStartedEventHandler, DragStartedEventArgs>(
                 h => sliderThumb.DragStarted += h,
                 h => sliderThumb.DragStarted -= h)
-                .Do(x => Debug.WriteLine("Drag started"))
+                //.Do(x => Debug.WriteLine("Drag started"))
                 //.Select(_ => Convert.ToInt64(slider.Value))
                 .Select(_ => Unit.Default)
                 .Publish();
 
-            this._whenDragDeltaSubscriber = Observable
-                .FromEventPattern<DragDeltaEventHandler, DragDeltaEventArgs>(
-                h => sliderThumb.DragDelta += h,
-                h => sliderThumb.DragDelta -= h)
-                .Do(x => Debug.WriteLine("Drag delta"))
-                .Select(_ => Convert.ToInt64(slider.Value))
-                .DistinctUntilChanged()
-                .Throttle(TimeSpan.FromMilliseconds(250))
-                .Publish();
+            //this._whenDragDeltaSubscriber = Observable
+            //    .FromEventPattern<DragDeltaEventHandler, DragDeltaEventArgs>(
+            //    h => sliderThumb.DragDelta += h,
+            //    h => sliderThumb.DragDelta -= h)
+            //    //.Do(x => Debug.WriteLine("Drag delta"))
+            //    .Select(_ => Convert.ToInt64(slider.Value))
+            //    .DistinctUntilChanged()
+            //    .Throttle(TimeSpan.FromMilliseconds(250))
+            //    .Publish();
 
             this._whenDragCompletedSubscriber = Observable
                 .FromEventPattern<DragCompletedEventHandler, DragCompletedEventArgs>(
                 h => sliderThumb.DragCompleted += h,
                 h => sliderThumb.DragCompleted -= h)
-                .Do(x => Debug.WriteLine("Drag completed"))
+                //.Do(x => Debug.WriteLine("Drag completed"))
                 .Select(_ => Convert.ToInt64(slider.Value))
                 //.Select(_ => Unit.Default)
                 //.Take(1)
@@ -127,9 +127,9 @@ namespace ReactivePlayer.UI.WPF.Views
                 .InvokeCommand(this.ViewModel, vm => vm.StartSeeking)
                 .DisposeWith(this._disposables);
 
-            this._whenDragDeltaSubscriber
-               .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
-               .DisposeWith(this._disposables);
+            //this._whenDragDeltaSubscriber
+            //   .InvokeCommand(this.ViewModel, vm => vm.SeekTo)
+            //   .DisposeWith(this._disposables);
 
             //this._whenDragCompletedSubscriber
             //    .InvokeCommand(this.ViewModel, vm => vm.SeekTo)

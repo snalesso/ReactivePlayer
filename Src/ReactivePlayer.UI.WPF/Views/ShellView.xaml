@@ -18,9 +18,9 @@
         <TaskbarItemInfo ProgressState="{Binding TaskbarProgressState}" ProgressValue="{Binding TaskbarProgressValue}">
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfoCollection>
-                    <ThumbButtonInfo Command="{Binding Pause}" />
-                    <ThumbButtonInfo Command="{Binding Resume}" />
-                    <ThumbButtonInfo Command="{Binding Stop}" />
+                    <ThumbButtonInfo Command="{Binding PlaybackControlsViewModel.Pause}" />
+                    <ThumbButtonInfo Command="{Binding PlaybackControlsViewModel.Resume}" />
+                    <ThumbButtonInfo Command="{Binding PlaybackControlsViewModel.Stop}"  />
                     <!--<ThumbButtonInfo Command="{Binding Mute}"></ThumbButtonInfo>
                     <ThumbButtonInfo Command="{Binding UnMute}"></ThumbButtonInfo>-->
                 </ThumbButtonInfoCollection>

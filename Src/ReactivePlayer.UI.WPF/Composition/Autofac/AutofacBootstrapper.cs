@@ -38,8 +38,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             // TODO settings file
             this.RootViewDisplaySettings = new Dictionary<string, object>
             {
-                { nameof(Window.Width), 1650 },
-                { nameof(Window.Height), 850 },
+                { nameof(Window.Width), 1400 },
+                { nameof(Window.Height), 750 },
                 { nameof(Window.WindowState), WindowState.Normal },
                 { nameof(Window.WindowStartupLocation), WindowStartupLocation.CenterScreen }
             };

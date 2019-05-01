@@ -16,6 +16,7 @@ FUNCTIONALITIES:
 - distinguish special album versions (e.g. Deluxe, ...)
 - save playback track & position on app close
 - play + shift (or other modifier) plays and minimizes the player
+- play only this
 - skip &
 	- remove from playlist
 	- remove from library

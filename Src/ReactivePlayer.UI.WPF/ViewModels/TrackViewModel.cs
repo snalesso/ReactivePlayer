@@ -34,6 +34,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .ToProperty(this, nameof(this.IsLoaded))
                 .DisposeWith(this._disposables);
 
+            this._isLoved_OAPH = this.Track.WhenAnyValue(x => x.IsLoved)
+                .ToProperty(this, nameof(this.IsLoved))
+                .DisposeWith(this._disposables);
+
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async () =>
                 {
@@ -54,6 +58,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         private readonly ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
         public bool IsLoaded => this._isLoaded_OAPH.Value;
+
+        private readonly ObservableAsPropertyHelper<bool> _isLoved_OAPH;
+        public bool IsLoved=> this._isLoved_OAPH.Value;
 
         private readonly Track _track;
         public Track Track => this._track;
