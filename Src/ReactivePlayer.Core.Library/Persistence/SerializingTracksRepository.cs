@@ -51,8 +51,8 @@ namespace ReactivePlayer.Core.Library.Persistence
         {
             Track newTrack;
 
-            //try
-            //{
+            try
+            {
                 newTrack = new Track(
                    await this._serializer.GetNewIdentity(),
                    location,
@@ -66,12 +66,12 @@ namespace ReactivePlayer.Core.Library.Persistence
                    albumAssociation,
                    false,
                    DateTime.Now);
-            //}
-            //catch //(Exception ex)
-            //{
-            //    // TODO: log
-            //    newTrack = null;
-            //}
+            }
+            catch (Exception ex)
+            {
+                // TODO: log
+                newTrack = null;
+            }
 
             return newTrack;
         }

@@ -30,10 +30,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             Track track,
             Func<Track, EditTrackTagsViewModel> editTrackTagsViewModelFactoryMethod)
         {
-            this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
-            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
-            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService)); // TODO: localize
-            this._editTrackTagsViewModelFactoryMethod = editTrackTagsViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackTagsViewModelFactoryMethod)); // TODO: localize
+            this._track = track ?? throw new ArgumentNullException(nameof(track));
+            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
+            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
+            this._editTrackTagsViewModelFactoryMethod = editTrackTagsViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackTagsViewModelFactoryMethod));
 
             this.EditTrackTagsViewModel = this._editTrackTagsViewModelFactoryMethod.Invoke(this._track);
 

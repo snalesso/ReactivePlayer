@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
 {
-    public static class PlaybackStatusHelper // TODO: switch to lambdas and use inlining
+    public static class PlaybackStatusHelper // TODO: lambda/extension methods + inlining?
     {
         public static readonly PlaybackStatus[] CanLoadPlaybackStatuses =
             {

@@ -23,7 +23,7 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
             this.Title = title.TrimmedOrNull();
             this.PerformersNames = performersNames.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.ComposersNames = composersNames.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
-            this.Year = year.ThrowIf(ay => ay > DateTime.Today.Year, () => new ArgumentOutOfRangeException(nameof(year))); // TODO: localize
+            this.Year = year.ThrowIf(ay => ay > DateTime.Today.Year, () => new ArgumentOutOfRangeException(nameof(year)));
 
             this.AlbumTitle = albumTitle.TrimmedOrNull();
             this.AlbumAuthors = albumAuthors.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();

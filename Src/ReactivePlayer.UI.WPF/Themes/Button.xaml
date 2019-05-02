@@ -1,0 +1,14 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ReactivePlayer.UI.WPF.Themes">
+
+    <Style x:Key="Button.Square.ByHeight" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
+    </Style>
+
+    <Style TargetType="{x:Type Button}" x:Key="Button.PathButton">
+        
+    </Style>
+
+</ResourceDictionary>

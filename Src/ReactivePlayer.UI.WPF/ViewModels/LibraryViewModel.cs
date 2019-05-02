@@ -106,7 +106,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public ReadOnlyObservableCollection<PlaylistViewModel> PlaylistViewModels { get; }
 
-        // TODO: rename to ShowAddToLibraryFilePicker
         public ReactiveCommand<Unit, Unit> ShowFilePicker { get; }
 
         #region IDisposable

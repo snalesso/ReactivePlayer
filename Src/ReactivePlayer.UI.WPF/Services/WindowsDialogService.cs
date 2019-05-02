@@ -25,7 +25,7 @@ namespace ReactivePlayer.UI.WPF.Services
         {
             var ofd = new OpenFileDialog()
             {
-                Filter = string.Join("|", filters?.Select(kvp => kvp.Key + "|(" + string.Join(", ", kvp.Value.Select(ext => $"*.{ext}")) + ")")),
+                Filter = string.Join("|", filters?.Select(kvp => kvp.Key + "|" + string.Join(";", kvp.Value.Select(ext => $"*.{ext}")))),
                 Multiselect = isMultiselectAllowed,
                 InitialDirectory = initialDirectoryPath,
                 Title = title

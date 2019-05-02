@@ -35,11 +35,14 @@
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
+
         <ListView
             Behaviors:DoubleClick.Command="{Binding PlayTrack}"
             Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
             ItemsSource="{Binding FilteredSortedTrackViewModels}"
-            SelectedItem="{Binding SelectedTrackViewModel}">
+            SelectedItem="{Binding SelectedTrackViewModel}"
+            VirtualizingStackPanel.IsVirtualizing="True"
+            VirtualizingStackPanel.VirtualizationMode="Recycling">
 
             <ListView.View>
                 <GridView>
@@ -56,10 +59,20 @@
                                 <Path
                                     Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                                     Height="12"
-                                    Data="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z"
                                     Fill="Black"
                                     Stretch="Uniform"
-                                    Visibility="{Binding IsLoaded, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+                                    Visibility="{Binding IsLoaded, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+                                    <Path.Data>
+                                        <CombinedGeometry GeometryCombineMode="Intersect">
+                                            <CombinedGeometry.Geometry1>
+                                                <PathGeometry Figures="M0 0h24v24H0z" />
+                                            </CombinedGeometry.Geometry1>
+                                            <CombinedGeometry.Geometry2>
+                                                <PathGeometry Figures="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+                                            </CombinedGeometry.Geometry2>
+                                        </CombinedGeometry>
+                                    </Path.Data>
+                                </Path>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -69,7 +82,7 @@
                                 <Path
                                     Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                                     Height="10"
-                                    Data="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                    Data="{StaticResource Geometries.Heart}"
                                     Fill="Red"
                                     Stretch="Uniform"
                                     Visibility="{Binding IsLoved, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />

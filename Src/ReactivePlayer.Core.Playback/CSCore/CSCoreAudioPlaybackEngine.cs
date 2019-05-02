@@ -148,12 +148,21 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
                     await Task.Run(() =>
                     {
-                        this._soundOut = this.GetNewSoundOut().DisposeWith(this._playerScopeDisposables);
+                        // TODO: improve this error handling
+                        try
+                        {
+                            this._soundOut = this.GetNewSoundOut().DisposeWith(this._playerScopeDisposables);
 
-                        var waveSource = CodecFactory.Instance.GetCodec(track.Location).DisposeWith(this.__playbackScopeDisposables);
-                        this._soundOut.Initialize(waveSource);
+                            var waveSource = CodecFactory.Instance.GetCodec(track.Location).DisposeWith(this.__playbackScopeDisposables);
+                            // TODO: this line throws null exception if track location file does not exist
+                            this._soundOut.Initialize(waveSource);
 
-                        this._soundOut.Volume = this._volumeSubject.Value;
+                            this._soundOut.Volume = this._volumeSubject.Value;
+                        }
+                        catch (Exception ex)
+                        {
+                            this.HandleSoundOutStoppedEvent(ex);
+                        }
                     });
 
                     this.AttachToISoundOutStoppedEvent();
@@ -315,7 +324,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 if (this._canSeekSubject.Value)
                 {
                     //if (position < TimeSpan.Zero || position > this._soundOut.WaveSource.GetLength())
-                    //    throw new ArgumentOutOfRangeException(nameof(position), position, $"{nameof(position)} out of {nameof(IWaveSource)} range."); // TODO: localize
+                    //    throw new ArgumentOutOfRangeException(nameof(position), position, $"{nameof(position)} out of {nameof(IWaveSource)} range.");
 
                     // TODO: check what happens if trying to seek out of duration boundaries
 

@@ -57,11 +57,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //LibraryViewModelsProxy libraryViewModelsProxy
             )
         {
-            this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService)); // TODO: localize
-            //this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy)); // TODO: localize
+            this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            //this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy));
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
-            this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
+            this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
             //this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
@@ -109,7 +109,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //        var initialDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic, Environment.SpecialFolderOption.DoNotVerify);
             //        var extensionsAndLabels = new[]
             //        {
-            //            Tuple.Create(  this._audioPlaybackEngine.SupportedExtensions, "Audio files") // TODO: localize
+            //            Tuple.Create(  this._audioPlaybackEngine.SupportedExtensions, "Audio files")
             //        };
             //        var title = "Select songs to add";
 

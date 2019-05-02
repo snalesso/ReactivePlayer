@@ -15,14 +15,14 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
             IAudioFileTagger tagger,
             IAudioFileDurationCalculator audioFileDurationCalculator)
         {
-            this._tagger = tagger ?? throw new ArgumentNullException(nameof(tagger)); // TODO: localize
-            this._audioFileDurationCalculator = audioFileDurationCalculator ?? throw new ArgumentNullException(nameof(audioFileDurationCalculator)); // TODO: localize
+            this._tagger = tagger ?? throw new ArgumentNullException(nameof(tagger));
+            this._audioFileDurationCalculator = audioFileDurationCalculator ?? throw new ArgumentNullException(nameof(audioFileDurationCalculator));
         }
 
         public async Task<AudioFileInfo> ExtractAudioFileInfo(Uri trackLocation)
         {
             if (!this.IsHostSupported(trackLocation))
-                throw new NotSupportedException(); // TODO: localize
+                throw new NotSupportedException();
 
             var waveSource = await Task.Run(() => CodecFactory.Instance.GetCodec(trackLocation));
             var fileInfo = new FileInfo(trackLocation.LocalPath);
@@ -41,7 +41,7 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
         public bool IsHostSupported(Uri location)
         {
             if (location == null)
-                throw new ArgumentNullException(nameof(location)); // TODO: localize
+                throw new ArgumentNullException(nameof(location));
 
             return location.IsFile && location.IsAbsoluteUri;
         }

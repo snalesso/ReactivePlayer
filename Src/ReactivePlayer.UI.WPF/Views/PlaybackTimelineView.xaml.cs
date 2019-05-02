@@ -18,9 +18,6 @@ namespace ReactivePlayer.UI.WPF.Views
     /// </summary>
     public partial class PlaybackTimelineView : UserControl, IViewFor<PlaybackTimelineViewModel>, IDisposable
     {
-        // TODO: move to VM?
-        //private readonly WaveformTimelineSoundPlayer _waveformTimelineSoundPlayer;
-
         public PlaybackTimelineView()
         {
             var when_DataContextChanged_And_ViewLoaded =
@@ -34,7 +31,7 @@ namespace ReactivePlayer.UI.WPF.Views
                 {
                     if (dataContextChangedEventArgs.OldValue != null)
                     {
-                        // TODO: remove event handler from old viewmodel
+                        // remove event handler from old viewmodel
                     }
 
                     if (this.ViewModel != null)
@@ -52,7 +49,7 @@ namespace ReactivePlayer.UI.WPF.Views
         public PlaybackTimelineViewModel ViewModel
         {
             get => this.DataContext as PlaybackTimelineViewModel;
-            set => this.DataContext = value ?? throw new ArgumentNullException(nameof(value)); // TODO: localize
+            set => this.DataContext = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         object IViewFor.ViewModel

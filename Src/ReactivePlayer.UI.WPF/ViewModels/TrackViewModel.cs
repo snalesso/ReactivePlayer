@@ -26,8 +26,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             Track track,
             IAudioPlaybackEngine playbackService)
         {
-            this._track = track ?? throw new ArgumentNullException(nameof(track)); // TODO: localize
-            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService)); // TODO: localize
+            this._track = track ?? throw new ArgumentNullException(nameof(track));
+            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
 
             this._isLoaded_OAPH = this._playbackService.WhenTrackChanged
                 .Select(loadedTrack => loadedTrack == this.Track)
@@ -60,20 +60,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public bool IsLoaded => this._isLoaded_OAPH.Value;
 
         private readonly ObservableAsPropertyHelper<bool> _isLoved_OAPH;
-        public bool IsLoved=> this._isLoved_OAPH.Value;
+        public bool IsLoved => this._isLoved_OAPH.Value;
 
         private readonly Track _track;
         public Track Track => this._track;
 
         public uint Id => this._track.Id;
 
-        public string Title => this._track.Title ?? System.IO.Path.GetFileName(this._track.Location.LocalPath);
+        private string _fileNameWithExtensionCache;
+        public string Title => this._track.Title
+            ?? (this._fileNameWithExtensionCache
+                ?? (this._fileNameWithExtensionCache = System.IO.Path.GetFileName(this._track.Location.LocalPath)));
 
         public IReadOnlyList<string> PerformersNames => this._track.Performers;
 
         public string AlbumTitle => this._track.AlbumAssociation?.Album?.Title;
 
-        // TODO: expose as string? probably YES because some methods (like .Escape()) modify internal URI data
         public Uri TrackLocation => this._track.Location;
 
         public DateTime AddedToLibraryDateTime => this._track.AddedToLibraryDateTime;

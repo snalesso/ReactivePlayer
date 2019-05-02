@@ -9,7 +9,7 @@ namespace ReactivePlayer.Core.Playback.History
             LibraryEntry libraryEntry,
             DateTime playbackEndedDateTime)
         {
-            this.LibraryEntry = libraryEntry ?? throw new ArgumentNullException(nameof(libraryEntry)); // TODO: localize
+            this.LibraryEntry = libraryEntry ?? throw new ArgumentNullException(nameof(libraryEntry));
             this.PlaybackEndedDateTime = playbackEndedDateTime;
         }
         public PlaybackHistoryEntry(

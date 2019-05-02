@@ -14,9 +14,9 @@ namespace ReactivePlayer.Core.Library.Models
         {
             this.Album = album ?? throw new ArgumentNullException(nameof(album));
             if (trackNumber > album.TracksCount)
-                throw new ArgumentOutOfRangeException(nameof(trackNumber)); // TODO: localize
+                throw new ArgumentOutOfRangeException(nameof(trackNumber));
             if (discNumber > album.DiscsCount)
-                throw new ArgumentOutOfRangeException(nameof(discNumber)); // TODO: localize
+                throw new ArgumentOutOfRangeException(nameof(discNumber));
 
             this.TrackNumber = trackNumber.NullIf(x => x <= 0); // ThrowIf(x => x == 0, () => new ArgumentOutOfRangeException(nameof(trackNumber)));
             this.DiscNumber = discNumber.NullIf(x => x <= 0); // ThrowIf(x => x == 0, () => new ArgumentOutOfRangeException(nameof(discNumber)));

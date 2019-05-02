@@ -29,9 +29,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //, IReadLibraryService readLibraryService
             )
         {
-            //this._audioPlayer = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine)); // TODO: localize
-            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService)); // TODO: localize
-            this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory)); // TODO: localize
+            //this._audioPlayer = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
+            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
+            this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory));
 
             var sorter = SortExpressionComparer<PlaybackHistoryEntryViewModel>.Descending(pheVM => pheVM.PlaybackEndedDateTime);
             //var sorter2 = new SortExpressionComparer<PlaybackHistoryEntryViewModel>();

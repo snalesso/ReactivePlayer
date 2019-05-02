@@ -9,7 +9,7 @@ namespace ReactivePlayer.Core.FileSystem
             DateTime? lastModifiedDateTime,
             uint? sizeBytes)
         {
-            this.Location = location ?? throw new ArgumentNullException(); // TODO: localize
+            this.Location = location ?? throw new ArgumentNullException();
             this.LastModifiedDateTime = lastModifiedDateTime;
             this.SizeBytes = sizeBytes;
         }

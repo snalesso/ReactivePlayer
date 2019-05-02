@@ -4,6 +4,7 @@ using ReactivePlayer.Core.Library.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -21,8 +22,8 @@ namespace ReactivePlayer.Core.Library.Services
             ITracksRepository tracksRepository,
             ITrackFactory trackFactory)
         {
-            this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository)); // TODO: localize
-            this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory)); // TODO: localize
+            this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository));
+            this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory));
 
             this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
 
@@ -159,9 +160,10 @@ namespace ReactivePlayer.Core.Library.Services
 
                 result = addedTracks;
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
                 // TODO: log
+                Debug.WriteLine($"{nameof(Exception)} in {this.GetType().FullName}: {ex.ToString()}");
                 result = null;
             }
             finally

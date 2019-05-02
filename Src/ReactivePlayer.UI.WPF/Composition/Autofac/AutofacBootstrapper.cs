@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.FileSystem.Media.Audio.CSCore;
 using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
+using ReactivePlayer.Core.Library.Json.Newtonsoft;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
@@ -91,8 +92,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             builder
-                .Register(c => new iTunesXMLTracksDeserializer())
-                //.Register(c => new NewtonsoftJsonTracksSerializer())
+                //.Register(c => new iTunesXMLTracksDeserializer())
+                .Register(c => new NewtonsoftJsonTracksSerializer())
                 .As<EntitySerializer<Track, uint>>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<SerializingTracksRepository>()

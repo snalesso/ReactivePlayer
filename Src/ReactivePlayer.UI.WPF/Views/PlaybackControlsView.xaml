@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
     xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
+    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimePlaybackControlsViewModel,
-                                     IsDesignTimeCreatable=False}"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False,
+                                     Type={x:Type DesignTimeViewModels:DesignTimePlaybackControlsViewModel}}"
     d:DesignWidth="550"
     mc:Ignorable="d">
 
@@ -66,23 +67,38 @@
 
             <Button
                 Grid.Column="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Command="{Binding Pause, Mode=OneWay}"
-                Content="Pause" />
+                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                Height="24"
+                Command="{Binding Pause, Mode=OneWay}">
+                <Path
+                    Data="{DynamicResource Geometries.Pause}"
+                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                    Stretch="Uniform" />
+            </Button>
+
             <Button
                 Grid.Column="4"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Command="{Binding Resume, Mode=OneWay}"
-                Content="Resume" />
+                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                Height="24"
+                Command="{Binding Resume, Mode=OneWay}">
+                <Path
+                    Width="{Binding Height, RelativeSource={RelativeSource Self}}"
+                    Data="{StaticResource Geometries.Resume}"
+                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                    Stretch="Uniform" />
+            </Button>
 
             <Button
                 Grid.Column="6"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Command="{Binding Stop, Mode=OneWay}"
-                Content="Stop" />
+                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                Height="24"
+                Command="{Binding Stop, Mode=OneWay}">
+                <Path
+                    Width="{Binding Height, RelativeSource={RelativeSource Self}}"
+                    Data="{StaticResource Geometries.Stop}"
+                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
+                    Stretch="Uniform" />
+            </Button>
 
             <!--<Button
                 Grid.Column="8"
@@ -111,10 +127,8 @@
                 <TextBlock Text=" / ">
                     <TextBlock.Visibility>
                         <MultiBinding Converter="{StaticResource MultiBooleanAllToVisibilityConverter}">
-                            <MultiBinding.Bindings>
-                                <Binding Path="PlaybackTimelineViewModel.IsDurationKnown" />
-                                <Binding Path="PlaybackTimelineViewModel.IsPositionKnown" />
-                            </MultiBinding.Bindings>
+                            <Binding Path="PlaybackTimelineViewModel.IsDurationKnown" />
+                            <Binding Path="PlaybackTimelineViewModel.IsPositionKnown" />
                         </MultiBinding>
                     </TextBlock.Visibility>
                 </TextBlock>

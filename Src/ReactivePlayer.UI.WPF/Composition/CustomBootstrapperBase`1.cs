@@ -46,7 +46,7 @@ namespace ReactivePlayer.UI.WPF.Composition
                 if (this.Container.TryResolveNamed(key, service, out object obj))
                     return obj;
             }
-            throw new Exception(string.Format("Could not locate any instances of contract {0}.", key ?? service.Name)); // TODO: localize
+            throw new Exception(string.Format("Could not locate any instances of contract {0}.", key ?? service.Name));
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)

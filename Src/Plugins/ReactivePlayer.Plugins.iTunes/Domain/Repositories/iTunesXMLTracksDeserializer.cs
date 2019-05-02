@@ -81,10 +81,7 @@ namespace ReactivePlayer.Domain.Repositories
                     var track = new Track(
                         ++id,
                         // library entry
-                        // TODO: this should be fixed in CSCore ... Anyways, this should be closer to CSCore, not here
-                        new Uri(iTunesTrack.Location.StartsWith(@"file://localhost/")
-                            ? iTunesTrack.Location.Remove(@"file://".Length - 1, @"localhost/".Length)
-                            : iTunesTrack.Location),
+                        new Uri( iTunesTrack.Location),
                         iTunesTrack.TotalTime,
                         iTunesTrack.DateModified,
                         iTunesTrack.Size,

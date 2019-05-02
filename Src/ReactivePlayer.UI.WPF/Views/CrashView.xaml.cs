@@ -21,7 +21,7 @@ namespace ReactivePlayer.UI.WPF.Views
         public CrashViewModel ViewModel
         {
             get => this._viewModel;
-            set => this._viewModel = value ?? throw new ArgumentNullException(nameof(value)); // TODO: localize
+            set => this._viewModel = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         object IViewFor.ViewModel

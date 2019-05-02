@@ -18,10 +18,10 @@ namespace ReactivePlayer.Core.Library.Models
             DateTime addedToLibraryDateTime)
             : base(id)
         {
-            this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().FullName}.{nameof(this.Location)} cannot be null."); // TODO: localize
+            this.Location = location ?? throw new ArgumentNullException(nameof(location), $"{this.GetType().FullName}.{nameof(this.Location)} cannot be null.");
             this.AddedToLibraryDateTime = addedToLibraryDateTime <= DateTime.Now
                 ? addedToLibraryDateTime
-                : throw new ArgumentOutOfRangeException(nameof(addedToLibraryDateTime)); // TODO: localize
+                : throw new ArgumentOutOfRangeException(nameof(addedToLibraryDateTime));
             this.IsLoved = isLoved;
             this.Duration = duration;
             this.LastModifiedDateTime = lastModified; // TODO: add lastModified value validation?
@@ -82,7 +82,7 @@ namespace ReactivePlayer.Core.Library.Models
         {
             if (id.Equals(uint.MinValue))
                 // TODO: create ad-hoc exception (e.g. InvalidIdValueException)
-                throw new ArgumentException($"{this.GetType().FullName}.{nameof(this.Id)} cannot be set to {id}.", nameof(id)); // TODO: localize
+                throw new ArgumentException($"{this.GetType().FullName}.{nameof(this.Id)} cannot be set to {id}.", nameof(id));
         }
 
         #endregion

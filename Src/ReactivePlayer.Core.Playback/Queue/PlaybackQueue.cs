@@ -16,7 +16,7 @@ namespace ReactivePlayer.Core.Playback.Queue
     public class PlaybackQueue : IDisposable
     {
         #region constants & fields
-        
+
         private readonly IAudioPlaybackEngine _audioPlayer;
         //private readonly Random _random = new Random((int)DateTime.Now.Ticks);
 
@@ -29,30 +29,39 @@ namespace ReactivePlayer.Core.Playback.Queue
             //, IObservable<IChangeSet<Track> tracksCacheChanges
             )
         {
-            this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer)); // TODO: localize
+            this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer));
 
             this._sourcedEntries = new SourceList<PlaybackQueueEntry>().DisposeWith(this._disposables);
 
-            this._audioPlayer.WhenCanLoadChanged
+            Observable.CombineLatest(
+                this._audioPlayer.WhenCanLoadChanged,
+                this._audioPlayer.WhenCanPlayChanged,
+                (canLoad, canPlay) => canLoad && !canPlay)
+                .Where(canLoadButNotPlay => canLoadButNotPlay == true)
                 .Subscribe(async (s) =>
                 {
-                    var next = this._playlistEntries.Items.FirstOrDefault();
+                    PlaybackQueueEntry next = null; // = this._playlistEntries.Items.FirstOrDefault();
 
-                    if (next != null)
+                    this._playlistEntries.Edit(list =>
                     {
-                        this._playlistEntries.RemoveAt(0);
-
-                        switch (next.Track)
+                        next = list.FirstOrDefault();
+                        if (next == null)
                         {
-                            case Track nextTrack:
-                                await this._audioPlayer.LoadAsync(nextTrack);
-                                await this._audioPlayer.PlayAsync();
-                                break;
+                            // unsubscribe from playlist?
+                            return;
                         }
-                    }
-                    else
+                        list.RemoveAt(0);
+                    });
+
+                    if (next == null)
+                        return;
+
+                    switch (next.Track)
                     {
-                        // unsubscribe from playlist?
+                        case Track nextTrack:
+                            await this._audioPlayer.LoadAsync(nextTrack);
+                            await this._audioPlayer.PlayAsync();
+                            break;
                     }
                 })
                 .DisposeWith(this._disposables);

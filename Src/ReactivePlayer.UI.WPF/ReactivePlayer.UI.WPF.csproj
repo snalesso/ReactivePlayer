@@ -147,6 +147,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Behaviors\DoubleClick.cs" />
+    <Compile Include="Controls\PathButton.cs" />
     <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
     <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
@@ -230,6 +231,14 @@
       <DependentUpon>EditArtistsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewsConstants.cs" />
+    <Page Include="Themes\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Geometries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EditArtistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -318,10 +327,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\HorizontalSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\StringListEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

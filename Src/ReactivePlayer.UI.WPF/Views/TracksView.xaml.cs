@@ -48,7 +48,7 @@ namespace ReactivePlayer.UI.WPF.Views
         public TracksViewModel ViewModel
         {
             get => this._viewModelSubject.Value;
-            set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value))); // TODO: localize
+            set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value)));
         }
         public IObservable<TracksViewModel> WhenViewModelChanged { get; }
 

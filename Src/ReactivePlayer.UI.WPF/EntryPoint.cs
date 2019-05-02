@@ -22,7 +22,6 @@ namespace ReactivePlayer.UI.WPF
             }
             else
             {
-                // TODO: locale
                 MessageBox.Show($"{nameof(ReactivePlayer)} is already running!", "Already running", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             }
         }

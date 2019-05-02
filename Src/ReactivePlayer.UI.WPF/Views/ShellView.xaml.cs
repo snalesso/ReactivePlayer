@@ -40,7 +40,7 @@ namespace ReactivePlayer.UI.WPF.Views
         public ShellViewModel ViewModel
         {
             get => this._viewModelSubject.Value;
-            set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value))); // TODO: localize
+            set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value)));
         }
 
         object IViewFor.ViewModel
