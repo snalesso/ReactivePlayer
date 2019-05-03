@@ -7,7 +7,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         public ShellMenuViewModel(
             LibraryViewModel libraryViewModel,
-            AllTracksViewModel allTracksViewModel,
+            AllTracksFilterViewModel allTracksViewModel,
             PlaybackControlsViewModel playbackControlsViewModel)
         {
             this.LibraryViewModel = libraryViewModel ?? throw new ArgumentNullException(nameof(libraryViewModel));
@@ -16,7 +16,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         }
 
         public LibraryViewModel LibraryViewModel { get; }
-        public AllTracksViewModel AllTracksViewModel { get; }
+        public AllTracksFilterViewModel AllTracksViewModel { get; }
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
     }
 }

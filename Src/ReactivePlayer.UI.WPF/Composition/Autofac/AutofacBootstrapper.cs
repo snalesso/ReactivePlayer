@@ -92,8 +92,8 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
             builder
-                //.Register(c => new iTunesXMLTracksDeserializer())
-                .Register(c => new NewtonsoftJsonTracksSerializer())
+                .Register(c => new iTunesXMLTracksDeserializer())
+                //.Register(c => new NewtonsoftJsonTracksSerializer())
                 .As<EntitySerializer<Track, uint>>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<SerializingTracksRepository>()
@@ -138,7 +138,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             builder.RegisterType<EditTrackAlbumAssociationViewModel>().AsSelf().InstancePerDependency();
 
-            builder.RegisterType<AllTracksViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<AllTracksFilterViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<TracksView>().As<IViewFor<AllTracksViewModel>>().InstancePerLifetimeScope();
 
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();

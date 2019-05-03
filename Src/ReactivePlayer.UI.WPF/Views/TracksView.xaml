@@ -7,10 +7,11 @@
     xmlns:Daedalus.UI.Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
     xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
     xmlns:System="clr-namespace:System;assembly=System"
+    xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows;assembly=PresentationFramework"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=DesignTimeViewModels:DesignTimeTracksViewModel,
+    d:DataContext="{d:DesignInstance Type=ViewModels:LibraryViewModel,
                                      IsDesignTimeCreatable=False}"
     d:DesignHeight="300"
     d:DesignWidth="650"

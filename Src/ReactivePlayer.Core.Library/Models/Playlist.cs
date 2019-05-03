@@ -12,13 +12,24 @@ namespace ReactivePlayer.Core.Library.Models
     {
         public Playlist(
             uint id,
+            string name,
             IEnumerable<uint> ids) : base(id)
         {
-            this._trackIdsList = new SourceList<uint>(ObservableChangeSet.Create<uint>(list => () => list.AddRange(ids)));
+            this._trackIdsList = new SourceCache<uint, uint>(x=>x);
+            this._trackIdsList.Edit(cache => cache.AddOrUpdate(ids));
+
+            this.Name = name;
         }
 
-        private readonly SourceList<uint> _trackIdsList;
-        public IObservableList<uint> TrackIds => this._trackIdsList;
+        private string _name;
+        public string Name
+        {
+            get { return this._name; }
+            internal set { this.SetAndRaiseIfChanged(ref this._name, value); }
+        }
+
+        private readonly SourceCache<uint, uint> _trackIdsList;
+        public IObservableCache<uint, uint> TrackIds => this._trackIdsList;
 
         protected override void EnsureIsWellFormattedId(uint id)
         {

@@ -1,48 +1,68 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
+using DynamicData.List;
+using DynamicData.Cache;
+using DynamicData.Operators;
+using DynamicData.PLinq;
+using DynamicData.ReactiveUI;
+using DynamicData.Kernel;
+using DynamicData.Aggregation;
+using DynamicData.Annotations;
+using DynamicData.Binding;
+using DynamicData.Diagnostics;
+using DynamicData.Experimental;
+using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Services;
+using ReactivePlayer.Core.Playback;
+using ReactivePlayer.UI.Services;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public abstract class TracksSubsetViewModel : TracksFilterViewModel, IDisposable
+    public class PlaylistFilterViewModel : TracksFilterViewModel
     {
         #region constants & fields
 
-        private readonly IObservableList<TrackViewModel> _trackVeiwModelsSource;
+        private readonly Playlist _playlist;
 
         #endregion
 
         #region ctors
 
-        public TracksSubsetViewModel(IObservableList<TrackViewModel> trackVeiwModelsSource)
+        public PlaylistFilterViewModel(
+            Playlist playlist)
         {
-            this._trackVeiwModelsSource = trackVeiwModelsSource ?? throw new ArgumentNullException(nameof(trackVeiwModelsSource));
+            this._playlist = playlist;
 
-            this._trackVeiwModelsSource
-                .Connect(this.FilterCallback)
-                .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                .Subscribe()
-                .DisposeWith(this._disposables);
+            this.WhenFilterChanged = this._playlist.TrackIds.Connect().Select(_ => Unit.Default);
         }
 
         #endregion
 
         #region properties
 
-        public IObservableList<TrackViewModel> SortedFilteredTrackViewModelsOL { get; }
+        public override string FilterName => this._playlist.Name;
 
-        private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
+        public override IObservable<Unit> WhenFilterChanged { get; }
+
+        public override Func<TrackViewModel, bool> Filter => this.FilterCallback;
 
         #endregion
 
         #region methods
+
+        public override bool FilterCallback(TrackViewModel trackViewModel) => this._playlist.TrackIds.Lookup(trackViewModel.Id).HasValue;
+
         #endregion
 
         #region commands

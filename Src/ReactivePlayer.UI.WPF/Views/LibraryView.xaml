@@ -19,7 +19,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ListBox ItemsSource="{Binding Items}" SelectedItem="{Binding ActiveItem}">
+        <ListBox ItemsSource="{Binding PlaylistViewModels}" SelectedItem="{Binding SelectedTracksFilterViewModel}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding DisplayName}" />
@@ -34,7 +34,7 @@
             ResizeBehavior="PreviousAndNext"
             ResizeDirection="Columns" />
 
-        <Views:TracksView Grid.Column="2" DataContext="{Binding ActiveItem}" />
+        <Views:TracksView Grid.Column="2" />
 
     </Grid>
 </UserControl>

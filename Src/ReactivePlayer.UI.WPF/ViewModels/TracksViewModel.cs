@@ -31,13 +31,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         private readonly IDialogService _dialogService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
-        //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
-        //private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
-        //private readonly IWriteLibraryService _writeLibraryService;
         private readonly IReadLibraryService _readLibraryService;
         private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
         private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
-        //private readonly PlaybackQueue _playbackQueue;
 
         #endregion
 
@@ -47,26 +43,16 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksViewModel(
             IDialogService dialogService,
-            //IAudioFileInfoProvider audioFileInfoProvider,
-            //IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
-            //PlaybackQueue playbackQueue,
             Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod
-            //LibraryViewModelsProxy libraryViewModelsProxy
-            )
+            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
         {
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            //this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy));
-            //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
-            //this._playbackQueue = playbackQueue ?? throw new ArgumentNullException(nameof(playbackQueue));
-
-            //this._trackVMFilterSubject = new BehaviorSubject<Func<TrackViewModel, bool>>(initialFilter).DisposeWith(this._disposables);
 
             var trackVMsFlow = this._readLibraryService
                 .Tracks
@@ -103,23 +89,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Subscribe(ex => Debug.WriteLine(ex.Message))
                 .DisposeWith(this._disposables);
 
-            //this.ShowAddTracksDialog = ReactiveCommand.CreateFromTask(
-            //    async () =>
-            //    {
-            //        var initialDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic, Environment.SpecialFolderOption.DoNotVerify);
-            //        var extensionsAndLabels = new[]
-            //        {
-            //            Tuple.Create(  this._audioPlaybackEngine.SupportedExtensions, "Audio files")
-            //        };
-            //        var title = "Select songs to add";
-
-            //        var dialogResult = await this._dialogService.OpenFileDialog(initialDirectoryPath, true, extensionsAndLabels, title);
-
-            //        return dialogResult.Code == true ? dialogResult.Content : null;
-            //    })
-            //.DisposeWith(this._disposables);
-            //this.ShowAddTracksDialog.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.ToString())).DisposeWith(this._disposables);
-
             this.EditTrackTags = ReactiveCommand.Create(
                 (TrackViewModel vm) =>
                 {
@@ -134,12 +103,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region filtering
 
         protected abstract Func<TrackViewModel, bool> Filter { get; }
-
-        //private BehaviorSubject<Func<TrackViewModel, bool>> _trackVMFilterSubject;
-        //public IObservable<Func<TrackViewModel, bool>> WhenTrackVMFilterChanged => this._trackVMFilterSubject;
-
-        //private Subject<Unit> _trackVMFilterIsManuallyUpdatedSubject;
-        //protected readonly IObservable<Unit> WhenTrackVMFilterIsManuallyUpdated => this._trackVMFilterIsManuallyUpdatedSubject;
 
         #endregion
 
@@ -175,13 +138,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReactiveCommand<TrackViewModel, Unit> PlayTrack { get; }
         public ReactiveCommand<Unit, Unit> PlayAll { get; }
 
-        //public ReactiveCommand<Unit, Unit> PlaySelectedTrack => this.SelectedTrackViewModel?.PlayTrack;
-        //public ReactiveCommand<Unit, Unit> PlayAll { get; }
-        //public ReactiveCommand<Unit, Unit> PlayAllRandomly { get; }
-
-        //public ReactiveCommand<Unit, IReadOnlyList<string>> ShowAddTracksDialog { get; }
-        //public ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromLibrary { get; }
-
         public ReactiveCommand<TrackViewModel, Unit> EditTrackTags { get; }
 
         #endregion
@@ -206,7 +162,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 this._isDisposed = true;
             }
         }
-                
+
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
