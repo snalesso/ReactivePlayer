@@ -162,6 +162,7 @@
     <Compile Include="Services\WindowsTaskbarService.cs" />
     <Compile Include="ViewModels\AddTracksViewModel.cs" />
     <Compile Include="ViewModels\AllTracksFilterViewModel.cs" />
+    <Compile Include="ViewModels\AllTracksViewModel.cs" />
     <Compile Include="ViewModels\DesignTime\DesignTimeTracksViewModel.cs" />
     <Compile Include="ViewModels\DialogWithResultViewModel`1.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
@@ -169,6 +170,9 @@
     <Compile Include="ViewModels\PlaybackProgressViewModel.cs" />
     <Compile Include="ViewModels\EditArtistViewModel.cs" />
     <Compile Include="ViewModels\EditArtistsViewModel.cs" />
+    <Compile Include="ViewModels\PlaylistFolderViewModel.cs" />
+    <Compile Include="ViewModels\PlaylistViewModel.cs" />
+    <Compile Include="ViewModels\PlaylistViewModelBase.cs" />
     <Compile Include="ViewModels\TrackAlbumAssociationViewModel.cs" />
     <Compile Include="ViewModels\EditTrackAlbumAssociationViewModel.cs" />
     <Compile Include="ViewModels\EditTrackTagsViewModel.cs" />

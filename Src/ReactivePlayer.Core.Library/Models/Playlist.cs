@@ -3,39 +3,62 @@ using ReactivePlayer.Core.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Models
 {
-    public class Playlist : Entity<uint>
+    public class Playlist : PlaylistBase, IDisposable
     {
         public Playlist(
             uint id,
+            uint? parentId,
             string name,
-            IEnumerable<uint> ids) : base(id)
+            IEnumerable<uint> ids) : base(id, parentId, name)
         {
-            this._trackIdsList = new SourceCache<uint, uint>(x=>x);
-            this._trackIdsList.Edit(cache => cache.AddOrUpdate(ids));
-
             this.Name = name;
+            this.ParentId = parentId;
+
+            this._trackIdsList = new SourceList<uint>().DisposeWith(this._disposables);
+            this._trackIdsList.Edit(list => list.Add(ids));
+            //this._trackIdsCache = new SourceCache<uint, uint>(x => x).DisposeWith(this._disposables);
+            //this._trackIdsCache.Edit(cache => cache.AddOrUpdate(ids));
         }
 
-        private string _name;
-        public string Name
+        private readonly SourceList<uint> _trackIdsList;
+        public override IObservableList<uint> TrackIds => this._trackIdsList;
+
+        //private readonly SourceCache<uint, uint> _trackIdsCache;
+        //public override IObservableCache<uint, uint> TrackIds => this._trackIdsCache;
+
+        #region IDisposable
+
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool _isDisposed = false;
+
+        protected virtual void Dispose(bool disposing)
         {
-            get { return this._name; }
-            internal set { this.SetAndRaiseIfChanged(ref this._name, value); }
+            if (!this._isDisposed)
+            {
+                if (disposing)
+                {
+                    this._disposables.Dispose();
+                }
+
+                // free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // set large fields to null.
+
+                this._isDisposed = true;
+            }
         }
 
-        private readonly SourceCache<uint, uint> _trackIdsList;
-        public IObservableCache<uint, uint> TrackIds => this._trackIdsList;
-
-        protected override void EnsureIsWellFormattedId(uint id)
+        public void Dispose()
         {
-            if (id.Equals(uint.MinValue))
-                // TODO: create ad-hoc exception (e.g. InvalidIdValueException)
-                throw new ArgumentException($"{this.GetType().FullName}.{nameof(this.Id)} cannot be set to {id}.", nameof(id));
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
         }
+
+        #endregion
     }
 }

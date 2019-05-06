@@ -19,7 +19,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region properties
-
+        
         public abstract string FilterName { get; }
 
         public abstract bool FilterCallback(TrackViewModel trackViewModel);

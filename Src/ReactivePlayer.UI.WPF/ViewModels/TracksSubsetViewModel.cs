@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
+using DynamicData.Binding;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,35 +12,58 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public abstract class TracksSubsetViewModel : TracksFilterViewModel, IDisposable
+    public abstract class TracksSubsetViewModel : ReactiveViewAware, IDisposable
     {
         #region constants & fields
 
-        private readonly IObservableList<TrackViewModel> _trackVeiwModelsSource;
+        protected readonly IObservableCache<TrackViewModel, uint> _allTrackViewModelsSourceCache;
+        //private readonly IObservable<IChangeSet<TrackViewModel>> _filteredSortedViewModelsChangeSet;
 
         #endregion
 
         #region ctors
 
-        public TracksSubsetViewModel(IObservableList<TrackViewModel> trackVeiwModelsSource)
+        public TracksSubsetViewModel(
+            IObservableCache<TrackViewModel, uint> allTrackViewModelsSourceCache,
+            string name)
         {
-            this._trackVeiwModelsSource = trackVeiwModelsSource ?? throw new ArgumentNullException(nameof(trackVeiwModelsSource));
+            this._allTrackViewModelsSourceCache = allTrackViewModelsSourceCache ?? throw new ArgumentNullException(nameof(allTrackViewModelsSourceCache));
+            this.Name = name ?? throw new ArgumentNullException(nameof(allTrackViewModelsSourceCache));
 
-            this._trackVeiwModelsSource
-                .Connect(this.FilterCallback)
-                .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                .Subscribe()
-                .DisposeWith(this._disposables);
+            //this._filteredSortedViewModelsChangeSet = this._allTrackViewModelsSource
+            //    .Connect(this.FilterCallback)
+            //    .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
+
+            //this.SortedFilteredTrackViewModelsOL = this._filteredSortedViewModelsChangeSet
+            //    .AsObservableList()
+            //    .DisposeWith(this._disposables);
+
+            //this._filteredSortedViewModelsChangeSet
+            //    .Bind(out this._sortedFilteredTrackViewModelsROOC)
+            //    .Subscribe()
+            //    .DisposeWith(this._disposables);
         }
 
         #endregion
 
         #region properties
 
-        public IObservableList<TrackViewModel> SortedFilteredTrackViewModelsOL { get; }
+        //public uint Id { get; }
 
-        private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
+        public virtual string Name { get; }
+
+        // TODO: make return lazy, so if noone will subscribe theres no reason to create the observable cache
+        public abstract IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC { get; }
+
+        //private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
+        public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; } // => this._sortedFilteredTrackViewModelsROOC;
+
+        private TrackViewModel _selectedTrackViewModel;
+        public TrackViewModel SelectedTrackViewModel
+        {
+            get => this._selectedTrackViewModel;
+            set => this.RaiseAndSetIfChanged(ref this._selectedTrackViewModel, value);
+        }
 
         #endregion
 

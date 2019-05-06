@@ -14,18 +14,18 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="150" />
-            <ColumnDefinition Width="Auto" />
+            <!--<ColumnDefinition Width="Auto" MinWidth="150" />
+            <ColumnDefinition Width="Auto" />-->
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ListBox ItemsSource="{Binding PlaylistViewModels}" SelectedItem="{Binding SelectedTracksFilterViewModel}">
+        <!--<ListBox ItemsSource="{Binding PlaylistViewModels}" SelectedItem="{Binding SelectedTracksFilterViewModel}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding DisplayName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
 
         <GridSplitter
             Grid.Column="1"

@@ -29,46 +29,52 @@ using Caliburn.Micro.ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public abstract class PlaylistViewModel : PlaylistViewModelBase, IDisposable
+    public class PlaylistFolderViewModel : PlaylistViewModelBase, IDisposable
     {
         #region constants & fields
 
-        private readonly Playlist _playlist;
-        private readonly IObservableCache<uint, uint> _playlistIdsCache;
-        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _filteredSortedViewModelsChangeSet;
+        private readonly PlaylistFolder _playlistFolder;
+        private readonly Func<Playlist, PlaylistViewModel> _playlistViewModelFactoryMethod;
+        private readonly Func<PlaylistFolder, PlaylistFolderViewModel> _playlistFolderViewModelFactoryMethod;
+        //private readonly IObservable<IChangeSet<TrackViewModel>> _filteredSortedViewModelsChangeSet;
 
         #endregion
 
         #region ctors
 
-        public PlaylistViewModel(
+        public PlaylistFolderViewModel(
             IObservableCache<TrackViewModel, uint> allTrackViewModelsSourceCache,
-            Playlist playlist) 
+            PlaylistFolder playlistFolder,
+            Func<Playlist, PlaylistViewModel> playlistViewModelFactoryMethod,
+            Func<PlaylistFolder, PlaylistFolderViewModel> playlistFolderViewModelFactoryMethod)
             : base(
-                  allTrackViewModelsSourceCache,
-                  playlist)
+                  allTrackViewModelsSourceCache, 
+                  playlistFolder)
         {
-            this._playlist = playlist;
+            this._playlistFolder = playlistFolder ?? throw new ArgumentNullException(nameof(playlistFolder));
+            this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
+            this._playlistFolderViewModelFactoryMethod = playlistFolderViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistFolderViewModelFactoryMethod));
 
-            this._playlistIdsCache = this._playlist.TrackIds
-                .Connect()
-                .AddKey(x => x)
-                .AsObservableCache()
-                .DisposeWith(this._disposables);
+            var vmsChangeSet = this._playlistFolder.Playlists.Connect().Transform<PlaylistBase, PlaylistViewModelBase>(p =>
+            {
+                switch (p)
+                {
+                    case Playlist playlist:
+                        return this._playlistViewModelFactoryMethod.Invoke(playlist);
+                    case PlaylistFolder pFolder:
+                        return this._playlistFolderViewModelFactoryMethod.Invoke(pFolder);
+                    default:
+                        throw new NotSupportedException(p.GetType().FullName + " is not a supported " + nameof(PlaylistBase) + " type.");
+                }
+            })
+            .AddKey(x => x.PlaylistId)
+            .DisposeMany();
 
-            this._filteredSortedViewModelsChangeSet = this._playlistIdsCache
-                .Connect()
-                .LeftJoin(
-                    this._allTrackViewModelsSourceCache.Connect(),
-                    vm => vm.Id,
-                    (id, joinedVm) => joinedVm.Value)
-                .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
+            this.PlaylistViewModels = vmsChangeSet.AsObservableCache().DisposeWith(this._disposables);
 
-            this.SortedFilteredTrackViewModelsOC = this._filteredSortedViewModelsChangeSet
-                .AsObservableCache()
-                .DisposeWith(this._disposables);
-
-            this._filteredSortedViewModelsChangeSet
+            vmsChangeSet
+                .MergeMany(pvm => pvm.SortedFilteredTrackViewModelsOC.Connect())
+                .Distinct()
                 .Bind(out this._sortedFilteredTrackViewModelsROOC)
                 .Subscribe()
                 .DisposeWith(this._disposables);
@@ -78,20 +84,16 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        // TODO: make return lazy, so if noone will subscribe theres no reason to create the observable cache
         public override IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC { get; }
 
         private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
         public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
 
+        public IObservableCache<PlaylistViewModelBase, uint> PlaylistViewModels { get; }
+
         #endregion
 
         #region methods
-
-        //private bool Filter(TrackViewModel trackViewModel)
-        //{
-        //    return this._playlistIdsCache.Lookup(trackViewModel.Id).HasValue;
-        //}
 
         #endregion
 

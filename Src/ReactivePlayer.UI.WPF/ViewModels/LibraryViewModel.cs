@@ -54,7 +54,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
 
-            var whenSelectedFilterChanged = this.WhenAny(x => x.SelectedTracksFilterViewModel, x => x?.Value?.Filter);
+            var whenSelectedFilterChanged = this.WhenAnyValue(x => x.SelectedTracksFilterViewModel).Select(x => x?.Filter);
 
             this._readLibraryService
                 .Tracks
@@ -196,20 +196,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
+                return;
+
+            if (isDisposing)
             {
-                if (disposing)
-                {
-                    this._disposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this._isDisposed = true;
+                this._disposables.Dispose();
             }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
         }
 
         public void Dispose()
