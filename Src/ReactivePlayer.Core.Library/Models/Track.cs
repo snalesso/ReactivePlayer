@@ -27,7 +27,7 @@ namespace ReactivePlayer.Core.Library.Models
             DateTime addedToLibraryDateTime)
             : base(id, location, duration, lastModified, fileSizeBytes, isLoved, addedToLibraryDateTime)
         {
-            this.Title = title.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(title));
+            this.Title = title?.Trim(); // ?? throw new ArgumentNullException(nameof(title));
             this.Performers = performers.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.Composers = composers.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.AlbumAssociation = albumAssociation;

@@ -11,7 +11,7 @@ namespace ReactivePlayer.Core.Library.Models
 
         public Artist(string name)
         {
-            this.Name = name.TrimmedOrNull() ?? throw new ArgumentNullException(nameof(name));
+            this.Name = name?.Trim() ?? throw new ArgumentNullException(nameof(name));
         }
 
         #endregion

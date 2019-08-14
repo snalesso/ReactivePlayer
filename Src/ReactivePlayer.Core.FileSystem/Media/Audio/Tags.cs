@@ -12,10 +12,10 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
             IEnumerable<string> composers,
             string lyrics)
         {
-            this.Title = title.TrimmedOrNull();
+            this.Title = title?.Trim();
             this.Performers = performers.EmptyIfNull().ToList().AsReadOnly();
             this.Composers = composers.EmptyIfNull().ToList().AsReadOnly();
-            this.Lyrics = lyrics.TrimmedOrNull();
+            this.Lyrics = lyrics?.Trim();
         }
 
         public string Title { get; }

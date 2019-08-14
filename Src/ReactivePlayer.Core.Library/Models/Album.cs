@@ -18,7 +18,7 @@ namespace ReactivePlayer.Core.Library.Models
             uint? discsCount = null)
         {
             // TODO: if the null check exception is activated, the shell freezes on load
-            this.Title = title.TrimmedOrNull(); // ?? throw new ArgumentNullException(nameof(this.Title), $"An {this.GetType().Name}'s {nameof(this.Title)} cannot be null.");
+            this.Title = title?.Trim(); // ?? throw new ArgumentNullException(nameof(this.Title), $"An {this.GetType().Name}'s {nameof(this.Title)} cannot be null.");
             this.Authors = authors.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.TracksCount = tracksCount.NullIf(v => v <= 0);
             this.DiscsCount = discsCount.NullIf(v => v <= 0);

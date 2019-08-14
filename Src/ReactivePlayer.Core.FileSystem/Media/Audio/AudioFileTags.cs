@@ -20,18 +20,18 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
             uint? albumDiscNumber,
             uint? albumDiscsCount)
         {
-            this.Title = title.TrimmedOrNull();
+            this.Title = title?.Trim();
             this.PerformersNames = performersNames.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.ComposersNames = composersNames.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.Year = year.ThrowIf(ay => ay > DateTime.Today.Year, () => new ArgumentOutOfRangeException(nameof(year)));
 
-            this.AlbumTitle = albumTitle.TrimmedOrNull();
+            this.AlbumTitle = albumTitle?.Trim();
             this.AlbumAuthors = albumAuthors.EmptyIfNull().RemoveNullOrWhitespaces().TrimAll().ToImmutableArray();
             this.AlbumTracksCount = albumTracksCount.NullIf(x => x <= 0);
             this.AlbumTrackNumber = albumTrackNumber.NullIf(atn => atn <= 0);
             this.AlbumDiscsCount = albumDiscsCount.NullIf(x => x <= 0);
             this.AlbumDiscNumber = albumDiscNumber.NullIf(adn => adn <= 0);
-            //this.Lyrics = lyrics.TrimmedOrNull();
+            //this.Lyrics = lyrics?.Trim();
         }
 
         #region track

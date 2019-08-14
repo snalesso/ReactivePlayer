@@ -65,7 +65,7 @@ namespace ReactivePlayer.Domain.Repositories
                                 iTunesTrack.TrackCount,
                                 iTunesTrack.DiscCount);
                     }
-                    catch (Exception ex)
+                    catch// (Exception ex)
                     {
                         album = null;
                     }
@@ -96,7 +96,7 @@ namespace ReactivePlayer.Domain.Repositories
 
                     tracks.Add(track);
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
 
                 }
@@ -185,7 +185,7 @@ namespace ReactivePlayer.Domain.Repositories
                             Year = xmliTunesTrack.GetNullableValue("Year", default(uint?))
                         };
                     }
-                    catch (Exception ex)
+                    catch //(Exception ex)
                     {
                         iTunesTrack = null;
                     }

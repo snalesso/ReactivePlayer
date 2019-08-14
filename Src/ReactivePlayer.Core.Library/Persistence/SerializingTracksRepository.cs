@@ -67,7 +67,7 @@ namespace ReactivePlayer.Core.Library.Persistence
                    false,
                    DateTime.Now);
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 // TODO: log
                 newTrack = null;
