@@ -8,6 +8,7 @@ using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
+using ReactivePlayer.UI.WPF.Services;
 using ReactiveUI;
 using System;
 using System.Collections;
@@ -26,71 +27,43 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     public class LibraryViewModel : ReactiveScreen, IDisposable
     {
         private readonly IAudioFileInfoProvider _audioFileInfoProvider;
+        //private readonly IReadLibraryService _readLibraryService;
         private readonly IWriteLibraryService _writeLibraryService;
-        private readonly IReadLibraryService _readLibraryService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         private readonly IDialogService _dialogService;
-        private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
-        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
+
+        private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
+
+        //private readonly Func<PlaylistBase, PlaylistBaseViewModel> _playlistBaseViewModelFactoryMethod;
+        //private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
 
         #region ctor
 
         public LibraryViewModel(
             IAudioFileInfoProvider audioFileInfoProvider,
-            IReadLibraryService readLibraryService,
+            //IReadLibraryService readLibraryService,
             IWriteLibraryService writeLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
-            AllTracksFilterViewModel allTracksFilterViewModel,
-            Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
+            LibraryViewModelsProxy libraryViewModelsProxy
+            //AllTracksViewModel allTracksViewModel,
+            //Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
+            //Func<PlaylistBase, PlaylistBaseViewModel> playlistBaseViewModelFactoryMethod
+            )
         {
             this._audioFileInfoProvider = audioFileInfoProvider ?? throw new ArgumentNullException(nameof(audioFileInfoProvider));
-            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
+            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.AllTracksFilterViewModel = allTracksFilterViewModel ?? throw new ArgumentNullException(nameof(allTracksFilterViewModel));
-            this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
-            this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
+            this._libraryViewModelsProxy = libraryViewModelsProxy ?? throw new ArgumentNullException(nameof(libraryViewModelsProxy));
 
-            var whenSelectedFilterChanged = this.WhenAnyValue(x => x.SelectedTracksFilterViewModel).Select(x => x?.Filter);
+            //this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
+            //this._playlistBaseViewModelFactoryMethod = playlistBaseViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistBaseViewModelFactoryMethod));
 
-            this._readLibraryService
-                .Tracks
-                .Connect()
-                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
-                .Filter(whenSelectedFilterChanged)
-                .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime))
-                .Bind(out this._filteredSortedTrackViewModels)
-                .DisposeMany() // TODO: put ALAP or ASAP?
-                .Subscribe()
-                .DisposeWith(this._disposables);
-
-            this.PlayTrack = ReactiveCommand.CreateFromTask(
-                async (TrackViewModel trackVM) =>
-                {
-                    await this._audioPlaybackEngine.StopAsync()/*.ConfigureAwait(false)*/;
-                    await this._audioPlaybackEngine.LoadAndPlayAsync(trackVM.Track)/*.ConfigureAwait(false)*/;
-                },
-                Observable.CombineLatest(
-                    this.WhenAnyValue(t => t.SelectedTracksFilterViewModel),
-                    this._audioPlaybackEngine.WhenCanLoadChanged,
-                    this._audioPlaybackEngine.WhenCanPlayChanged,
-                    this._audioPlaybackEngine.WhenCanStopChanged,
-                    (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)))
-                .DisposeWith(this._disposables);
-            this.PlayTrack.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
-                .DisposeWith(this._disposables);
-
-            this.EditTrackTags = ReactiveCommand.Create(
-                (TrackViewModel vm) =>
-                {
-                    this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod(vm.Track));
-                },
-                this.WhenAny(x => x.SelectedTracksFilterViewModel, x => x.Value != null)
-                ).DisposeWith(this._disposables);
+            this._libraryViewModelsProxy.PlaylistViewModels.RemoveKey().DisposeMany().Bind(out this._playlistViewModels);
+            this.AllTracksViewModel = this._libraryViewModelsProxy.AllTracksViewModel;
+            this.SelectedTracksSubsetViewModel = this.AllTracksViewModel;
 
             this.ShowFilePicker = ReactiveCommand.CreateFromTask(
                 async () =>
@@ -146,36 +119,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 // TODO: log
                 Debug.WriteLine(x);
             });
-
-            this.SelectedTracksFilterViewModel = this.AllTracksFilterViewModel;
         }
 
         #endregion
 
         #region properties
 
-        public AllTracksFilterViewModel AllTracksFilterViewModel { get; } // => AllTracksFilterViewModel.Instance;
-        public ReadOnlyObservableCollection<PlaylistFilterViewModel> PlaylistViewModels { get; }
+        public AllTracksViewModel AllTracksViewModel { get; }
 
-        private TracksFilterViewModel _selectedTracksFilterViewModel;
-        public TracksFilterViewModel SelectedTracksFilterViewModel
-        {
-            get => this._selectedTracksFilterViewModel;
-            set => this.RaiseAndSetIfChanged(ref this._selectedTracksFilterViewModel, value);
-        }
+        private readonly ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModels;
+        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModels => this._playlistViewModels;
 
-        private ReadOnlyObservableCollection<TrackViewModel> _filteredSortedTrackViewModels;
-        public ReadOnlyObservableCollection<TrackViewModel> FilteredSortedTrackViewModels
+        private TracksSubsetViewModel _selectedTracksSubsetViewModel;
+        public TracksSubsetViewModel SelectedTracksSubsetViewModel
         {
-            get => this._filteredSortedTrackViewModels;
-            private set => this.RaiseAndSetIfChanged(ref this._filteredSortedTrackViewModels, value);
-        }
-
-        private TrackViewModel _selectedTrackViewModel;
-        public TrackViewModel SelectedTrackViewModel
-        {
-            get => this._selectedTrackViewModel;
-            set => this.RaiseAndSetIfChanged(ref this._selectedTrackViewModel, value);
+            get => this._selectedTracksSubsetViewModel;
+            set => this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value);
         }
 
         #endregion
@@ -183,11 +142,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public ReactiveCommand<Unit, Unit> ShowFilePicker { get; }
-
-        public ReactiveCommand<TrackViewModel, Unit> PlayTrack { get; }
-        public ReactiveCommand<Unit, Unit> PlayAll { get; }
-
-        public ReactiveCommand<TrackViewModel, Unit> EditTrackTags { get; }
 
         #endregion
 

@@ -14,11 +14,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
             <ColumnDefinition Width="8" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
             <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

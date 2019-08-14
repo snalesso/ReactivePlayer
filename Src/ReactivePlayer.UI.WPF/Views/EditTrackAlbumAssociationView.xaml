@@ -30,7 +30,12 @@
             Grid.Column="0"
             VerticalAlignment="Top"
             Text="Album" />
-        <Grid
+
+        <Views:EditAlbumView
+            Grid.Row="0"
+            Grid.Column="2"
+            DataContext="{Binding AlbumViewModel}" />
+        <!--<Grid
             Grid.Row="0"
             Grid.Column="2"
             VerticalAlignment="Center">
@@ -61,7 +66,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-        </Grid>
+        </Grid>-->
 
         <TextBlock
             Grid.Row="2"

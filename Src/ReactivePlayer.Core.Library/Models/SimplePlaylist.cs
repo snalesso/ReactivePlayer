@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Models
 {
-    public class Playlist : PlaylistBase, IDisposable
+    public class SimplePlaylist : PlaylistBase, IDisposable
     {
-        public Playlist(
+        public SimplePlaylist(
             uint id,
             uint? parentId,
             string name,

@@ -33,7 +33,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly Playlist _playlist;
+        private readonly SimplePlaylist _playlist;
         //private readonly IObservableCache<uint, uint>
 
         #endregion
@@ -41,7 +41,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region ctors
 
         public PlaylistFilterViewModel(
-            Playlist playlist)
+            SimplePlaylist playlist)
         {
             this._playlist = playlist;
 

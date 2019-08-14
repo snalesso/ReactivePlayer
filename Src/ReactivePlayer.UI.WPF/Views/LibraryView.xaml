@@ -34,7 +34,7 @@
             ResizeBehavior="PreviousAndNext"
             ResizeDirection="Columns" />
 
-        <Views:TracksView Grid.Column="2" />
+        <Views:TracksView Grid.Column="2" DataContext="{Binding SelectedTracksSubsetViewModel}" />
 
     </Grid>
 </UserControl>

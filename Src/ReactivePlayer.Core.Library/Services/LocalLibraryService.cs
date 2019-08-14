@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
 {
+    // https://github.com/RolandPheasant/DynamicData.Snippets/blob/master/DynamicData.Snippets/Creation/ChangeSetCreation.cs
+    // https://github.com/RolandPheasant/DynamicData.Snippets/blob/master/DynamicData.Snippets/Creation/CreationFixture.cs
     public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable
     {
         private readonly ITracksRepository _tracksRepository;
@@ -26,6 +28,17 @@ namespace ReactivePlayer.Core.Library.Services
             this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory));
 
             this._sourceTracks = new SourceCache<Track, uint>(t => t.Id).DisposeWith(this._disposables);
+            //this.Tracks = ObservableChangeSet.Create<Track, uint>(
+            //    async list =>
+            //    {
+            //        var items = await this.GetTracksAsync();
+            //        list.AddOrUpdate(items);
+            //    },
+            //    t => t.Id)
+            //    .RefCount();
+            //this.Tracks = this._sourceTracks.Connect();
+            
+            this._sourcePlaylists = new SourceCache<PlaylistBase, uint>(p => p.Id).DisposeWith(this._disposables);
 
             this._whenIsConnectedChangedSubject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
         }
@@ -41,18 +54,26 @@ namespace ReactivePlayer.Core.Library.Services
         private readonly BehaviorSubject<bool> _whenIsConnectedChangedSubject;
         public IObservable<bool> WhenIsConnectedChanged => this._whenIsConnectedChangedSubject.DistinctUntilChanged();
 
+        private async Task<IReadOnlyList<Track>> GetTracksAsync(TimeSpan? minDuration = null)
+        {
+            var loadTask = this._tracksRepository.GetAllAsync();
+
+            if (minDuration.HasValue)
+            {
+                await Task.WhenAll(loadTask, this._tracksRepository.GetAllAsync());
+            }
+
+            return await loadTask;
+        }
+
         // TODO: add concurrency protection, use async lazy?
         public async Task<bool> Connect()
         {
             if (!this.IsConnected)
             {
-                var tracks = await
-                    //Task.Run(async () =>
-                    //{
-                    //await Task.Delay(TimeSpan.FromSeconds(2.5));
-                    //return await
-                    this._tracksRepository.GetAllAsync();
-                //});
+                var tracks = await this.GetTracksAsync(
+                    //TimeSpan.FromSeconds(3)
+                    );
 
                 // TODO: investigate what happens if the lambda passed to .Edit is async
                 this._sourceTracks.Edit(list =>
@@ -71,9 +92,12 @@ namespace ReactivePlayer.Core.Library.Services
         #region IReadLibraryService
 
         private readonly SourceCache<Track, uint> _sourceTracks;
+        //public IObservable<IChangeSet<Track, uint>> Tracks { get; }
         public IObservableCache<Track, uint> Tracks => this._sourceTracks;
-
-        public IObservableList<Playlist> Playlists => throw new NotImplementedException();
+        
+        private readonly SourceCache<PlaylistBase, uint> _sourcePlaylists;
+        //public IObservable<IChangeSet<SimplePlaylist> Playlists => throw new NotImplementedException();
+        public IObservableCache<PlaylistBase, uint> Playlists => this._sourcePlaylists;
 
         //private readonly SourceList<Artist> _sourceArtists;
         //public IObservableList<Artist> Artists => this._sourceArtists;
@@ -296,20 +320,19 @@ namespace ReactivePlayer.Core.Library.Services
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
+                return;
+            if (isDisposing)
             {
-                if (disposing)
-                {
-                    this._disposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this._isDisposed = true;
+                this._disposables.Dispose();
             }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
         }
 
         public void Dispose()

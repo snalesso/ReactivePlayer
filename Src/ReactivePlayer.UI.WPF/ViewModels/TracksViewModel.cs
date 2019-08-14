@@ -57,7 +57,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             var trackVMsFlow = this._readLibraryService
                 .Tracks
                 .Connect()
-                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track));
+                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+                .DisposeMany() // TODO: put ALAP or ASAP?
+                ;
 
             if (this.Filter != null)
             {
@@ -67,7 +69,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             trackVMsFlow
                 .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime))
                 .Bind(out this._filteredSortedTrackViewModels)
-                .DisposeMany() // TODO: put ALAP or ASAP?
                 .Subscribe()
                 .DisposeWith(this._disposables);
 
@@ -147,20 +148,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
+                return;
+
+            if (isDisposing)
             {
-                if (disposing)
-                {
-                    this._disposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this._isDisposed = true;
+                this._disposables.Dispose();
             }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
         }
 
         public void Dispose()

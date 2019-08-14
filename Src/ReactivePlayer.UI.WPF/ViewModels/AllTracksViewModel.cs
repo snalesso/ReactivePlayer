@@ -13,7 +13,7 @@ using ReactivePlayer.UI.Services;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class AllTracksViewModel : TracksSubsetViewModel
+    public sealed class AllTracksViewModel : TracksSubsetViewModel
     {
         #region constants & fields
         #endregion
@@ -21,18 +21,18 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region ctors
 
         public AllTracksViewModel(
-            IDialogService dialogService,
-            IReadLibraryService readLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
-            Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            Func<Track, EditTrackTagsViewModel> editTrackTagsViewModelFactoryMethod,
-            IObservableCache<TrackViewModel, uint> allTrackViewModelsSourceCache)
-            : base(
-                  allTrackViewModelsSourceCache,
-                  "All tracks")
+            IReadLibraryService readLibraryService,
+            IDialogService dialogService,
+            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet)
+            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod)
+        //: base(
+        //      trackViewModelsSourceChangeSet,
+        //      "All tracks")
         {
-            this._allTrackViewModelsSourceCache
-                .Connect()
+            this.Sort(sourceTrackViewModelsChangeSet)
+                //.Connect()
                 .Bind(out this._sortedFilteredTrackViewModelsROOC)
                 .Subscribe()
                 .DisposeWith(this._disposables);
@@ -42,14 +42,30 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
-        public override IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC => this._allTrackViewModelsSourceCache;
+        public override string Name => "All tracks";
 
         private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
         public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
 
+        //public override IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC => this._allTrackViewModelsSourceCache;
+
+        //private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
+        //public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
+
         #endregion
 
         #region methods
+
+        //protected override
+        //    void
+        //    //IObservable<IChangeSet<TrackViewModel, uint>> 
+        //    SetupFiltering(
+        //    IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSet,
+        //    out IObservable<IChangeSet<TrackViewModel, uint>> filteredChangeSet)
+        //{
+        //    filteredChangeSet = sourceChangeSet;
+        //}
+
         #endregion
 
         #region commands

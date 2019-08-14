@@ -138,7 +138,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             builder.RegisterType<EditTrackAlbumAssociationViewModel>().AsSelf().InstancePerDependency();
 
-            builder.RegisterType<AllTracksFilterViewModel>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<AllTracksViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<TracksView>().As<IViewFor<AllTracksViewModel>>().InstancePerLifetimeScope();
 
             builder.RegisterType<PlaybackControlsViewModel>().AsSelf().InstancePerLifetimeScope();

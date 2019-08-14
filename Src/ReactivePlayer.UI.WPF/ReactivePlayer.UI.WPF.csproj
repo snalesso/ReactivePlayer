@@ -170,8 +170,8 @@
     <Compile Include="ViewModels\PlaybackProgressViewModel.cs" />
     <Compile Include="ViewModels\EditArtistViewModel.cs" />
     <Compile Include="ViewModels\EditArtistsViewModel.cs" />
-    <Compile Include="ViewModels\PlaylistFolderViewModel.cs" />
-    <Compile Include="ViewModels\PlaylistViewModel.cs" />
+    <Compile Include="ViewModels\FolderPlaylistViewModel.cs" />
+    <Compile Include="ViewModels\SimplePlaylistViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModelBase.cs" />
     <Compile Include="ViewModels\TrackAlbumAssociationViewModel.cs" />
     <Compile Include="ViewModels\EditTrackAlbumAssociationViewModel.cs" />

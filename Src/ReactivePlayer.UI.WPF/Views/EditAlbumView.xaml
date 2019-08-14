@@ -35,44 +35,56 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            Text="Title" VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Text="Title" />
         <TextBox
             Grid.Row="0"
             Grid.Column="2"
             MinWidth="150"
-            Text="{Binding Title}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
+            Text="{Binding Title}" />
 
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            Text="Authors" VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Text="Authors" />
         <Views:EditArtistsView
             Grid.Row="2"
             Grid.Column="2"
             MinWidth="150"
-            DataContext="{Binding EditAuthorsViewModel}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
+            DataContext="{Binding EditAuthorsViewModel}" />
 
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            Text="Tracks" VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Text="Tracks" />
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
             MinWidth="150"
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
             Text="{Binding TracksCount}"
-            TextAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            TextAlignment="Right" />
 
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
-            Text="Discs" VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Text="Discs" />
         <TextBox
             Grid.Row="6"
             Grid.Column="2"
             MinWidth="150"
+            VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
             Text="{Binding DiscsCount}"
-            TextAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+            TextAlignment="Right" />
 
     </Grid>
 </UserControl>

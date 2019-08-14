@@ -9,7 +9,9 @@ namespace ReactivePlayer.Core.Library.Services
     public interface IReadLibraryService : IDisposable, IConnectableService
     {
         IObservableCache<Track, uint> Tracks { get; }
+        //IObservable<IChangeSet<Track, uint>> Tracks { get; }
 
-        IObservableList<Playlist> Playlists { get; }
+        IObservableCache<PlaylistBase, uint> Playlists { get; }
+        //IObservable<IChangeSet<SimplePlaylist>> Playlists { get; }
     }
 }
