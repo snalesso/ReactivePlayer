@@ -64,6 +64,7 @@
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Artwork.cs" />
     <Compile Include="Models\PlaylistBase.cs" />
+    <Compile Include="Models\PlaylistNotFoundException.cs" />
     <Compile Include="Models\SimplePlaylist.cs" />
     <Compile Include="Models\LibraryEntry.cs" />
     <Compile Include="Models\FolderPlaylist.cs" />

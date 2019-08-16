@@ -34,10 +34,15 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <TextBlock Text="{Binding SortedFilteredTrackViewModelsROOC.Count}" />
+
         <ListView
+            Grid.Row="2"
             Behaviors:DoubleClick.Command="{Binding PlayTrack}"
             Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
             ItemsSource="{Binding SortedFilteredTrackViewModelsROOC}"

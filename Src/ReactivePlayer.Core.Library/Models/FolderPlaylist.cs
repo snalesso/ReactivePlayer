@@ -35,8 +35,9 @@ namespace ReactivePlayer.Core.Library.Models
             uint id,
             uint? parentId,
             string name,
-            IEnumerable<SimplePlaylist> playlists) : base(id, parentId, name)
+            IEnumerable<PlaylistBase> playlists = null) : base(id, parentId, name)
         {
+            // TODO: validate params
             this.Name = name;
             this.ParentId = parentId;
 
@@ -45,6 +46,11 @@ namespace ReactivePlayer.Core.Library.Models
 
             this.TrackIds = this._playlistsSourceList.Connect().MergeMany(p => p.TrackIds.Connect()).Distinct().AsObservableList().DisposeWith(this._disposables);
         }
+
+        public FolderPlaylist(
+            uint id,
+            uint? parentId,
+            string name) : this(id, parentId, name, Enumerable.Empty<PlaylistBase>()) { }
 
         #endregion
 
@@ -63,6 +69,22 @@ namespace ReactivePlayer.Core.Library.Models
         public void Add(PlaylistBase playlistBase)
         {
             this._playlistsSourceList.Add(playlistBase);
+        }
+
+        public void Remove(uint playlistId)
+        {
+            this._playlistsSourceList.Edit(list => {
+
+                var playlistToRemove = list.FirstOrDefault(p => p.Id == playlistId);
+
+                if (playlistToRemove == null)
+                {
+                    // TODO: ensure this gets caught and not silently swallowed
+                    throw new PlaylistNotFoundException();
+                }
+
+                list.Remove(playlistToRemove);
+            });
         }
 
         #endregion

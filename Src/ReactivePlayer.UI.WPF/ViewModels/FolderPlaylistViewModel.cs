@@ -26,6 +26,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro.ReactiveUI;
+using System.Reactive.Subjects;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -35,9 +36,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         private readonly FolderPlaylist _playlistFolder;
         private readonly Func<PlaylistBase, PlaylistBaseViewModel> _playlistViewModelFactoryMethod;
-        //private readonly Func<SimplePlaylist, SimplePlaylistViewModel> _simplePlaylistViewModelFactoryMethod;
-        //private readonly Func<FolderPlaylist, FolderPlaylistViewModel> _folderPlaylistViewModelFactoryMethod;
-        //private readonly IObservable<IChangeSet<TrackViewModel>> _filteredSortedViewModelsChangeSet;
 
         #endregion
 
@@ -48,63 +46,45 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet,
+            IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
             FolderPlaylist playlistFolder,
-            Func<PlaylistBase, PlaylistBaseViewModel> playlistViewModelFactoryMethod
-            //Func<SimplePlaylist, SimplePlaylistViewModel> playlistViewModelFactoryMethod,
-            //Func<FolderPlaylist, FolderPlaylistViewModel> playlistFolderViewModelFactoryMethod
-            )
-            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangeSet, playlistFolder)
+            Func<PlaylistBase, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
+            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod, playlistFolder)
         {
+            // TODO: validate dependencies
             this._playlistFolder = playlistFolder ?? throw new ArgumentNullException(nameof(playlistFolder));
             this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
-            //this._simplePlaylistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
-            //this._folderPlaylistViewModelFactoryMethod = playlistFolderViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistFolderViewModelFactoryMethod));
 
-            this._playlistFolder.Playlists
+              this._connectableVMsSubscription = new SerialDisposable().DisposeWith(this._disposables);
+
+          this._playlistFolder.Playlists
                 .Connect()
                 .Transform(playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl))
                 .AddKey(x => x.PlaylistId)
-                .DisposeMany() // TODO: at which point is better to add .DisposeMany()?
                 .Sort(SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name))
-                .Bind(out this._playlistViewModelsROOC);
-
-            //playlistVMsChangeSet
-            //    .MergeMany(pvm => pvm.SortedFilteredTrackViewModelsROOC.Connect())
-            //    .Distinct()
-            //    .Bind(out this._sortedFilteredTrackViewModelsROOC)
-            //    .Subscribe()
-            //    .DisposeWith(this._disposables);
-
-            //filteredChangeSet = this._playlistIdsCache
-            //    .Connect()
-            //    .LeftJoin(
-            //        sourceChangeSet,
-            //        vm => vm.Id,
-            //        (id, joinedVm) => joinedVm.Value)
-            //    .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
+                .Bind(out this._playlistViewModelsROOC)
+                //.DisposeMany()
+                .Subscribe()
+                .DisposeWith(this._disposables);
 
             var filtered = this._playlistFolder.TrackIds
                 .Connect()
                 .AddKey(x => x)
                 .LeftJoin(
-                    sourceTrackViewModelsChangeSet,
+                    connectableTrackViewModelsCache.Connect(),
                     vm => vm.Id,
                     (id, trackVM) => trackVM.Value);
 
             // TODO: use some LINQ to make more fluent
-            var sortedTrackVMsChangeSet = this.Sort(filtered)
-                //.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime))
+            this._connectableVMs = this.Sort(filtered)
                 .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                .Subscribe()
-                .DisposeWith(this._disposables);
+                //.DisposeMany() // TODO: is this good here?
+                .Publish();
         }
 
         #endregion
 
         #region properties
-
-        //public override IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC { get; }
 
         private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
         public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
@@ -123,40 +103,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region methods
 
-        //        protected override void SetupFiltering(IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSet, out IObservable<IChangeSet<TrackViewModel, uint>> filteredChangeSet)
-        //        {
-        //            var vmsChangeSet = this._playlistFolder.Playlists.Connect().Transform<PlaylistBase, PlaylistBaseViewModel>(playlistBaseImpl =>
-        //            {
-        //                switch (playlistBaseImpl)
-        //                {
-        //                    case SimplePlaylist simplePlaylist:
-        //                        return this._simplePlaylistViewModelFactoryMethod.Invoke(simplePlaylist);
-        //                    case FolderPlaylist folderPlaylist:
-        //                        return this._folderPlaylistViewModelFactoryMethod.Invoke(folderPlaylist);
-        //                    default:
-        //                        throw new NotSupportedException(playlistBaseImpl.GetType().FullName + " is not a supported " + nameof(PlaylistBase) + " type.");
-        //                }
-        //            })
-        //.AddKey(x => x.PlaylistId)
-        //.DisposeMany();
+        #region connection-activation
 
-        //            this.PlaylistViewModels = vmsChangeSet.AsObservableCache().DisposeWith(this._disposables);
+        private readonly IConnectableObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
+        private readonly SerialDisposable _connectableVMsSubscription;
 
-        //            vmsChangeSet
-        //                .MergeMany(pvm => pvm.SortedFilteredTrackViewModelsOC.Connect())
-        //                .Distinct()
-        //                .Bind(out this._sortedFilteredTrackViewModelsROOC)
-        //                .Subscribe()
-        //                .DisposeWith(this._disposables);
+        protected override void Connect()
+        {
+            this._connectableVMsSubscription.Disposable = this._connectableVMs.Connect();
+        }
 
-        //            filteredChangeSet = this._playlistIdsCache
-        //                .Connect()
-        //                .LeftJoin(
-        //                    sourceChangeSet,
-        //                    vm => vm.Id,
-        //                    (id, joinedVm) => joinedVm.Value)
-        //                .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
-        //        }
+        protected override void Disconnect()
+        {
+            this._connectableVMsSubscription.Disposable = null;
+        }
+
+        #endregion
 
         #endregion
 

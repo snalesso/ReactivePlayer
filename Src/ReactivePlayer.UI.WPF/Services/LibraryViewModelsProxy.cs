@@ -33,15 +33,18 @@ namespace ReactivePlayer.UI.WPF.Services
             this.TrackViewModels = this._readLibraryService.Tracks
                 .Connect()
                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
-                .DisposeMany() // TODO: IMPORTANT!: does this .DisposeMany get called in each.AsObservableList/Cache which references this changes notification?
-                               //.AsObservableCache()
-                               //.DisposeWith(this._disposables)
+                .DisposeMany()
+                .AsObservableCache()
+                .DisposeWith(this._disposables)
                 ;
 
             this.PlaylistViewModels = this._readLibraryService.Playlists
                 .Connect()
                 .Transform(playlist => this.CreatePlaylistViewModel(playlist))
                 .DisposeMany()
+                .AsObservableCache()
+                .DisposeWith(this._disposables)
+                //.DisposeMany()
                 //.RefCount() // TODO: IMPORTANT: add .RefCount()?
                 ;
 
@@ -55,11 +58,11 @@ namespace ReactivePlayer.UI.WPF.Services
 
         #region properties
 
-        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModels { get; }
+        public IObservableCache<TrackViewModel, uint> TrackViewModels { get; }
 
         public AllTracksViewModel AllTracksViewModel { get; }
 
-        public IObservable<IChangeSet<PlaylistBaseViewModel, uint>> PlaylistViewModels { get; }
+        public IObservableCache<PlaylistBaseViewModel, uint> PlaylistViewModels { get; }
 
         #endregion
 

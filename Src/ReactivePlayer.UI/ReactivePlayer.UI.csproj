@@ -81,7 +81,6 @@
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\ITaskbarService.cs" />
     <Compile Include="Services\IKeyboardHookService.cs" />
-    <Compile Include="Services\ModelsToViewModelsProxy`2.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
@@ -37,7 +38,7 @@ namespace ReactivePlayer.Core.Library.Services
             //    t => t.Id)
             //    .RefCount();
             //this.Tracks = this._sourceTracks.Connect();
-            
+
             this._sourcePlaylists = new SourceCache<PlaylistBase, uint>(p => p.Id).DisposeWith(this._disposables);
 
             this._whenIsConnectedChangedSubject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
@@ -60,10 +61,10 @@ namespace ReactivePlayer.Core.Library.Services
 
             if (minDuration.HasValue)
             {
-                await Task.WhenAll(loadTask, this._tracksRepository.GetAllAsync());
+                await Task.WhenAll(loadTask, Task.Delay(minDuration.Value));
             }
 
-            return await loadTask;
+            return (await loadTask).ToArray();
         }
 
         // TODO: add concurrency protection, use async lazy?
@@ -71,14 +72,25 @@ namespace ReactivePlayer.Core.Library.Services
         {
             if (!this.IsConnected)
             {
-                var tracks = await this.GetTracksAsync(
-                    //TimeSpan.FromSeconds(3)
-                    );
-
-                // TODO: investigate what happens if the lambda passed to .Edit is async
-                this._sourceTracks.Edit(list =>
+                await Task.Run(async () =>
                 {
-                    list.AddOrUpdate(tracks);
+                    var tracks = (await this.GetTracksAsync(
+                        //TimeSpan.FromSeconds(3)
+                        )
+                        ).ToArray();
+                    // TODO: investigate what happens if the lambda passed to .Edit is async
+                    this._sourceTracks.Edit(list =>
+                    {
+                        list.AddOrUpdate(tracks);
+                    });
+
+                    this._sourcePlaylists.Edit(list =>
+                    {
+                        var fakePlaylists = this.GetFakePlaylists();
+
+                        list.AddOrUpdate(fakePlaylists);
+                    });
+
                 });
 
                 this.IsConnected = true;
@@ -94,7 +106,7 @@ namespace ReactivePlayer.Core.Library.Services
         private readonly SourceCache<Track, uint> _sourceTracks;
         //public IObservable<IChangeSet<Track, uint>> Tracks { get; }
         public IObservableCache<Track, uint> Tracks => this._sourceTracks;
-        
+
         private readonly SourceCache<PlaylistBase, uint> _sourcePlaylists;
         //public IObservable<IChangeSet<SimplePlaylist> Playlists => throw new NotImplementedException();
         public IObservableCache<PlaylistBase, uint> Playlists => this._sourcePlaylists;
@@ -342,5 +354,70 @@ namespace ReactivePlayer.Core.Library.Services
         }
 
         #endregion
+
+        private static IEnumerable<uint> RandomTracks(ICollection<uint> sourceTrackIds, Random r, decimal maxPercent = 50)
+        {
+            int count = (int)Math.Floor((sourceTrackIds.Count * Math.Min(100, maxPercent) / 100));
+
+            var randomTrackIds = new List<uint>();
+            for (int i = 0; i < count; i++)
+            {
+                var k = r.Next(sourceTrackIds.Count);
+                randomTrackIds.Add(sourceTrackIds.ElementAt(k));
+            }
+
+            return randomTrackIds.Distinct();
+        }
+
+        private FolderPlaylist GetFakeFolderPlaylist(uint? parentPlaylistId, uint folderPlaylistId, ICollection<decimal> childrenSimplePlaylistTracksPercents, ICollection<uint> sourceTrackIds, Random r)
+        {
+            var folderPlaylist =
+                new FolderPlaylist(
+                    folderPlaylistId,
+                    parentPlaylistId,
+                    "Folder #" + folderPlaylistId);
+
+            for (int i = 0; i < childrenSimplePlaylistTracksPercents.Count; i++)
+            {
+                uint simplePlaylistId = (uint)((folderPlaylistId * 20) + i + 1);
+                var percent = childrenSimplePlaylistTracksPercents.ElementAt(i);
+
+                folderPlaylist.Add(
+                    new SimplePlaylist(
+                        simplePlaylistId,
+                        folderPlaylistId,
+                        "Playlist #" + simplePlaylistId,
+                        RandomTracks(sourceTrackIds, r, percent)));
+            }
+
+            return folderPlaylist;
+        }
+
+        private SimplePlaylist GetFakeSimplePlaylist(uint? parentPlaylistId, uint simplePlaylistId, ICollection<uint> sourceTrackIds, Random r, decimal maxPercent = 50)
+        {
+            var simplePlaylist =
+                new SimplePlaylist(
+                    simplePlaylistId,
+                    parentPlaylistId,
+                    "Playlist #" + simplePlaylistId,
+                    RandomTracks(sourceTrackIds, r, maxPercent));
+
+            return simplePlaylist;
+        }
+
+        private IEnumerable<PlaylistBase> GetFakePlaylists()
+        {
+            Random r = new Random();
+            var sourceTrackIds = this.Tracks.Items.Select(x => x.Id).ToArray();
+            var playlists = new List<PlaylistBase>();
+
+            uint id = 1;
+            playlists.Add(this.GetFakeFolderPlaylist(null, id++, new decimal[] { 0.4m, 0.2m, 0.7m }, sourceTrackIds, r));
+            playlists.Add(this.GetFakeSimplePlaylist(null, id++, sourceTrackIds, r, 45));
+            playlists.Add(this.GetFakeSimplePlaylist(null, id++, sourceTrackIds, r, 4));
+            playlists.Add(this.GetFakeSimplePlaylist(null, id++, sourceTrackIds, r, 12));
+
+            return playlists;
+        }
     }
 }

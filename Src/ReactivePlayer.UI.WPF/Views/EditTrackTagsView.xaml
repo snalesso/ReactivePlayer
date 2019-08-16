@@ -11,14 +11,14 @@
     Background="White"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8" />
             <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
             <ColumnDefinition Width="8" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
+            <ColumnDefinition Width="*"  />
             <ColumnDefinition Width="8" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

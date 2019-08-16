@@ -38,8 +38,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this._editArtistViewModelsSourceList
                 .Connect()
-                .DisposeMany()
                 .Bind(out this._editArtistViewModelsROOC)
+                .DisposeMany()
                 .Subscribe()
                 .DisposeWith(this._disposables);
 

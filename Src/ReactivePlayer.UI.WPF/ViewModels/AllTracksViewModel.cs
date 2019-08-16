@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -25,17 +27,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet)
+            IConnectableCache<TrackViewModel, uint> sourceTrackViewModelsChangeSet)
             : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod)
         //: base(
         //      trackViewModelsSourceChangeSet,
         //      "All tracks")
         {
-            this.Sort(sourceTrackViewModelsChangeSet)
-                //.Connect()
+            // TODO: validate dependencies
+
+            this._connectableVMsSubscription = new SerialDisposable().DisposeWith(this._disposables);
+
+            this._connectableVMs = this.Sort(sourceTrackViewModelsChangeSet.Connect())
                 .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                .Subscribe()
-                .DisposeWith(this._disposables);
+                //.DisposeMany()
+                .Publish();
         }
 
         #endregion
@@ -56,15 +61,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region methods
 
-        //protected override
-        //    void
-        //    //IObservable<IChangeSet<TrackViewModel, uint>> 
-        //    SetupFiltering(
-        //    IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSet,
-        //    out IObservable<IChangeSet<TrackViewModel, uint>> filteredChangeSet)
-        //{
-        //    filteredChangeSet = sourceChangeSet;
-        //}
+        #region connection-activation
+
+        private readonly IConnectableObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
+        private readonly SerialDisposable _connectableVMsSubscription;
+
+        protected override void Connect()
+        {
+            this._connectableVMsSubscription.Disposable = this._connectableVMs.Connect();
+        }
+
+        protected override void Disconnect()
+        {
+            this._connectableVMsSubscription.Disposable = null;
+        }
+
+        #endregion
 
         #endregion
 

@@ -18,17 +18,12 @@
         <Converters:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Grid.IsSharedSizeScope="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="8" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
 
         <StackPanel Grid.ColumnSpan="3">
 
@@ -36,7 +31,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="8" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="buttons" />
                 </Grid.ColumnDefinitions>
 
                 <TextBox x:Name="txbNewArtistName" Text="{Binding NewArtistName, UpdateSourceTrigger=PropertyChanged}" />
@@ -66,91 +61,68 @@
 
         </StackPanel>
 
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="buttons" />
+            </Grid.ColumnDefinitions>
 
-        <!--</Grid>-->
-
-        <ListBox
-            x:Name="lsbArtists"
-            Grid.Row="2"
-            Height="Auto"
-            MinHeight="0"
-            HorizontalContentAlignment="Stretch"
-            Grid.IsSharedSizeScope="True"
-            ItemsSource="{Binding EditArtistViewModels}"
-            SelectedItem="{Binding SelectedEditArtistViewModel}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="8" />
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="DeleteButtonCol" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{Binding ArtistName}" TextTrimming="CharacterEllipsis" />
-
-                        <Button
-                            Grid.Column="2"
-                            Command="{Binding DataContext.TryRemove, ElementName=lsbArtists}"
-                            CommandParameter="{Binding}"
-                            Content="X" />
-
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-        <Grid Grid.Row="2" Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="8" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="8" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Button
-                Grid.Row="0"
-                Grid.Column="2"
-                Command="{Binding MoveSelectedUp}"
-                Content="Up" />
-
-            <Button
+            <ListBox
+                x:Name="lsbArtists"
                 Grid.Row="2"
-                Grid.Column="2"
-                Command="{Binding MoveSelectedDown}"
-                Content="Down" />
+                Height="Auto"
+                MinHeight="0"
+                HorizontalContentAlignment="Stretch"
+                Grid.IsSharedSizeScope="True"
+                ItemsSource="{Binding EditArtistViewModels}"
+                SelectedItem="{Binding SelectedEditArtistViewModel}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="DeleteButtonCol" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding ArtistName}" TextTrimming="CharacterEllipsis" />
+
+                            <Button
+                                Grid.Column="2"
+                                Command="{Binding DataContext.TryRemove, ElementName=lsbArtists}"
+                                CommandParameter="{Binding}"
+                                Content="X" />
+
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Row="2" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Command="{Binding MoveSelectedUp}"
+                    Content="Up" />
+
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Command="{Binding MoveSelectedDown}"
+                    Content="Down" />
+
+            </Grid>
 
         </Grid>
-
-        <!--<DataGrid
-            Grid.Row="2"
-            MinHeight="80"
-            HorizontalAlignment="Stretch"
-            AutoGenerateColumns="False"
-            CanUserAddRows="True"
-            CanUserDeleteRows="True"
-            CanUserReorderColumns="False"
-            CanUserResizeColumns="False"
-            CanUserResizeRows="False"
-            CanUserSortColumns="False"
-            ColumnWidth="Auto"
-            GridLinesVisibility="None"
-            HeadersVisibility="None"
-            HorizontalGridLinesBrush="#FFAAAAAA"
-            IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding StringViewModels}"
-            SelectedItem="{Binding SelectedStringViewModel}"
-            SelectionMode="Single">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Value}" Header="Artist name" />
-            </DataGrid.Columns>
-            <DataGrid.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Value}" />
-                </DataTemplate>
-            </DataGrid.ItemTemplate>
-        </DataGrid>-->
 
     </Grid>
 </UserControl>

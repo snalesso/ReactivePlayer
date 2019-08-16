@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro;
+using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
 using ReactivePlayer.Core.Library.Models;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public abstract class TracksSubsetViewModel : ReactiveViewAware, IDisposable//, ITracksListViewModel
+    public abstract class TracksSubsetViewModel : ReactiveScreen, IDisposable//, ITracksListViewModel
     {
         #region constants & fields
 
@@ -27,12 +28,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
 
         private readonly IDialogService _dialogService;
-        
-        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
 
-        //protected readonly IObservableCache<TrackViewModel, uint> _allTrackViewModelsSourceCache;
-        //private readonly IObservable<IChangeSet<TrackViewModel>> _filteredSortedViewModelsChangeSet;
-        //private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sourceTrackViewModelsChangeSet;
+        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
 
         #endregion
 
@@ -42,40 +39,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IAudioPlaybackEngine audioPlaybackEngine,
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod
-            //IWriteLibraryService writeLibraryService,
-            //IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet,
-            //string name
-            )
+            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
         {
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
-            //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
-            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
 
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
-
-            //this._sourceTrackViewModelsChangeSet = sourceTrackViewModelsChangeSet ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSet));
-            //this.Name = name?.Trim() ?? throw new ArgumentNullException(nameof(name));
-
-            //this._filteredSortedViewModelsChangeSet = this._allTrackViewModelsSource
-            //    .Connect(this.FilterCallback)
-            //    .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
-
-            //this.SortedFilteredTrackViewModelsOL = this._filteredSortedViewModelsChangeSet
-            //    .AsObservableList()
-            //    .DisposeWith(this._disposables);
-
-            //this.Initialize();
-
-            //this.SetupFiltering(this._sourceTrackViewModelsChangeSet, out this._filteredChangeSet);
-
-            //this._filteredChangeSet
-            //    .Bind(out this._sortedFilteredTrackViewModelsROOC)
-            //    .Subscribe()
-            //    .DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackVM) =>
@@ -101,14 +72,31 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod(vm.Track));
                 },
                 this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null)
-                ).DisposeWith(this._disposables);
+                )
+                .DisposeWith(this._disposables);
+
+            Observable.FromEventPattern<EventHandler<ActivationEventArgs>, ActivationEventArgs>(
+                h => this.Activated += h,
+                h => this.Activated -= h)
+                .Subscribe(x =>
+                {
+                    this.Connect();
+                })
+                .DisposeWith(this._disposables);
+
+            Observable.FromEventPattern<EventHandler<DeactivationEventArgs>, DeactivationEventArgs>(
+                h => this.Deactivated += h,
+                h => this.Deactivated -= h)
+                .Subscribe(x =>
+                {
+                    this.Disconnect();
+                })
+                .DisposeWith(this._disposables);
         }
 
         #endregion
 
         #region properties
-
-        //public uint Id { get; }
 
         public abstract string Name { get; }
 
@@ -118,7 +106,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
         //private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
         //public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
-        public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; } 
+        public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
 
         private TrackViewModel _selectedTrackViewModel;
         public TrackViewModel SelectedTrackViewModel
@@ -136,32 +124,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             return trackVMsToSort.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
         }
 
-        //protected virtual void Initialize() { }
+        protected abstract void Connect();
 
-        //private readonly IObservable<IChangeSet<TrackViewModel, uint>> _filteredChangeSet;
-        //protected abstract 
-        //    void
-        //    //IObservable<IChangeSet<TrackViewModel, uint>> 
-        //    SetupFiltering(
-        //    IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSet,
-        //    out IObservable<IChangeSet<TrackViewModel, uint>> filteredChangeSet);
-
-        //private readonly IObservable<IChangeSet<TrackViewModel, uint>> _filteredChangeSet;
-        //protected void
-        //    //IObservable<IChangeSet<TrackViewModel, uint>> 
-        //    SetExposedSubset(
-        //    IObservable<IChangeSet<TrackViewModel, uint>> filteredSourceChangeSet)
-        //{
-        //    if (filteredSourceChangeSet == null) throw new ArgumentNullException(nameof(filteredSourceChangeSet));
-
-        //    filteredSourceChangeSet
-        //        //.Connect()
-        //        .Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
-
-        //    this.SortedFilteredTrackViewModelsOL = this._filteredSortedViewModelsChangeSet
-        //        .AsObservableList()
-        //        .DisposeWith(this._disposables);
-        //}
+        protected abstract void Disconnect();
 
         #endregion
 

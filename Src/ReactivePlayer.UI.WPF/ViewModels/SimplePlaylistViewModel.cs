@@ -26,6 +26,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro.ReactiveUI;
+using System.Reactive.Subjects;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -47,12 +48,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet,
+            IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
             SimplePlaylist playlist)
-            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangeSet, playlist)
+            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod, playlist)
         {
+            // TODO: validate dependencies
             //this._allTrackViewModelsSourceCache = sourceTrackViewModelsChangeSet ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSet));
             this._playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
+
+            this._connectableVMsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
             this._playlistIdsCache = this._playlist.TrackIds
                 .Connect()
@@ -63,22 +67,17 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             var tracksFilteredByIdChangeSet = this._playlistIdsCache
                 .Connect()
                 .LeftJoin(
-                    sourceTrackViewModelsChangeSet,
+                    connectableTrackViewModelsCache.Connect(),
                     vm => vm.Id,
                     (id, trackVM) => trackVM.Value);
 
             // TODO: use some LINQ to make more fluent
             var sortedTrackVMsChangeSet = this.Sort(tracksFilteredByIdChangeSet);
-                //.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
 
-            //this.SortedFilteredTrackViewModelsOC = tracksFilteredByIdChangeSet
-            //    .AsObservableCache()
-            //    .DisposeWith(this._disposables);
-
-            sortedTrackVMsChangeSet
-                .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                .Subscribe()
-                .DisposeWith(this._disposables);
+            this._connectableVMs = sortedTrackVMsChangeSet
+                 .Bind(out this._sortedFilteredTrackViewModelsROOC)
+                 //.DisposeMany()
+                 .Publish();
         }
 
         #endregion
@@ -94,6 +93,23 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region methods
+
+        #region connection-activation
+
+        private readonly IConnectableObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
+        private readonly SerialDisposable _connectableVMsSubscription;
+
+        protected override void Connect()
+        {
+            this._connectableVMsSubscription.Disposable = this._connectableVMs.Connect();
+        }
+
+        protected override void Disconnect()
+        {
+            this._connectableVMsSubscription.Disposable = null;
+        }
+
+        #endregion
 
         //protected override void SetupFiltering(IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSet, out IObservable<IChangeSet<TrackViewModel, uint>> filteredChangeSet)
         //{

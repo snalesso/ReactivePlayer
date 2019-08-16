@@ -58,8 +58,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Tracks
                 .Connect()
                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
-                .DisposeMany() // TODO: put ALAP or ASAP?
-                ;
+                .DisposeMany();
 
             if (this.Filter != null)
             {
@@ -96,7 +95,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod(vm.Track));
                 },
                 this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null)
-                ).DisposeWith(this._disposables);
+                )
+                .DisposeWith(this._disposables);
         }
 
         #endregion

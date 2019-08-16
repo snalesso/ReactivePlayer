@@ -11,6 +11,8 @@ namespace ReactivePlayer.Core.Library.Models
 {
     public class SimplePlaylist : PlaylistBase, IDisposable
     {
+        #region ctors
+
         public SimplePlaylist(
             uint id,
             uint? parentId,
@@ -26,11 +28,25 @@ namespace ReactivePlayer.Core.Library.Models
             //this._trackIdsCache.Edit(cache => cache.AddOrUpdate(ids));
         }
 
+        public SimplePlaylist(
+           uint id,
+           uint? parentId,
+           string name) : this(id, parentId, name, Enumerable.Empty<uint>())
+        {
+
+        }
+
+        #endregion
+
+        #region properties
+
         private readonly SourceList<uint> _trackIdsList;
         public override IObservableList<uint> TrackIds => this._trackIdsList;
 
         //private readonly SourceCache<uint, uint> _trackIdsCache;
         //public override IObservableCache<uint, uint> TrackIds => this._trackIdsCache;
+
+        #endregion
 
         #region IDisposable
 

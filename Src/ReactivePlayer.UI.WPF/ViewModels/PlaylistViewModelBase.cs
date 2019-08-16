@@ -16,12 +16,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet,
+            //IConnectableCache<TrackViewModel, uint> sourceTrackViewModelsChangeSet,
             PlaylistBase playlistBase)
             : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod)
-        //: base(
-        //      sourceTrackViewModelsChangeSet,
-        //      playlistBase.Name)
         {
             this._playlistBase = playlistBase ?? throw new ArgumentNullException(nameof(playlistBase));
         }

@@ -149,7 +149,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\BindableSelectedItemBehavior.cs" />
     <Compile Include="Behaviors\DoubleClick.cs" />
+    <Compile Include="Behaviors\DependencyObjectExtensions.cs" />
     <Compile Include="Controls\PathButton.cs" />
     <Compile Include="Controls\StackPanelEx.cs" />
     <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
@@ -219,6 +221,9 @@
     </Compile>
     <Compile Include="Views\PlaybackTimelineView.xaml.cs">
       <DependentUpon>PlaybackTimelineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlaylistsTree.xaml.cs">
+      <DependentUpon>PlaylistsTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellMenuView.xaml.cs">
       <DependentUpon>ShellMenuView.xaml</DependentUpon>
@@ -364,6 +369,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlaybackTimelineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlaylistsTree.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class LibraryViewModel : ReactiveScreen, IDisposable
+    public class LibraryViewModel : ReactiveConductor<ReactiveScreen>.Collection.OneActive, IDisposable
     {
         private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         //private readonly IReadLibraryService _readLibraryService;
@@ -61,9 +61,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
             //this._playlistBaseViewModelFactoryMethod = playlistBaseViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistBaseViewModelFactoryMethod));
 
-            this._libraryViewModelsProxy.PlaylistViewModels.RemoveKey().DisposeMany().Bind(out this._playlistViewModels);
-            this.AllTracksViewModel = this._libraryViewModelsProxy.AllTracksViewModel;
-            this.SelectedTracksSubsetViewModel = this.AllTracksViewModel;
+            // TODO: make lazy, so if view doesnt request it, it's not subscribed
+            this._libraryViewModelsProxy.PlaylistViewModels
+                .Connect()
+                .RemoveKey()
+                .Bind(out this._playlistViewModelsROOC)
+                //.DisposeMany() // TODO: can be moved to a place where its known if it's needed: here we dont know if .Transform generates IDisposables
+                .Subscribe()
+                .DisposeWith(this._disposables);
 
             this.ShowFilePicker = ReactiveCommand.CreateFromTask(
                 async () =>
@@ -119,6 +124,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 // TODO: log
                 Debug.WriteLine(x);
             });
+
+            this.AllTracksViewModel = this._libraryViewModelsProxy.AllTracksViewModel;
+            //this.SelectedTracksSubsetViewModel = this.AllTracksViewModel;
+            this.ActiveItem = this.AllTracksViewModel;
         }
 
         #endregion
@@ -127,15 +136,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public AllTracksViewModel AllTracksViewModel { get; }
 
-        private readonly ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModels;
-        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModels => this._playlistViewModels;
+        private readonly ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
+        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModels => this._playlistViewModelsROOC;
 
-        private TracksSubsetViewModel _selectedTracksSubsetViewModel;
-        public TracksSubsetViewModel SelectedTracksSubsetViewModel
-        {
-            get => this._selectedTracksSubsetViewModel;
-            set => this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value);
-        }
+        //private TracksSubsetViewModel _selectedTracksSubsetViewModel;
+        //public TracksSubsetViewModel SelectedTracksSubsetViewModel
+        //{
+        //    get => this._selectedTracksSubsetViewModel;
+        //    set => this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value);
+        //}
 
         #endregion
 

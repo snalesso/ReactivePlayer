@@ -108,7 +108,13 @@ namespace ReactivePlayer.Core.Playback.Queue
             this._playlistEntries.Clear();
 
             this._tracksSource = tracksSource;
-            this._tracksSource.Connect().Transform(t => new PlaybackQueueEntry(t)).DisposeMany().PopulateInto(this._sourcedEntries).DisposeWith(this._disposables);
+
+            this._tracksSource.Connect()
+                .Transform(t => new PlaybackQueueEntry(t))
+                .DisposeMany()
+                .PopulateInto(this._sourcedEntries)
+                .DisposeWith(this._disposables);
+
             this._tracksSource
                 .Connect()
                 //.Transform(t => new PlaybackQueueEntry(t))

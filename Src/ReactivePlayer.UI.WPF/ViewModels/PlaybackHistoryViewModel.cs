@@ -36,11 +36,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             var sorter = SortExpressionComparer<PlaybackHistoryEntryViewModel>.Descending(pheVM => pheVM.PlaybackEndedDateTime);
             //var sorter2 = new SortExpressionComparer<PlaybackHistoryEntryViewModel>();
 
-            // TODO: review operators order, e.g. where should .DisposeMany() be placed?
             this._playbackHistory.Entries
                  .Connect()
                  .Transform(phe => new PlaybackHistoryEntryViewModel(phe))
-                 //.DisposeMany()
+                 .DisposeMany()
                  .Sort(
                     SortExpressionComparer<PlaybackHistoryEntryViewModel>.Descending(pheVM => pheVM.PlaybackEndedDateTime),
                     SortOptions.UseBinarySearch)

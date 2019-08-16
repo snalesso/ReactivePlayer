@@ -12,10 +12,11 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <!--<ColumnDefinition Width="Auto" MinWidth="150" />
-            <ColumnDefinition Width="Auto" />-->
+            <ColumnDefinition Width="Auto" MinWidth="150" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -27,6 +28,8 @@
             </ListBox.ItemTemplate>
         </ListBox>-->
 
+        <Views:PlaylistsTree DataContext="{Binding}" />
+
         <GridSplitter
             Grid.Column="1"
             Width="8"
@@ -34,7 +37,7 @@
             ResizeBehavior="PreviousAndNext"
             ResizeDirection="Columns" />
 
-        <Views:TracksView Grid.Column="2" DataContext="{Binding SelectedTracksSubsetViewModel}" />
+        <Views:TracksView Grid.Column="2" DataContext="{Binding ActiveItem}" />
 
     </Grid>
 </UserControl>
