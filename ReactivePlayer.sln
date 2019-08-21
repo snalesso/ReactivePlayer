@@ -121,6 +121,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.WPFSoundVisu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.SQLite3.Akavache", "Src\ReactivePlayer.SQLite3.Akavache\ReactivePlayer.SQLite3.Akavache.csproj", "{11FFED5E-B152-427E-B925-F281BC9472CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveUI.DynamicData.Tests.ConnectableBind", "Exps\ReactiveUI.DynamicData.ConnectableBind\ReactiveUI.DynamicData.Tests.ConnectableBind.csproj", "{32E46697-7726-49D5-8178-6BD3C761F681}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveUI.DynamicData.Tests.ConnectableBind.WPF", "Exps\ReactiveUI.DynamicData.Tests.ConnectableBind.WPF\ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.csproj", "{A385A1CC-2D9F-4D59-B43F-BCF961709117}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -329,6 +333,22 @@ Global
 		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|x64.ActiveCfg = Release|Any CPU
 		{11FFED5E-B152-427E-B925-F281BC9472CD}.Release|x64.Build.0 = Release|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Debug|x64.Build.0 = Debug|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Release|x64.ActiveCfg = Release|Any CPU
+		{32E46697-7726-49D5-8178-6BD3C761F681}.Release|x64.Build.0 = Release|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Debug|x64.Build.0 = Debug|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Release|x64.ActiveCfg = Release|Any CPU
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -361,6 +381,8 @@ Global
 		{90F96222-1C39-4A19-ABE8-1B00FB330985} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{FFEA33A1-B3FE-4E45-AF3A-A67F91ABFC28} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{11FFED5E-B152-427E-B925-F281BC9472CD} = {8191942A-59BD-4149-84AA-B800AE9604F3}
+		{32E46697-7726-49D5-8178-6BD3C761F681} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
+		{A385A1CC-2D9F-4D59-B43F-BCF961709117} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89BD77AF-A336-4C8F-A1F9-E89FF141FEC5}
