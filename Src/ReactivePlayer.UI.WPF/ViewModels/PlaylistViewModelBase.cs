@@ -1,6 +1,4 @@
-﻿using DynamicData;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Services;
+﻿using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using System;
@@ -13,12 +11,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public PlaylistBaseViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            //IConnectableCache<TrackViewModel, uint> sourceTrackViewModelsChangeSet,
             PlaylistBase playlistBase)
-            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod)
         {
             this._playlistBase = playlistBase ?? throw new ArgumentNullException(nameof(playlistBase));
         }

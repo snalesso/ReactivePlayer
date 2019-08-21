@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
 {
-    public interface IWriteLibraryService : IConnectableService
+    public interface IWriteLibraryService //: IConnectableService
     {
         Task<Track> AddTrackAsync(AddTrackCommand command);
         Task<IReadOnlyList<Track>> AddTracksAsync(IEnumerable<AddTrackCommand> commands);

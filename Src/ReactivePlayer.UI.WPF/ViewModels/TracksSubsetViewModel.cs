@@ -1,32 +1,24 @@
-﻿using Caliburn.Micro;
-using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
 using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public abstract class TracksSubsetViewModel : ReactiveScreen, IDisposable//, ITracksListViewModel
+    public abstract class TracksSubsetViewModel : ReactiveScreen, IDisposable
     {
         #region constants & fields
 
-        private readonly IReadLibraryService _readLibraryService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
-
         private readonly IDialogService _dialogService;
 
         private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
@@ -37,13 +29,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksSubsetViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
         {
-            this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
+            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
-
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
@@ -73,24 +63,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 },
                 this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null)
                 )
-                .DisposeWith(this._disposables);
-
-            Observable.FromEventPattern<EventHandler<ActivationEventArgs>, ActivationEventArgs>(
-                h => this.Activated += h,
-                h => this.Activated -= h)
-                .Subscribe(x =>
-                {
-                    this.Connect();
-                })
-                .DisposeWith(this._disposables);
-
-            Observable.FromEventPattern<EventHandler<DeactivationEventArgs>, DeactivationEventArgs>(
-                h => this.Deactivated += h,
-                h => this.Deactivated -= h)
-                .Subscribe(x =>
-                {
-                    this.Disconnect();
-                })
                 .DisposeWith(this._disposables);
         }
 
@@ -127,6 +99,18 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         protected abstract void Connect();
 
         protected abstract void Disconnect();
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            this.Connect();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+            this.Disconnect();
+        }
 
         #endregion
 

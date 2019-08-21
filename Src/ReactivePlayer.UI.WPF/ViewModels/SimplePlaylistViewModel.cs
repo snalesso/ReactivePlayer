@@ -1,31 +1,13 @@
 ﻿using DynamicData;
-using DynamicData.List;
-using DynamicData.Cache;
-using DynamicData.Operators;
-using DynamicData.PLinq;
 using DynamicData.ReactiveUI;
-using DynamicData.Kernel;
-using DynamicData.Aggregation;
-using DynamicData.Annotations;
-using DynamicData.Binding;
-using DynamicData.Diagnostics;
-using DynamicData.Experimental;
 using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro.ReactiveUI;
 using System.Reactive.Subjects;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
@@ -45,12 +27,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public SimplePlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            IReadLibraryService readLibraryService,
+            //IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
+            //IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
+            IObservable<IChangeSet<TrackViewModel, uint>> connectableTrackViewModelChangeSets,
             SimplePlaylist playlist)
-            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod, playlist)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, playlist)
         {
             // TODO: validate dependencies
             //this._allTrackViewModelsSourceCache = sourceTrackViewModelsChangeSet ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSet));
@@ -67,7 +50,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             var tracksFilteredByIdChangeSet = this._playlistIdsCache
                 .Connect()
                 .LeftJoin(
-                    connectableTrackViewModelsCache.Connect(),
+                    connectableTrackViewModelChangeSets,
                     vm => vm.Id,
                     (id, trackVM) => trackVM.Value);
 

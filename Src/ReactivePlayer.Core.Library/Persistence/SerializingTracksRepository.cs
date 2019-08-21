@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -90,6 +91,19 @@ namespace ReactivePlayer.Core.Library.Persistence
         {
             return this._serializer.RemoveAsync(trackIds);
         }
+
+        #endregion
+
+        #region events
+
+        private readonly ISubject<IReadOnlyList<Track>> _addedSubject = new Subject<IReadOnlyList<Track>>();
+        public IObservable<IReadOnlyList<Track>> Addeded => this._addedSubject;
+
+        private readonly ISubject<IReadOnlyList<Track>> _removedSubject = new Subject<IReadOnlyList<Track>>();
+        public IObservable<IReadOnlyList<Track>> Removed => this._removedSubject;
+
+        private readonly ISubject<IReadOnlyList<Track>> _updatedSubject = new Subject<IReadOnlyList<Track>>();
+        public IObservable<IReadOnlyList<Track>> Updated => this._updatedSubject;
 
         #endregion
     }

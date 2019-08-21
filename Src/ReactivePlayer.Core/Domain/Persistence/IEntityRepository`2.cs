@@ -1,6 +1,7 @@
 using ReactivePlayer.Core.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Persistence
@@ -19,5 +20,13 @@ namespace ReactivePlayer.Core.Domain.Persistence
         Task<IReadOnlyList<TEntity>> AddAsync(IEnumerable<TEntity> entities);
         Task<bool> RemoveAsync(TIdentity identity);
         Task<bool> RemoveAsync(IEnumerable<TIdentity> identities);
+
+        #region events
+
+        IObservable<IReadOnlyList<TEntity>> Addeded { get; }
+        IObservable<IReadOnlyList<TEntity>> Removed { get; }
+        IObservable<IReadOnlyList<TEntity>> Updated { get; }
+
+        #endregion
     }
 }

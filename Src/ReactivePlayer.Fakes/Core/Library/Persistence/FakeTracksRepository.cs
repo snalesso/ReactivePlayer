@@ -140,6 +140,12 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             .ToDictionary(t => t.Location, t => t));
         }
 
+        public IObservable<IReadOnlyList<Track>> Addeded => throw new NotImplementedException();
+
+        public IObservable<IReadOnlyList<Track>> Removed => throw new NotImplementedException();
+
+        public IObservable<IReadOnlyList<Track>> Updated => throw new NotImplementedException();
+
         public Task<Track> AddAsync(Track entity)
         {
             throw new NotImplementedException();

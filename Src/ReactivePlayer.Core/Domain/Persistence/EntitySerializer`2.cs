@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -72,9 +73,12 @@ namespace ReactivePlayer.Core.Library.Persistence
                         {
                             throw new Exception("feawfkpawkefawkefpawke");
                         }
+
                     }
 
                     result = entities.ToArray();
+                    // TODO: handle when list of things to add is null or empty
+                    //this._addedSubject.OnNext(result);
                 }
             });
 
@@ -180,6 +184,13 @@ namespace ReactivePlayer.Core.Library.Persistence
         #endregion
 
         #endregion
+
+        //#region events
+
+        //private readonly ISubject<IReadOnlyList<TEntity>> _addedSubject = new Subject<IReadOnlyList<TEntity>>();
+        //public IObservable<IReadOnlyList<TEntity>> Addeded => this._addedSubject;
+
+        //#endregion
 
         #region IDisposable
 

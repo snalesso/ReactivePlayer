@@ -20,7 +20,7 @@ namespace ReactivePlayer.UI.WPF.Views
     /// <summary>
     /// Interaction logic for TracksView.xaml
     /// </summary>
-    public partial class TracksView : UserControl, IDisposable, IViewFor<TracksViewModel>
+    public partial class TracksView : UserControl, IDisposable, IViewFor<TracksSubsetViewModel>
     {
         #region constants & fields
         #endregion
@@ -29,12 +29,12 @@ namespace ReactivePlayer.UI.WPF.Views
 
         public TracksView()
         {
-            this._viewModelSubject = new BehaviorSubject<TracksViewModel>(this.DataContext as TracksViewModel).DisposeWith(this._disposables);
+            this._viewModelSubject = new BehaviorSubject<TracksSubsetViewModel>(this.DataContext as TracksSubsetViewModel).DisposeWith(this._disposables);
             this.WhenViewModelChanged = this._viewModelSubject.DistinctUntilChanged();
 
             this.Events()
                 .DataContextChanged
-                .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as TracksViewModel))
+                .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as TracksSubsetViewModel))
                 .DisposeWith(this._disposables);
 
             this.InitializeComponent();
@@ -44,18 +44,18 @@ namespace ReactivePlayer.UI.WPF.Views
 
         #region IViewFor
 
-        private readonly BehaviorSubject<TracksViewModel> _viewModelSubject;
-        public TracksViewModel ViewModel
+        private readonly BehaviorSubject<TracksSubsetViewModel> _viewModelSubject;
+        public TracksSubsetViewModel ViewModel
         {
             get => this._viewModelSubject.Value;
             set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value)));
         }
-        public IObservable<TracksViewModel> WhenViewModelChanged { get; }
+        public IObservable<TracksSubsetViewModel> WhenViewModelChanged { get; }
 
         object IViewFor.ViewModel
         {
             get => this.ViewModel;
-            set => this.ViewModel = (value as TracksViewModel);
+            set => this.ViewModel = (value as TracksSubsetViewModel);
         }
 
         #endregion

@@ -11,6 +11,7 @@ using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactivePlayer.Core.Playback.History;
 using ReactivePlayer.Domain.Repositories;
+using ReactivePlayer.Fakes.Core.Library.Persistence;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Composition.Autofac.Modules;
 using ReactivePlayer.UI.WPF.Services;
@@ -96,16 +97,17 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 //.Register(c => new NewtonsoftJsonTracksSerializer())
                 .As<EntitySerializer<Track, uint>>()
                 .InstancePerLifetimeScope();
-            builder.RegisterType<SerializingTracksRepository>()
+            builder
+                .RegisterType<SerializingTracksRepository>()
                 //.RegisterType<FakeTracksRepository>()
                 .As<ITracksRepository>()
                 .As<ITrackFactory>()
                 .InstancePerLifetimeScope();
             builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>()
-                .OnActivating(async e =>
-                {
-                    await e.Instance.Connect();
-                })
+                //.OnActivating(async e =>
+                //{
+                //    await e.Instance.Connect();
+                //})
                 .InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();

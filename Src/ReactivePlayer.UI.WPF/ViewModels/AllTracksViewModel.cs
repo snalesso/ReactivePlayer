@@ -24,23 +24,17 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public AllTracksViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            IReadLibraryService readLibraryService,
+            //IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IConnectableCache<TrackViewModel, uint> sourceTrackViewModelsChangeSet)
-            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod)
-        //: base(
-        //      trackViewModelsSourceChangeSet,
-        //      "All tracks")
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod)
         {
             // TODO: validate dependencies
 
-            this._connectableVMsSubscription = new SerialDisposable().DisposeWith(this._disposables);
+            this._serialViewModelsChangeSetsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
-            this._connectableVMs = this.Sort(sourceTrackViewModelsChangeSet.Connect())
-                .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                //.DisposeMany()
-                .Publish();
+            this._connectableVMs = this.Sort(sourceTrackViewModelsChangeSet).Bind(out this._sortedFilteredTrackViewModelsROOC);
         }
 
         #endregion
@@ -52,28 +46,23 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
         public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
 
-        //public override IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC => this._allTrackViewModelsSourceCache;
-
-        //private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        //public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
-
         #endregion
 
         #region methods
 
         #region connection-activation
 
-        private readonly IConnectableObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
-        private readonly SerialDisposable _connectableVMsSubscription;
+        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
+        private readonly SerialDisposable _serialViewModelsChangeSetsSubscription;
 
         protected override void Connect()
         {
-            this._connectableVMsSubscription.Disposable = this._connectableVMs.Connect();
+            this._serialViewModelsChangeSetsSubscription.Disposable = this._connectableVMs.Subscribe();
         }
 
         protected override void Disconnect()
         {
-            this._connectableVMsSubscription.Disposable = null;
+            this._serialViewModelsChangeSetsSubscription.Disposable = null;
         }
 
         #endregion

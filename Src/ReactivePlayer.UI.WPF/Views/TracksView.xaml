@@ -34,12 +34,15 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
+            <!--<RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />-->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding SortedFilteredTrackViewModelsROOC.Count}" />
+        <!--<StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Name}" />
+            <TextBlock Text="{Binding SortedFilteredTrackViewModelsROOC.Count}" />
+        </StackPanel>-->
 
         <ListView
             Grid.Row="2"

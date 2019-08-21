@@ -43,13 +43,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public FolderPlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            IReadLibraryService readLibraryService,
+            //IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
+            //IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
+            IObservable<IChangeSet<TrackViewModel, uint>> connectableTrackViewModelChangeSets,
             FolderPlaylist playlistFolder,
             Func<PlaylistBase, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
-            : base(audioPlaybackEngine, readLibraryService, dialogService, editTrackViewModelFactoryMethod, playlistFolder)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, playlistFolder)
         {
             // TODO: validate dependencies
             this._playlistFolder = playlistFolder ?? throw new ArgumentNullException(nameof(playlistFolder));
@@ -71,7 +72,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Connect()
                 .AddKey(x => x)
                 .LeftJoin(
-                    connectableTrackViewModelsCache.Connect(),
+                    connectableTrackViewModelChangeSets,
                     vm => vm.Id,
                     (id, trackVM) => trackVM.Value);
 

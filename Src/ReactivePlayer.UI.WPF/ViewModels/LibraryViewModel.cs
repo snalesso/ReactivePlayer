@@ -116,8 +116,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
                     //var addedTracks =
                     await this._writeLibraryService.AddTracksAsync(atc);
-                },
-                this._writeLibraryService.WhenIsConnectedChanged)
+                })
                 .DisposeWith(this._disposables);
             this.ShowFilePicker.ThrownExceptions.Subscribe(x =>
             {
@@ -126,8 +125,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             });
 
             this.AllTracksViewModel = this._libraryViewModelsProxy.AllTracksViewModel;
-            //this.SelectedTracksSubsetViewModel = this.AllTracksViewModel;
-            this.ActiveItem = this.AllTracksViewModel;
         }
 
         #endregion
@@ -145,6 +142,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //    get => this._selectedTracksSubsetViewModel;
         //    set => this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value);
         //}
+
+        #endregion
+
+        #region methods
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+
+            if (this.ActiveItem == null)
+            {
+                this.ActivateItem(this.AllTracksViewModel);
+            }
+        }
 
         #endregion
 

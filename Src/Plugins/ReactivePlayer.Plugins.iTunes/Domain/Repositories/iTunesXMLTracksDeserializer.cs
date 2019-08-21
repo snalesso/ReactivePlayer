@@ -37,13 +37,13 @@ namespace ReactivePlayer.Domain.Repositories
 
         protected override async Task DeserializeCore()
         {
-            var iTunesTracks = await Task.Run(() => this.GetiTunesTracks());
+            var iTunesTracks = await Task.FromResult(this.GetiTunesTracks());
 
             iTunesTracks = iTunesTracks.Where(t => new Uri(t.Location).IsFile).ToArray();
 
             var artistsDictionary = new Dictionary<string, Artist>();
 
-            var tracks = new List<Track>();
+            this._entities = new ConcurrentDictionary<uint, Track>();
 
             // TODO: parallelize
             uint id = 0;
@@ -60,10 +60,10 @@ namespace ReactivePlayer.Domain.Repositories
                     try
                     {
                         album = new Album(
-                                iTunesTrack.Album,
-                                iTunesTrack.AlbumArtistNames,
-                                iTunesTrack.TrackCount,
-                                iTunesTrack.DiscCount);
+                            iTunesTrack.Album,
+                            iTunesTrack.AlbumArtistNames,
+                            iTunesTrack.TrackCount,
+                            iTunesTrack.DiscCount);
                     }
                     catch// (Exception ex)
                     {
@@ -73,15 +73,15 @@ namespace ReactivePlayer.Domain.Repositories
                     if (album != null)
                     {
                         trackAlbumAssociation = new TrackAlbumAssociation(
-                        album,
-                        iTunesTrack.TrackNumber,
-                        iTunesTrack.DiscNumber);
+                            album,
+                            iTunesTrack.TrackNumber,
+                            iTunesTrack.DiscNumber);
                     }
 
                     var track = new Track(
                         ++id,
                         // library entry
-                        new Uri( iTunesTrack.Location),
+                        new Uri(iTunesTrack.Location),
                         iTunesTrack.TotalTime,
                         iTunesTrack.DateModified,
                         iTunesTrack.Size,
@@ -94,15 +94,13 @@ namespace ReactivePlayer.Domain.Repositories
                         iTunesTrack.Loved,
                         iTunesTrack.DateAdded);
 
-                    tracks.Add(track);
+                    this._entities.TryAdd(track.Id, track);
                 }
                 catch //(Exception ex)
                 {
 
                 }
             }
-
-            this._entities = new ConcurrentDictionary<uint, Track>(tracks.Select(t => new KeyValuePair<uint, Track>(t.Id, t)));
         }
 
         protected override Task SerializeCore()
@@ -195,7 +193,7 @@ namespace ReactivePlayer.Domain.Repositories
 
                     return iTunesTrack;
                 })
-                .ToImmutableList();
+                .ToArray();
         }
     }
 }

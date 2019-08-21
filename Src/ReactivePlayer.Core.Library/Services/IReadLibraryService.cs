@@ -6,12 +6,12 @@ using System;
 namespace ReactivePlayer.Core.Library.Services
 {
     // TODO: this should be named ITracksService, find a better name for the others that support domain operations
-    public interface IReadLibraryService : IDisposable, IConnectableService
+    public interface IReadLibraryService : IDisposable//, IConnectableService
     {
-        IObservableCache<Track, uint> Tracks { get; }
-        //IObservable<IChangeSet<Track, uint>> Tracks { get; }
-
+        //IObservableCache<Track, uint> TracksChanges { get; }
         IObservableCache<PlaylistBase, uint> Playlists { get; }
+
+        IObservable<IChangeSet<Track, uint>> TracksChanges { get; }
         //IObservable<IChangeSet<SimplePlaylist>> Playlists { get; }
     }
 }
