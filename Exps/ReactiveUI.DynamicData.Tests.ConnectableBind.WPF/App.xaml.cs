@@ -18,7 +18,7 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
         {
             var repository = new TracksRepository();
             var service = new TracksService(repository);
-            var proxy = new TrackViewMolesProxy(service);
+            var proxy = new TrackViewModelsProxy(service);
             var library = new LibraryViewModel(proxy);
 
             (library as IActivate)?.Activate();

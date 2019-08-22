@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A385A1CC-2D9F-4D59-B43F-BCF961709117}</ProjectGuid>
+    <ProjectGuid>{D16E6FF7-266C-431B-8030-5704C5BCB013}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ReactiveUI.DynamicData.Tests.ConnectableBind.WPF</RootNamespace>
-    <AssemblyName>ReactiveUI.DynamicData.Tests.ConnectableBind.WPF</AssemblyName>
+    <RootNamespace>ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref</RootNamespace>
+    <AssemblyName>ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,9 +34,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.EntryPoint</StartupObject>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -47,8 +44,8 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DynamicData, Version=6.13.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DynamicData.6.13.1\lib\net461\DynamicData.dll</HintPath>
+    <Reference Include="DynamicData, Version=6.12.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.6.12.13\lib\net461\DynamicData.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI, Version=9.20.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ReactiveUI.9.20.1\lib\net461\ReactiveUI.dll</HintPath>
@@ -93,19 +90,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TrackViewModelsProxy.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AllTracksViewModel.cs" />
-    <Compile Include="EntryPoint.cs" />
-    <Compile Include="LibraryViewModel.cs" />
-    <Compile Include="Track.cs" />
-    <Compile Include="TracksRepository.cs" />
-    <Compile Include="TracksService.cs" />
-    <Compile Include="TracksSubsetViewModel.cs" />
-    <Compile Include="TrackViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,6 +102,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -150,6 +139,38 @@
     <ProjectReference Include="..\..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj">
       <Project>{f59e3c5e-8862-43b4-a59a-cf795b3912f3}</Project>
       <Name>Caliburn.Micro.ReactiveUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
+      <Project>{A45E3C4D-550F-4187-863D-C6F67E734162}</Project>
+      <Name>ReactivePlayer.Plugins.iTunes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
+      <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
+      <Name>ReactivePlayer.Core.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
+      <Project>{402FEED0-76D6-4640-B261-EBE598BA6FBE}</Project>
+      <Name>ReactivePlayer.Core.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj">
+      <Project>{D35E71AE-D254-4989-AE24-12747F3DCDC8}</Project>
+      <Name>ReactivePlayer.Core.Playback</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
+      <Project>{779EC49B-1EDB-44D4-8620-3D8C1E3D7946}</Project>
+      <Name>ReactivePlayer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj">
+      <Project>{376B6CD2-B0CF-4EDD-A55D-D0A1B3674B10}</Project>
+      <Name>ReactivePlayer.Fakes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.UI.WPF\ReactivePlayer.UI.WPF.csproj">
+      <Project>{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}</Project>
+      <Name>ReactivePlayer.UI.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.UI\ReactivePlayer.UI.csproj">
+      <Project>{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}</Project>
+      <Name>ReactivePlayer.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

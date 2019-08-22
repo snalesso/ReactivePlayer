@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using System;
+using System.Threading.Tasks;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
@@ -14,7 +15,12 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
             this.TracksChangeSets = ObservableChangeSet.Create<Track, uint>(
                 async sourceCache =>
                 {
-                    var tracks = await this._tracksRepository.GetAllAsync();
+                    var load = this._tracksRepository.GetAllAsync();
+                    var delayedLoad = Task.WhenAll(load, Task.Delay(TimeSpan.FromSeconds(5)));
+
+                    await delayedLoad;
+
+                    var tracks = await load;
                     sourceCache.AddOrUpdate(tracks);
                 },
                 b => b.Id)
@@ -22,22 +28,5 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
         }
 
         public IObservable<IChangeSet<Track, uint>> TracksChangeSets { get; }
-    }
-
-    public class TrackViewMolesProxy
-    {
-        private readonly TracksService _tracksService;
-
-        public TrackViewMolesProxy(TracksService tracksService)
-        {
-            this._tracksService = tracksService ?? throw new ArgumentNullException(nameof(tracksService));
-
-            this.TrackViewModelsChangeSets = this._tracksService.TracksChangeSets
-                .Transform(b => new TrackViewModel(b))
-                .DisposeMany()
-                .RefCount();
-        }
-
-        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsChangeSets { get; }
     }
 }

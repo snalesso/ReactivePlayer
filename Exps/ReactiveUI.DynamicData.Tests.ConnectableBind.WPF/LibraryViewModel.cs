@@ -6,9 +6,9 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
     public class LibraryViewModel : ReactiveConductor<TracksSubsetViewModel>.Collection.OneActive, IDisposable
     {
-        private readonly TrackViewMolesProxy _trackViewMolesProxy;
+        private readonly TrackViewModelsProxy _trackViewMolesProxy;
 
-        public LibraryViewModel(TrackViewMolesProxy trackViewMolesProxy)
+        public LibraryViewModel(TrackViewModelsProxy trackViewMolesProxy)
         {
             this._trackViewMolesProxy = trackViewMolesProxy ?? throw new ArgumentNullException(nameof(trackViewMolesProxy));
 

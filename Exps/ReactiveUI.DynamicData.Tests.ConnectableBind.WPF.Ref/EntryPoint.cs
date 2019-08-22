@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Windows;
 
-namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
+namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref
 {
     static class EntryPoint
     {
