@@ -1,6 +1,7 @@
 using DynamicData;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
+using ReactivePlayer.Core.Library.Persistence.Playlists;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -20,30 +21,49 @@ namespace ReactivePlayer.Core.Library.Services
     {
         private readonly ITracksRepository _tracksRepository;
         private readonly ITrackFactory _trackFactory;
+        private readonly IPlaylistsRepository _playlistsRepository;
+        private readonly IPlaylistFactory _playlistFactory;
 
         public LocalLibraryService(
             ITracksRepository tracksRepository,
-            ITrackFactory trackFactory)
+            ITrackFactory trackFactory,
+            IPlaylistsRepository playlistsRepository,
+            IPlaylistFactory playlistFactory)
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository));
             this._trackFactory = trackFactory ?? throw new ArgumentNullException(nameof(trackFactory));
+            this._playlistsRepository = playlistsRepository ?? throw new ArgumentNullException(nameof(playlistsRepository));
+            this._playlistFactory = playlistFactory ?? throw new ArgumentNullException(nameof(playlistFactory));
 
-            this.TracksChanges = ObservableChangeSet.Create<Track, uint>(
+            this.TracksChangeSets = ObservableChangeSet.Create<Track, uint>(
                 async cache =>
                 {
-                    var items = await this.GetTracksAsync();
+                    var items = await this.GetTracksAsync(TimeSpan.FromSeconds(50));
+                    GC.Collect();
                     cache.AddOrUpdate(items);
+                    GC.Collect();
 
                     return new CompositeDisposable(
                         this._tracksRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
                         this._tracksRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
-                        this._tracksRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems)))
-                        );
+                        this._tracksRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
                 },
-                t => t.Id)
+                x => x.Id)
                 .RefCount();
 
-            this._sourcePlaylists = new SourceCache<PlaylistBase, uint>(p => p.Id).DisposeWith(this._disposables);
+            this.PlaylistsChangeSets = ObservableChangeSet.Create<PlaylistBase, uint>(
+                async cache =>
+                {
+                    //var items = await this._playlistsRepository.GetAllAsync();
+                    //cache.AddOrUpdate(items);
+
+                    return new CompositeDisposable(
+                        this._playlistsRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
+                        this._playlistsRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
+                        this._playlistsRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
+                },
+                x => x.Id)
+                .RefCount();
         }
 
         #region utils
@@ -56,7 +76,9 @@ namespace ReactivePlayer.Core.Library.Services
             if (minDuration.HasValue)
             {
                 await Task.WhenAll(loadTask, Task.Delay(minDuration.Value));
+                GC.Collect();
             }
+            GC.Collect();
 
             return (await loadTask).ToArray();
         }
@@ -65,14 +87,8 @@ namespace ReactivePlayer.Core.Library.Services
 
         #region IReadLibraryService
 
-        public IObservable<IChangeSet<Track, uint>> TracksChanges { get; }
-        //public IObservable<IChangeSet<SimplePlaylist> Playlists => throw new NotImplementedException();
-
-        //private readonly SourceCache<Track, uint> _sourceTracks;
-        //public IObservableCache<Track, uint> Tracks => this._sourceTracks;
-
-        private readonly SourceCache<PlaylistBase, uint> _sourcePlaylists;
-        public IObservableCache<PlaylistBase, uint> Playlists => this._sourcePlaylists;
+        public IObservable<IChangeSet<Track, uint>> TracksChangeSets { get; }
+        public IObservable<IChangeSet<PlaylistBase, uint>> PlaylistsChangeSets { get; }
 
         //private readonly SourceList<Artist> _sourceArtists;
         //public IObservableList<Artist> Artists => this._sourceArtists;

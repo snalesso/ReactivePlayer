@@ -1,7 +1,5 @@
-﻿using Caliburn.Micro;
-using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
-using DynamicData.Binding;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
@@ -11,16 +9,12 @@ using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Services;
 using ReactiveUI;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -62,13 +56,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //this._playlistBaseViewModelFactoryMethod = playlistBaseViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistBaseViewModelFactoryMethod));
 
             // TODO: make lazy, so if view doesnt request it, it's not subscribed
-            this._libraryViewModelsProxy.PlaylistViewModels
-                .Connect()
-                .RemoveKey()
-                .Bind(out this._playlistViewModelsROOC)
-                //.DisposeMany() // TODO: can be moved to a place where its known if it's needed: here we dont know if .Transform generates IDisposables
-                .Subscribe()
-                .DisposeWith(this._disposables);
+            this._libraryViewModelsProxy.PlaylistViewModels.Bind(out var playlistsRooc);
+            this.PlaylistViewModels = playlistsRooc;
 
             this.ShowFilePicker = ReactiveCommand.CreateFromTask(
                 async () =>
@@ -133,8 +122,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public AllTracksViewModel AllTracksViewModel { get; }
 
-        private readonly ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
-        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModels => this._playlistViewModelsROOC;
+        public ReadOnlyObservableCollection<TracksSubsetViewModel> TracksSubsetViewModelsROOC { get; }
+
+        //private readonly ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
+        //public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModels => this._playlistViewModelsROOC;
+        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModels { get; }
 
         //private TracksSubsetViewModel _selectedTracksSubsetViewModel;
         //public TracksSubsetViewModel SelectedTracksSubsetViewModel

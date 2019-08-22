@@ -75,6 +75,9 @@
     <Compile Include="Persistence\IArtworksCache.cs" />
     <Compile Include="Persistence\ITrackFactory.cs" />
     <Compile Include="Persistence\ITracksRepository.cs" />
+    <Compile Include="Persistence\Playlists\IPlaylistsRepository.cs" />
+    <Compile Include="Persistence\Playlists\IPlaylistFactory.cs" />
+    <Compile Include="Persistence\Playlists\SerializingPlaylistsRepository.cs" />
     <Compile Include="Persistence\SerializingTracksRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Persistence\AddLibraryEntryCommand.cs" />

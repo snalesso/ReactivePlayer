@@ -30,36 +30,31 @@ namespace ReactivePlayer.UI.WPF.Services
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             this._editTrackTagsViewModelFactoryMethod = editTrackTagsViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackTagsViewModelFactoryMethod));
 
-            this.TrackViewModels = this._readLibraryService.TracksChanges
+            this.TrackViewModelsChangeSets = this._readLibraryService.TracksChangeSets
                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
                 .DisposeMany()
                 .RefCount();
 
-            this.PlaylistViewModels = this._readLibraryService.Playlists
-                .Connect()
+            this.PlaylistViewModels = this._readLibraryService.PlaylistsChangeSets
                 .Transform(playlist => this.CreatePlaylistViewModel(playlist))
                 .DisposeMany()
-                .AsObservableCache()
-                .DisposeWith(this._disposables)
-                //.DisposeMany()
-                //.RefCount() // TODO: IMPORTANT: add .RefCount()?
-                ;
+                .RefCount();
 
             this.AllTracksViewModel = new AllTracksViewModel(
                 this._audioPlaybackEngine,
                 //this._readLibraryService,
                 this._dialogService,
                 this._editTrackTagsViewModelFactoryMethod,
-                this.TrackViewModels);
+                this.TrackViewModelsChangeSets);
         }
 
         #region properties
 
-        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModels { get; }
+        public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsChangeSets { get; }
 
         public AllTracksViewModel AllTracksViewModel { get; }
 
-        public IObservableCache<PlaylistBaseViewModel, uint> PlaylistViewModels { get; }
+        public IObservable<IChangeSet<PlaylistBaseViewModel, uint>> PlaylistViewModels { get; }
 
         #endregion
 
@@ -75,8 +70,8 @@ namespace ReactivePlayer.UI.WPF.Services
                         //this._readLibraryService,
                         this._dialogService,
                         this._editTrackTagsViewModelFactoryMethod,
-                        this.TrackViewModels,
-                        simplePlaylist);
+                        simplePlaylist,
+                        this.TrackViewModelsChangeSets);
 
                 case FolderPlaylist folderPlaylist:
                     return new FolderPlaylistViewModel(
@@ -84,8 +79,8 @@ namespace ReactivePlayer.UI.WPF.Services
                         //this._readLibraryService,
                         this._dialogService,
                         this._editTrackTagsViewModelFactoryMethod,
-                        this.TrackViewModels,
-                        folderPlaylist, 
+                        folderPlaylist,
+                        this.TrackViewModelsChangeSets,
                         this.CreatePlaylistViewModel);
 
                 default:

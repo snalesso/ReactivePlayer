@@ -89,7 +89,6 @@ namespace ReactivePlayer.Core.Library.Persistence
         {
             await this.EnsureDeserialized();
 
-            // TODO: check whether this._entities needs to be locked while enumerating values
             return this._entities.Values.ToArray();
         }
 

@@ -1,5 +1,4 @@
 using DynamicData;
-using ReactivePlayer.Core.Domain.Servicing;
 using ReactivePlayer.Core.Library.Models;
 using System;
 
@@ -9,9 +8,9 @@ namespace ReactivePlayer.Core.Library.Services
     public interface IReadLibraryService : IDisposable//, IConnectableService
     {
         //IObservableCache<Track, uint> TracksChanges { get; }
-        IObservableCache<PlaylistBase, uint> Playlists { get; }
+        //IObservableCache<PlaylistBase, uint> Playlists { get; }
 
-        IObservable<IChangeSet<Track, uint>> TracksChanges { get; }
-        //IObservable<IChangeSet<SimplePlaylist>> Playlists { get; }
+        IObservable<IChangeSet<Track, uint>> TracksChangeSets { get; }
+        IObservable<IChangeSet<PlaylistBase, uint>> PlaylistsChangeSets { get; }
     }
 }

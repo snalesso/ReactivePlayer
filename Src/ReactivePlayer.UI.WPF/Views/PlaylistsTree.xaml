@@ -17,14 +17,18 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
+            <!--<RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />-->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding ActiveItem.Name}" />
+        <!--<TextBlock Text="{Binding ActiveItem.Name}" />-->
 
-        <TreeView Grid.Row="2" ItemsSource="{Binding PlaylistViewModels}">
+        <TreeView
+            Grid.Row="2"
+            BorderBrush="{x:Null}"
+            BorderThickness="0"
+            ItemsSource="{Binding PlaylistViewModels}">
 
             <Interactions:Interaction.Behaviors>
                 <Behaviors:BindableSelectedItemBehavior SelectedItem="{Binding ActiveItem, Mode=TwoWay}" />

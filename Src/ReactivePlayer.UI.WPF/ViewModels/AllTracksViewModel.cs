@@ -18,23 +18,25 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     public sealed class AllTracksViewModel : TracksSubsetViewModel
     {
         #region constants & fields
+
+        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sortedFilteredBoundTrackViewModelChangeSets;
+
         #endregion
 
         #region ctors
 
         public AllTracksViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            //IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet)
             : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod)
         {
-            // TODO: validate dependencies
+            if (sourceTrackViewModelsChangeSet == null) throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSet));
 
             this._serialViewModelsChangeSetsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
-            this._connectableVMs = this.Sort(sourceTrackViewModelsChangeSet).Bind(out this._sortedFilteredTrackViewModelsROOC);
+            this._sortedFilteredBoundTrackViewModelChangeSets = this.Sort(sourceTrackViewModelsChangeSet).Bind(out this._sortedFilteredTrackViewModelsROOC);
         }
 
         #endregion
@@ -52,12 +54,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region connection-activation
 
-        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
         private readonly SerialDisposable _serialViewModelsChangeSetsSubscription;
 
         protected override void Connect()
         {
-            this._serialViewModelsChangeSetsSubscription.Disposable = this._connectableVMs.Subscribe();
+            this._serialViewModelsChangeSetsSubscription.Disposable = this._sortedFilteredBoundTrackViewModelChangeSets.Subscribe();
         }
 
         protected override void Disconnect()

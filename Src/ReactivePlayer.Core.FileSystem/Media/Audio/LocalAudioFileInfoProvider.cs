@@ -26,7 +26,7 @@ namespace ReactivePlayer.Core.FileSystem.Media.Audio
 
             var waveSource = await Task.Run(() => CodecFactory.Instance.GetCodec(trackLocation));
             var fileInfo = new FileInfo(trackLocation.LocalPath);
-            var duration = await this._audioFileDurationCalculator.GetDurationAsync(trackLocation);
+            var duration = await this._audioFileDurationCalculator.CalculateDurationAsync(trackLocation);
             var tags = await this._tagger.ReadTagsAsync(trackLocation);
 
             return

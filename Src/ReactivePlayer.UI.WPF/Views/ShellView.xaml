@@ -76,8 +76,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
-            <RowDefinition Height="*" />
+            <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -90,7 +89,7 @@
                 <ColumnDefinition Width="Auto" MinWidth="280" />
             </Grid.ColumnDefinitions>-->
 
-        <Views:LibraryView Grid.Row="2" DataContext="{Binding LibraryViewModel}" />
+        <Views:LibraryView Grid.Row="1" DataContext="{Binding LibraryViewModel}" />
 
         <!--<GridSplitter Grid.Column="1" Background="Transparent" Width="8" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"></GridSplitter>
 
@@ -98,7 +97,7 @@
 
         <!--</Grid>-->
 
-        <Views:PlaybackControlsView Grid.Row="3" DataContext="{Binding PlaybackControlsViewModel}" />
+        <Views:PlaybackControlsView Grid.Row="2" DataContext="{Binding PlaybackControlsViewModel}" />
 
     </Grid>
 

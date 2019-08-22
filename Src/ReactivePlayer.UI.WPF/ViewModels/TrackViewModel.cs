@@ -122,6 +122,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public void Dispose()
         {
+            //StackTrace stackTrace = new StackTrace();
+
+            //// Get calling method name
+            //Console.WriteLine(stackTrace.GetFrame(1).GetMethod().Name);
+
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
         }

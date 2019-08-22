@@ -19,7 +19,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly SimplePlaylist _playlist;
         // TODO: find a way to avoid this cache of uint-uint and filter tracks using a list of IDs, not a cache of ID-ID, which doubles the items for no apparent reason
         private readonly IObservableCache<uint, uint> _playlistIdsCache;
-        //private readonly IObservable<IChangeSet<TrackViewModel, uint>> _allTrackViewModelsSourceCache;
+
+        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sortedFilteredBoundTrackViewModelsChangeSets;
 
         #endregion
 
@@ -27,17 +28,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public SimplePlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
-            //IReadLibraryService readLibraryService,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            //IConnectableCache<TrackViewModel, uint> connectableTrackViewModelsCache,
-            IObservable<IChangeSet<TrackViewModel, uint>> connectableTrackViewModelChangeSets,
-            SimplePlaylist playlist)
+            SimplePlaylist playlist,
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSets)
             : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, playlist)
         {
-            // TODO: validate dependencies
-            //this._allTrackViewModelsSourceCache = sourceTrackViewModelsChangeSet ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSet));
             this._playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
+            if (sourceTrackViewModelsChangeSets == null) throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSets));
 
             this._connectableVMsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
@@ -47,20 +45,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .AsObservableCache()
                 .DisposeWith(this._disposables);
 
-            var tracksFilteredByIdChangeSet = this._playlistIdsCache
-                .Connect()
-                .LeftJoin(
-                    connectableTrackViewModelChangeSets,
-                    vm => vm.Id,
-                    (id, trackVM) => trackVM.Value);
-
-            // TODO: use some LINQ to make more fluent
-            var sortedTrackVMsChangeSet = this.Sort(tracksFilteredByIdChangeSet);
-
-            this._connectableVMs = sortedTrackVMsChangeSet
-                 .Bind(out this._sortedFilteredTrackViewModelsROOC)
-                 //.DisposeMany()
-                 .Publish();
+            this._sortedFilteredBoundTrackViewModelsChangeSets = 
+                this.Sort(
+                    this._playlistIdsCache
+                    .Connect()
+                    .LeftJoin(
+                        sourceTrackViewModelsChangeSets,
+                        vm => vm.Id,
+                        (id, trackVM) => trackVM.Value))
+                .Bind(out this._sortedFilteredTrackViewModelsROOC);
         }
 
         #endregion
@@ -79,12 +72,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region connection-activation
 
-        private readonly IConnectableObservable<IChangeSet<TrackViewModel, uint>> _connectableVMs;
         private readonly SerialDisposable _connectableVMsSubscription;
 
         protected override void Connect()
         {
-            this._connectableVMsSubscription.Disposable = this._connectableVMs.Connect();
+            this._connectableVMsSubscription.Disposable = this._sortedFilteredBoundTrackViewModelsChangeSets.Subscribe();
         }
 
         protected override void Disconnect()

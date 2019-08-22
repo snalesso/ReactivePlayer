@@ -35,22 +35,28 @@ namespace ReactivePlayer.Core.Library.Models
             uint id,
             uint? parentId,
             string name,
-            IEnumerable<PlaylistBase> playlists = null) : base(id, parentId, name)
+            IEnumerable<PlaylistBase> playlists)
+            : base(id, parentId, name)
         {
-            // TODO: validate params
-            this.Name = name;
+            this.Name = name?.Trim() ?? throw new ArgumentNullException(nameof(name));
             this.ParentId = parentId;
 
             this._playlistsSourceList = new SourceList<PlaylistBase>().DisposeWith(this._disposables);
-            this._playlistsSourceList.Edit(cache => cache.Add(playlists));
+            // TODO: handle children == null
+            if (playlists != null)
+            {
+                this._playlistsSourceList.Edit(cache => cache.Add(playlists));
+            }
 
+            // TODO: track merged list of ids only when needed
             this.TrackIds = this._playlistsSourceList.Connect().MergeMany(p => p.TrackIds.Connect()).Distinct().AsObservableList().DisposeWith(this._disposables);
         }
 
         public FolderPlaylist(
             uint id,
             uint? parentId,
-            string name) : this(id, parentId, name, Enumerable.Empty<PlaylistBase>()) { }
+            string name)
+            : this(id, parentId, name, Enumerable.Empty<PlaylistBase>()) { }
 
         #endregion
 
@@ -60,7 +66,6 @@ namespace ReactivePlayer.Core.Library.Models
         public IObservableList<PlaylistBase> Playlists => this._playlistsSourceList;
 
         public override IObservableList<uint> TrackIds { get; }
-        //public override IObservableCache<uint, uint> TrackIds { get; }
 
         #endregion
 
@@ -73,7 +78,8 @@ namespace ReactivePlayer.Core.Library.Models
 
         public void Remove(uint playlistId)
         {
-            this._playlistsSourceList.Edit(list => {
+            this._playlistsSourceList.Edit(list =>
+            {
 
                 var playlistToRemove = list.FirstOrDefault(p => p.Id == playlistId);
 

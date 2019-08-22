@@ -6,6 +6,7 @@ using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
 using ReactivePlayer.Core.Library.Json.Newtonsoft;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
+using ReactivePlayer.Core.Library.Persistence.Playlists;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
@@ -75,13 +76,14 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             // CORE COMPONENTS
 
-            builder.Register<IWindowManager>(c => new CustomWindowManager()).InstancePerLifetimeScope();
+            builder.RegisterType<CustomWindowManager>().As<IWindowManager>().InstancePerLifetimeScope();
             builder.RegisterType<WindowsDialogService>().As<IDialogService>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioFileDurationCalculator>().As<IAudioFileDurationCalculator>().InstancePerLifetimeScope();
             builder.RegisterType<TagLibSharpAudioFileTagger>().As<IAudioFileTagger>().InstancePerLifetimeScope();
             builder.RegisterType<LocalAudioFileInfoProvider>().As<IAudioFileInfoProvider>().InstancePerLifetimeScope();
 
             /* serializers to test
+             * 
              * JIL              (faster with less data?)
              * Net Serializer   (faster with less data?)
              * Protobuf-NET     (might be the fastest serializer)
@@ -91,24 +93,18 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
              * VelocityDB       (???)
              */
 
+            // tracks
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
-            builder
-                .Register(c => new iTunesXMLTracksDeserializer())
-                //.Register(c => new NewtonsoftJsonTracksSerializer())
-                .As<EntitySerializer<Track, uint>>()
-                .InstancePerLifetimeScope();
-            builder
-                .RegisterType<SerializingTracksRepository>()
-                //.RegisterType<FakeTracksRepository>()
-                .As<ITracksRepository>()
-                .As<ITrackFactory>()
-                .InstancePerLifetimeScope();
-            builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>()
-                //.OnActivating(async e =>
-                //{
-                //    await e.Instance.Connect();
-                //})
-                .InstancePerLifetimeScope();
+            builder.Register(c => new iTunesXMLTracksDeserializer()).As<EntitySerializer<Track, uint>>().InstancePerLifetimeScope();
+            //builder.Register(c => new NewtonsoftJsonTracksSerializer()).As<EntitySerializer<Track, uint>>().InstancePerLifetimeScope();
+            builder.RegisterType<SerializingTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
+            //builder.RegisterType<FakeTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
+
+            // playlists
+            //builder.Register(c => new ()).As<EntitySerializer<PlaylistBase, uint>>().InstancePerLifetimeScope();
+            builder.RegisterType<FakePlaylistsRepository>().As<IPlaylistsRepository>().As<IPlaylistFactory>().InstancePerLifetimeScope();
+
+            builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
@@ -119,24 +115,26 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.RegisterType<ShellViewModel>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<ShellView>().As<IViewFor<ShellViewModel>>().InstancePerLifetimeScope();
 
-            builder.Register<Func<Track, TrackViewModel>>(ctx =>
-            {
-                var ctxInternal = ctx.Resolve<IComponentContext>();
-                return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
-            }).AsSelf().InstancePerLifetimeScope();
+            builder.Register<Func<Track, TrackViewModel>>(
+                ctx =>
+                {
+                    var ctxInternal = ctx.Resolve<IComponentContext>();
+                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
+                }).AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerDependency();
 
-            builder.Register<Func<Track, EditTrackViewModel>>(ctx =>
-            {
-                var ctxInternal = ctx.Resolve<IComponentContext>();
+            builder.Register<Func<Track, EditTrackViewModel>>(
+                ctx =>
+                {
+                    var ctxInternal = ctx.Resolve<IComponentContext>();
 
-                return (Track t) => new EditTrackViewModel(
-                    ctxInternal.Resolve<IReadLibraryService>(),
-                    ctxInternal.Resolve<IWriteLibraryService>(),
-                    t,
-                    ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
-            }).AsSelf().InstancePerDependency();
+                    return (Track t) => new EditTrackViewModel(
+                        ctxInternal.Resolve<IReadLibraryService>(),
+                        ctxInternal.Resolve<IWriteLibraryService>(),
+                        t,
+                        ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
+                }).AsSelf().InstancePerDependency();
 
             builder.RegisterType<EditTrackAlbumAssociationViewModel>().AsSelf().InstancePerDependency();
 

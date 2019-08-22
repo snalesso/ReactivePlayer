@@ -32,10 +32,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
         {
-            //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
@@ -61,8 +59,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 {
                     this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod(vm.Track));
                 },
-                this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null)
-                )
+                this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null))
+                .DisposeWith(this._disposables);
+            this.EditTrackTags.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
                 .DisposeWith(this._disposables);
         }
 
@@ -72,12 +72,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public abstract string Name { get; }
 
-        // TODO: make return lazy, so if noone will subscribe theres no reason to create the observable cache
-        //public abstract IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC { get; }
-
-        //public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
-        //private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        //public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
         public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
 
         private TrackViewModel _selectedTrackViewModel;
@@ -91,6 +85,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region methods
 
+        // TODO: use some LINQ to make more fluent OR use IObservable<IComparer> to use .Sort overload
         protected IObservable<ISortedChangeSet<TrackViewModel, uint>> Sort(IObservable<IChangeSet<TrackViewModel, uint>> trackVMsToSort)
         {
             return trackVMsToSort.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));

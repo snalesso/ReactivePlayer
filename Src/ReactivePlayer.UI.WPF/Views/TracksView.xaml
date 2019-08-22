@@ -48,6 +48,8 @@
             Grid.Row="2"
             Behaviors:DoubleClick.Command="{Binding PlayTrack}"
             Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
+            BorderBrush="{x:Null}"
+            BorderThickness="0"
             ItemsSource="{Binding SortedFilteredTrackViewModelsROOC}"
             SelectedItem="{Binding SelectedTrackViewModel}"
             VirtualizingStackPanel.IsVirtualizing="True"
