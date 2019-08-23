@@ -1,37 +1,53 @@
-﻿using DynamicData;
+﻿using Caliburn.Micro.ReactiveUI;
+using DynamicData;
+using DynamicData.ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
-    public class AllTracksViewModel : TracksSubsetViewModel, IDisposable
+    public class TestViewModel : ReactiveScreen, IDisposable
     {
-        public AllTracksViewModel(IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSets)
+        public TestViewModel(
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSets
+            )
         {
             this._serialSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
             this._trackViewModelChangeSets = sourceChangeSets;
         }
-        
-        public override string Name => "All tracks";
 
         private ReadOnlyObservableCollection<TrackViewModel> _trackViewModelsROOC;
-        public override ReadOnlyObservableCollection<TrackViewModel> TrackViewModelsROOC => this._trackViewModelsROOC;
+        public ReadOnlyObservableCollection<TrackViewModel> TrackViewModelsROOC
+        {
+            get { return this._trackViewModelsROOC; }
+            private set { this.RaiseAndSetIfChanged(ref this._trackViewModelsROOC, value); }
+        }
 
         #region de/activation
 
         private readonly IObservable<IChangeSet<TrackViewModel, uint>> _trackViewModelChangeSets;
         private readonly SerialDisposable _serialSubscription;
 
-        protected override void Connect()
+        public void Connect()
         {
-            this._serialSubscription.Disposable = this._trackViewModelChangeSets.Bind(out this._trackViewModelsROOC).Subscribe();
+            this.Disconnect();
+
+            this._serialSubscription.Disposable = this._trackViewModelChangeSets.Bind(out var newRooc).Subscribe(
+                x => this.TrackViewModelsROOC = newRooc
+                );
+            //this.TrackViewModelsROOC = newRooc;
         }
 
-        protected override void Disconnect()
+        public void Disconnect()
         {
+            //this._serialSubscription.Disposable?.Dispose();
             this._serialSubscription.Disposable = null;
+            this.TrackViewModelsROOC = null;
+            //this.TrackVMs?.Dispose();
+            //this.TrackVMs = null;
         }
 
         #endregion
@@ -41,13 +57,14 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
-        protected override void Dispose(bool isDisposing)
+        protected virtual void Dispose(bool isDisposing)
         {
             if (!this._isDisposed)
                 return;
 
             if (isDisposing)
             {
+                // free managed resources here
                 this._disposables.Dispose();
             }
 
@@ -55,8 +72,11 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
             // set large fields to null.
 
             this._isDisposed = true;
+        }
 
-            base.Dispose(isDisposing);
+        public void Dispose()
+        {
+            this.Dispose(true);
         }
 
         #endregion

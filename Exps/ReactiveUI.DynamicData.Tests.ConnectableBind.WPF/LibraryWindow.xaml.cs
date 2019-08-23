@@ -3,11 +3,11 @@
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LibraryWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LibraryWindow : Window
     {
-        public MainWindow()
+        public LibraryWindow()
         {
             this.InitializeComponent();
         }

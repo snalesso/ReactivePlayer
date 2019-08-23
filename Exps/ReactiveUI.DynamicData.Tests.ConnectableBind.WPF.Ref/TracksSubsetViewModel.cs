@@ -16,12 +16,23 @@ using System.Threading.Tasks;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
-    public abstract class TracksSubsetViewModel : ReactiveScreen, IDisposable
+    public abstract class TracksSubsetViewModel : ReactiveScreen, IDisposable//, ITracksListViewModel
     {
         #region ctors
 
         public TracksSubsetViewModel()
         {
+            //Observable.FromEventPattern<EventHandler<ActivationEventArgs>, ActivationEventArgs>(
+            //    h => this.Activated += h,
+            //    h => this.Activated -= h)
+            //    .Subscribe(x => this.Connect())
+            //    .DisposeWith(this._disposables);
+
+            //Observable.FromEventPattern<EventHandler<DeactivationEventArgs>, DeactivationEventArgs>(
+            //    h => this.Deactivated += h,
+            //    h => this.Deactivated -= h)
+            //    .Subscribe(x => this.Disconnect())
+            //    .DisposeWith(this._disposables);
         }
 
         #endregion

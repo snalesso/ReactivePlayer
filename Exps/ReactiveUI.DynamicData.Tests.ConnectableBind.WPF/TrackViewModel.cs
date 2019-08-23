@@ -14,7 +14,7 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
         }
 
         public uint Id => this._track.Id;
-        public string Location  => this._track.Location;
+        public string Location => this._track.Location;
         public string Title => this._track.Title;
         public DateTime AddedToLibraryDateTime => this._track.AddedToLibraryDateTime;
 

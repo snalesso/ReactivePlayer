@@ -16,10 +16,7 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
                 async sourceCache =>
                 {
                     var load = this._tracksRepository.GetAllAsync();
-                    var delayedLoad = Task.WhenAll(
-                        load
-                        //, Task.Delay(TimeSpan.FromSeconds(5))
-                        );
+                    var delayedLoad = Task.WhenAll(load, Task.Delay(TimeSpan.FromSeconds(5)));
 
                     await delayedLoad;
 

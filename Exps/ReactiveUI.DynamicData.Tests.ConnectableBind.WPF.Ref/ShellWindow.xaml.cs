@@ -3,11 +3,11 @@
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ShellWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ShellWindow : Window
     {
-        public MainWindow()
+        public ShellWindow()
         {
             this.InitializeComponent();
         }

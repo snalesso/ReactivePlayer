@@ -11,13 +11,13 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
         {
             this._serialSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
-            this._trackViewModelChangeSets = sourceChangeSets;
+            this._trackViewModelChangeSets = sourceChangeSets.Bind(out var rooc);
+            this.TrackViewModelsROOC = rooc;
         }
         
         public override string Name => "All tracks";
 
-        private ReadOnlyObservableCollection<TrackViewModel> _trackViewModelsROOC;
-        public override ReadOnlyObservableCollection<TrackViewModel> TrackViewModelsROOC => this._trackViewModelsROOC;
+        public override ReadOnlyObservableCollection<TrackViewModel> TrackViewModelsROOC { get; }
 
         #region de/activation
 
@@ -26,7 +26,7 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
         protected override void Connect()
         {
-            this._serialSubscription.Disposable = this._trackViewModelChangeSets.Bind(out this._trackViewModelsROOC).Subscribe();
+            this._serialSubscription.Disposable = this._trackViewModelChangeSets.Subscribe();
         }
 
         protected override void Disconnect()

@@ -17,16 +17,6 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
         public AllTracksViewModel AllTracksViewModel { get; }
 
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-
-            if (this.ActiveItem == null)
-            {
-                this.ActivateItem(this.AllTracksViewModel);
-            }
-        }
-
         #region IDisposable
 
         // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8

@@ -4,28 +4,19 @@ using System.Reactive.Disposables;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
-    public class LibraryViewModel : ReactiveConductor<TracksSubsetViewModel>.Collection.OneActive, IDisposable
+    public class TrackViewModel : ReactiveScreen, IDisposable
     {
-        private readonly TrackViewModelsProxy _trackViewMolesProxy;
+        private readonly Track _track;
 
-        public LibraryViewModel(TrackViewModelsProxy trackViewMolesProxy)
+        public TrackViewModel(Track track)
         {
-            this._trackViewMolesProxy = trackViewMolesProxy ?? throw new ArgumentNullException(nameof(trackViewMolesProxy));
-
-            this.AllTracksViewModel = new AllTracksViewModel(this._trackViewMolesProxy.TrackViewModelsChangeSets);
+            this._track = track ?? throw new ArgumentNullException(nameof(track));
         }
 
-        public AllTracksViewModel AllTracksViewModel { get; }
-
-        protected override void OnActivate()
-        {
-            base.OnActivate();
-
-            if (this.ActiveItem == null)
-            {
-                this.ActivateItem(this.AllTracksViewModel);
-            }
-        }
+        public uint Id => this._track.Id;
+        public string Location  => this._track.Location;
+        public string Title => this._track.Title;
+        public DateTime AddedToLibraryDateTime => this._track.AddedToLibraryDateTime;
 
         #region IDisposable
 

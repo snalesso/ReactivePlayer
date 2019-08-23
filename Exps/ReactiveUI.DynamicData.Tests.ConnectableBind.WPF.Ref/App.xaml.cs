@@ -24,23 +24,27 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref
             var tracksRepository = new SerializingTracksRepository(tracksSerializer);
             var playlistsRepository = new FakePlaylistsRepository(tracksRepository);
 
-            var service = new LocalLibraryService(tracksRepository, tracksRepository, playlistsRepository, playlistsRepository);
+            var service = new LocalLibraryService(tracksRepository, tracksRepository);
 
             var audio = new CSCoreAudioPlaybackEngine();
             var windowManager = new CustomWindowManager();
             var dialog = new WindowsDialogService(windowManager);
-            var proxy = new LibraryViewModelsProxy(service, audio, dialog, t => new TrackViewModel(t, audio), t => new EditTrackTagsViewModel(t, null, null));
-            var tagger = new TagLibSharpAudioFileTagger();
-            var audioDurationCalc = new CSCoreAudioFileDurationCalculator();
-            var audioFIProvider = new LocalAudioFileInfoProvider(tagger, audioDurationCalc);
-            var library = new LibraryViewModel(audioFIProvider, service, audio, dialog, proxy);
+            var proxy = new LibraryViewModelsProxy(service, t => new TrackViewModel(t));
+            //var tagger = new TagLibSharpAudioFileTagger();
+            //var audioDurationCalc = new CSCoreAudioFileDurationCalculator();
+            //var audioFIProvider = new LocalAudioFileInfoProvider(tagger, audioDurationCalc);
 
-            (library as IActivate)?.Activate();
-            //library.ActivateItem(library.AllTracksViewModel);
+            var libraryVM = new LibraryViewModel(proxy);
+            var libraryView = new LibraryWindow() { DataContext = libraryVM };
+            var libraryConductor = new CustomWindowManager.WindowConductor(libraryVM, libraryView);
+            libraryView.ShowDialog();
 
-            var window = new MainWindow();
-            window.DataContext = library;
-            window.ShowDialog();
+            //var shellVM = new ShellViewModel(audio, service, dialog, libraryVM, new PlaybackControlsViewModel(audio, new PlaybackTimelineViewModel(audio)));
+            //var shellView = new ShellWindow() { DataContext = shellVM };
+            //var shellConductor = new CustomWindowManager.WindowConductor(shellVM, shellView);
+            //shellView.ShowDialog();
+
+            this.Shutdown();
         }
     }
 }

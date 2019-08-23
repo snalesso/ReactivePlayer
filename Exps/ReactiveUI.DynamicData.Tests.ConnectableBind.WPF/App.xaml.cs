@@ -1,11 +1,4 @@
-﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
@@ -16,17 +9,24 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
     {
         public App()
         {
+            this.InitializeComponent();
+
             var repository = new TracksRepository();
             var service = new TracksService(repository);
             var proxy = new TrackViewModelsProxy(service);
-            var library = new LibraryViewModel(proxy);
 
-            (library as IActivate)?.Activate();
-            library.ActivateItem(library.AllTracksViewModel);
+            //var cs = proxy.TrackViewModelsChangeSets.Bind(out var x);
+            //cs.Subscribe();
 
-            var window = new MainWindow();
-            window.DataContext = library;
-            window.ShowDialog();
+            //var libraryViewModel = new LibraryViewModel(proxy);
+            //var libraryView = new LibraryWindow() { DataContext = libraryViewModel };
+            //var libraryConductor = new CustomWindowManager.WindowConductor(libraryViewModel, libraryView);
+            //libraryView.ShowDialog();
+
+            var testViewModel = new TestViewModel(proxy.TrackViewModelsChangeSets);
+            var testView = new TestView() { DataContext = testViewModel };
+            //var libraryConductor = new CustomWindowManager.WindowConductor(testViewModel, testView);
+            testView.ShowDialog();
         }
     }
 }
