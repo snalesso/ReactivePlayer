@@ -38,43 +38,10 @@ namespace ReactivePlayer.Core.Library.Persistence
         {
             return this._serializer.AddAsync(tracks);
         }
-
-        public async Task<Track> CreateAsync(
-            Uri location,
-            TimeSpan? duration,
-            DateTime? lastModified,
-            uint? fileSizeBytes,
-            string title,
-            IEnumerable<string> performers,
-            IEnumerable<string> composers,
-            uint? year,
-            TrackAlbumAssociation albumAssociation)
+        
+        public async Task<Track> CreateAsync(Func<uint, Track> trackFactoryMethod)
         {
-            Track newTrack;
-
-            try
-            {
-                newTrack = new Track(
-                   await this._serializer.GetNewIdentity(),
-                   location,
-                   duration,
-                   lastModified,
-                   fileSizeBytes,
-                   title,
-                   performers,
-                   composers,
-                   year,
-                   albumAssociation,
-                   false,
-                   DateTime.Now);
-            }
-            catch //(Exception ex)
-            {
-                // TODO: log
-                newTrack = null;
-            }
-
-            return newTrack;
+            return trackFactoryMethod(await this._serializer.GetNewIdentity());
         }
 
         public Task<IReadOnlyList<Track>> GetAllTracksAsync()

@@ -62,7 +62,6 @@ namespace ReactivePlayer.UI.WPF.Views
 
         #region time slider
 
-        // TODO: who disposes this shit? caliburn? autofac?
         private IConnectableObservable<Unit> _whenDragStartedSubscriber;
         //private IConnectableObservable<long> _whenDragDeltaSubscriber;
         private IConnectableObservable<long> _whenDragCompletedSubscriber;

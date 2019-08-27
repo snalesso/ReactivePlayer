@@ -17,7 +17,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     {
         #region constants & fields
 
-        private readonly Func<PlaylistBase, PlaylistBaseViewModel> _playlistViewModelFactoryMethod;
+        private readonly Func<PlaylistBase, FolderPlaylistViewModel, PlaylistBaseViewModel> _playlistViewModelFactoryMethod;
 
         #endregion
 
@@ -26,11 +26,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public FolderPlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
+            TracksSubsetViewModel parentTracksSubsetViewModel,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             FolderPlaylist playlistFolder,
-            Func<PlaylistBase, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlistFolder)
+            Func<PlaylistBase, FolderPlaylistViewModel, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
+            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlistFolder)
         {
             this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
 
@@ -39,7 +40,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             // TODO: move to Expand, if can expand is known from playlist entity
             (this._playlist as FolderPlaylist).Playlists
                   .Connect()
-                  .Transform(playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl))
+                  .Transform(playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this))
                   .DisposeMany()
                   .RefCount()
                   .AddKey(x => x.PlaylistId)

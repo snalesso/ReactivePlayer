@@ -22,10 +22,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public SimplePlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
+            TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             SimplePlaylist playlist)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
+            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
         {
         }
 

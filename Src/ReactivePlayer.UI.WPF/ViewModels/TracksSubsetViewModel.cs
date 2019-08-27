@@ -7,6 +7,7 @@ using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -30,15 +31,25 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public TracksSubsetViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
+            TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
         {
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.ParentTracksSubsetViewModel = parentTracksSubsetViewModel;
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
             this._sourceTrackViewModelsChanges = sourceTrackViewModelsChanges ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChanges));
 
             this._serialViewModelsChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
+
+            //this._tracksCount_OAPH = this
+            //    .WhenAnyObservable(
+            //        x => x.WhenPropertyChanged(e => e.SortedFilteredTrackViewModelsROOC, true, null)
+            //    )
+            //    .Select(p => p?.Value?.Count)
+            //    .ToProperty(this, nameof(this.TracksCount))
+            //    .DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackVM) =>
@@ -106,7 +117,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region properties
 
+        public TracksSubsetViewModel ParentTracksSubsetViewModel { get; }
+
         public abstract string Name { get; }
+
+        //private readonly ObservableAsPropertyHelper<int?> _tracksCount_OAPH;
+        //public int? TracksCount => this._tracksCount_OAPH.Value;
 
         private ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
         public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC
@@ -121,7 +137,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get => this._selectedTrackViewModel;
             set => this.RaiseAndSetIfChanged(ref this._selectedTrackViewModel, value);
         }
-        
+
         #endregion
 
         #region methods

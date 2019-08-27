@@ -42,7 +42,7 @@
                         <ThumbButtonInfo.ImageSource>
                             <DrawingImage>
                                 <DrawingImage.Drawing>
-                                    <DrawingGroup >
+                                    <DrawingGroup>
                                         <DrawingGroup.Children>
                                             <GeometryDrawing Brush="Black" Geometry="M8 5v14l11-7z" />
                                             <GeometryDrawing Brush="{x:Null}" Geometry="M0 0h24v24H0z" />
@@ -78,6 +78,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Views:ShellMenuView DataContext="{Binding ShellMenuViewModel}" />
@@ -98,6 +99,8 @@
         <!--</Grid>-->
 
         <Views:PlaybackControlsView Grid.Row="2" DataContext="{Binding PlaybackControlsViewModel}" />
+
+        <!--<Views:StatusbarView Grid.Row="3" DataContext="{Binding StatusbarViewModel}" />-->
 
     </Grid>
 

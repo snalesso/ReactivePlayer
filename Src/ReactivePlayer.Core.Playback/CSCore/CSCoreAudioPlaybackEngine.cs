@@ -148,7 +148,6 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
                     await Task.Run(() =>
                     {
-                        // TODO: improve this error handling
                         try
                         {
                             this._soundOut = this.GetNewSoundOut().DisposeWith(this._playerScopeDisposables);
@@ -161,6 +160,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                         }
                         catch (Exception ex)
                         {
+                        // TODO: improve this error handling
                             this.HandleSoundOutStoppedEvent(ex);
                         }
                     });

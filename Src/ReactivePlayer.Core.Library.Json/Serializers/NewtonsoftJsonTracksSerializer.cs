@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Library.Json
+namespace ReactivePlayer.Core.Library.Json.Serializers
 {
     public sealed class NewtonsoftJsonTracksSerializer : EntitySerializer<Track, uint>, IDisposable
     {

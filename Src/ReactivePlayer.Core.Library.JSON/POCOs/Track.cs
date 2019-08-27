@@ -1,8 +1,8 @@
 ﻿namespace ReactivePlayer.Core.Library.Json.POCOs
 {
-    public class Track
+    internal class Track
     {
-        public long Id { get; set; }
+        public uint Id { get; set; }
         public long AddedDateTimeTicks { get; set; }
         public bool IsLoved { get; set; }
         public string Location { get; set; }

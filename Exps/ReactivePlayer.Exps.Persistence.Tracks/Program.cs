@@ -1,11 +1,9 @@
-﻿using ReactivePlayer.Core.Domain.Persistence;
-using ReactivePlayer.Core.Library.Json.Newtonsoft;
+﻿using ReactivePlayer.Core.Library.Json;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace ReactivePlayer.Exps.Persistence.Tracks
 {

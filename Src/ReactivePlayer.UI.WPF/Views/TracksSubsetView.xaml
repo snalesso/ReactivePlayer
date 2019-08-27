@@ -100,6 +100,13 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                    <!--<GridViewColumn Width="30" Header="Played">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PlayedCount}" TextAlignment="Right" TextTrimming="CharacterEllipsis" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>-->
                     <GridViewColumn Width="330" Header="Title">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -130,6 +137,14 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+
+            <!--<ListView.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl>
+                        <GridViewRowPresenter />
+                    </ContentControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
 
             <!--<ListView.ItemTemplate>
                 <DataTemplate>

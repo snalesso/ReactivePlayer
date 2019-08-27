@@ -71,10 +71,10 @@ namespace ReactivePlayer.Domain.Models
             if (this.Folder)
                 return this.ToFolderPlaylist(newPlaylistIdGenerator, parentPlaylistId, iTunesPlaylists, tracksMapper);
 
-            else if (this.Smart_Criteria == null && this.Smart_Info == null)
+            else //if (this.Smart_Criteria == null && this.Smart_Info == null)
                 return this.ToSimplePlaylist(newPlaylistIdGenerator, parentPlaylistId, tracksMapper);
 
-            return null;
+            //return null;
             //else
             //    throw new NotSupportedException();
         }

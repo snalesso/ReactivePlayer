@@ -149,6 +149,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\TreeViewTracksSubsetViewModelBehavior.cs" />
     <Compile Include="Behaviors\BindableSelectedItemBehavior.cs" />
     <Compile Include="Behaviors\DoubleClick.cs" />
     <Compile Include="Behaviors\DependencyObjectExtensions.cs" />

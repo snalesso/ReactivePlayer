@@ -1,6 +1,6 @@
 ﻿namespace ReactivePlayer.Core.Library.Json.POCOs
 {
-    public class TrackComposer
+    internal class TrackComposer
     {
         public long TrackId { get; set; }
         public long ArtistId { get; set; }

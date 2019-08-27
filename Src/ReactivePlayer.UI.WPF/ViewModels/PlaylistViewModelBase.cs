@@ -14,10 +14,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public PlaylistBaseViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
+            TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             PlaylistBase playlist)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow)
+            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow)
         {
             this._playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
         }
@@ -89,10 +90,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public PlaylistBaseViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
+            TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             TPlaylist playlist)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
+            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
         {
         }
 

@@ -36,21 +36,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region methods
 
-        //private void ConnectPlaylists()
-        //{
-        //    // TODO: make lazy, so if view doesnt request it, it's not subscribed
-        //    this._libraryViewModelsProxy.PlaylistViewModels.Bind(out var playlistsRooc);
-        //    this.PlaylistViewModelsROOC = playlistsRooc;
-        //}
-
         protected override void OnActivate()
         {
             base.OnActivate();
 
             //this.ConnectPlaylists();
         }
-
-
+        
         #endregion
 
         #region commands

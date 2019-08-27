@@ -13,5 +13,8 @@ namespace ReactivePlayer.Core.Library.Persistence
         IObservable<IReadOnlyList<Track>> TracksAddeded { get; }
         IObservable<IReadOnlyList<Track>> TracksRemoved { get; }
         IObservable<IReadOnlyList<Track>> TracksUpdated { get; }
+
+        Task<bool> RemoveAsync(uint id);
+        Task<bool> RemoveAsync(IEnumerable<uint> ids);
     }
 }

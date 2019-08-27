@@ -55,38 +55,14 @@ namespace ReactivePlayer.Core.Library.Persistence
             return this._serializer.RemoveAsync(playlistBaseIds);
         }
         
-        public async Task<FolderPlaylist> CreateAsync(Func<uint, FolderPlaylist> entityFactoryMethod)
+        public async Task<SimplePlaylist> CreateAsync(Func<uint, SimplePlaylist> factoryMethod)
         {
-            FolderPlaylist folderPlaylist;
-
-            try
-            {
-                folderPlaylist = entityFactoryMethod.Invoke(await this._serializer.GetNewIdentity());
-            }
-            catch //(Exception ex)
-            {
-                // TODO: log
-                folderPlaylist = null;
-            }
-
-            return folderPlaylist;
+            return factoryMethod.Invoke(await this._serializer.GetNewIdentity());
         }
 
-        public async Task<SimplePlaylist> CreateAsync(Func<uint, SimplePlaylist> entityFactoryMethod)
+        public async Task<FolderPlaylist> CreateAsync(Func<uint, FolderPlaylist> factoryMethod)
         {
-            SimplePlaylist folderPlaylist;
-
-            try
-            {
-                folderPlaylist = entityFactoryMethod.Invoke(await this._serializer.GetNewIdentity());
-            }
-            catch //(Exception ex)
-            {
-                // TODO: log
-                folderPlaylist = null;
-            }
-
-            return folderPlaylist;
+            return factoryMethod.Invoke(await this._serializer.GetNewIdentity());
         }
 
         #endregion

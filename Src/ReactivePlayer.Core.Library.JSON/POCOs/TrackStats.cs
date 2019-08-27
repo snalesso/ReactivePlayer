@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ReactivePlayer.Core.Library.Json.POCOs
 {
-    public class TrackStats
+    internal class TrackStats
     {
         public long Id { get; set; }
         public long TrackId { get; set; }

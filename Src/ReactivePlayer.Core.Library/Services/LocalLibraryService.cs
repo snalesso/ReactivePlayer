@@ -9,8 +9,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Services
@@ -112,15 +110,17 @@ namespace ReactivePlayer.Core.Library.Services
             try
             {
                 var newTrack = await this._trackFactory.CreateAsync(
-                    command.Location,
-                    command.Duration,
-                    command.LastModifiedDateTime,
-                    command.FileSizeBytes,
-                    command.Title,
-                    command.Performers,
-                    command.Composers,
-                    command.Year,
-                    command.AlbumAssociation);
+                    id => new Track(
+                        id,
+                        command.Location,
+                        command.Duration,
+                        command.LastModifiedDateTime,
+                        command.FileSizeBytes,
+                        command.Title,
+                        command.Performers,
+                        command.Composers,
+                        command.Year,
+                        command.AlbumAssociation));
 
                 var addedTrack = await this._tracksRepository.AddAsync(newTrack);
 
@@ -152,15 +152,17 @@ namespace ReactivePlayer.Core.Library.Services
                 foreach (var command in commands)
                 {
                     var newTrack = await this._trackFactory.CreateAsync(
-                        command.Location,
-                        command.Duration,
-                        command.LastModifiedDateTime,
-                        command.FileSizeBytes,
-                        command.Title,
-                        command.Performers,
-                        command.Composers,
-                        command.Year,
-                        command.AlbumAssociation);
+                        id => new Track(
+                            id,
+                            command.Location,
+                            command.Duration,
+                            command.LastModifiedDateTime,
+                            command.FileSizeBytes,
+                            command.Title,
+                            command.Performers,
+                            command.Composers,
+                            command.Year,
+                            command.AlbumAssociation));
                     newTracks.Add(newTrack);
                 }
 
@@ -314,70 +316,5 @@ namespace ReactivePlayer.Core.Library.Services
         }
 
         #endregion
-
-        //private static IEnumerable<uint> RandomTracks(ICollection<uint> sourceTrackIds, Random r, decimal maxPercent = 50)
-        //{
-        //    int count = (int)Math.Floor((sourceTrackIds.Count * Math.Min(100, maxPercent) / 100));
-
-        //    var randomTrackIds = new List<uint>();
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        var k = r.Next(sourceTrackIds.Count);
-        //        randomTrackIds.Add(sourceTrackIds.ElementAt(k));
-        //    }
-
-        //    return randomTrackIds.Distinct();
-        //}
-
-        //private FolderPlaylist GetFakeFolderPlaylist(uint? parentPlaylistId, uint folderPlaylistId, ICollection<decimal> childrenSimplePlaylistTracksPercents, ICollection<uint> sourceTrackIds, Random r)
-        //{
-        //    var folderPlaylist =
-        //        new FolderPlaylist(
-        //            folderPlaylistId,
-        //            parentPlaylistId,
-        //            "Folder #" + folderPlaylistId);
-
-        //    for (int i = 0; i < childrenSimplePlaylistTracksPercents.Count; i++)
-        //    {
-        //        uint simplePlaylistId = (uint)((folderPlaylistId * 20) + i + 1);
-        //        var percent = childrenSimplePlaylistTracksPercents.ElementAt(i);
-
-        //        folderPlaylist.Add(
-        //            new SimplePlaylist(
-        //                simplePlaylistId,
-        //                folderPlaylistId,
-        //                "Playlist #" + simplePlaylistId,
-        //                RandomTracks(sourceTrackIds, r, percent)));
-        //    }
-
-        //    return folderPlaylist;
-        //}
-
-        //private SimplePlaylist GetFakeSimplePlaylist(uint? parentPlaylistId, uint simplePlaylistId, ICollection<uint> sourceTrackIds, Random r, decimal maxPercent = 50)
-        //{
-        //    var simplePlaylist =
-        //        new SimplePlaylist(
-        //            simplePlaylistId,
-        //            parentPlaylistId,
-        //            "Playlist #" + simplePlaylistId,
-        //            RandomTracks(sourceTrackIds, r, maxPercent));
-
-        //    return simplePlaylist;
-        //}
-
-        //private IEnumerable<PlaylistBase> GetFakePlaylists()
-        //{
-        //    Random r = new Random();
-        //    var sourceTrackIds = this.Tracks.Items.Select(x => x.Id).ToArray();
-        //    var playlists = new List<PlaylistBase>();
-
-        //    uint id = 1;
-        //    playlists.Add(this.GetFakeFolderPlaylist(null, id++, new decimal[] { 0.4m, 0.2m, 0.7m }, sourceTrackIds, r));
-        //    playlists.Add(this.GetFakeSimplePlaylist(null, id++, sourceTrackIds, r, 45));
-        //    playlists.Add(this.GetFakeSimplePlaylist(null, id++, sourceTrackIds, r, 4));
-        //    playlists.Add(this.GetFakeSimplePlaylist(null, id++, sourceTrackIds, r, 12));
-
-        //    return playlists;
-        //}
     }
 }

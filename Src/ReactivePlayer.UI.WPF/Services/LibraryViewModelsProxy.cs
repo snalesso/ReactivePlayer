@@ -4,7 +4,6 @@ using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
-using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -51,7 +50,7 @@ namespace ReactivePlayer.UI.WPF.Services
             //.RefCount();
 
             this.PlaylistViewModelsChanges = this._readLibraryService.PlaylistsChanges
-                .Transform(playlist => this.CreatePlaylistViewModel(playlist))
+                .Transform(playlist => this.CreatePlaylistViewModel(playlist, null))
                 .DisposeMany()
                 .Multicast(new ReplaySubject<IChangeSet<PlaylistBaseViewModel, uint>>())
                 .AutoConnect(1, d => this._playlistsSubscription.Disposable = d);
@@ -64,6 +63,7 @@ namespace ReactivePlayer.UI.WPF.Services
                 this._audioPlaybackEngine,
                 //this._readLibraryService,
                 this._dialogService,
+                null,
                 this._editTrackTagsViewModelFactoryMethod,
                 this.TrackViewModelsChangeSets);
         }
@@ -87,7 +87,7 @@ namespace ReactivePlayer.UI.WPF.Services
         #region methods
 
         //private PlaylistBaseViewModel<PlaylistBase> CreatePlaylistViewModel(PlaylistBase playlistBase)
-        private PlaylistBaseViewModel CreatePlaylistViewModel(PlaylistBase playlistBase)
+        private PlaylistBaseViewModel CreatePlaylistViewModel(PlaylistBase playlistBase, FolderPlaylistViewModel parentFolderPlaylistViewModel)
         {
             switch (playlistBase)
             {
@@ -96,6 +96,7 @@ namespace ReactivePlayer.UI.WPF.Services
                         this._audioPlaybackEngine,
                         //this._readLibraryService,
                         this._dialogService,
+                        parentFolderPlaylistViewModel,
                         this._editTrackTagsViewModelFactoryMethod,
                         this.TrackViewModelsChangeSets,
                         simplePlaylist)
@@ -107,6 +108,7 @@ namespace ReactivePlayer.UI.WPF.Services
                         this._audioPlaybackEngine,
                         //this._readLibraryService,
                         this._dialogService,
+                        parentFolderPlaylistViewModel,
                         this.TrackViewModelsChangeSets,
                         this._editTrackTagsViewModelFactoryMethod,
                         folderPlaylist,

@@ -34,22 +34,22 @@ namespace ReactivePlayer.Core.Library.Models
             this.Year = year.ThrowIf(x => x > DateTime.Now.Year, () => throw new ArgumentOutOfRangeException(nameof(year)));
         }
 
-        //public Track(
-        //    // LibraryEntry
-        //    uint id,
-        //    Uri location,
-        //    TimeSpan? duration,
-        //    DateTime? lastModified,
-        //    ulong? fileSizeBytes,
-        //    // Track
-        //    string title,
-        //    IEnumerable<string> performers,
-        //    IEnumerable<string> composers,
-        //    uint? year,
-        //    TrackAlbumAssociation albumAssociation)
-        //    : this(id, location, duration, lastModified, fileSizeBytes, title, performers, composers, year, albumAssociation, false, DateTime.Now)
-        //{
-        //}
+        public Track(
+            // LibraryEntry
+            uint id,
+            Uri location,
+            TimeSpan? duration,
+            DateTime? lastModified,
+            uint? fileSizeBytes,
+            // Track
+            string title,
+            IEnumerable<string> performers,
+            IEnumerable<string> composers,
+            uint? year,
+            TrackAlbumAssociation albumAssociation)
+            : this(id, location, duration, lastModified, fileSizeBytes, title, performers, composers, year, albumAssociation, false, DateTime.Now)
+        {
+        }
 
         #endregion
 

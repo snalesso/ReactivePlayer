@@ -59,11 +59,10 @@
     <Compile Include="Domain\Models\Entity`1.cs" />
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
     <Compile Include="Domain\Persistence\EntitySerializer`2.cs" />
-    <Compile Include="Domain\Persistence\IEntityFactory`2.cs" />
+    <Compile Include="Domain\Persistence\IEntityRepository`2.cs" />
     <Compile Include="IDisposableMixins.cs" />
     <Compile Include="SortDirection.cs" />
     <Compile Include="Domain\Models\ValueObject`1.cs" />
-    <Compile Include="Domain\Persistence\IEntityRepository`2.cs" />
     <Compile Include="Domain\Persistence\Specification\ISpecification`1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -54,12 +54,12 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             throw new NotImplementedException();
         }
 
-        public Task<FolderPlaylist> CreateAsync(Func<uint, FolderPlaylist> entityFactoryMethod)
+        public Task<FolderPlaylist> CreateAsync(Func<uint, FolderPlaylist> factoryMethod)
         {
             throw new NotImplementedException();
         }
 
-        public Task<SimplePlaylist> CreateAsync(Func<uint, SimplePlaylist> entityFactoryMethod)
+        public Task<SimplePlaylist> CreateAsync(Func<uint, SimplePlaylist> factoryMethod)
         {
             throw new NotImplementedException();
         }
@@ -78,5 +78,5 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         {
             throw new NotImplementedException();
         }
-    }
+}
 }

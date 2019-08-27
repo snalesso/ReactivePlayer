@@ -1,6 +1,6 @@
 ﻿namespace ReactivePlayer.Core.Library.Json.POCOs
 {
-    public class Artist
+    internal class Artist
     {
         public long Id { get; set; }
         public string Name { get; set; }

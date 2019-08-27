@@ -156,11 +156,11 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             throw new NotImplementedException();
         }
 
-        public Task<Track> CreateAsync(Uri location, TimeSpan? duration, DateTime? lastModified, uint? fileSizeBytes, string title, IEnumerable<string> performers, IEnumerable<string> composers, uint? year, TrackAlbumAssociation albumAssociation)
+        public Task<Track> CreateAsync(Func<uint, Track> trackFactoryMethod)
         {
             throw new NotImplementedException();
         }
-        
+
         public Task<IReadOnlyList<Track>> GetAllTracksAsync()
         {
             return Task.FromResult(this._tracksCache.Values.ToArray() as IReadOnlyList<Track>);

@@ -76,7 +76,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                         var audioFileInfo = await this._audioFileInfoProvider.ExtractAudioFileInfo(new Uri(filePath));
                         if (audioFileInfo == null)
                         {
-                            // TODO: handle & log
+                            // TODO: handle exceptions
+                            // TODO: log
                         }
 
                         atc.Add(new AddTrackCommand(
@@ -137,12 +138,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         //    private set { this.RaiseAndSetIfChanged(ref this._playlistViewModelsROOC, value); }
         //}
 
-        private TracksSubsetViewModel _selectedTracksSubsetViewModel;
-        public TracksSubsetViewModel SelectedTracksSubsetViewModel
-        {
-            get { return this._selectedTracksSubsetViewModel; }
-            set { this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value); }
-        }
+        //private TracksSubsetViewModel _selectedTracksSubsetViewModel;
+        //public TracksSubsetViewModel SelectedTracksSubsetViewModel
+        //{
+        //    get { return this._selectedTracksSubsetViewModel; }
+        //    set { this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value); }
+        //}
 
         #endregion
 
