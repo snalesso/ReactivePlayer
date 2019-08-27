@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Persistence
 {
+    // TODO: remove? events cannot have different names
     public interface IEntityRepository<TEntity, TIdentity>
         where TEntity : Entity<TIdentity>
         where TIdentity : IEquatable<TIdentity>
     {
-        Task<IReadOnlyList<TEntity>> GetAllAsync();
-
         /* internal entity ctor prevents instantiating entity outside of its assembly -> ctor must be public
          * track can be created outside of repository -> repository can only validate Id
          * even if tracks could only be instantiated in repository, tracks would keep existing after being removed, so handling a removed track is already out of "safety"
@@ -23,9 +22,9 @@ namespace ReactivePlayer.Core.Domain.Persistence
 
         #region events
 
-        IObservable<IReadOnlyList<TEntity>> Addeded { get; }
-        IObservable<IReadOnlyList<TEntity>> Removed { get; }
-        IObservable<IReadOnlyList<TEntity>> Updated { get; }
+        //IObservable<IReadOnlyList<TEntity>> Addeded { get; }
+        //IObservable<IReadOnlyList<TEntity>> Removed { get; }
+        //IObservable<IReadOnlyList<TEntity>> Updated { get; }
 
         #endregion
     }

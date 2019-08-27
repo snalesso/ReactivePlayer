@@ -95,14 +95,17 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
 
             // tracks
             //builder.RegisterType<FakeTracksInMemoryRepository>().As<ITracksRepository>().InstancePerLifetimeScope();
-            builder.Register(c => new iTunesXMLTracksDeserializer()).As<EntitySerializer<Track, uint>>().InstancePerLifetimeScope();
             //builder.Register(c => new NewtonsoftJsonTracksSerializer()).As<EntitySerializer<Track, uint>>().InstancePerLifetimeScope();
-            builder.RegisterType<SerializingTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
+            //builder.RegisterType<SerializingTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
             //builder.RegisterType<FakeTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
 
             // playlists
-            //builder.Register(c => new ()).As<EntitySerializer<PlaylistBase, uint>>().InstancePerLifetimeScope();
-            builder.RegisterType<FakePlaylistsRepository>().As<IPlaylistsRepository>().As<IPlaylistFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<iTunesRepository>()
+                .As<ITracksRepository>()
+                .As<ITrackFactory>()
+                .As<IPlaylistsRepository>()
+                .As<IPlaylistFactory>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();

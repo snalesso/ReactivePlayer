@@ -4,23 +4,23 @@ using System.Windows;
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
     /// <summary>
-    /// Interaction logic for TestView.xaml
+    /// Interaction logic for TracksSubsetView.xaml
     /// </summary>
-    public partial class TestView : Window
+    public partial class TracksSubsetView : Window
     {
-        public TestView()
+        public TracksSubsetView()
         {
             this.InitializeComponent();
         }
 
         private void Connect(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as TestViewModel).Connect();
+            (this.DataContext as TracksSubsetViewModel).Connect();
         }
 
         private void Disconnect(object sender, RoutedEventArgs e)
         {
-            (this.DataContext as TestViewModel).Disconnect();
+            (this.DataContext as TracksSubsetViewModel).Disconnect();
         }
 
         private void GC_Collect(object sender, RoutedEventArgs e)

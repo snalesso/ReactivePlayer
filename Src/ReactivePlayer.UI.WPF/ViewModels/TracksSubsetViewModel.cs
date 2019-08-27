@@ -30,11 +30,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public TracksSubsetViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
+            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
         {
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
+            this._sourceTrackViewModelsChanges = sourceTrackViewModelsChanges ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChanges));
+
+            this._serialViewModelsChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackVM) =>
@@ -68,11 +72,48 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #endregion
 
+        #region connection-activation
+
+        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sourceTrackViewModelsChanges;
+        private readonly SerialDisposable _serialViewModelsChangesSubscription;
+
+        protected virtual void Connect()
+        {
+            //this.Disconnect();
+
+            this._serialViewModelsChangesSubscription.Disposable = this.Sort(this.Filter(this._sourceTrackViewModelsChanges))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out var newRooc)
+                .Subscribe();
+            this.SortedFilteredTrackViewModelsROOC = newRooc;
+        }
+
+        protected virtual void Disconnect()
+        {
+            this.SortedFilteredTrackViewModelsROOC = null;
+            this._serialViewModelsChangesSubscription.Disposable = null;
+        }
+
+        // TODO: use some LINQ to make more fluent OR use IObservable<IComparer> to use .Sort overload
+        protected IObservable<ISortedChangeSet<TrackViewModel, uint>> Sort(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChangesFlow)
+        {
+            return trackViewModelsChangesFlow.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
+        }
+
+        protected abstract IObservable<IChangeSet<TrackViewModel, uint>> Filter(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChangesFlow);
+
+        #endregion
+
         #region properties
 
         public abstract string Name { get; }
 
-        public abstract ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC { get; }
+        private ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
+        public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC
+        {
+            get { return this._sortedFilteredTrackViewModelsROOC; }
+            private set => this.RaiseAndSetIfChanged(ref this._sortedFilteredTrackViewModelsROOC, value);
+        }
 
         private TrackViewModel _selectedTrackViewModel;
         public TrackViewModel SelectedTrackViewModel
@@ -80,30 +121,22 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get => this._selectedTrackViewModel;
             set => this.RaiseAndSetIfChanged(ref this._selectedTrackViewModel, value);
         }
-
+        
         #endregion
 
         #region methods
 
-        // TODO: use some LINQ to make more fluent OR use IObservable<IComparer> to use .Sort overload
-        protected IObservable<ISortedChangeSet<TrackViewModel, uint>> Sort(IObservable<IChangeSet<TrackViewModel, uint>> trackVMsToSort)
-        {
-            return trackVMsToSort.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
-        }
-
-        protected abstract void Connect();
-
-        protected abstract void Disconnect();
-
         protected override void OnActivate()
         {
             base.OnActivate();
+
             this.Connect();
         }
 
         protected override void OnDeactivate(bool close)
         {
             base.OnDeactivate(close);
+
             this.Disconnect();
         }
 

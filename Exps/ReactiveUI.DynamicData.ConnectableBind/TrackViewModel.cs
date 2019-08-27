@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind
@@ -14,7 +15,7 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind
         }
 
         public uint Id => this._track.Id;
-        public string Location  => this._track.Location;
+        public string Location => this._track.Location;
         public string Title => this._track.Title;
         public DateTime AddedToLibraryDateTime => this._track.AddedToLibraryDateTime;
 
@@ -26,8 +27,10 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind
 
         protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
                 return;
+
+            //Debug.WriteLine("Disposing: " + this.GetType().FullName);
 
             if (isDisposing)
             {

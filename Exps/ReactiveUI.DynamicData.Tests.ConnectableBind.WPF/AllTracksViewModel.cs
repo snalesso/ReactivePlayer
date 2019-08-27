@@ -1,53 +1,40 @@
 ﻿using DynamicData;
 using System;
-using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
     public class AllTracksViewModel : TracksSubsetViewModel, IDisposable
     {
-        public AllTracksViewModel(IObservable<IChangeSet<TrackViewModel, uint>> sourceChangeSets)
+        public AllTracksViewModel(IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
+            : base(sourceTrackViewModelsChanges)
         {
-            this._serialSubscription = new SerialDisposable().DisposeWith(this._disposables);
-
-            this._trackViewModelChangeSets = sourceChangeSets;
         }
-        
+
         public override string Name => "All tracks";
 
-        private ReadOnlyObservableCollection<TrackViewModel> _trackViewModelsROOC;
-        public override ReadOnlyObservableCollection<TrackViewModel> TrackViewModelsROOC => this._trackViewModelsROOC;
-
-        #region de/activation
-
-        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _trackViewModelChangeSets;
-        private readonly SerialDisposable _serialSubscription;
-
-        protected override void Connect()
+        protected override IObservable<IChangeSet<TrackViewModel, uint>> Filter(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChanges)
         {
-            this._serialSubscription.Disposable = this._trackViewModelChangeSets.Bind(out this._trackViewModelsROOC).Subscribe();
+            return trackViewModelsChanges;
         }
-
-        protected override void Disconnect()
-        {
-            this._serialSubscription.Disposable = null;
-        }
-
-        #endregion
 
         #region IDisposable
 
+        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
+        // use this in derived class
         protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
+        //protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
                 return;
 
             if (isDisposing)
             {
+                // free managed resources here
                 this._disposables.Dispose();
             }
 
@@ -56,6 +43,7 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
             this._isDisposed = true;
 
+            // remove in non-derived class
             base.Dispose(isDisposing);
         }
 

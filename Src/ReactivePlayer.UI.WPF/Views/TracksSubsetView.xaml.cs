@@ -1,8 +1,6 @@
 using ReactivePlayer.UI.WPF.ViewModels;
 using ReactiveUI;
 using System;
-using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -18,16 +16,16 @@ using System.Windows.Navigation;
 namespace ReactivePlayer.UI.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for TracksView.xaml
+    /// Interaction logic for TracksSubsetView.xaml
     /// </summary>
-    public partial class TracksView : UserControl, IDisposable, IViewFor<TracksSubsetViewModel>
+    public partial class TracksSubsetView : UserControl, IDisposable, IViewFor<TracksSubsetViewModel>
     {
         #region constants & fields
         #endregion
 
         #region ctor
 
-        public TracksView()
+        public TracksSubsetView()
         {
             this._viewModelSubject = new BehaviorSubject<TracksSubsetViewModel>(this.DataContext as TracksSubsetViewModel).DisposeWith(this._disposables);
             this.WhenViewModelChanged = this._viewModelSubject.DistinctUntilChanged();
@@ -62,28 +60,34 @@ namespace ReactivePlayer.UI.WPF.Views
 
         #region IDisposable
 
+        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
-        protected virtual void Dispose(bool disposing)
+        // use this in derived class
+        // protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
+        protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
+                return;
+
+            if (isDisposing)
             {
-                if (disposing)
-                {
-                    this._disposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this._isDisposed = true;
+                // free managed resources here
+                this._disposables.Dispose();
             }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
         }
 
+        // remove if in derived class
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            // Do not change this code. Put cleanup code in Dispose(bool isDisposing) above.
             this.Dispose(true);
         }
 

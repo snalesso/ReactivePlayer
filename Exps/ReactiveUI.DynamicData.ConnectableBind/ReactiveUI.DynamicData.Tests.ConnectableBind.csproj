@@ -92,13 +92,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TracksRepository.cs" />
-    <Compile Include="TracksService.cs" />
+    <Compile Include="TrackViewModelsProxy.cs" />
     <Compile Include="AllTracksViewModel.cs" />
     <Compile Include="TracksSubsetViewModel.cs" />
     <Compile Include="TrackViewModel.cs" />
     <Compile Include="Track.cs" />
-    <Compile Include="LibraryViewModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

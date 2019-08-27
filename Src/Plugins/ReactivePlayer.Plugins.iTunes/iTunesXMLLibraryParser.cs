@@ -17,115 +17,26 @@ using System.Xml.Linq;
 namespace ReactivePlayer.Domain.Repositories
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public sealed class iTunesXMLTracksDeserializer : EntitySerializer<Track, uint>
+    public static class iTunesXMLLibraryParser
 #pragma warning restore IDE1006 // Naming Styles
     {
-        private readonly string _xmliTunesMediaLibraryFilePath;
+        public static readonly string DefaultiTunesMediaLibraryFilePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+            "iTunes",
+            "iTunes Music Library.xml");
 
-        #region ctor
-
-        public iTunesXMLTracksDeserializer(string xmliTunesMediaLibraryFilePath) : base(xmliTunesMediaLibraryFilePath)
+        public static IReadOnlyList<iTunesTrack> GetiTunesTracks(XDocument xmliTunesMediaLibrary)
         {
-            this._xmliTunesMediaLibraryFilePath = xmliTunesMediaLibraryFilePath;
-        }
-
-        public iTunesXMLTracksDeserializer() : this(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "iTunes", "iTunes Music Library.xml"))
-        {
-        }
-
-        #endregion
-
-        protected override async Task DeserializeCore()
-        {
-            var iTunesTracks = await Task.FromResult(this.GetiTunesTracks());
-
-            iTunesTracks = iTunesTracks.Where(t => new Uri(t.Location).IsFile).ToArray();
-
-            var artistsDictionary = new Dictionary<string, Artist>();
-
-            this._entities = new ConcurrentDictionary<uint, Track>();
-
-            // TODO: parallelize
-            uint id = 0;
-
-            for (int i = 0; i < iTunesTracks.Count; i++)
-            {
-                var iTunesTrack = iTunesTracks[i];
-
-                try
-                {
-                    Album album = null;
-                    TrackAlbumAssociation trackAlbumAssociation = null;
-
-                    try
-                    {
-                        album = new Album(
-                            iTunesTrack.Album,
-                            iTunesTrack.AlbumArtistNames,
-                            iTunesTrack.TrackCount,
-                            iTunesTrack.DiscCount);
-                    }
-                    catch// (Exception ex)
-                    {
-                        album = null;
-                    }
-
-                    if (album != null)
-                    {
-                        trackAlbumAssociation = new TrackAlbumAssociation(
-                            album,
-                            iTunesTrack.TrackNumber,
-                            iTunesTrack.DiscNumber);
-                    }
-
-                    var track = new Track(
-                        ++id,
-                        // library entry
-                        new Uri(iTunesTrack.Location),
-                        iTunesTrack.TotalTime,
-                        iTunesTrack.DateModified,
-                        iTunesTrack.Size,
-                        // track
-                        iTunesTrack.Name,
-                        iTunesTrack.ArtistNames,
-                        iTunesTrack.ComposerNames,
-                        iTunesTrack.Year,
-                        trackAlbumAssociation,
-                        iTunesTrack.Loved,
-                        iTunesTrack.DateAdded);
-
-                    this._entities.TryAdd(track.Id, track);
-                }
-                catch //(Exception ex)
-                {
-
-                }
-            }
-        }
-
-        protected override Task SerializeCore()
-        {
-            throw new NotSupportedException();
-        }
-
-        public override Task<uint> GetNewIdentity()
-        {
-            throw new NotSupportedException();
-        }
-
-        private IReadOnlyList<iTunesTrack> GetiTunesTracks()
-        {
-            var xmliTunesTracks = XDocument.Load(this._xmliTunesMediaLibraryFilePath)
-                    .Element("plist")
-                    .Element("dict")
-                    .Elements()
-                    .SkipWhile(x => x.Name != "key" || x.Value != "Tracks")
-                    .Skip(1)
-                    .FirstOrDefault()
-                    .Elements("dict")
-                    .Select(xElement => xElement.ToDictionary());
-
-            return xmliTunesTracks
+            return xmliTunesMediaLibrary
+                .Element("plist")
+                .Element("dict")
+                .Elements()
+                .AsParallel()
+                .SkipWhile(x => x.Name != "key" || x.Value != "Tracks")
+                .Skip(1)
+                .FirstOrDefault()
+                .Elements("dict")
+                .Select(xElement => xElement.ToDictionary())
                 .Select(xmliTunesTrack =>
                 {
                     iTunesTrack iTunesTrack = null;
@@ -194,6 +105,92 @@ namespace ReactivePlayer.Domain.Repositories
                     return iTunesTrack;
                 })
                 .ToArray();
+        }
+
+        public static IReadOnlyList<iTunesTrack> GetiTunesTracks(string xmliTunesMediaLibraryFilePath)
+        {
+            return GetiTunesTracks(XDocument.Load(xmliTunesMediaLibraryFilePath));
+        }
+
+        public static IReadOnlyList<iTunesPlaylist> GetiTunesPlaylists(XDocument xmliTunesMediaLibrary)
+        {
+            //var keys = new ConcurrentDictionary<string, ISet<string>>();
+
+            var array = xmliTunesMediaLibrary
+                .Element("plist")
+                .Element("dict")
+                .Elements()
+                .AsParallel()
+                .SkipWhile(x => x.Name != "key" || x.Value != "Playlists")
+                .Skip(1)
+                .FirstOrDefault()
+                .Elements("dict");
+
+            var result = array
+                .Select(xDict => xDict.ToDictionary())
+                .Select(xmliTunesPlaylist =>
+                {
+                    //foreach (var x in xmliTunesPlaylist)
+                    //{
+                    //    if (!keys.ContainsKey(x.Key))
+                    //        keys[x.Key] = new HashSet<string>(new[] { x.Value });
+                    //    else
+                    //        keys[x.Key].Add(x.Value);
+                    //}
+
+                    iTunesPlaylist iTunesPlaylist = null;
+
+                    try
+                    {
+                        iTunesPlaylist = new iTunesPlaylist()
+                        {
+                            Playlist_ID = xmliTunesPlaylist.GetValue("Playlist ID", default(int)),
+                            Playlist_Persistent_ID = xmliTunesPlaylist.GetValue("Playlist Persistent ID", default(string)),
+                            Parent_Persistent_ID = xmliTunesPlaylist.GetValue("Parent Persistent ID", default(string)),
+
+                            Name = xmliTunesPlaylist.GetValue("Name", default(string)),
+
+                            Playlist_Items = xmliTunesPlaylist.GetValue("Playlist Items", default(string))
+                                ?.Split(new string[] { "Track ID" }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => uint.Parse(x))
+                                .ToImmutableList(),
+
+                            Visible = xmliTunesPlaylist.GetValue("Visible", default(bool)),
+
+                            Distinguished_Kind = xmliTunesPlaylist.GetValue("Distinguished Kind", default(int)),
+
+                            Folder = xmliTunesPlaylist.GetValue("Folder", default(bool)),
+                            Master = xmliTunesPlaylist.GetValue("Master", default(bool)),
+                            All_Items = xmliTunesPlaylist.GetValue("All Items", default(bool)),
+                            Audiobooks = xmliTunesPlaylist.GetValue("Audiobooks", default(bool)),
+                            Movies = xmliTunesPlaylist.GetValue("Movies", default(bool)),
+                            Music = xmliTunesPlaylist.GetValue("Music", default(bool)),
+                            Podcasts = xmliTunesPlaylist.GetValue("Podcasts", default(bool)),
+                            TV_Shows = xmliTunesPlaylist.GetValue("TV Shows", default(bool)),
+
+                            Smart_Criteria = xmliTunesPlaylist.GetValue("Smart Criteria", default(string)),
+                            Smart_Info = xmliTunesPlaylist.GetValue("Smart Info", default(string)),
+
+                        };
+                    }
+                    catch //(Exception ex)
+                    {
+                        iTunesPlaylist = null;
+                    }
+                    finally
+                    {
+                    }
+
+                    return iTunesPlaylist;
+                })
+                .ToArray();
+
+            return result;
+        }
+
+        public static IReadOnlyList<iTunesPlaylist> GetiTunesPlaylists(string xmliTunesMediaLibraryFilePath)
+        {
+            return GetiTunesPlaylists(XDocument.Load(xmliTunesMediaLibraryFilePath));
         }
     }
 }

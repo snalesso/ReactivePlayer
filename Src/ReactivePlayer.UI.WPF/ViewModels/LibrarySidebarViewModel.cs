@@ -1,54 +1,59 @@
-using ReactivePlayer.UI.WPF.ViewModels;
+﻿using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Models;
 using ReactiveUI;
 using System;
+using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Windows;
-using System.Windows.Controls;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    /// <summary>
-    /// Interaction logic for ShellView.xaml
-    /// </summary>
-    public partial class ShellView : Window, IViewFor<ShellViewModel>, IDisposable
+    public class LibrarySidebarViewModel : ReactiveScreen, IDisposable
     {
         #region constants & fields
 
+        //private readonly LibraryViewModel _libraryViewModel;
+
         #endregion
 
-        #region ctor
+        #region ctors
 
-        public ShellView()
+        public LibrarySidebarViewModel(LibraryViewModel libraryViewModel)
         {
-            this._viewModelSubject = new BehaviorSubject<ShellViewModel>(this.DataContext as ShellViewModel);
-            // when .DataContext changes => update .ViewModel
-            this.Events()
-                .DataContextChanged
-                .Subscribe(dc => this._viewModelSubject.OnNext(dc.NewValue as ShellViewModel))
-                .DisposeWith(this._disposables);
-
-            this.InitializeComponent();
         }
 
         #endregion
 
-        #region IViewFor
+        #region properties
 
-        private readonly BehaviorSubject<ShellViewModel> _viewModelSubject;
-        public ShellViewModel ViewModel
+        private ReadOnlyObservableCollection<PlaylistBaseViewModel<PlaylistBase>> _playlistViewModelsROOC;
+        public ReadOnlyObservableCollection<PlaylistBaseViewModel<PlaylistBase>> PlaylistViewModelsROOC
         {
-            get => this._viewModelSubject.Value;
-            set => this.DataContext = value; // ?? throw new ArgumentNullException(nameof(value)));
+            get { return this._playlistViewModelsROOC; }
+            set { this.RaiseAndSetIfChanged(ref this._playlistViewModelsROOC, value); }
         }
 
-        object IViewFor.ViewModel
+        #endregion
+
+        #region methods
+
+        //private void ConnectPlaylists()
+        //{
+        //    // TODO: make lazy, so if view doesnt request it, it's not subscribed
+        //    this._libraryViewModelsProxy.PlaylistViewModels.Bind(out var playlistsRooc);
+        //    this.PlaylistViewModelsROOC = playlistsRooc;
+        //}
+
+        protected override void OnActivate()
         {
-            get => this.ViewModel;
-            set => this.ViewModel = (value as ShellViewModel);
+            base.OnActivate();
+
+            //this.ConnectPlaylists();
         }
 
+
+        #endregion
+
+        #region commands
         #endregion
 
         #region IDisposable

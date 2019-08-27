@@ -21,7 +21,7 @@ namespace ReactivePlayer.UI.WPF.Behaviors
         /// </summary>
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(
-                "SelectedItem",
+                nameof(SelectedItem),
                 typeof(object),
                 typeof(BindableSelectedItemBehavior),
                 new UIPropertyMetadata(null, OnSelectedItemChanged));
@@ -121,8 +121,7 @@ namespace ReactivePlayer.UI.WPF.Behaviors
                 // expanded we still need to do this step in order to 
                 // regenerate the visuals because they may have been virtualized away.
                 container.ApplyTemplate();
-                var itemsPresenter =
-                    (ItemsPresenter)container.Template.FindName("ItemsHost", container);
+                var itemsPresenter = (ItemsPresenter)container.Template.FindName("ItemsHost", container);
                 if (itemsPresenter != null)
                 {
                     itemsPresenter.ApplyTemplate();
@@ -155,15 +154,11 @@ namespace ReactivePlayer.UI.WPF.Behaviors
                         // Bring the item into view so 
                         // that the container will be generated.
                         bringIndexIntoView(i);
-                        subContainer =
-                            (TreeViewItem)container.ItemContainerGenerator.
-                                                    ContainerFromIndex(i);
+                        subContainer = (TreeViewItem)container.ItemContainerGenerator.ContainerFromIndex(i);
                     }
                     else
                     {
-                        subContainer =
-                            (TreeViewItem)container.ItemContainerGenerator.
-                                                    ContainerFromIndex(i);
+                        subContainer = (TreeViewItem)container.ItemContainerGenerator.ContainerFromIndex(i);
 
                         // Bring the item into view to maintain the 
                         // same behavior as with a virtualizing panel.
@@ -184,7 +179,7 @@ namespace ReactivePlayer.UI.WPF.Behaviors
 
                     // The object is not under this TreeViewItem
                     // so collapse it.
-                    //subContainer.IsExpanded = false;
+                    subContainer.IsExpanded = false;
                 }
             }
 

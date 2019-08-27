@@ -101,9 +101,12 @@ namespace ReactivePlayer.Core.Library.Models
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
+        // use this in derived class
+        // protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
         protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
                 return;
 
             if (isDisposing)

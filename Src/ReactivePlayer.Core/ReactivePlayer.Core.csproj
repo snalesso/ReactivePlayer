@@ -60,7 +60,6 @@
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
     <Compile Include="Domain\Persistence\EntitySerializer`2.cs" />
     <Compile Include="Domain\Persistence\IEntityFactory`2.cs" />
-    <Compile Include="Domain\Servicing\IConnectableService.cs" />
     <Compile Include="IDisposableMixins.cs" />
     <Compile Include="SortDirection.cs" />
     <Compile Include="Domain\Models\ValueObject`1.cs" />

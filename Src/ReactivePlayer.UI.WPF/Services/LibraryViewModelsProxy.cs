@@ -4,18 +4,25 @@ using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
+using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace ReactivePlayer.UI.WPF.Services
 {
-    public class LibraryViewModelsProxy : IDisposable
+    public class LibraryViewModelsProxy :
+        //ReactiveObject, 
+        IDisposable
     {
         private readonly IReadLibraryService _readLibraryService;
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         private readonly IDialogService _dialogService;
         private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
         private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
+        private SerialDisposable _tracksSubscription;
+        private SerialDisposable _playlistsSubscription;
 
         public LibraryViewModelsProxy(
             IReadLibraryService readLibraryService,
@@ -30,15 +37,28 @@ namespace ReactivePlayer.UI.WPF.Services
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
             this._editTrackTagsViewModelFactoryMethod = editTrackTagsViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackTagsViewModelFactoryMethod));
 
-            this.TrackViewModelsChangeSets = this._readLibraryService.TracksChangeSets
+            //this._readLibraryService.TracksChanges.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
+            //this._readLibraryService.PlaylistsChanges.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
+
+            this._tracksSubscription = new SerialDisposable().DisposeWith(this._disposables);
+            this._playlistsSubscription = new SerialDisposable().DisposeWith(this._disposables);
+
+            this.TrackViewModelsChangeSets = this._readLibraryService.TracksChanges
                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
                 .DisposeMany()
-                .RefCount();
+                .Multicast(new ReplaySubject<IChangeSet<TrackViewModel, uint>>())
+                .AutoConnect(1, d => this._tracksSubscription.Disposable = d);
+            //.RefCount();
 
-            this.PlaylistViewModels = this._readLibraryService.PlaylistsChangeSets
+            this.PlaylistViewModelsChanges = this._readLibraryService.PlaylistsChanges
                 .Transform(playlist => this.CreatePlaylistViewModel(playlist))
                 .DisposeMany()
-                .RefCount();
+                .Multicast(new ReplaySubject<IChangeSet<PlaylistBaseViewModel, uint>>())
+                .AutoConnect(1, d => this._playlistsSubscription.Disposable = d);
+            //.RefCount();
+
+            //this.TrackViewModelsChangeSets.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
+            //this.PlaylistViewModelsChanges.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
 
             this.AllTracksViewModel = new AllTracksViewModel(
                 this._audioPlaybackEngine,
@@ -51,15 +71,22 @@ namespace ReactivePlayer.UI.WPF.Services
         #region properties
 
         public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsChangeSets { get; }
+        public IObservable<IChangeSet<PlaylistBaseViewModel, uint>> PlaylistViewModelsChanges { get; }
+
+        //private bool _holdTrackViewModels;
+        //public bool HoldTrackViewModels
+        //{
+        //    get { return this._holdTrackViewModels; }
+        //    set { this.RaiseAndSetIfChanged(ref this._holdTrackViewModels, value); }
+        //}
 
         public AllTracksViewModel AllTracksViewModel { get; }
-
-        public IObservable<IChangeSet<PlaylistBaseViewModel, uint>> PlaylistViewModels { get; }
 
         #endregion
 
         #region methods
 
+        //private PlaylistBaseViewModel<PlaylistBase> CreatePlaylistViewModel(PlaylistBase playlistBase)
         private PlaylistBaseViewModel CreatePlaylistViewModel(PlaylistBase playlistBase)
         {
             switch (playlistBase)
@@ -70,18 +97,22 @@ namespace ReactivePlayer.UI.WPF.Services
                         //this._readLibraryService,
                         this._dialogService,
                         this._editTrackTagsViewModelFactoryMethod,
-                        simplePlaylist,
-                        this.TrackViewModelsChangeSets);
+                        this.TrackViewModelsChangeSets,
+                        simplePlaylist)
+                        //as PlaylistBaseViewModel<PlaylistBase>
+                        ;
 
                 case FolderPlaylist folderPlaylist:
                     return new FolderPlaylistViewModel(
                         this._audioPlaybackEngine,
                         //this._readLibraryService,
                         this._dialogService,
+                        this.TrackViewModelsChangeSets,
                         this._editTrackTagsViewModelFactoryMethod,
                         folderPlaylist,
-                        this.TrackViewModelsChangeSets,
-                        this.CreatePlaylistViewModel);
+                        this.CreatePlaylistViewModel)
+                        //as PlaylistBaseViewModel<PlaylistBase>
+                        ;
 
                 default:
                     throw new NotSupportedException(playlistBase.GetType().FullName + " is not a supported " + nameof(PlaylistBase) + " implementation.");
@@ -96,9 +127,12 @@ namespace ReactivePlayer.UI.WPF.Services
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
+        // use this in derived class
+        // protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
         protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
                 return;
 
             if (isDisposing)

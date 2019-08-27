@@ -129,6 +129,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daedalus.Reactive", "..\..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref", "Exps\ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref\ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref.csproj", "{D16E6FF7-266C-431B-8030-5704C5BCB013}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactivePlayer.Plugins.iTunes", "Exps\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj", "{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -369,6 +371,14 @@ Global
 		{D16E6FF7-266C-431B-8030-5704C5BCB013}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D16E6FF7-266C-431B-8030-5704C5BCB013}.Release|x64.ActiveCfg = Release|Any CPU
 		{D16E6FF7-266C-431B-8030-5704C5BCB013}.Release|x64.Build.0 = Release|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Debug|x64.Build.0 = Debug|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Release|x64.ActiveCfg = Release|Any CPU
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -405,6 +415,7 @@ Global
 		{A385A1CC-2D9F-4D59-B43F-BCF961709117} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
 		{885E1235-108B-45AC-9FCC-DA0BACA15743} = {8191942A-59BD-4149-84AA-B800AE9604F3}
 		{D16E6FF7-266C-431B-8030-5704C5BCB013} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
+		{0FCBFA18-3FC1-4684-8528-F3356BD7F7BA} = {DFABA51C-941F-4DF2-992F-0EF609DD0D39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89BD77AF-A336-4C8F-A1F9-E89FF141FEC5}

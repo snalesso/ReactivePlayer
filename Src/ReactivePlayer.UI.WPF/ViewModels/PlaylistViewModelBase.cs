@@ -1,31 +1,102 @@
-﻿using ReactivePlayer.Core.Library.Models;
+﻿using DynamicData;
+using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using System;
+using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
     public abstract class PlaylistBaseViewModel : TracksSubsetViewModel
     {
-        private readonly PlaylistBase _playlistBase;
+        protected readonly PlaylistBase _playlist;
 
         public PlaylistBaseViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            PlaylistBase playlistBase)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod)
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
+            PlaylistBase playlist)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow)
         {
-            this._playlistBase = playlistBase ?? throw new ArgumentNullException(nameof(playlistBase));
+            this._playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
         }
 
-        public uint PlaylistId => this._playlistBase.Id;
+        public uint PlaylistId => this._playlist.Id;
+        public override string Name => this._playlist.Name;
 
-        public override string Name => this._playlistBase.Name;
+        #region filtering
 
-        //public override IObservableCache<TrackViewModel, uint> SortedFilteredTrackViewModelsOC { get; }
+        // TODO: find a way to avoid this cache of uint-uint and filter tracks using a list of IDs, not a cache of ID-ID, which doubles the items for no apparent reason
+        //private IObservableCache<uint, uint> _playlistIdsCache;
 
-        //private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        //public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
+        protected override IObservable<IChangeSet<TrackViewModel, uint>> Filter(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChangesFlow)
+        {
+            //if (this._playlistIdsCache == null)
+            //{
+            //    this._playlistIdsCache = this._playlist.TrackIds
+            //        .Connect()
+            //        .AddKey(x => x)
+            //        .AsObservableCache()
+            //        .DisposeWith(this._disposables);
+            //}
+
+            return this._playlist.TrackIds
+               .Connect()
+               .AddKey(x => x)
+               .LeftJoin(
+                   trackViewModelsChangesFlow,
+                   vm => vm.Id,
+                   (id, trackVM) => trackVM.Value);
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool _isDisposed = false;
+
+        protected override void Dispose(bool isDisposing)
+        {
+            if (this._isDisposed)
+                return;
+
+            if (isDisposing)
+            {
+                // free managed resources here
+                this._disposables.Dispose();
+            }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
+
+            // remove in non-derived class
+            base.Dispose(isDisposing);
+        }
+
+        #endregion
+    }
+
+    public abstract class PlaylistBaseViewModel<TPlaylist> : PlaylistBaseViewModel
+        where TPlaylist : PlaylistBase
+    {
+        //protected new readonly TPlaylist _playlist;
+
+        public PlaylistBaseViewModel(
+            IAudioPlaybackEngine audioPlaybackEngine,
+            IDialogService dialogService,
+            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
+            TPlaylist playlist)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
+        {
+        }
+
+        //public uint PlaylistId => this._playlist.Id;
+        //public override string Name => this._playlist.Name;
     }
 }

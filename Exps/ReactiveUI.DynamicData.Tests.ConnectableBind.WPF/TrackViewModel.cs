@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
@@ -26,8 +27,10 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
         protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
                 return;
+
+            //Debug.WriteLine("Disposing: " + this.GetType().FullName);
 
             if (isDisposing)
             {

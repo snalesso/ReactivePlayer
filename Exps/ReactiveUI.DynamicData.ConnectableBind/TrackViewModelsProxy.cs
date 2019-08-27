@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
+namespace ReactiveUI.DynamicData.Tests.ConnectableBind
 {
     public class TrackViewModelsProxy
     {

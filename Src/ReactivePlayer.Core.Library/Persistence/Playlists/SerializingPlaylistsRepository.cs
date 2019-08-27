@@ -40,7 +40,7 @@ namespace ReactivePlayer.Core.Library.Persistence
             return this._serializer.AddAsync(playlistBases);
         }
 
-        public Task<IReadOnlyList<PlaylistBase>> GetAllAsync()
+        public Task<IReadOnlyList<PlaylistBase>> GetAllPlaylistsAsync()
         {
             return this._serializer.GetAllAsync();
         }
@@ -94,13 +94,13 @@ namespace ReactivePlayer.Core.Library.Persistence
         #region events
 
         private readonly ISubject<IReadOnlyList<PlaylistBase>> _addedSubject = new Subject<IReadOnlyList<PlaylistBase>>();
-        public IObservable<IReadOnlyList<PlaylistBase>> Addeded => this._addedSubject;
+        public IObservable<IReadOnlyList<PlaylistBase>> PlaylistsAddeded => this._addedSubject;
 
         private readonly ISubject<IReadOnlyList<PlaylistBase>> _removedSubject = new Subject<IReadOnlyList<PlaylistBase>>();
-        public IObservable<IReadOnlyList<PlaylistBase>> Removed => this._removedSubject;
+        public IObservable<IReadOnlyList<PlaylistBase>> PlaylistsRemoved => this._removedSubject;
 
         private readonly ISubject<IReadOnlyList<PlaylistBase>> _updatedSubject = new Subject<IReadOnlyList<PlaylistBase>>();
-        public IObservable<IReadOnlyList<PlaylistBase>> Updated => this._updatedSubject;
+        public IObservable<IReadOnlyList<PlaylistBase>> PlaylistsUpdated => this._updatedSubject;
 
         #endregion
     }

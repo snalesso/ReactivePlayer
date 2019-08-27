@@ -137,7 +137,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
 
             var serializer = new NewtonsoftJsonTracksSerializer();
             var repository = new SerializingTracksRepository(serializer);
-            tracks = repository.GetAllAsync().Result;
+            tracks = repository.GetAllTracksAsync().Result;
 
             tracks = GetFakeTracks();
             repository.AddAsync(tracks).Wait();

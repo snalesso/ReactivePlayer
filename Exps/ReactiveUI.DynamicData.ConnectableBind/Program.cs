@@ -7,13 +7,10 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind
     {
         static void Main(string[] args)
         {
-            var repository = new TracksRepository();
-            var service = new TracksService(repository);
-            var proxy = new TrackViewMolesProxy(service);
-            var library = new LibraryViewModel(proxy);
+            var proxy = new TrackViewModelsProxy();
+            var allTracks = new AllTracksViewModel(proxy.TrackViewModelsChangeSets);
 
-            (library as IActivate)?.Activate();
-            library.ActivateItem(library.AllTracksViewModel);
+            allTracks.Connect();
 
             Console.ReadLine();
         }

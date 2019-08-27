@@ -1,27 +1,23 @@
-﻿using Caliburn.Micro;
-using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 {
-    public abstract class TracksSubsetViewModel : ReactiveScreen, IDisposable
+    public abstract class TracksSubsetViewModel : ReactiveObject, IDisposable//, ITracksListViewModel
     {
         #region ctors
 
-        public TracksSubsetViewModel()
+        public TracksSubsetViewModel(IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
         {
+            this._sourceTrackViewModelsChanges = sourceTrackViewModelsChanges ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChanges));
+
+            this._serialViewModelsChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
         }
 
         #endregion
@@ -30,7 +26,12 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
         public abstract string Name { get; }
 
-        public abstract ReadOnlyObservableCollection<TrackViewModel> TrackViewModelsROOC { get; }
+        private ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
+        public ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC
+        {
+            get { return this._sortedFilteredTrackViewModelsROOC; }
+            private set { this.RaiseAndSetIfChanged(ref this._sortedFilteredTrackViewModelsROOC, value); }
+        }
 
         private TrackViewModel _selectedTrackViewModel;
         public TrackViewModel SelectedTrackViewModel
@@ -43,26 +44,35 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
         #region methods
 
-        protected IObservable<ISortedChangeSet<TrackViewModel, uint>> Sort(IObservable<IChangeSet<TrackViewModel, uint>> trackVMsToSort)
+        protected virtual IObservable<ISortedChangeSet<TrackViewModel, uint>> Sort(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChanges)
         {
-            return trackVMsToSort.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
+            return trackViewModelsChanges.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.Id));
         }
 
-        protected abstract void Connect();
+        protected abstract IObservable<IChangeSet<TrackViewModel, uint>> Filter(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChanges);
 
-        protected abstract void Disconnect();
+        #region de/activation
 
-        protected override void OnActivate()
+        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sourceTrackViewModelsChanges;
+        private readonly SerialDisposable _serialViewModelsChangesSubscription;
+
+        public void Connect()
         {
-            base.OnActivate();
-            this.Connect();
+            this._serialViewModelsChangesSubscription.Disposable = this.Sort(this.Filter(this._sourceTrackViewModelsChanges))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out var newRooc)
+                //.SubscribeOn(System.Reactive.Concurrency.ImmediateScheduler.Instance)
+                .Subscribe();
+            this.SortedFilteredTrackViewModelsROOC = newRooc;
         }
 
-        protected override void OnDeactivate(bool close)
+        public void Disconnect()
         {
-            base.OnDeactivate(close);
-            this.Disconnect();
+            this.SortedFilteredTrackViewModelsROOC = null;
+            this._serialViewModelsChangesSubscription.Disposable = null;
         }
+
+        #endregion
 
         #endregion
 

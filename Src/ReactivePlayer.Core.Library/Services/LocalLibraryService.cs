@@ -35,32 +35,35 @@ namespace ReactivePlayer.Core.Library.Services
             this._playlistsRepository = playlistsRepository ?? throw new ArgumentNullException(nameof(playlistsRepository));
             this._playlistFactory = playlistFactory ?? throw new ArgumentNullException(nameof(playlistFactory));
 
-            this.TracksChangeSets = ObservableChangeSet.Create<Track, uint>(
+            this.TracksChanges = ObservableChangeSet.Create<Track, uint>(
                 async cache =>
                 {
-                    var items = await this.GetTracksAsync(TimeSpan.FromSeconds(50));
+                    var items = await this.GetTracksAsync(
+                        //TimeSpan.FromSeconds(3)
+                        );
                     GC.Collect();
                     cache.AddOrUpdate(items);
                     GC.Collect();
 
-                    return new CompositeDisposable(
-                        this._tracksRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
-                        this._tracksRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
-                        this._tracksRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
+                    //return new CompositeDisposable(
+                    //    this._tracksRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
+                    //    this._tracksRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
+                    //    this._tracksRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
                 },
                 x => x.Id)
+                // TODO: add synchronization to handle multiple subscriptions?
                 .RefCount();
 
-            this.PlaylistsChangeSets = ObservableChangeSet.Create<PlaylistBase, uint>(
+            this.PlaylistsChanges = ObservableChangeSet.Create<PlaylistBase, uint>(
                 async cache =>
                 {
-                    //var items = await this._playlistsRepository.GetAllAsync();
-                    //cache.AddOrUpdate(items);
+                    var items = await this._playlistsRepository.GetAllPlaylistsAsync();
+                    cache.AddOrUpdate(items);
 
-                    return new CompositeDisposable(
-                        this._playlistsRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
-                        this._playlistsRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
-                        this._playlistsRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
+                    //return new CompositeDisposable(
+                    //    this._playlistsRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
+                    //    this._playlistsRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
+                    //    this._playlistsRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
                 },
                 x => x.Id)
                 .RefCount();
@@ -71,7 +74,7 @@ namespace ReactivePlayer.Core.Library.Services
         // TODO: move somewhere else, maybe to a Task/Task<> mixins with an overload to add a delay
         private async Task<IReadOnlyList<Track>> GetTracksAsync(TimeSpan? minDuration = null)
         {
-            var loadTask = this._tracksRepository.GetAllAsync();
+            var loadTask = this._tracksRepository.GetAllTracksAsync();
 
             if (minDuration.HasValue)
             {
@@ -87,8 +90,8 @@ namespace ReactivePlayer.Core.Library.Services
 
         #region IReadLibraryService
 
-        public IObservable<IChangeSet<Track, uint>> TracksChangeSets { get; }
-        public IObservable<IChangeSet<PlaylistBase, uint>> PlaylistsChangeSets { get; }
+        public IObservable<IChangeSet<Track, uint>> TracksChanges { get; }
+        public IObservable<IChangeSet<PlaylistBase, uint>> PlaylistsChanges { get; }
 
         //private readonly SourceList<Artist> _sourceArtists;
         //public IObservableList<Artist> Artists => this._sourceArtists;

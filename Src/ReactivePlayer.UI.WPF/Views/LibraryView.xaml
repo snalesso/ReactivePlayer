@@ -15,12 +15,12 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="150" />
+            <ColumnDefinition Width="Auto" MinWidth="200" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--<ListBox ItemsSource="{Binding PlaylistViewModels}" SelectedItem="{Binding SelectedTracksFilterViewModel}">
+        <!--<ListBox ItemsSource="{Binding TracksSubsetViewModelsROOC}" SelectedItem="{Binding SelectedTracksSubsetViewModel}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding DisplayName}" />
@@ -28,7 +28,7 @@
             </ListBox.ItemTemplate>
         </ListBox>-->
 
-        <Views:PlaylistsTree DataContext="{Binding}" />
+        <Views:LibrarySidebarView DataContext="{Binding}" />
 
         <GridSplitter
             Grid.Column="1"
@@ -37,7 +37,7 @@
             ResizeBehavior="PreviousAndNext"
             ResizeDirection="Columns" />
 
-        <Views:TracksView Grid.Column="2" DataContext="{Binding ActiveItem}" />
+        <Views:TracksSubsetView Grid.Column="2" DataContext="{Binding ActiveItem}" />
 
     </Grid>
 </UserControl>

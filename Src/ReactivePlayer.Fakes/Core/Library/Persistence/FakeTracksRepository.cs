@@ -140,11 +140,11 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             .ToDictionary(t => t.Location, t => t));
         }
 
-        public IObservable<IReadOnlyList<Track>> Addeded => throw new NotImplementedException();
+        public IObservable<IReadOnlyList<Track>> TracksAddeded => throw new NotImplementedException();
 
-        public IObservable<IReadOnlyList<Track>> Removed => throw new NotImplementedException();
+        public IObservable<IReadOnlyList<Track>> TracksRemoved => throw new NotImplementedException();
 
-        public IObservable<IReadOnlyList<Track>> Updated => throw new NotImplementedException();
+        public IObservable<IReadOnlyList<Track>> TracksUpdated => throw new NotImplementedException();
 
         public Task<Track> AddAsync(Track entity)
         {
@@ -161,9 +161,9 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             throw new NotImplementedException();
         }
         
-        public Task<IReadOnlyList<Track>> GetAllAsync()
+        public Task<IReadOnlyList<Track>> GetAllTracksAsync()
         {
-            return Task.FromResult(this._tracksCache.Values.ToList().AsReadOnly() as IReadOnlyList<Track>);
+            return Task.FromResult(this._tracksCache.Values.ToArray() as IReadOnlyList<Track>);
         }
 
         public Task<bool> RemoveAsync(uint identity)

@@ -40,9 +40,9 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
                 .ToDictionary(t => t.Id, t => t));
         }
 
-        IObservable<IReadOnlyList<PlaylistBase>> IEntityRepository<PlaylistBase, uint>.Addeded => throw new NotImplementedException();
-        IObservable<IReadOnlyList<PlaylistBase>> IEntityRepository<PlaylistBase, uint>.Removed => throw new NotImplementedException();
-        IObservable<IReadOnlyList<PlaylistBase>> IEntityRepository<PlaylistBase, uint>.Updated => throw new NotImplementedException();
+        public IObservable<IReadOnlyList<PlaylistBase>> PlaylistsAddeded => throw new NotImplementedException();
+        public IObservable<IReadOnlyList<PlaylistBase>> PlaylistsRemoved => throw new NotImplementedException();
+        public IObservable<IReadOnlyList<PlaylistBase>> PlaylistsUpdated => throw new NotImplementedException();
 
         public Task<PlaylistBase> AddAsync(PlaylistBase entity)
         {
@@ -64,7 +64,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<PlaylistBase>> GetAllAsync()
+        public Task<IReadOnlyList<PlaylistBase>> GetAllPlaylistsAsync()
         {
             return Task.FromResult(this._playlistsCache.Values.ToArray() as IReadOnlyList<PlaylistBase>);
         }

@@ -591,28 +591,33 @@ namespace ReactivePlayer.Core.Playback.CSCore
         private readonly CompositeDisposable _playerScopeDisposables = new CompositeDisposable();
         private readonly CompositeDisposable __playbackScopeDisposables = new CompositeDisposable();
 
-        // TODO: review implementation, also consider if there's some Interlocked way to do it
+        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
         private bool _isDisposed = false;
 
-        protected virtual void Dispose(bool disposing)
+        // use this in derived class
+        // protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
+        protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
+                return;
+
+            if (isDisposing)
             {
-                if (disposing)
-                {
-                    this._playerScopeDisposables.Dispose();
-                }
-
-                // free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // set large fields to null.
-
-                this._isDisposed = true;
+                // free managed resources here
+                this._playerScopeDisposables.Dispose();
             }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
         }
 
+        // remove if in derived class
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            // Do not change this code. Put cleanup code in Dispose(bool isDisposing) above.
             this.Dispose(true);
         }
 

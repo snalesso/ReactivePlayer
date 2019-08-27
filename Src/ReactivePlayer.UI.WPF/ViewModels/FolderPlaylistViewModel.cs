@@ -13,14 +13,11 @@ using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public class FolderPlaylistViewModel : PlaylistBaseViewModel, IDisposable
+    public class FolderPlaylistViewModel : PlaylistBaseViewModel<FolderPlaylist>, IDisposable
     {
         #region constants & fields
 
-        private readonly FolderPlaylist _playlistFolder;
         private readonly Func<PlaylistBase, PlaylistBaseViewModel> _playlistViewModelFactoryMethod;
-
-        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sortedFilteredBoundTrackViewModelsChangeSets;
 
         #endregion
 
@@ -29,49 +26,41 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public FolderPlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             FolderPlaylist playlistFolder,
-            IObservable<IChangeSet<TrackViewModel, uint>> connectableTrackViewModelChangeSets,
             Func<PlaylistBase, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, playlistFolder)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlistFolder)
         {
-            this._playlistFolder = playlistFolder ?? throw new ArgumentNullException(nameof(playlistFolder));
-            if (connectableTrackViewModelChangeSets == null) throw new ArgumentNullException(nameof(connectableTrackViewModelChangeSets));
             this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
 
-            this._serialViewModelsChangeSetsSubscription = new SerialDisposable().DisposeWith(this._disposables);
+            //this._serialChildrenPlaylistViewModelsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
-            this._playlistFolder.Playlists
+            // TODO: move to Expand, if can expand is known from playlist entity
+            (this._playlist as FolderPlaylist).Playlists
                   .Connect()
                   .Transform(playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl))
                   .DisposeMany()
+                  .RefCount()
                   .AddKey(x => x.PlaylistId)
                   .Sort(SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name))
-                  .Bind(out this._playlistViewModelsROOC)
+                  .ObserveOn(RxApp.MainThreadScheduler)
+                  .Bind(out var newRooc)
                   .Subscribe()
                   .DisposeWith(this._disposables);
-
-            this._sortedFilteredBoundTrackViewModelsChangeSets =
-                this.Sort(
-                    this._playlistFolder.TrackIds
-                    .Connect()
-                    .AddKey(x => x)
-                    .LeftJoin(
-                        connectableTrackViewModelChangeSets,
-                        vm => vm.Id,
-                        (id, trackVM) => trackVM.Value))
-                .Bind(out this._sortedFilteredTrackViewModelsROOC);
+            this.PlaylistViewModelsROOC = newRooc;
         }
 
         #endregion
 
         #region properties
 
-        private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
-
-        private readonly ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
-        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModelsROOC => this._playlistViewModelsROOC;
+        private ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
+        public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModelsROOC
+        {
+            get { return this._playlistViewModelsROOC; }
+            private set { this.RaiseAndSetIfChanged(ref this._playlistViewModelsROOC, value); }
+        }
 
         private PlaylistBaseViewModel _selectedPlaylistViewModel;
         public PlaylistBaseViewModel SelectedPlaylistViewModel
@@ -82,24 +71,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #endregion
 
-        #region methods
-
-        #region connection-activation
-
-        private readonly SerialDisposable _serialViewModelsChangeSetsSubscription;
-
-        protected override void Connect()
-        {
-            this._serialViewModelsChangeSetsSubscription.Disposable = this._sortedFilteredBoundTrackViewModelsChangeSets.Subscribe();
-        }
-
-        protected override void Disconnect()
-        {
-            this._serialViewModelsChangeSetsSubscription.Disposable = null;
-        }
-
-        #endregion
-
+        #region methods        
         #endregion
 
         #region commands

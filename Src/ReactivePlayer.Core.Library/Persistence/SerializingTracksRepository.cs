@@ -77,7 +77,7 @@ namespace ReactivePlayer.Core.Library.Persistence
             return newTrack;
         }
 
-        public Task<IReadOnlyList<Track>> GetAllAsync()
+        public Task<IReadOnlyList<Track>> GetAllTracksAsync()
         {
             return this._serializer.GetAllAsync();
         }
@@ -97,13 +97,13 @@ namespace ReactivePlayer.Core.Library.Persistence
         #region events
 
         private readonly ISubject<IReadOnlyList<Track>> _addedSubject = new Subject<IReadOnlyList<Track>>();
-        public IObservable<IReadOnlyList<Track>> Addeded => this._addedSubject;
+        public IObservable<IReadOnlyList<Track>> TracksAddeded => this._addedSubject;
 
         private readonly ISubject<IReadOnlyList<Track>> _removedSubject = new Subject<IReadOnlyList<Track>>();
-        public IObservable<IReadOnlyList<Track>> Removed => this._removedSubject;
+        public IObservable<IReadOnlyList<Track>> TracksRemoved => this._removedSubject;
 
         private readonly ISubject<IReadOnlyList<Track>> _updatedSubject = new Subject<IReadOnlyList<Track>>();
-        public IObservable<IReadOnlyList<Track>> Updated => this._updatedSubject;
+        public IObservable<IReadOnlyList<Track>> TracksUpdated => this._updatedSubject;
 
         #endregion
     }

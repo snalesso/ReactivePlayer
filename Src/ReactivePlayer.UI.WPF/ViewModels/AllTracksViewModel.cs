@@ -12,14 +12,13 @@ using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
+using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
     public sealed class AllTracksViewModel : TracksSubsetViewModel
     {
         #region constants & fields
-
-        private readonly IObservable<IChangeSet<TrackViewModel, uint>> _sortedFilteredBoundTrackViewModelChangeSets;
 
         #endregion
 
@@ -29,14 +28,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
-            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangeSet)
-            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod)
+            IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
+            : base(audioPlaybackEngine, dialogService, editTrackViewModelFactoryMethod, sourceTrackViewModelsChanges)
         {
-            if (sourceTrackViewModelsChangeSet == null) throw new ArgumentNullException(nameof(sourceTrackViewModelsChangeSet));
-
-            this._serialViewModelsChangeSetsSubscription = new SerialDisposable().DisposeWith(this._disposables);
-
-            this._sortedFilteredBoundTrackViewModelChangeSets = this.Sort(sourceTrackViewModelsChangeSet).Bind(out this._sortedFilteredTrackViewModelsROOC);
         }
 
         #endregion
@@ -45,28 +39,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public override string Name => "All tracks";
 
-        private readonly ReadOnlyObservableCollection<TrackViewModel> _sortedFilteredTrackViewModelsROOC;
-        public override ReadOnlyObservableCollection<TrackViewModel> SortedFilteredTrackViewModelsROOC => this._sortedFilteredTrackViewModelsROOC;
-
         #endregion
 
         #region methods
 
-        #region connection-activation
-
-        private readonly SerialDisposable _serialViewModelsChangeSetsSubscription;
-
-        protected override void Connect()
+        protected override IObservable<IChangeSet<TrackViewModel, uint>> Filter(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChangesFlow)
         {
-            this._serialViewModelsChangeSetsSubscription.Disposable = this._sortedFilteredBoundTrackViewModelChangeSets.Subscribe();
+            return trackViewModelsChangesFlow;
         }
-
-        protected override void Disconnect()
-        {
-            this._serialViewModelsChangeSetsSubscription.Disposable = null;
-        }
-
-        #endregion
 
         #endregion
 
@@ -75,16 +55,21 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region IDisposable
 
+        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private bool _isDisposed = false;
 
+        // use this in derived class
         protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
+        //protected virtual void Dispose(bool isDisposing)
         {
-            if (!this._isDisposed)
+            if (this._isDisposed)
                 return;
 
             if (isDisposing)
             {
+                // free managed resources here
                 this._disposables.Dispose();
             }
 
@@ -93,6 +78,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this._isDisposed = true;
 
+            // remove in non-derived class
             base.Dispose(isDisposing);
         }
 

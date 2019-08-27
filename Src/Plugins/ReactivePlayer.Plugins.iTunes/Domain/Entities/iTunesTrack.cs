@@ -1,3 +1,4 @@
+using ReactivePlayer.Core.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +6,7 @@ using System.Linq;
 namespace ReactivePlayer.Domain.Models
 {
 #pragma warning disable IDE1006 // Naming Styles
-    internal sealed class iTunesTrack
+    public sealed class iTunesTrack
 #pragma warning restore IDE1006 // Naming Styles
     {
         public const char iTunesFeaturingArtistsSplitter = '/';
@@ -14,6 +15,54 @@ namespace ReactivePlayer.Domain.Models
 
         public iTunesTrack()
         {
+        }
+
+        public Track ToTrack(uint trackId)
+        {
+            Track track = null;
+
+            try
+            {
+                TrackAlbumAssociation trackAlbumAssociation = null;
+
+                try
+                {
+                    trackAlbumAssociation = new TrackAlbumAssociation(
+                        new Album(
+                            this.Album,
+                            this.AlbumArtistNames,
+                            this.TrackCount,
+                            this.DiscCount),
+                        this.TrackNumber,
+                        this.DiscNumber);
+                }
+                catch// (Exception ex)
+                {
+                    trackAlbumAssociation = null;
+                }
+
+                track= new Track(
+                    trackId,
+                    // library entry
+                    new Uri(this.Location),
+                    this.TotalTime,
+                    this.DateModified,
+                    this.Size,
+                    // track
+                    this.Name,
+                    this.ArtistNames,
+                    this.ComposerNames,
+                    this.Year,
+                    trackAlbumAssociation,
+                    this.Loved,
+                    this.DateAdded);
+            }
+            catch //(Exception ex)
+            {
+                track = null;
+            }
+
+            return track;
         }
 
         public string Album { get; set; }

@@ -174,6 +174,7 @@
     <Compile Include="ViewModels\EditArtistViewModel.cs" />
     <Compile Include="ViewModels\EditArtistsViewModel.cs" />
     <Compile Include="ViewModels\FolderPlaylistViewModel.cs" />
+    <Compile Include="ViewModels\LibrarySidebarViewModel.cs" />
     <Compile Include="ViewModels\SimplePlaylistViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModelBase.cs" />
     <Compile Include="ViewModels\TrackAlbumAssociationViewModel.cs" />
@@ -220,8 +221,8 @@
     <Compile Include="Views\PlaybackTimelineView.xaml.cs">
       <DependentUpon>PlaybackTimelineView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PlaylistsTree.xaml.cs">
-      <DependentUpon>PlaylistsTree.xaml</DependentUpon>
+    <Compile Include="Views\LibrarySidebarView.xaml.cs">
+      <DependentUpon>LibrarySidebarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellMenuView.xaml.cs">
       <DependentUpon>ShellMenuView.xaml</DependentUpon>
@@ -229,8 +230,8 @@
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TracksView.xaml.cs">
-      <DependentUpon>TracksView.xaml</DependentUpon>
+    <Compile Include="Views\TracksSubsetView.xaml.cs">
+      <DependentUpon>TracksSubsetView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CrashView.xaml.cs">
       <DependentUpon>CrashView.xaml</DependentUpon>
@@ -370,7 +371,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\PlaylistsTree.xaml">
+    <Page Include="Views\LibrarySidebarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -382,7 +383,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TracksView.xaml">
+    <Page Include="Views\TracksSubsetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
