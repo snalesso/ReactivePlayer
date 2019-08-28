@@ -23,7 +23,6 @@
 
         <Slider
             x:Name="PlaybackPositionSlider"
-            Height="18"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center"
             IsEnabled="{Binding IsPositionKnown}"
@@ -34,7 +33,7 @@
             Value="{Binding PositionAsTicks, Mode=OneWay}" />
 
         <ProgressBar
-            Height="18"
+            Height="{Binding ActualHeight, ElementName=PlaybackPositionSlider, Mode=OneWay}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             IsIndeterminate="True"

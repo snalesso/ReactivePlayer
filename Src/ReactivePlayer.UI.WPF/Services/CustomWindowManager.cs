@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using ReactivePlayer.UI.WPF.Views;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -152,7 +153,7 @@ namespace ReactivePlayer.UI.WPF.Services
             if (!(view is Window window))
             {
                 //window = new WindowEx()
-                window = new Window()
+                window = new NormalWindow()
                 {
                     Content = view,
                     //SizeToContent = SizeToContent.Manual,

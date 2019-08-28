@@ -4,6 +4,7 @@ using DynamicData.Binding;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
@@ -60,8 +61,8 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
         {
             this._serialViewModelsChangesSubscription.Disposable = this.Sort(this.Filter(this._sourceTrackViewModelsChanges))
                 .ObserveOn(RxApp.MainThreadScheduler)
+                .SubscribeOn(Scheduler.Default)
                 .Bind(out var newRooc)
-                //.SubscribeOn(System.Reactive.Concurrency.ImmediateScheduler.Instance)
                 .Subscribe();
             this.SortedFilteredTrackViewModelsROOC = newRooc;
         }

@@ -1,6 +1,5 @@
 using ReactivePlayer.Core.Domain.Models;
 using System;
-using System.Collections.Generic;
 
 namespace ReactivePlayer.Core.Library.Models
 {

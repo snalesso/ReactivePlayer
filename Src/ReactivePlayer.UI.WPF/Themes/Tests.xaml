@@ -1,0 +1,25 @@
+﻿<UserControl
+    x:Class="ReactivePlayer.UI.WPF.Themes.Tests"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ReactivePlayer.UI.WPF.Themes"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="65"
+    mc:Ignorable="d">
+    <WrapPanel>
+        <materialDesign:PackIcon Foreground="Red" Kind="Heart" />
+        <materialDesign:PackIcon Foreground="DodgerBlue" Kind="Play" />
+        <materialDesign:PackIcon Foreground="DodgerBlue" Kind="SkipNext" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeDecrease" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeIncrease" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeLow" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeMedium" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeHigh" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeMute" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeOff" />
+        <materialDesign:PackIcon Foreground="White" Kind="VolumeVariantOff" />
+    </WrapPanel>
+</UserControl>

@@ -1,10 +1,12 @@
 ﻿using DynamicData;
+using DynamicData.PLinq;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Services;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
 using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -43,17 +45,17 @@ namespace ReactivePlayer.UI.WPF.Services
             this._playlistsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
             this.TrackViewModelsChangeSets = this._readLibraryService.TracksChanges
-                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track))
+                .Transform(track => this._trackViewModelFactoryMethod.Invoke(track), new ParallelisationOptions(ParallelType.Parallelise))
                 .DisposeMany()
-                .Multicast(new ReplaySubject<IChangeSet<TrackViewModel, uint>>())
-                .AutoConnect(1, d => this._tracksSubscription.Disposable = d);
+                .Multicast(new ReplaySubject<IChangeSet<TrackViewModel, uint>>(Scheduler.Default))
+                .AutoConnect(1, subscription => this._tracksSubscription.Disposable = subscription);
             //.RefCount();
 
             this.PlaylistViewModelsChanges = this._readLibraryService.PlaylistsChanges
-                .Transform(playlist => this.CreatePlaylistViewModel(playlist, null))
+                .Transform(playlist => this.CreatePlaylistViewModel(playlist, null), new ParallelisationOptions(ParallelType.Parallelise))
                 .DisposeMany()
-                .Multicast(new ReplaySubject<IChangeSet<PlaylistBaseViewModel, uint>>())
-                .AutoConnect(1, d => this._playlistsSubscription.Disposable = d);
+                .Multicast(new ReplaySubject<IChangeSet<PlaylistBaseViewModel, uint>>(Scheduler.Default))
+                .AutoConnect(1, subscription => this._playlistsSubscription.Disposable = subscription);
             //.RefCount();
 
             //this.TrackViewModelsChangeSets.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
@@ -72,14 +74,7 @@ namespace ReactivePlayer.UI.WPF.Services
 
         public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsChangeSets { get; }
         public IObservable<IChangeSet<PlaylistBaseViewModel, uint>> PlaylistViewModelsChanges { get; }
-
-        //private bool _holdTrackViewModels;
-        //public bool HoldTrackViewModels
-        //{
-        //    get { return this._holdTrackViewModels; }
-        //    set { this.RaiseAndSetIfChanged(ref this._holdTrackViewModels, value); }
-        //}
-
+        
         public AllTracksViewModel AllTracksViewModel { get; }
 
         #endregion

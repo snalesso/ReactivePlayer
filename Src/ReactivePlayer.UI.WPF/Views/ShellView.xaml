@@ -7,12 +7,20 @@
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:ShellViewModel,
                                      IsDesignTimeCreatable=False}"
     d:DesignHeight="250"
     d:DesignWidth="680"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
     IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -66,8 +74,6 @@
                             </DrawingImage>
                         </ThumbButtonInfo.ImageSource>
                     </ThumbButtonInfo>
-                    <!--<ThumbButtonInfo Command="{Binding Mute}"></ThumbButtonInfo>
-                    <ThumbButtonInfo Command="{Binding UnMute}"></ThumbButtonInfo>-->
                 </ThumbButtonInfoCollection>
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
@@ -82,25 +88,8 @@
         </Grid.RowDefinitions>
 
         <Views:ShellMenuView DataContext="{Binding ShellMenuViewModel}" />
-
-        <!--<Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" MinWidth="280" />
-            </Grid.ColumnDefinitions>-->
-
         <Views:LibraryView Grid.Row="1" DataContext="{Binding LibraryViewModel}" />
-
-        <!--<GridSplitter Grid.Column="1" Background="Transparent" Width="8" ResizeDirection="Columns" ResizeBehavior="PreviousAndNext"></GridSplitter>
-
-            <Views:PlaybackHistoryView Grid.Column="2" DataContext="{Binding PlaybackHistoryViewModel}" />-->
-
-        <!--</Grid>-->
-
         <Views:PlaybackControlsView Grid.Row="2" DataContext="{Binding PlaybackControlsViewModel}" />
-
-        <!--<Views:StatusbarView Grid.Row="3" DataContext="{Binding StatusbarViewModel}" />-->
 
     </Grid>
 

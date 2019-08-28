@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Core.Library.Json;
+﻿using ReactivePlayer.Core.Library.Json.Serializers;
 using ReactivePlayer.Core.Library.Models;
 using ReactivePlayer.Core.Library.Persistence;
 using System;

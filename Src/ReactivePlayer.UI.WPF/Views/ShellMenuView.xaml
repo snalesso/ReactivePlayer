@@ -5,6 +5,7 @@
     xmlns:Daedalus.UI.Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:ShellMenuViewModel,
                                      IsDesignTimeCreatable=False}"
@@ -15,15 +16,11 @@
         <Daedalus.UI.Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Menu>
+    <Menu IsMainMenu="True " Padding="0">
         <Menu.Items>
             <MenuItem Header="Library">
                 <MenuItem.Items>
-                    <!--<MenuItem Command="{Binding TracksViewModel.PlayAll}" Header="Play all" />-->
                     <MenuItem Command="{Binding LibraryViewModel.ShowFilePicker}" Header="Add ..." />
-                    <!--<Separator />
-                    <MenuItem Header="Previous" />
-                    <MenuItem Header="Next" />-->
                 </MenuItem.Items>
             </MenuItem>
             <MenuItem Header="Playback">

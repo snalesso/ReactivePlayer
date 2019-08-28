@@ -1,8 +1,6 @@
-using ReactivePlayer.Core.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace ReactivePlayer.Core.Library.Models
 {

@@ -146,6 +146,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 {
                     this._statusSubject.OnNext(PlaybackStatus.Loading);
 
+                    //var loadTask =
                     await Task.Run(() =>
                     {
                         try
@@ -160,10 +161,12 @@ namespace ReactivePlayer.Core.Playback.CSCore
                         }
                         catch (Exception ex)
                         {
-                        // TODO: improve this error handling
+                            // TODO: improve this error handling
                             this.HandleSoundOutStoppedEvent(ex);
                         }
                     });
+
+                    //await Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith(t => loadTask);
 
                     this.AttachToISoundOutStoppedEvent();
                     this.UpdateDuration(false);

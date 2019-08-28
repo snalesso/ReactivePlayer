@@ -1,7 +1,10 @@
 ﻿using DynamicData;
+using DynamicData.PLinq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
@@ -21,8 +24,12 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
                 x => x.Id)
                 .RefCount();
 
+            var sw = new Stopwatch();
+
             this.TrackViewModelsChangeSets = this.TracksChangeSets
-                .Transform(b => new TrackViewModel(b))
+                .Do(x=> sw.Restart())
+                .Transform(b => new TrackViewModel(b), new ParallelisationOptions(ParallelType.Parallelise))
+                .Do(x=>Debug.WriteLine("Transform took: " +sw.Elapsed.ToString()))
                 .DisposeMany()
                 .RefCount();
         }
@@ -32,22 +39,35 @@ namespace ReactiveUI.DynamicData.Tests.ConnectableBind.WPF
 
         private async Task<IReadOnlyList<Track>> GetAllTracksAsync(TimeSpan? minLoadDuration = null)
         {
-            var tracks = Enumerable.Range(1, 500_000)
-                .AsParallel()
-                .Select(x => new Track()
-                {
-                    Id = (uint)x,
-                    Location = "C:\\FakeTracks\\Track #" + x,
-                    Title = "Title #" + x,
-                    AddedToLibraryDateTime = DateTime.FromFileTimeUtc(x)
-                });
+            var loadTask = Task.Run(
+                () => Enumerable
+                    .Range(1, 2_000_000)
+                    .AsParallel()
+                    .Select(x => new Track()
+                    {
+                        Id = (uint)x,
+                        Location = "C:\\FakeTracks\\Track #" + x,
+                        Title = "Title #" + x,
+                        AddedToLibraryDateTime = DateTime.FromFileTimeUtc(x)
+                    })
+                    .AsParallel()
+                    .ToArray()
+                    //,
+                    //TaskCreationOptions.AttachedToParent
+                    //| TaskCreationOptions.LongRunning
+                    //| TaskCreationOptions.RunContinuationsAsynchronously
+                    );
 
-            var loadTask = Task.Run(() => tracks.ToArray());
+            //if (minLoadDuration.HasValue)
+            //{
+            //    await Task.WhenAll(loadTask, Task.Delay(minLoadDuration.Value));
+            //}
+            var sw = Stopwatch.StartNew();
 
-            if (minLoadDuration.HasValue)
-            {
-                await Task.WhenAll(loadTask, Task.Delay(minLoadDuration.Value));
-            }
+            await loadTask;
+
+            sw.Stop();
+            Console.WriteLine("it took " + sw.Elapsed.ToString());
 
             return await loadTask;
         }

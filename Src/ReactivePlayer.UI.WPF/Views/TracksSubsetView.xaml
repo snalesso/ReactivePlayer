@@ -10,9 +10,11 @@
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows;assembly=PresentationFramework"
+    xmlns:local="clr-namespace:ReactivePlayer.UI.WPF.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=ViewModels:TracksSubsetViewModel,
-                                     IsDesignTimeCreatable=False}"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False,
+                                     Type={x:Type ViewModels:TracksSubsetViewModel}}"
     d:DesignHeight="300"
     d:DesignWidth="650"
     mc:Ignorable="d">
@@ -32,146 +34,138 @@
             Modifiers="Alt" />
     </UserControl.InputBindings>-->
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <!--<RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />-->
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ListView
+        Behaviors:DoubleClick.Command="{Binding PlayTrack}"
+        Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
+        BorderBrush="{x:Null}"
+        BorderThickness="0"
+        ItemsSource="{Binding SortedFilteredTrackViewModelsROOC}"
+        SelectedItem="{Binding SelectedTrackViewModel}"
+        VirtualizingPanel.IsVirtualizing="True"
+        VirtualizingPanel.VirtualizationMode="Recycling">
 
-        <!--<StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Name}" />
-            <TextBlock Text="{Binding SortedFilteredTrackViewModelsROOC.Count}" />
-        </StackPanel>-->
+        <ListView.ItemContainerStyle>
+            <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="ListViewItem">
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <!--<Setter Property="Behaviors:DoubleClick.Command" Value="{Binding PlayTrack}" />
+                <Setter Property="Behaviors:DoubleClick.CommandParameter" Value="{Binding}" />-->
+            </Style>
+        </ListView.ItemContainerStyle>
 
-        <ListView
-            Grid.Row="2"
-            Behaviors:DoubleClick.Command="{Binding PlayTrack}"
-            Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
-            BorderBrush="{x:Null}"
-            BorderThickness="0"
-            ItemsSource="{Binding SortedFilteredTrackViewModelsROOC}"
-            SelectedItem="{Binding SelectedTrackViewModel}"
-            VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Recycling">
-
-            <ListView.View>
-                <GridView>
-                    <!--<GridViewColumn Width="Auto">
+        <ListView.View>
+            <GridView>
+                <!--<GridViewColumn Width="Auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding IsLoaded}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>-->
-                    <GridViewColumn Width="Auto">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Path
+                <GridViewColumn Width="Auto">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <!--<Path
+                                Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                                Height="12"
+                                VerticalAlignment="Center"
+                                Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:TracksSubsetView}}}"
+                                Stretch="Uniform"
+                                Visibility="{Binding IsLoaded, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+                                <Path.Data>
+                                    <CombinedGeometry GeometryCombineMode="Intersect">
+                                        <CombinedGeometry.Geometry1>
+                                            <PathGeometry Figures="M0 0h24v24H0z" />
+                                        </CombinedGeometry.Geometry1>
+                                        <CombinedGeometry.Geometry2>
+                                            <PathGeometry Figures="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+                                        </CombinedGeometry.Geometry2>
+                                    </CombinedGeometry>
+                                </Path.Data>
+                            </Path>-->
+                            <materialDesign:PackIcon
+                                Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                                Height="15"
+                                VerticalAlignment="Center"
+                                Kind="VolumeHigh"
+                                Visibility="{Binding IsLoaded, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+
+                <GridViewColumn Width="Auto">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <!--<StackPanel Orientation="Horizontal">-->
+                            <!--<Path
                                     Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
-                                    Height="12"
-                                    Fill="Black"
-                                    Stretch="Uniform"
-                                    Visibility="{Binding IsLoaded, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
-                                    <Path.Data>
-                                        <CombinedGeometry GeometryCombineMode="Intersect">
-                                            <CombinedGeometry.Geometry1>
-                                                <PathGeometry Figures="M0 0h24v24H0z" />
-                                            </CombinedGeometry.Geometry1>
-                                            <CombinedGeometry.Geometry2>
-                                                <PathGeometry Figures="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
-                                            </CombinedGeometry.Geometry2>
-                                        </CombinedGeometry>
-                                    </Path.Data>
-                                </Path>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="Auto">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Path
-                                    Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
-                                    Height="10"
+                                    Height="8"
+                                    VerticalAlignment="Center"
                                     Data="{StaticResource Geometries.Heart}"
                                     Fill="Red"
                                     Stretch="Uniform"
-                                    Visibility="{Binding IsLoved, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <!--<GridViewColumn Width="30" Header="Played">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding PlayedCount}" TextAlignment="Right" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>-->
-                    <GridViewColumn Width="330" Header="Title">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="330" Header="Performers">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding PerformersNames, Converter={StaticResource StringEnumerableJoiner}}" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="330" Header="Album">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding AlbumTitle}" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Width="100" Header="Added on">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding AddedToLibraryDateTime, Mode=OneWay, StringFormat=\{0:dd/MM/yy HH:mm\}}" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
+                                    Visibility="{Binding IsLoved, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />-->
+                            <materialDesign:PackIcon
+                                Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                                Height="15"
+                                VerticalAlignment="Center"
+                                Foreground="Red"
+                                Kind="Heart"
+                                Visibility="{Binding IsLoved, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+                            <!--</StackPanel>-->
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
 
-            <!--<ListView.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl>
-                        <GridViewRowPresenter />
-                    </ContentControl>
-                </DataTemplate>
-            </ListView.ItemTemplate>-->
+                <GridViewColumn Width="330" Header="Title">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="330" Header="Performers">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding PerformersNames, Converter={StaticResource StringEnumerableJoiner}}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="330" Header="Album">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding AlbumTitle}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Width="103" Header="Added on">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding AddedToLibraryDateTime, Mode=OneWay, StringFormat=\{0:dd/MM/yy HH:mm\}}" TextTrimming="CharacterEllipsis" />
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+            </GridView>
+        </ListView.View>
 
-            <!--<ListView.ItemTemplate>
-                <DataTemplate>
-                </DataTemplate>
-            </ListView.ItemTemplate>-->
-
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem
-                        Command="{Binding PlayTrack}"
-                        CommandParameter="{Binding SelectedTrackViewModel}"
-                        Header="Play" />
-                    <Separator />
-                    <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
-                    <MenuItem
-                        Command="{Binding EditTrackTags}"
-                        CommandParameter="{Binding SelectedTrackViewModel}"
-                        Header="Edit" />
-                    <!--<MenuItem
+        <ListView.ContextMenu>
+            <ContextMenu>
+                <MenuItem
+                    Command="{Binding PlayTrack}"
+                    CommandParameter="{Binding SelectedTrackViewModel}"
+                    Header="Play" />
+                <Separator />
+                <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
+                <MenuItem
+                    Command="{Binding EditTrackTags}"
+                    CommandParameter="{Binding SelectedTrackViewModel}"
+                    Header="Edit" />
+                <!--<MenuItem
                         Command="{Binding RemoveTrackFromLibrary}"
                         CommandParameter="{Binding SelectedTrackViewModel}"
                         Header="Remove from library" />-->
-                </ContextMenu>
-            </ListView.ContextMenu>
+            </ContextMenu>
+        </ListView.ContextMenu>
 
-        </ListView>
-
-    </Grid>
+    </ListView>
 
 </UserControl>

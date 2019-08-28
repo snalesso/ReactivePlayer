@@ -45,9 +45,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library.Json.Newtonsoft\ReactivePlayer.Core.Library.Json.Newtonsoft.csproj">
-      <Project>{1afe2b64-d7e6-4897-8e90-96c17c1b952d}</Project>
-      <Name>ReactivePlayer.Core.Library.Json.Newtonsoft</Name>
+    <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library.Json\ReactivePlayer.Core.Library.Json.csproj">
+      <Project>{BB846D47-8B91-4793-99A6-5DB19984F6E1}</Project>
+      <Name>ReactivePlayer.Core.Library.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{402FEED0-76D6-4640-B261-EBE598BA6FBE}</Project>

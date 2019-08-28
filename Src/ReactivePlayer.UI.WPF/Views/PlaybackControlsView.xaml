@@ -7,6 +7,7 @@
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False,
                                      Type={x:Type DesignTimeViewModels:DesignTimePlaybackControlsViewModel}}"
@@ -50,11 +51,9 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" MinWidth="8" />
+                <ColumnDefinition MinWidth="8" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -65,39 +64,29 @@
                 Command="{Binding PlayPrevious, Mode=OneWay}"
                 Content="Prev" />-->
 
-            <Button
-                Grid.Column="2"
-                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                Height="24"
-                Command="{Binding Pause, Mode=OneWay}">
-                <Path
-                    Data="{DynamicResource Geometries.Pause}"
-                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                    Stretch="Uniform" />
-            </Button>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+
+                <Button
+                    Command="{Binding Resume, Mode=OneWay}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Visibility="{Binding CanResume, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <materialDesign:PackIcon Kind="Play" />
+                </Button>
+
+                <Button
+                    Command="{Binding Pause, Mode=OneWay}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Visibility="{Binding CanPause, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <materialDesign:PackIcon Kind="Pause" />
+                </Button>
+
+            </StackPanel>
 
             <Button
                 Grid.Column="4"
-                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                Height="24"
-                Command="{Binding Resume, Mode=OneWay}">
-                <Path
-                    Width="{Binding Height, RelativeSource={RelativeSource Self}}"
-                    Data="{StaticResource Geometries.Resume}"
-                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                    Stretch="Uniform" />
-            </Button>
-
-            <Button
-                Grid.Column="6"
-                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                Height="24"
-                Command="{Binding Stop, Mode=OneWay}">
-                <Path
-                    Width="{Binding Height, RelativeSource={RelativeSource Self}}"
-                    Data="{StaticResource Geometries.Stop}"
-                    Fill="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"
-                    Stretch="Uniform" />
+                Command="{Binding Stop, Mode=OneWay}"
+                Style="{StaticResource MaterialDesignIconButton}">
+                <materialDesign:PackIcon Kind="Stop" />
             </Button>
 
             <!--<Button
@@ -108,7 +97,7 @@
                 Content="Next" />-->
 
             <Slider
-                Grid.Column="10"
+                Grid.Column="8"
                 Width="100"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
@@ -119,11 +108,11 @@
                 Value="{Binding Volume}" />
 
             <StackPanel
-                Grid.Column="12"
+                Grid.Column="10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding PlaybackTimelineViewModel.Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Text="{Binding PlaybackTimelineViewModel.Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, FallbackValue=--:--, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBlock Text=" / ">
                     <TextBlock.Visibility>
                         <MultiBinding Converter="{StaticResource MultiBooleanAllToVisibilityConverter}">
@@ -132,7 +121,7 @@
                         </MultiBinding>
                     </TextBlock.Visibility>
                 </TextBlock>
-                <TextBlock Text="{Binding PlaybackTimelineViewModel.Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsDurationKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Text="{Binding PlaybackTimelineViewModel.Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, FallbackValue=--:--, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsDurationKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 
         </Grid>

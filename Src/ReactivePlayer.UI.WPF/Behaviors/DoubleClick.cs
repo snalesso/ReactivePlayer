@@ -11,7 +11,7 @@ namespace ReactivePlayer.UI.WPF.Behaviors
             nameof(Command),
             typeof(ICommand),
             typeof(DoubleClick),
-            new PropertyMetadata(OnCommandChanged));
+            new PropertyMetadata(null, OnCommandChanged));
         public static ICommand GetCommand(Control target)
         {
             return (ICommand)target.GetValue(Command);
