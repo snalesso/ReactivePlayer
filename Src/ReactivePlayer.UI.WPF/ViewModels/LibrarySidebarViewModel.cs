@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Playlists;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;

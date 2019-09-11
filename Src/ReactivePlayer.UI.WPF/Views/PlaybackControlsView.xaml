@@ -20,6 +20,7 @@
         <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
         <Converters:BooleanInverter x:Key="BooleanInverter" />
         <Converters:MultiBooleanAllToVisibilityConverter x:Key="MultiBooleanAllToVisibilityConverter" />
+        <Converters:MultiBooleanAllToVisibilityInverter x:Key="MultiBooleanAllToVisibilityInverter" />
         <!--<Converters:MultiBooleanAnyToVisibilityConverter x:Key="MultiBooleanAnyToVisibilityConverter" />-->
     </UserControl.Resources>
 
@@ -65,6 +66,14 @@
                 Content="Prev" />-->
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
+
+                <Button
+                    Command="{Binding PlayAll, Mode=OneWay}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Visibility="{Binding HasLoadedTrack, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <materialDesign:PackIcon Kind="Play" />
+                </Button>
+
 
                 <Button
                     Command="{Binding Resume, Mode=OneWay}"

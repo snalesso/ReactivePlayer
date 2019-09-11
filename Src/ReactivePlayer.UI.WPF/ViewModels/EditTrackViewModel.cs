@@ -1,13 +1,7 @@
-﻿using ReactivePlayer.Core.Library;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Services;
+﻿using ReactivePlayer.Core.Library.Tracks;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

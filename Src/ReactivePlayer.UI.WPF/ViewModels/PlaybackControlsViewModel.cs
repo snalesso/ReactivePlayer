@@ -42,9 +42,51 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this.PlaybackTimelineViewModel = playbackTimelineViewModel ?? throw new ArgumentNullException(nameof(playbackTimelineViewModel));
 
-            this.Pause = ReactiveCommand.CreateFromTask(() => this._audioPlaybackEngine.PauseAsync(), this._audioPlaybackEngine.WhenCanPauseChanged).DisposeWith(this._disposables);
-            this.Resume = ReactiveCommand.CreateFromTask(() => this._audioPlaybackEngine.ResumeAsync(), this._audioPlaybackEngine.WhenCanResumeChanged).DisposeWith(this._disposables);
-            this.Stop = ReactiveCommand.CreateFromTask(() => this._audioPlaybackEngine.StopAsync(), this._audioPlaybackEngine.WhenCanStopChanged).DisposeWith(this._disposables);
+            this._volume_OAPH = this._audioPlaybackEngine.WhenVolumeChanged
+                .ToProperty(this, nameof(this.Volume))
+                .DisposeWith(this._disposables);
+            this._hasLoadedTrack_OAPH = this._audioPlaybackEngine.WhenTrackChanged
+                .Select(x => x == null)
+                .ToProperty(this, nameof(this.HasLoadedTrack))
+                .DisposeWith(this._disposables);
+            this._canPause_OAPH = this._audioPlaybackEngine.WhenCanPauseChanged
+                .ToProperty(this, nameof(this.CanPause))
+                .DisposeWith(this._disposables);
+            this._canResume_OAPH = this._audioPlaybackEngine.WhenCanResumeChanged
+                .ToProperty(this, nameof(this.CanResume))
+                .DisposeWith(this._disposables);
+
+            this.PlayAll = ReactiveCommand.Create(
+                () => throw new NotImplementedException(),
+                Observable.Return(false));
+            this.PlayAll.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
+            this.PlayAll.DisposeWith(this._disposables);
+
+            this.Pause = ReactiveCommand.CreateFromTask(
+                () => this._audioPlaybackEngine.PauseAsync(),
+                this._audioPlaybackEngine.WhenCanPauseChanged);
+            this.Pause.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
+            this.Pause.DisposeWith(this._disposables);
+
+            this.Resume = ReactiveCommand.CreateFromTask(
+                () => this._audioPlaybackEngine.ResumeAsync(),
+                this._audioPlaybackEngine.WhenCanResumeChanged);
+            this.Resume.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
+            this.Resume.DisposeWith(this._disposables);
+
+            this.Stop = ReactiveCommand.CreateFromTask(
+                () => this._audioPlaybackEngine.StopAsync(),
+                this._audioPlaybackEngine.WhenCanStopChanged);
+            this.Stop.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
+            this.Stop.DisposeWith(this._disposables);
 
             //this.PlayPrevious = ReactiveCommand
             //    .CreateFromTask(async () =>
@@ -76,34 +118,27 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //        this._playbackService.WhenCanStopChanged,
             //        (isEmpty, canStop) => !isEmpty && canStop))
             //    .DisposeWith(this._disposables);
-
-            this._volumeOAPH = this._audioPlaybackEngine.WhenVolumeChanged
-                .ToProperty(this, nameof(this.Volume))
-                .DisposeWith(this._disposables);
-            this._canPauseOAPH = this._audioPlaybackEngine.WhenCanPauseChanged
-                .ToProperty(this, nameof(this.CanPause))
-                .DisposeWith(this._disposables);
-            this._canResumeOAPH = this._audioPlaybackEngine.WhenCanResumeChanged
-                .ToProperty(this, nameof(this.CanResume))
-                .DisposeWith(this._disposables);
         }
 
         #endregion
 
         #region properties
 
-        private readonly ObservableAsPropertyHelper<float> _volumeOAPH;
+        private readonly ObservableAsPropertyHelper<float> _volume_OAPH;
         public float Volume
         {
-            get => this._volumeOAPH.Value;
+            get => this._volume_OAPH.Value;
             set => this._audioPlaybackEngine.Volume = value;
         }
 
-        private readonly ObservableAsPropertyHelper<bool> _canResumeOAPH;
-        public bool CanResume => this._canResumeOAPH.Value;
+        private readonly ObservableAsPropertyHelper<bool> _canResume_OAPH;
+        public bool CanResume => this._canResume_OAPH.Value;
 
-        private readonly ObservableAsPropertyHelper<bool> _canPauseOAPH;
-        public bool CanPause => this._canPauseOAPH.Value;
+        private readonly ObservableAsPropertyHelper<bool> _canPause_OAPH;
+        public bool CanPause => this._canPause_OAPH.Value;
+
+        private readonly ObservableAsPropertyHelper<bool> _hasLoadedTrack_OAPH;
+        public bool HasLoadedTrack => this._hasLoadedTrack_OAPH.Value;
 
         public PlaybackTimelineViewModel PlaybackTimelineViewModel { get; }
 
@@ -113,6 +148,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public override async void CanClose(Action<bool> callback)
         {
+            // TODO: handle exceptions
             await this._audioPlaybackEngine.StopAsync()/*.ConfigureAwait(false)*/;
             this._disposables.Dispose();
 
@@ -123,6 +159,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region commands
 
+        public ReactiveCommand<Unit, Unit> PlayAll { get; }
         public ReactiveCommand<Unit, Unit> Pause { get; }
         public ReactiveCommand<Unit, Unit> Resume { get; }
         public ReactiveCommand<Unit, Unit> Stop { get; }

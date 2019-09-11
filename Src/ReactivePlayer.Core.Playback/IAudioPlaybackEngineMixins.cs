@@ -1,4 +1,4 @@
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Threading.Tasks;
 

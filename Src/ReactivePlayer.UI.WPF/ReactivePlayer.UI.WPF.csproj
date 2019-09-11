@@ -322,6 +322,10 @@
       <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
       <Name>ReactivePlayer.Core.FileSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReactivePlayer.Core.Library.Json\ReactivePlayer.Core.Library.Json.csproj">
+      <Project>{BB846D47-8B91-4793-99A6-5DB19984F6E1}</Project>
+      <Name>ReactivePlayer.Core.Library.Json</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
       <Project>{d410bfe3-22c7-4ee6-ab62-9a069f2f1566}</Project>
       <Name>ReactivePlayer.Core.Library</Name>
@@ -329,10 +333,6 @@
     <ProjectReference Include="..\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj">
       <Project>{d35e71ae-d254-4989-ae24-12747f3dcdc8}</Project>
       <Name>ReactivePlayer.Core.Playback</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Fakes\ReactivePlayer.Fakes.csproj">
-      <Project>{376B6CD2-B0CF-4EDD-A55D-D0A1B3674B10}</Project>
-      <Name>ReactivePlayer.Fakes</Name>
     </ProjectReference>
     <ProjectReference Include="..\ReactivePlayer.UI\ReactivePlayer.UI.csproj">
       <Project>{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}</Project>

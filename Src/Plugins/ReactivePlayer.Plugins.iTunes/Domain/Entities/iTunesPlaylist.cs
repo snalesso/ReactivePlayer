@@ -1,4 +1,5 @@
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Playlists;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -14,7 +15,11 @@ namespace ReactivePlayer.Domain.Models
         // TODO: handle AC/DC splitting
         //private readonly Hashtable<IReadOnlyList<string>, string>
 
-        public PlaylistBase ToSimplePlaylist(Func<uint> newPlaylistIdGenerator, uint? parentPlaylistId, IDictionary<uint, Track> tracksMapper)
+        public PlaylistBase ToSimplePlaylist(
+            Func<uint> newPlaylistIdGenerator,
+            uint? parentPlaylistId,
+            ITracksRepository tracksRepository,
+            IReadOnlyDictionary<uint, Track> tracksMapper)
         {
             PlaylistBase playlist = null;
 
@@ -25,6 +30,7 @@ namespace ReactivePlayer.Domain.Models
                     // library entry
                     parentPlaylistId,
                     this.Name,
+                    tracksRepository,
                     tracksMapper == null || this.Playlist_Items == null
                         ? ImmutableList<uint>.Empty
                         : this.Playlist_Items.Select(x => tracksMapper[x].Id).ToImmutableList());
@@ -37,7 +43,12 @@ namespace ReactivePlayer.Domain.Models
             return playlist;
         }
 
-        public PlaylistBase ToFolderPlaylist(Func<uint> newPlaylistIdGenerator, uint? parentPlaylistId, IEnumerable<iTunesPlaylist> iTunesPlaylists, IDictionary<uint, Track> tracksMapper)
+        public PlaylistBase ToFolderPlaylist(
+            Func<uint> newPlaylistIdGenerator,
+            uint? parentPlaylistId,
+            ITracksRepository tracksRepository,
+            IEnumerable<iTunesPlaylist> iTunesPlaylists,
+            IReadOnlyDictionary<uint, Track> tracksMapper)
         {
             PlaylistBase playlist = null;
 
@@ -54,7 +65,7 @@ namespace ReactivePlayer.Domain.Models
                         ? ImmutableList<PlaylistBase>.Empty
                         : iTunesPlaylists
                             .Where(x => x.Parent_Persistent_ID == this.Playlist_Persistent_ID)
-                            .Select(x => x.ToPlaylist(newPlaylistIdGenerator, playlistId, iTunesPlaylists, tracksMapper))
+                            .Select(x => x.ToPlaylist(newPlaylistIdGenerator, playlistId, tracksRepository, iTunesPlaylists, tracksMapper))
                             .RemoveNulls()
                             .ToImmutableList());
             }
@@ -66,13 +77,18 @@ namespace ReactivePlayer.Domain.Models
             return playlist;
         }
 
-        public PlaylistBase ToPlaylist(Func<uint> newPlaylistIdGenerator, uint? parentPlaylistId, IEnumerable<iTunesPlaylist> iTunesPlaylists, IDictionary<uint, Track> tracksMapper)
+        public PlaylistBase ToPlaylist(
+            Func<uint> newPlaylistIdGenerator,
+            uint? parentPlaylistId,
+            ITracksRepository tracksRepository,
+            IEnumerable<iTunesPlaylist> iTunesPlaylists,
+            IReadOnlyDictionary<uint, Track> tracksMapper)
         {
             if (this.Folder)
-                return this.ToFolderPlaylist(newPlaylistIdGenerator, parentPlaylistId, iTunesPlaylists, tracksMapper);
+                return this.ToFolderPlaylist(newPlaylistIdGenerator, parentPlaylistId, tracksRepository, iTunesPlaylists, tracksMapper);
 
             else //if (this.Smart_Criteria == null && this.Smart_Info == null)
-                return this.ToSimplePlaylist(newPlaylistIdGenerator, parentPlaylistId, tracksMapper);
+                return this.ToSimplePlaylist(newPlaylistIdGenerator, parentPlaylistId, tracksRepository, tracksMapper);
 
             //return null;
             //else

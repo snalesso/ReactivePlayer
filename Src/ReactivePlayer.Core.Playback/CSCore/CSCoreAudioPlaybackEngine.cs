@@ -1,7 +1,7 @@
 using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,7 +12,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace ReactivePlayer.Core.Playback.CSCore
 {

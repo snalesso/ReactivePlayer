@@ -1,8 +1,11 @@
 ﻿using DynamicData;
-using ReactivePlayer.Core.Library.Models;
+using DynamicData.Alias;
+using ReactivePlayer.Core.Library.Playlists;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using System;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
@@ -13,12 +16,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public PlaylistBaseViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
+            IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             PlaylistBase playlist)
-            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow)
         {
             this._playlist = playlist ?? throw new ArgumentNullException(nameof(playlist));
         }
@@ -43,12 +47,21 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //}
 
             return this._playlist.TrackIds
-               .Connect()
-               .AddKey(x => x)
                .LeftJoin(
                    trackViewModelsChangesFlow,
                    vm => vm.Id,
-                   (id, trackVM) => trackVM.Value);
+                   (id, trackVM) =>
+                   {
+                       if (!trackVM.HasValue)
+                       {
+                           Debug.WriteLine($"Cannot find {nameof(TrackViewModel)} with {nameof(TrackViewModel.Id)} == {id} in {this.GetType().FullName} {this.Name}");
+                       }
+
+                       //return trackVM.HasValue ? trackVM.Value : null;
+
+                       return trackVM.HasValue ? trackVM.Value : null;
+                   })
+               .Where(x => x != null);
         }
 
         #endregion
@@ -89,12 +102,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public PlaylistBaseViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
+            IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             TPlaylist playlist)
-            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
         {
         }
 

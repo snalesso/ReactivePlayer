@@ -1,6 +1,5 @@
 ﻿using ReactivePlayer.Core.Library.Json.Serializers;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -128,7 +127,7 @@ namespace ReactivePlayer.Exps.Persistence.Tracks
                     DateTime.ParseExact("21/08/2012 20:32", dtf, dtFormatProvider))
             };
         }
-        
+
         static void TestNewtonsoftTracks()
         {
             IReadOnlyList<Track> tracks = null;

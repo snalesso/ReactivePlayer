@@ -1,17 +1,10 @@
 using ReactivePlayer.Core;
-using ReactivePlayer.Core.Domain.Persistence;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
 using ReactivePlayer.Domain.Models;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace ReactivePlayer.Domain.Repositories

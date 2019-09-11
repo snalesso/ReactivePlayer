@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="Domain\Models\Entity`1.cs" />
     <Compile Include="Domain\Models\Helpers\HashCodeHelper.cs" />
+    <Compile Include="Domain\Persistence\DistinctValuesSerializer`1.cs" />
     <Compile Include="Domain\Persistence\EntitySerializer`2.cs" />
     <Compile Include="Domain\Persistence\IEntityRepository`2.cs" />
     <Compile Include="IDisposableMixins.cs" />

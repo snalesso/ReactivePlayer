@@ -2,12 +2,14 @@
 using DynamicData.Binding;
 using DynamicData.PLinq;
 using DynamicData.ReactiveUI;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Playlists;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
@@ -25,30 +27,34 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public FolderPlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
+            IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             FolderPlaylist playlistFolder,
             Func<PlaylistBase, FolderPlaylistViewModel, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
-            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlistFolder)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlistFolder)
         {
             this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
 
             //this._serialChildrenPlaylistViewModelsSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
             // TODO: move to Expand, if can expand is known from playlist entity
+            // TODO: handle type conversion returns null
             (this._playlist as FolderPlaylist).Playlists
-                  .Connect()
-                  .Transform(playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this))
-                  .DisposeMany()
-                  .RefCount()
-                  .AddKey(x => x.PlaylistId)
-                  .Sort(SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name))
-                  .ObserveOn(RxApp.MainThreadScheduler)
-                  .Bind(out var newRooc)
-                  .Subscribe()
-                  .DisposeWith(this._disposables);
+                .Transform(
+                    playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this), 
+                    new ParallelisationOptions(ParallelType.Parallelise))
+                .DisposeMany()
+                .RefCount()
+                .Sort(
+                    SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name),
+                    SortOptimisations.None)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out var newRooc)
+                .Subscribe()
+                .DisposeWith(this._disposables);
             this.PlaylistViewModelsROOC = newRooc;
         }
 
@@ -76,6 +82,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region commands
+
+        public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null;
+    
         #endregion
 
         #region IDisposable

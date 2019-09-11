@@ -8,7 +8,7 @@ using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.Core.Library.Persistence
+namespace ReactivePlayer.Core.Domain.Persistence
 {
     // TODO: save to a copy, if save failes, reload data to undo changes to in memory entities
     // TODO: defend from concurrent Deserialize/Serialize, ecc.
@@ -92,29 +92,24 @@ namespace ReactivePlayer.Core.Library.Persistence
             return this._entities.Values.ToArray();
         }
 
-        public async Task<bool> RemoveAsync(TIdentity identity)
+        public async Task<TEntity> RemoveAsync(TIdentity identity)
         {
-            bool result = false;
+            TEntity removedEntity = null;
 
             await this.Serialize(() =>
             {
-                if (!this._entities.ContainsKey(identity))
-                    result = false;
-
-                if (!this._entities.TryRemove(identity, out var _))
+                if (!this._entities.TryRemove(identity, out removedEntity))
                 {
                     throw new Exception();
                 }
-
-                result = true;
             });
 
-            return result;
+            return removedEntity;
         }
 
-        public async Task<bool> RemoveAsync(IEnumerable<TIdentity> identities)
+        public async Task<IReadOnlyList<TEntity>> RemoveAsync(IEnumerable<TIdentity> identities)
         {
-            bool result = false;
+            List<TEntity> removedEntities = new List<TEntity>(identities.Count());
 
             await this.Serialize(() =>
             {
@@ -122,23 +117,22 @@ namespace ReactivePlayer.Core.Library.Persistence
                 {
                     if (!this._entities.ContainsKey(identity))
                     {
-                        result = false;
-                        return;
+                        throw new Exception();
                     }
                 }
 
                 foreach (var identity in identities)
                 {
-                    if (!this._entities.TryRemove(identity, out var _))
+                    if (!this._entities.TryRemove(identity, out var entity))
                     {
                         throw new Exception();
                     }
-                }
 
-                result = true;
+                    removedEntities.Add(entity);
+                }
             });
 
-            return result;
+            return removedEntities;
         }
 
         #region serialization

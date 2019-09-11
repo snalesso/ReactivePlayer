@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -20,6 +19,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
+        protected readonly IWriteLibraryService _writeLibraryService;
         private readonly IDialogService _dialogService;
 
         private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
@@ -30,16 +30,19 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TracksSubsetViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
+            IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
         {
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
+            this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this.ParentTracksSubsetViewModel = parentTracksSubsetViewModel;
             this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
             this._sourceTrackViewModelsChanges = sourceTrackViewModelsChanges ?? throw new ArgumentNullException(nameof(sourceTrackViewModelsChanges));
+
+            this.ParentTracksSubsetViewModel = parentTracksSubsetViewModel;
 
             this._serialViewModelsChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
@@ -63,22 +66,35 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     this._audioPlaybackEngine.WhenCanLoadChanged,
                     this._audioPlaybackEngine.WhenCanPlayChanged,
                     this._audioPlaybackEngine.WhenCanStopChanged,
-                    (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)))
-                .DisposeWith(this._disposables);
+                    (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)));
             this.PlayTrack.ThrownExceptions
                 .Subscribe(ex => Debug.WriteLine(ex.Message))
                 .DisposeWith(this._disposables);
+            this.PlayTrack.DisposeWith(this._disposables);
 
             this.EditTrackTags = ReactiveCommand.Create(
                 (TrackViewModel vm) =>
                 {
                     this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod(vm.Track));
                 },
-                this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null))
-                .DisposeWith(this._disposables);
+                this.WhenAny(x => x.SelectedTrackViewModel, x => x.Value != null));
             this.EditTrackTags.ThrownExceptions
                 .Subscribe(ex => Debug.WriteLine(ex.Message))
                 .DisposeWith(this._disposables);
+            this.EditTrackTags.DisposeWith(this._disposables);
+
+            this.RemoveTrackFromLibrary = ReactiveCommand.CreateFromTask(
+                async (TrackViewModel trackViewModel) =>
+                {
+                    if (this.SelectedTrackViewModel == trackViewModel)
+                        this.SelectedTrackViewModel = null;
+
+                    await this._writeLibraryService.RemoveTrackAsync(new RemoveTrackCommand(trackViewModel.Id));
+                });
+            this.RemoveTrackFromLibrary.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
+            this.RemoveTrackFromLibrary.DisposeWith(this._disposables);
         }
 
         #endregion
@@ -108,7 +124,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         // TODO: use some LINQ to make more fluent OR use IObservable<IComparer> to use .Sort overload
         protected IObservable<ISortedChangeSet<TrackViewModel, uint>> Sort(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChangesFlow)
         {
-            return trackViewModelsChangesFlow.Sort(SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime));
+            return trackViewModelsChangesFlow.Sort(
+                SortExpressionComparer<TrackViewModel>.Descending(vm => vm.AddedToLibraryDateTime),
+                SortOptimisations.ComparesImmutableValuesOnly);
         }
 
         protected abstract IObservable<IChangeSet<TrackViewModel, uint>> Filter(IObservable<IChangeSet<TrackViewModel, uint>> trackViewModelsChangesFlow);
@@ -164,6 +182,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReactiveCommand<Unit, Unit> PlayAll { get; }
 
         public ReactiveCommand<TrackViewModel, Unit> EditTrackTags { get; }
+
+        public ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromLibrary { get; }
+        public abstract ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset { get; }
 
         #endregion
 

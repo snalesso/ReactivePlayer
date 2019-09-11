@@ -45,9 +45,13 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Newtonsoft\NewtonsoftJsonPlaylistBaseConverter.cs" />
+    <Compile Include="Newtonsoft\NewtonsoftJsonTrackConverter.cs" />
     <Compile Include="POCOs\Album.cs" />
     <Compile Include="POCOs\Artist.cs" />
-    <Compile Include="Serializers\NewtonsoftJsonTracksSerializer.cs" />
+    <Compile Include="Newtonsoft\JsonReaderMixins.cs" />
+    <Compile Include="Newtonsoft\NewtonsoftJsonPlaylistsSerializer.cs" />
+    <Compile Include="Newtonsoft\NewtonsoftJsonTracksSerializer.cs" />
     <Compile Include="POCOs\Track.cs" />
     <Compile Include="POCOs\TrackComposer.cs" />
     <Compile Include="POCOs\TrackPerformer.cs" />
@@ -69,5 +73,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

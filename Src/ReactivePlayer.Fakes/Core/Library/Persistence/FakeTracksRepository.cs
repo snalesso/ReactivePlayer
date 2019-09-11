@@ -1,6 +1,5 @@
-﻿using ReactivePlayer.Core.Domain.Persistence;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
+﻿using DynamicData;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -145,6 +144,10 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         public IObservable<IReadOnlyList<Track>> TracksRemoved => throw new NotImplementedException();
 
         public IObservable<IReadOnlyList<Track>> TracksUpdated => throw new NotImplementedException();
+
+        public IObservable<IChangeSet<Track, uint>> TracksCacheChanges => throw new NotImplementedException();
+
+        public IObservable<IChangeSet<Track>> TracksListChanges => throw new NotImplementedException();
 
         public Task<Track> AddAsync(Track entity)
         {

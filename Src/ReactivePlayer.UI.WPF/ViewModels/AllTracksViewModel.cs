@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
-using DynamicData;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Services;
+﻿using DynamicData;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
+using System;
+using System.Reactive;
+using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -26,11 +19,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public AllTracksViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
+            IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
-            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChanges)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChanges)
         {
         }
 
@@ -52,6 +46,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region commands
+
+        public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null;
+
         #endregion
 
         #region IDisposable

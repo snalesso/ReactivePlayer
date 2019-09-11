@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback.History;
 using System;
 

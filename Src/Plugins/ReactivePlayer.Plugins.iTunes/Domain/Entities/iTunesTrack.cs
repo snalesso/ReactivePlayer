@@ -1,4 +1,4 @@
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace ReactivePlayer.Domain.Models
                     trackAlbumAssociation = null;
                 }
 
-                track= new Track(
+                track = new Track(
                     trackId,
                     // library entry
                     new Uri(this.Location),

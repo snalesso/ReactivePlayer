@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.Core.Library.Models;
+﻿using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactiveUI;

@@ -1,15 +1,10 @@
 using DynamicData;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
-using System.Reactive.Joins;
 using System.Reactive.Linq;
-using System.Reactive.Threading;
 
 namespace ReactivePlayer.Core.Playback.Queue
 {

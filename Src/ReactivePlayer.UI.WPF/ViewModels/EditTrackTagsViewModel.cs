@@ -1,15 +1,10 @@
 ﻿using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -49,7 +44,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 }
                 ).DisposeWith(this._disposables);
 
-            this.ConfirmAndClose= ReactiveCommand.Create(
+            this.ConfirmAndClose = ReactiveCommand.Create(
                 () =>
                 {
                     this.TryClose(true);

@@ -1,14 +1,13 @@
 ﻿using DynamicData;
-using DynamicData.ReactiveUI;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Playlists;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 using System;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -21,13 +20,37 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public SimplePlaylistViewModel(
             IAudioPlaybackEngine audioPlaybackEngine,
+            IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             SimplePlaylist playlist)
-            : base(audioPlaybackEngine, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
         {
+            this.RemoveTrackFromSubset = ReactiveCommand.CreateFromTask(
+                async (TrackViewModel trackViewModel) =>
+                {
+                    var selectedItem = this.SelectedTrackViewModel;
+
+                    if (this.SelectedTrackViewModel == trackViewModel)
+                    {
+                        // TODO: use dynamicdata watch overload to expose selected item as filter by id
+                        this.SelectedTrackViewModel = null;
+                    }
+
+                    try
+                    {
+                        await (this._playlist as SimplePlaylist)?.Remove(trackViewModel.Id);
+                    }
+                    catch
+                    {
+                        this.SelectedTrackViewModel = selectedItem;
+                    }
+                });
+            this.RemoveTrackFromSubset.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
         }
 
         #endregion
@@ -39,6 +62,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region commands
+
+        public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset { get; }
+
         #endregion
 
         #region IDisposable

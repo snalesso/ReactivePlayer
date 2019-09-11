@@ -1,11 +1,8 @@
-﻿using ReactivePlayer.Core.Domain.Persistence;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
-using ReactivePlayer.Core.Library.Persistence.Playlists;
+﻿using ReactivePlayer.Core.Library.Playlists;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,7 +25,7 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         private readonly ITracksRepository _tracksRepository;
         private readonly ConcurrentDictionary<uint, PlaylistBase> _playlistsCache;
 
-        public FakePlaylistsRepository(ITracksRepository  tracksRepository)
+        public FakePlaylistsRepository(ITracksRepository tracksRepository)
         {
             this._tracksRepository = tracksRepository ?? throw new ArgumentNullException(nameof(tracksRepository));
 
@@ -78,5 +75,5 @@ namespace ReactivePlayer.Fakes.Core.Library.Persistence
         {
             throw new NotImplementedException();
         }
-}
+    }
 }

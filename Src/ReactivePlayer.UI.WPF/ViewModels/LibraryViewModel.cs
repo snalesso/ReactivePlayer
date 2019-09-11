@@ -1,10 +1,7 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using DynamicData;
-using DynamicData.Binding;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
-using ReactivePlayer.Core.Library.Services;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Services;
@@ -101,13 +98,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
                     //var addedTracks =
                     await this._writeLibraryService.AddTracksAsync(atc);
-                })
+                });
+            this.ShowFilePicker.ThrownExceptions
+                .Subscribe(x => Debug.WriteLine(x))
                 .DisposeWith(this._disposables);
-            this.ShowFilePicker.ThrownExceptions.Subscribe(x =>
-            {
-                // TODO: log
-                Debug.WriteLine(x);
-            });
+            this.ShowFilePicker.DisposeWith(this._disposables);
 
             this.AllTracksViewModel = this._libraryViewModelsProxy.AllTracksViewModel;
 

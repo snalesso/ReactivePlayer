@@ -1,5 +1,5 @@
 using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 using System;
@@ -31,11 +31,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this._isLoaded_OAPH = this._playbackService.WhenTrackChanged
                 .Select(loadedTrack => loadedTrack == this.Track)
-                .ToProperty(this, nameof(this.IsLoaded))
+                .ToProperty(this, nameof(this.IsLoaded), deferSubscription: true)
                 .DisposeWith(this._disposables);
 
-            this._isLoved_OAPH = this.Track.WhenAnyValue(x => x.IsLoved)
-                .ToProperty(this, nameof(this.IsLoved))
+            // TODO: or use whenanyvalue?
+            this._isLoved_OAPH = this.Track.ObservableForProperty(x => x.IsLoved, skipInitial: false)
+                .Select(x => x.Value)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, nameof(this.IsLoved), deferSubscription: true)
                 .DisposeWith(this._disposables);
 
             this.PlayTrack = ReactiveCommand.CreateFromTask(
@@ -43,24 +46,38 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 {
                     await this._playbackService.StopAsync();
                     await this._playbackService.LoadAndPlayAsync(this._track);
-                }
-                , Observable.CombineLatest(
+                },
+                Observable.CombineLatest(
                     this._playbackService.WhenCanLoadChanged,
                     this._playbackService.WhenCanPlayChanged,
-                    (canLoad, canPlay) => (canLoad || canPlay)))
-                .DisposeWith(this._disposables);
+                    (canLoad, canPlay) => canLoad || canPlay));
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
+            this.PlayTrack.DisposeWith(this._disposables);
+
+            this.ShowInFileManager = ReactiveCommand.Create(
+                () =>
+                {
+                    // TODO: handle exceptions
+                    Process.Start("explorer.exe", $"/select, \"{this.TrackLocation.LocalPath}\"");
+                },
+                this.WhenAnyValue(x => x.TrackLocation).Select(x => x != null));
+            this.ShowInFileManager.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
+            this.ShowInFileManager.DisposeWith(this._disposables);
         }
 
         #endregion
 
         #region properties
 
-        private readonly ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
-        public bool IsLoaded => this._isLoaded_OAPH.Value;
+        private ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
+        public bool IsLoaded
+        //{ get; }
+        => this._isLoaded_OAPH?.Value ?? default;
 
-        private readonly ObservableAsPropertyHelper<bool> _isLoved_OAPH;
-        public bool IsLoved => this._isLoved_OAPH.Value;
+        private ObservableAsPropertyHelper<bool> _isLoved_OAPH;
+        public bool IsLoved
+        //{ get; }
+        => this._isLoved_OAPH?.Value ?? default;
 
         private readonly Track _track;
         public Track Track => this._track;
@@ -68,9 +85,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public uint Id => this._track.Id;
 
         private string _fileNameWithExtensionCache;
-        public string Title => this._track.Title
-            ?? (this._fileNameWithExtensionCache
-                ?? (this._fileNameWithExtensionCache = System.IO.Path.GetFileName(this._track.Location.LocalPath)));
+        public string Title =>
+            this._track.Title
+            ?? this._fileNameWithExtensionCache
+                ?? (this._fileNameWithExtensionCache = System.IO.Path.GetFileName(this._track.Location.LocalPath));
 
         public IReadOnlyList<string> PerformersNames => this._track.Performers;
 
@@ -86,8 +104,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public override void CanClose(Action<bool> callback)
         {
-            this._disposables.Dispose();
-
+            // TODO: dispose things?
             base.CanClose(callback);
         }
 
@@ -96,6 +113,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public ReactiveCommand<Unit, Unit> PlayTrack { get; }
+
+        //public ReactiveCommand<Unit, Unit> ToggleIsLoved { get; }
+
+
+        public ReactiveCommand<Unit, Unit> ShowInFileManager { get; }
 
         #endregion
 
@@ -116,6 +138,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             if (isDisposing)
             {
                 // free managed resources here
+
+                //this._isLoaded_OAPH = null;
+                //this._isLoved_OAPH = null;
+
                 this._disposables.Dispose();
             }
 

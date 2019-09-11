@@ -22,6 +22,7 @@
     <UserControl.Resources>
         <Converters:StringEnumerableJoiner x:Key="StringEnumerableJoiner" />
         <Daedalus.UI.Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Daedalus.UI.Converters:ReferenceToVisibilityConverter x:Key="ReferenceToVisibilityConverter" />
     </UserControl.Resources>
 
     <!--<UserControl.InputBindings>
@@ -51,6 +52,37 @@
                 <Setter Property="Behaviors:DoubleClick.CommandParameter" Value="{Binding}" />-->
             </Style>
         </ListView.ItemContainerStyle>
+
+        <ListView.ContextMenu>
+            <ContextMenu>
+                <MenuItem
+                    Command="{Binding PlayTrack}"
+                    CommandParameter="{Binding SelectedTrackViewModel}"
+                    Header="Play" />
+                <Separator />
+                <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
+                <MenuItem
+                    Command="{Binding EditTrackTags}"
+                    CommandParameter="{Binding SelectedTrackViewModel}"
+                    Header="Edit" />
+                <MenuItem Header="Remove">
+                    <MenuItem.Items>
+                        <MenuItem
+                            Command="{Binding RemoveTrackFromSubset}"
+                            CommandParameter="{Binding SelectedTrackViewModel}"
+                            Header="Remove from playlist"
+                            Visibility="{Binding RemoveTrackFromSubset, Converter={StaticResource ReferenceToVisibilityConverter}}" />
+                        <MenuItem
+                            Command="{Binding RemoveTrackFromLibrary}"
+                            CommandParameter="{Binding SelectedTrackViewModel}"
+                            Header="Remove from library" />
+                    </MenuItem.Items>
+                </MenuItem>
+                <Separator />
+                <MenuItem Command="{Binding SelectedTrackViewModel.ShowInFileManager}" Header="Show in folder" />
+            </ContextMenu>
+        </ListView.ContextMenu>
+
 
         <ListView.View>
             <GridView>
@@ -146,25 +178,6 @@
                 </GridViewColumn>
             </GridView>
         </ListView.View>
-
-        <ListView.ContextMenu>
-            <ContextMenu>
-                <MenuItem
-                    Command="{Binding PlayTrack}"
-                    CommandParameter="{Binding SelectedTrackViewModel}"
-                    Header="Play" />
-                <Separator />
-                <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
-                <MenuItem
-                    Command="{Binding EditTrackTags}"
-                    CommandParameter="{Binding SelectedTrackViewModel}"
-                    Header="Edit" />
-                <!--<MenuItem
-                        Command="{Binding RemoveTrackFromLibrary}"
-                        CommandParameter="{Binding SelectedTrackViewModel}"
-                        Header="Remove from library" />-->
-            </ContextMenu>
-        </ListView.ContextMenu>
 
     </ListView>
 

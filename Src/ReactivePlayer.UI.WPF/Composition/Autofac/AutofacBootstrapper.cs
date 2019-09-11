@@ -1,12 +1,12 @@
 using Autofac;
 using Caliburn.Micro;
+using ReactivePlayer.Core.Domain.Persistence;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.FileSystem.Media.Audio.CSCore;
 using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
-using ReactivePlayer.Core.Library.Models;
-using ReactivePlayer.Core.Library.Persistence;
-using ReactivePlayer.Core.Library.Persistence.Playlists;
-using ReactivePlayer.Core.Library.Services;
+using ReactivePlayer.Core.Library.Json.Serializers;
+using ReactivePlayer.Core.Library.Playlists;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactivePlayer.Core.Playback.History;
@@ -97,13 +97,24 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             //builder.RegisterType<SerializingTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
             //builder.RegisterType<FakeTracksRepository>().As<ITracksRepository>().As<ITrackFactory>().InstancePerLifetimeScope();
 
-            // playlists
             builder.RegisterType<iTunesRepository>()
                 .As<ITracksRepository>()
                 .As<ITrackFactory>()
                 .As<IPlaylistsRepository>()
                 .As<IPlaylistFactory>()
                 .InstancePerLifetimeScope();
+
+            //builder.RegisterType<NewtonsoftJsonTracksSerializer>()
+            //    .As<EntitySerializer<Track, uint>>().InstancePerLifetimeScope();
+            //builder.RegisterType<SerializingTracksRepository>()
+            //    .As<ITracksRepository>()
+            //    .As<ITrackFactory>().InstancePerLifetimeScope();
+
+            //builder.RegisterType<NewtonsoftJsonPlaylistsSerializer>()
+            //    .As<EntitySerializer<PlaylistBase, uint>>().InstancePerLifetimeScope();
+            //builder.RegisterType<SerializingPlaylistBasesRepository>()
+            //    .As<IPlaylistsRepository>()
+            //    .As<IPlaylistFactory>().InstancePerLifetimeScope();
 
             builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
