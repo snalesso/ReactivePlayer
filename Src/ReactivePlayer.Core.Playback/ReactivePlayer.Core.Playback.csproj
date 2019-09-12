@@ -36,6 +36,9 @@
     <Reference Include="DynamicData, Version=6.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DynamicData.6.13.1\lib\net461\DynamicData.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="NVorbis, Version=0.8.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NVorbis.0.8.6\lib\net35\NVorbis.dll</HintPath>
     </Reference>
@@ -66,12 +69,15 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CSCore\Codecs\NVorbisWaveSource.cs" />
+    <Compile Include="CSCore\CSCoreAudioPlaybackEngineSync.cs" />
     <Compile Include="CSCore\CSCoreAudioPlaybackEngine.cs" />
     <Compile Include="History\PlaybackHistory.cs" />
     <Compile Include="History\PlaybackHistoryEntry.cs" />
+    <Compile Include="IAudioPlaybackEngineSync.cs" />
     <Compile Include="IAudioSource.cs" />
     <Compile Include="IAudioPlaybackEngine.cs" />
     <Compile Include="IPlaybackService.cs" />
+    <Compile Include="NAudio\NAudioAudioPlaybackEngine.cs" />
     <Compile Include="Queue\PlaybackQueue.cs" />
     <Compile Include="Queue\PlaybackQueueEntry.cs" />
     <Compile Include="IAudioPlaybackEngineMixins.cs" />

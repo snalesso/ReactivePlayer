@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.Library.Tracks;
@@ -6,13 +13,6 @@ using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Services;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

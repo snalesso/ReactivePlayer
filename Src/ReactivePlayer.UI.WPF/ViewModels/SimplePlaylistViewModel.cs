@@ -1,13 +1,13 @@
-﻿using DynamicData;
+﻿using System;
+using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Disposables;
+using DynamicData;
 using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
-using System;
-using System.Diagnostics;
-using System.Reactive;
-using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -23,10 +23,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
             SimplePlaylist playlist)
-            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlist)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, sourceTrackViewModelsChangesFlow, playlist)
         {
             this.RemoveTrackFromSubset = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackViewModel) =>
@@ -51,6 +50,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.RemoveTrackFromSubset.ThrownExceptions
                 .Subscribe(ex => Debug.WriteLine(ex.Message))
                 .DisposeWith(this._disposables);
+            this.RemoveTrackFromSubset.DisposeWith(this._disposables);
         }
 
         #endregion

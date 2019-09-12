@@ -62,8 +62,7 @@
                 <Separator />
                 <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
                 <MenuItem
-                    Command="{Binding EditTrackTags}"
-                    CommandParameter="{Binding SelectedTrackViewModel}"
+                    Command="{Binding SelectedTrackViewModel.EditTrackTags}"
                     Header="Edit" />
                 <MenuItem Header="Remove">
                     <MenuItem.Items>

@@ -1,10 +1,10 @@
-﻿using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Tracks;
-using ReactiveUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
+using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Tracks;
+using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -41,15 +41,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 () =>
                 {
                     this.TryClose(false);
-                }
-                ).DisposeWith(this._disposables);
+                });
+            this.CancelAndClose.DisposeWith(this._disposables);
 
             this.ConfirmAndClose = ReactiveCommand.Create(
                 () =>
                 {
                     this.TryClose(true);
-                }
-                ).DisposeWith(this._disposables);
+                });
+            this.ConfirmAndClose.DisposeWith(this._disposables);
 
             this.DisplayName = "Edit";
         }

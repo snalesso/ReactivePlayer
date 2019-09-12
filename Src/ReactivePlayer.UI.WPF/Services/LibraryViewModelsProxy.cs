@@ -21,7 +21,6 @@ namespace ReactivePlayer.UI.WPF.Services
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         private readonly IDialogService _dialogService;
         private readonly Func<Track, TrackViewModel> _trackViewModelFactoryMethod;
-        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
         private SerialDisposable _tracksSubscription;
         private SerialDisposable _playlistsSubscription;
 
@@ -30,15 +29,13 @@ namespace ReactivePlayer.UI.WPF.Services
             IWriteLibraryService writeLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
-            Func<Track, TrackViewModel> trackViewModelFactoryMethod,
-            Func<Track, EditTrackTagsViewModel> editTrackTagsViewModelFactoryMethod)
+            Func<Track, TrackViewModel> trackViewModelFactoryMethod)
         {
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this._trackViewModelFactoryMethod = trackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(trackViewModelFactoryMethod));
-            this._editTrackTagsViewModelFactoryMethod = editTrackTagsViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackTagsViewModelFactoryMethod));
 
             //this._readLibraryService.TracksChanges.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
             //this._readLibraryService.PlaylistsChanges.DeferUntilLoaded().Subscribe().DisposeWith(this._disposables);
@@ -69,7 +66,6 @@ namespace ReactivePlayer.UI.WPF.Services
                 this._writeLibraryService,
                 this._dialogService,
                 null,
-                this._editTrackTagsViewModelFactoryMethod,
                 this.TrackViewModelsChangeSets);
         }
 
@@ -96,7 +92,6 @@ namespace ReactivePlayer.UI.WPF.Services
                         this._writeLibraryService,
                         this._dialogService,
                         parentFolderPlaylistViewModel,
-                        this._editTrackTagsViewModelFactoryMethod,
                         this.TrackViewModelsChangeSets,
                         simplePlaylist)
                         //as PlaylistBaseViewModel<PlaylistBase>
@@ -110,7 +105,6 @@ namespace ReactivePlayer.UI.WPF.Services
                         this._dialogService,
                         parentFolderPlaylistViewModel,
                         this.TrackViewModelsChangeSets,
-                        this._editTrackTagsViewModelFactoryMethod,
                         folderPlaylist,
                         this.CreatePlaylistViewModel)
                         //as PlaylistBaseViewModel<PlaylistBase>

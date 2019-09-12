@@ -1,4 +1,9 @@
-﻿using DynamicData;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using DynamicData;
 using DynamicData.Binding;
 using DynamicData.PLinq;
 using DynamicData.ReactiveUI;
@@ -7,11 +12,6 @@ using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
-using System;
-using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -31,10 +31,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChangesFlow,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             FolderPlaylist playlistFolder,
             Func<PlaylistBase, FolderPlaylistViewModel, PlaylistBaseViewModel> playlistViewModelFactoryMethod)
-            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChangesFlow, playlistFolder)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, sourceTrackViewModelsChangesFlow, playlistFolder)
         {
             this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
 

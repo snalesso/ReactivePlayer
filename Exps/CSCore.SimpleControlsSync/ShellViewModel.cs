@@ -63,8 +63,7 @@ namespace CSCore.SimpleControlsSync
                 {
                     return this._audioPlaybackEngineAsync.PauseAsync();
                 }
-                , this._audioPlaybackEngineAsync.WhenCanPauseChanged
-                )
+                , this._audioPlaybackEngineAsync.WhenCanPauseChanged.ObserveOn(RxApp.MainThreadScheduler))
                 .DisposeWith(this._disposables);
 
             this.Resume = ReactiveCommand.CreateFromTask(
@@ -81,8 +80,7 @@ namespace CSCore.SimpleControlsSync
                 {
                     return this._audioPlaybackEngineAsync.StopAsync();
                 }
-                , this._audioPlaybackEngineAsync.WhenCanStopChanged
-                )
+                , this._audioPlaybackEngineAsync.WhenCanStopChanged.ObserveOn(RxApp.MainThreadScheduler))
                 .DisposeWith(this._disposables);
 
             this._durationOAPH = this._audioPlaybackEngineAsync

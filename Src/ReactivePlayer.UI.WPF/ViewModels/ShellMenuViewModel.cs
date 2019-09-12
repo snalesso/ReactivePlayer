@@ -1,5 +1,5 @@
-﻿using Caliburn.Micro.ReactiveUI;
-using System;
+﻿using System;
+using Caliburn.Micro.ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

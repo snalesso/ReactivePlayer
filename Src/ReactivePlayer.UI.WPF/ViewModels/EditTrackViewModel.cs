@@ -1,7 +1,7 @@
-﻿using ReactivePlayer.Core.Library.Tracks;
-using ReactiveUI;
-using System;
+﻿using System;
 using System.Reactive;
+using ReactivePlayer.Core.Library.Tracks;
+using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

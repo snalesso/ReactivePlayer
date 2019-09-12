@@ -1,8 +1,8 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿using System;
+using System.Collections.ObjectModel;
+using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactiveUI;
-using System;
-using System.Collections.ObjectModel;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

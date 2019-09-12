@@ -12,7 +12,7 @@ namespace ReactivePlayer.Core.Playback.Queue
     {
         #region constants & fields
 
-        private readonly IAudioPlaybackEngine _audioPlayer;
+        private readonly IAudioPlaybackEngineSync _audioPlayer;
         //private readonly Random _random = new Random((int)DateTime.Now.Ticks);
 
         #endregion
@@ -20,7 +20,7 @@ namespace ReactivePlayer.Core.Playback.Queue
         #region ctor
 
         public PlaybackQueue(
-            IAudioPlaybackEngine audioPlayer
+            IAudioPlaybackEngineSync audioPlayer
             //, IObservable<IChangeSet<Track> tracksCacheChanges
             )
         {
@@ -33,7 +33,7 @@ namespace ReactivePlayer.Core.Playback.Queue
                 this._audioPlayer.WhenCanPlayChanged,
                 (canLoad, canPlay) => canLoad && !canPlay)
                 .Where(canLoadButNotPlay => canLoadButNotPlay == true)
-                .Subscribe(async (s) =>
+                .Subscribe((s) =>
                 {
                     PlaybackQueueEntry next = null; // = this._playlistEntries.Items.FirstOrDefault();
 
@@ -49,13 +49,14 @@ namespace ReactivePlayer.Core.Playback.Queue
                     });
 
                     if (next == null)
+                    {
                         return;
+                    }
 
                     switch (next.Track)
                     {
                         case Track nextTrack:
-                            await this._audioPlayer.LoadAsync(nextTrack);
-                            await this._audioPlayer.PlayAsync();
+                            this._audioPlayer.LoadAndPlay(nextTrack);
                             break;
                     }
                 })

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Domain.Persistence
 {
-    // TODO: save to a copy, if save failes, reload data to undo changes to in memory entities
+    // TODO: save to a copy, if save fails, reload data to undo changes to in memory entities
     // TODO: defend from concurrent Deserialize/Serialize, ecc.
     public abstract class DistinctValuesSerializer<TValue> : IDisposable
         where TValue : IEquatable<TValue>//, ISerializable

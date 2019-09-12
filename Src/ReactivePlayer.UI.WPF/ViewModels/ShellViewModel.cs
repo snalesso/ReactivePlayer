@@ -1,12 +1,12 @@
+using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Windows.Shell;
 using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
-using System;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Windows.Shell;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -31,7 +31,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IDialogService dialogService,
             LibraryViewModel libraryViewModel,
             PlaybackControlsViewModel playbackControlsViewModel,
-            PlaybackHistoryViewModel playbackHistoryViewModel,
+            //PlaybackHistoryViewModel playbackHistoryViewModel,
             ShellMenuViewModel shellMenuViewModel)
         {
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
@@ -40,7 +40,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.LibraryViewModel = libraryViewModel ?? throw new ArgumentNullException(nameof(libraryViewModel));
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
-            this.PlaybackHistoryViewModel = playbackHistoryViewModel ?? throw new ArgumentNullException(nameof(playbackHistoryViewModel));
+            //this.PlaybackHistoryViewModel = playbackHistoryViewModel ?? throw new ArgumentNullException(nameof(playbackHistoryViewModel));
             this.ShellMenuViewModel = shellMenuViewModel ?? throw new ArgumentNullException(nameof(shellMenuViewModel));
 
             this._isEnabled_OAPH = Observable
@@ -99,6 +99,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .DisposeWith(this._disposables);
 
             this._playbackService.WhenTrackChanged
+                //.ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(track => this.UpdateDisplayName(track))
                 .DisposeWith(this._disposables);
 

@@ -117,9 +117,12 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             //    .As<IPlaylistFactory>().InstancePerLifetimeScope();
 
             builder.RegisterType<LocalLibraryService>().As<IReadLibraryService>().As<IWriteLibraryService>().InstancePerLifetimeScope();
+
             builder.RegisterType<CSCoreAudioPlaybackEngine>().As<IAudioPlaybackEngine>().InstancePerLifetimeScope();
+            //builder.RegisterType<CSCoreAudioPlaybackEngineSync>().As<IAudioPlaybackEngineSync>().InstancePerLifetimeScope();
+
             //builder.RegisterType<PlaybackQueue>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackHistory>().AsSelf().InstancePerLifetimeScope();
             builder.RegisterType<LibraryViewModelsProxy>().InstancePerLifetimeScope();
 
             // ViewModels & Views
@@ -131,7 +134,11 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 ctx =>
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
-                    return (Track t) => new TrackViewModel(t, ctxInternal.Resolve<IAudioPlaybackEngine>());
+                    return (Track track) => new TrackViewModel(
+                        track,
+                        ctxInternal.Resolve<IAudioPlaybackEngine>(),
+                        ctxInternal.Resolve<IDialogService>(),
+                        ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
                 }).AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerDependency();
@@ -141,10 +148,10 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                 {
                     var ctxInternal = ctx.Resolve<IComponentContext>();
 
-                    return (Track t) => new EditTrackViewModel(
+                    return (Track track) => new EditTrackViewModel(
                         ctxInternal.Resolve<IReadLibraryService>(),
                         ctxInternal.Resolve<IWriteLibraryService>(),
-                        t,
+                        track,
                         ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
                 }).AsSelf().InstancePerDependency();
 
@@ -159,7 +166,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
             builder.RegisterType<PlaybackTimelineViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackTimelineView>().As<IViewFor<PlaybackTimelineViewModel>>().InstancePerLifetimeScope();
 
-            builder.RegisterType<PlaybackHistoryViewModel>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<PlaybackHistoryViewModel>().AsSelf().InstancePerLifetimeScope();
             //builder.RegisterType<PlaybackHistoryView>().As<IViewFor<PlaybackHistoryViewModel>>().InstancePerLifetimeScope();
 
             builder.RegisterType<LibraryViewModel>().AsSelf().InstancePerLifetimeScope();

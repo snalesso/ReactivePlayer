@@ -10,9 +10,9 @@ namespace ReactivePlayer.Core.Playback.History
 {
     public class PlaybackHistory : IDisposable
     {
-        private readonly IAudioPlaybackEngine _audioPlaybackEngine;
+        private readonly IAudioPlaybackEngineSync _audioPlaybackEngine;
 
-        public PlaybackHistory(IAudioPlaybackEngine audioPlaybackEngine)
+        public PlaybackHistory(IAudioPlaybackEngineSync audioPlaybackEngine)
         {
             this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
 

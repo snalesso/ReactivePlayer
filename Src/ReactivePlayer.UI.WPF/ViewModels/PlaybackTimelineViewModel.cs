@@ -1,16 +1,13 @@
-﻿using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Playback;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Playback;
+using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -30,17 +27,23 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this._seekingSemaphore = new SemaphoreSlim(1, 1).DisposeWith(this._disposables);
 
             // timespans
-            this._positionOAPH = this._audioPlaybackEngine.WhenPositionChanged.ToProperty(this, nameof(this.Position)).DisposeWith(this._disposables);
-            this._durationOAPH = this._audioPlaybackEngine.WhenDurationChanged.ToProperty(this, nameof(this.Duration)).DisposeWith(this._disposables);
+            this._positionOAPH = this._audioPlaybackEngine.WhenPositionChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, nameof(this.Position))
+                .DisposeWith(this._disposables);
+            this._durationOAPH = this._audioPlaybackEngine.WhenDurationChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, nameof(this.Duration))
+                .DisposeWith(this._disposables);
             // milliseconds
-            this._positionAsTickssOAPH = this._audioPlaybackEngine
-                .WhenPositionChanged
+            this._positionAsTickssOAPH = this._audioPlaybackEngine.WhenPositionChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Where(p => !this._isSeeking) // TODO: use an observable to toggle observing
                 .Select(p => p != null && p.HasValue ? Convert.ToInt64(p.Value.Ticks) : 0L)
                 .ToProperty(this, nameof(this.PositionAsTicks))
                 .DisposeWith(this._disposables);
-            this._durationAsTicksOAPH = this._audioPlaybackEngine
-                .WhenDurationChanged
+            this._durationAsTicksOAPH = this._audioPlaybackEngine.WhenDurationChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Select(p => p != null && p.HasValue ? Convert.ToInt64(p.Value.Ticks) : 0L)
                 .ToProperty(this, nameof(this.DurationAsTicks))
                 .DisposeWith(this._disposables);
@@ -60,34 +63,30 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //    .ToProperty(this, nameof(this.IsPositionSeekable))
             //    .DisposeWith(this._disposables);
 
-            this._isDurationKnownOAPH = this._audioPlaybackEngine
-                .WhenDurationChanged
+            this._isDurationKnownOAPH = this._audioPlaybackEngine.WhenDurationChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Select(duration => duration.HasValue)
                 .ToProperty(this, nameof(this.IsDurationKnown))
                 .DisposeWith(this._disposables);
-            this._isPositionKnownOAPH = this._audioPlaybackEngine
-                .WhenPositionChanged
+            this._isPositionKnownOAPH = this._audioPlaybackEngine.WhenPositionChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Select(position => position.HasValue)
                 .ToProperty(this, nameof(this.IsPositionKnown))
                 .DisposeWith(this._disposables);
             this._isLoadingOAPH = this._audioPlaybackEngine.WhenStatusChanged
                 .ObserveOn(RxApp.MainThreadScheduler) // TODO: can remove? should others use it?
                 .Select(status => status == PlaybackStatus.Loading)
-                //.Do(isLoading => { if (isLoading) Debug.WriteLine($"{this.GetType().Name}.{nameof(this.IsLoading)} == {isLoading}"); })
                 .ToProperty(this, nameof(this.IsLoading))
                 .DisposeWith(this._disposables);
 
-            this.StartSeeking = ReactiveCommand
-                .CreateFromTask(async () =>
+            this.StartSeeking = ReactiveCommand.CreateFromTask(async () =>
                 {
                     await this._seekingSemaphore.WaitAsync();
                     this._isSeeking = true;
                     this._lastSoughtTicks = null;
                     this._seekingSemaphore.Release();
-                }
-                //.Create(() => { this._isSeeking = true; }
-                , this._audioPlaybackEngine.WhenCanSeekChanged)
-                .DisposeWith(this._disposables);
+                },
+                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler));
 
             this.SeekTo = ReactiveCommand.CreateFromTask<long>(
                 async ticks =>
@@ -100,35 +99,32 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     }
                     this._seekingSemaphore.Release();
                 },
-                this._audioPlaybackEngine.WhenCanSeekChanged)
-                .DisposeWith(this._disposables);
+                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler));
 
-            this.EndSeeking = ReactiveCommand
-                //.CreateFromTask<long>(async () => { this._isSeeking = false; await this._audioPlaybackEngine.ResumeAsync(); }
-                .CreateFromTask<long>(async ticks =>
+            this.EndSeeking = 
+                //ReactiveCommand.CreateFromTask<long>(async () => { this._isSeeking = false; await this._audioPlaybackEngine.ResumeAsync(); }
+                ReactiveCommand.CreateFromTask<long>(async ticks =>
                 {
                     await this._seekingSemaphore.WaitAsync();
 
                     //if (!this._lastSoughtTicks.HasValue || this._lastSoughtTicks.Value != ticks)
                     //{
-                        await this._audioPlaybackEngine.SeekToAsync(TimeSpan.FromTicks(ticks));
+                    await this._audioPlaybackEngine.SeekToAsync(TimeSpan.FromTicks(ticks));
                     //}
 
                     this._isSeeking = false;
 
                     this._seekingSemaphore.Release();
-                }
-                , this._audioPlaybackEngine.WhenCanSeekChanged)
-                .DisposeWith(this._disposables);
+                },
+                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler));
 
-            this.StartSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString()));
-            this.SeekTo.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString()));
-            this.EndSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString()));
+            this.StartSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString())).DisposeWith(this._disposables);
+            this.SeekTo.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString())).DisposeWith(this._disposables);
+            this.EndSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString())).DisposeWith(this._disposables);
 
-            // loggings
-
-            //this.StartSeeking.Do(s => Debug.WriteLine(nameof(this.StartSeeking)));
-            //this.EndSeeking.Do(s => Debug.WriteLine(nameof(this.EndSeeking)));
+            this.StartSeeking.DisposeWith(this._disposables);
+            this.SeekTo.DisposeWith(this._disposables);
+            this.EndSeeking.DisposeWith(this._disposables);
         }
 
         private readonly ObservableAsPropertyHelper<long> _positionAsTickssOAPH;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -19,11 +20,11 @@ namespace ReactivePlayer.Core.Playback.CSCore
     // TODO: investigate IWaveSource.AppendSource
     // TODO: investigate IWaveSource.GetLength: how does it calculate duration? How accurate is it guaranteed to be?
     // TODO: add timeout for audio file loading?
-    // TODO: consider using AsyncLock (System.Reactive.Core)
+    // TODO: consider using Lock (System.Reactive.Core)
     // TODO: log
     // TODO: learn about thread pools, schedulers etc
     // TODO: consider removing subjects from can's and use a select + startswith on statuschanged + replay(1)
-    public class CSCoreAudioPlaybackEngine : IAudioPlaybackEngine, IDisposable
+    public class CSCoreAudioPlaybackEngineSync : IAudioPlaybackEngineSync, IDisposable
     {
         #region constants & fields
 
@@ -40,7 +41,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
         #region ctor
 
-        static CSCoreAudioPlaybackEngine()
+        static CSCoreAudioPlaybackEngineSync()
         {
             //if (!CodecFactory.Instance.GetSupportedFileExtensions().Contains(".ogg"))
             //{
@@ -48,7 +49,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
             //}
         }
 
-        public CSCoreAudioPlaybackEngine(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
+        public CSCoreAudioPlaybackEngineSync(/*TimeSpan positionUpdatesInterval = default(TimeSpan)*/)
         {
             //this.__playbackScopeDisposables.DisposeWith(this._playerScopeDisposables);
             this._playbackActionsSemaphore.DisposeWith(this._playerScopeDisposables);
@@ -127,35 +128,33 @@ namespace ReactivePlayer.Core.Playback.CSCore
             return soundOut;
         }
 
-        public async Task LoadAsync(Track track)
+        public void Load(Track track)
         {
             try
             {
-                await this._playbackActionsSemaphore.WaitAsync();
+                this._playbackActionsSemaphore.Wait();
 
                 if (this._canLoadSubject.Value)
                 {
                     this._statusSubject.OnNext(PlaybackStatus.Loading);
 
-                    //var loadTask =
-                    await Task.Run(() =>
+                    try
                     {
-                        try
-                        {
-                            this._soundOut = this.GetNewSoundOut().DisposeWith(this._playerScopeDisposables);
+                        this._soundOut = this.GetNewSoundOut().DisposeWith(this._playerScopeDisposables);
 
-                            var waveSource = CodecFactory.Instance.GetCodec(track.Location).DisposeWith(this.__playbackScopeDisposables);
-                            // TODO: this line throws null exception if track location file does not exist
-                            this._soundOut.Initialize(waveSource);
+                        //Thread.Sleep(1500);
 
-                            this._soundOut.Volume = this._volumeSubject.Value;
-                        }
-                        catch (Exception ex)
-                        {
-                            // TODO: improve this error handling
-                            this.HandleSoundOutStoppedEvent(ex);
-                        }
-                    });
+                        var waveSource = CodecFactory.Instance.GetCodec(track.Location).DisposeWith(this.__playbackScopeDisposables);
+                        // TODO: this line throws null exception if track location file does not exist
+                        this._soundOut.Initialize(waveSource);
+
+                        this._soundOut.Volume = this._volumeSubject.Value;
+                    }
+                    catch (Exception ex)
+                    {
+                        // TODO: improve this error handling
+                        this.HandleSoundOutStoppedEvent(ex);
+                    }
 
                     //await Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith(t => loadTask);
 
@@ -177,19 +176,16 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public async Task PlayAsync()
+        public void Play()
         {
             try
             {
-                await this._playbackActionsSemaphore.WaitAsync();
+                this._playbackActionsSemaphore.Wait();
 
                 if (this._canPlaySubject.Value)
                 {
-                    await Task.Run(() =>
-                    {
-                        this._soundOut.Play();
-                        SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Playing);
-                    });
+                    this._soundOut.Play();
+                    SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Playing);
 
                     this.ActivatePositionUpdater();
 
@@ -207,19 +203,16 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public async Task PauseAsync()
+        public void Pause()
         {
             try
             {
-                await this._playbackActionsSemaphore.WaitAsync();
+                this._playbackActionsSemaphore.Wait();
 
                 if (this._canPauseSubject.Value)
                 {
-                    await Task.Run(() =>
-                    {
-                        this._soundOut.Pause();
-                        SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Paused);
-                    });
+                    this._soundOut.Pause();
+                    SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Paused);
 
                     this._statusSubject.OnNext(PlaybackStatus.Paused);
                     this.UpdateCans();
@@ -235,19 +228,16 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public async Task ResumeAsync()
+        public void Resume()
         {
             try
             {
-                await this._playbackActionsSemaphore.WaitAsync();
+                this._playbackActionsSemaphore.Wait();
 
                 if (this._canResumeSubject.Value)
                 {
-                    await Task.Run(() =>
-                    {
-                        this._soundOut.Resume();
-                        SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Playing);
-                    });
+                    this._soundOut.Resume();
+                    SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Playing);
 
                     this.ActivatePositionUpdater();
 
@@ -265,24 +255,21 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public async Task StopAsync()
+        public void Stop()
         {
             try
             {
-                await this._playbackActionsSemaphore.WaitAsync();
+                this._playbackActionsSemaphore.Wait();
 
                 if (this._canStopSubject.Value)
                 {
                     this.DetachFromISoundOutStoppedEvent();
 
-                    await Task.Run(() =>
-                    {
-                        this._soundOut.Stop();
-                        // TODO: compare WaitForStopped which uses a WaitHandle https://github.com/filoe/cscore/blob/29410b12ae35321c4556b072c0711a8f289c0544/CSCore/Extensions.cs#L410 vs SpinWait.SpinUntil
-                        // TODO: consider using the timeout overload
-                        this._soundOut.WaitForStopped();
-                        SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Stopped);
-                    });
+                    this._soundOut.Stop();
+                    // TODO: compare WaitForStopped which uses a WaitHandle https://github.com/filoe/cscore/blob/29410b12ae35321c4556b072c0711a8f289c0544/CSCore/Extensions.cs#L410 vs SpinWait.SpinUntil
+                    // TODO: consider using the timeout overload
+                    this._soundOut.WaitForStopped();
+                    SpinWait.SpinUntil(() => this._soundOut.PlaybackState == PlaybackState.Stopped);
 
                     this.DeactivatePositionUpdater();
                     this.UpdatePosition(true);
@@ -307,13 +294,13 @@ namespace ReactivePlayer.Core.Playback.CSCore
             }
         }
 
-        public async Task SeekToAsync(TimeSpan position)
+        public void SeekTo(TimeSpan position)
         {
             //throw new NotImplementedException();
 
             try
             {
-                await this._playbackActionsSemaphore.WaitAsync();
+                this._playbackActionsSemaphore.Wait();
 
                 if (this._canSeekSubject.Value)
                 {
@@ -322,7 +309,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
                     // TODO: check what happens if trying to seek out of duration boundaries
 
-                    await Task.Run(() => this._soundOut.WaveSource.SetPosition(position));
+                    this._soundOut.WaveSource.SetPosition(position);
                     //this._positionSubject.OnNext(this._soundOut?.WaveSource?.GetPosition());
                     this.UpdatePosition(false);
                 }
@@ -403,11 +390,9 @@ namespace ReactivePlayer.Core.Playback.CSCore
                 .FromEventPattern<PlaybackStoppedEventArgs>(
                     h => this._soundOut.Stopped += h,
                     h => this._soundOut.Stopped -= h)
-                //.ObserveOn(RxApp.TaskpoolScheduler)
-                //.Take(1)
-                .Subscribe(async stoppedEvent =>
+                .Subscribe(stoppedEvent =>
                 {
-                    await this._playbackActionsSemaphore.WaitAsync();
+                    this._playbackActionsSemaphore.Wait();
 
                     this.HandleSoundOutStoppedEvent(stoppedEvent.EventArgs.Exception);
 
@@ -428,7 +413,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         {
             if (exception != null)
             {
-                Debug.WriteLine(Environment.NewLine + $"{exception.GetType().Name} thrown in {this.GetType().Name}.{nameof(LoadAsync)}: {exception.Message}");
+                Debug.WriteLine(Environment.NewLine + $"{exception.GetType().Name} thrown in {this.GetType().Name}.{nameof(Load)}: {exception.Message}");
             }
 
             // 0 - unsubscribe stopped event

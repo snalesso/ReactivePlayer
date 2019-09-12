@@ -1,7 +1,3 @@
-using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Tracks;
-using ReactivePlayer.Core.Playback;
-using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +5,11 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Tracks;
+using ReactivePlayer.Core.Playback;
+using ReactivePlayer.UI.Services;
+using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -17,6 +18,9 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region constants & fields
 
         private readonly IAudioPlaybackEngine _playbackService;
+        private readonly IDialogService _dialogService;
+
+        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
 
         #endregion
 
@@ -24,20 +28,25 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public TrackViewModel(
             Track track,
-            IAudioPlaybackEngine playbackService)
+            IAudioPlaybackEngine playbackService,
+            IDialogService dialogService,
+            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track));
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
+            this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
 
             this._isLoaded_OAPH = this._playbackService.WhenTrackChanged
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Select(loadedTrack => loadedTrack == this.Track)
                 .ToProperty(this, nameof(this.IsLoaded), deferSubscription: true)
                 .DisposeWith(this._disposables);
 
             // TODO: or use whenanyvalue?
             this._isLoved_OAPH = this.Track.ObservableForProperty(x => x.IsLoved, skipInitial: false)
-                .Select(x => x.Value)
                 .ObserveOn(RxApp.MainThreadScheduler)
+                .Select(x => x.Value)
                 .ToProperty(this, nameof(this.IsLoved), deferSubscription: true)
                 .DisposeWith(this._disposables);
 
@@ -53,6 +62,16 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     (canLoad, canPlay) => canLoad || canPlay));
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
             this.PlayTrack.DisposeWith(this._disposables);
+
+            this.EditTrackTags = ReactiveCommand.Create(
+                () =>
+                {
+                    this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod?.Invoke(this.Track));
+                });
+            this.EditTrackTags.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .DisposeWith(this._disposables);
+            this.EditTrackTags.DisposeWith(this._disposables);
 
             this.ShowInFileManager = ReactiveCommand.Create(
                 () =>
@@ -104,7 +123,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public override void CanClose(Action<bool> callback)
         {
-            // TODO: dispose things?
             base.CanClose(callback);
         }
 
@@ -113,6 +131,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public ReactiveCommand<Unit, Unit> PlayTrack { get; }
+
+        public ReactiveCommand<Unit, Unit> EditTrackTags { get; }
 
         //public ReactiveCommand<Unit, Unit> ToggleIsLoved { get; }
 

@@ -1,13 +1,13 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
+using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
 using DynamicData.PLinq;
 using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.Playback.History;
 using ReactiveUI;
-using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {

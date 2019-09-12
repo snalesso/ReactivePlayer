@@ -22,9 +22,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             IWriteLibraryService writeLibraryService,
             IDialogService dialogService,
             TracksSubsetViewModel parentTracksSubsetViewModel,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             IObservable<IChangeSet<TrackViewModel, uint>> sourceTrackViewModelsChanges)
-            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, editTrackViewModelFactoryMethod, sourceTrackViewModelsChanges)
+            : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, sourceTrackViewModelsChanges)
         {
         }
 
@@ -48,7 +47,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null;
-
+        
         #endregion
 
         #region IDisposable

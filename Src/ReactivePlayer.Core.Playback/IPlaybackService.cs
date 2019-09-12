@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Playback
 {
-    public interface IPlaybackService : IAudioPlaybackEngine
+    public interface IPlaybackService : IAudioPlaybackEngineSync
     {
         IReadOnlyList<string> SupportedAudioExtensions { get; }
     }

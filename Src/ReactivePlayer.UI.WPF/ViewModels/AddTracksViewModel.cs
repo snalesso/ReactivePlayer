@@ -10,9 +10,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
     public class AddTracksViewModel : ReactiveScreen
     {
         public AddTracksViewModel(
-            IEnumerable<Uri> trackToAddLocations
-            ) { }
-
-
+            IEnumerable<Uri> trackToAddLocations)
+        { }
     }
 }

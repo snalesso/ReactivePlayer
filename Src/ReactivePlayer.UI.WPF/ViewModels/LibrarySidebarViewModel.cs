@@ -1,9 +1,9 @@
-﻿using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Playlists;
-using ReactiveUI;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Playlists;
+using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
