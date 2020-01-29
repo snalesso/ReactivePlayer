@@ -13,7 +13,7 @@ namespace ReactivePlayer.Core.Library.Json.Serializers
         {
             JObject jo = JObject.Load(reader);
 
-            Track track = null;
+            Track track;
 
             try
             {

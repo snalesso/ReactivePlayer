@@ -1,10 +1,12 @@
 using DynamicData;
+using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace ReactivePlayer.Core.Playback.Queue
 {
@@ -26,6 +28,7 @@ namespace ReactivePlayer.Core.Playback.Queue
         {
             this._audioPlayer = audioPlayer ?? throw new ArgumentNullException(nameof(audioPlayer));
 
+            this._isShuffleActivated_BehaviorSubject = new BehaviorSubject<bool>(false).DisposeWith(this._disposables);
             this._sourcedEntries = new SourceList<PlaybackQueueEntry>().DisposeWith(this._disposables);
 
             Observable.CombineLatest(
@@ -72,6 +75,20 @@ namespace ReactivePlayer.Core.Playback.Queue
         #endregion
 
         #region properties
+
+        private readonly BehaviorSubject<bool> _isShuffleActivated_BehaviorSubject;
+        public bool IsShuffleActivated
+        {
+            get { return this._isShuffleActivated_BehaviorSubject.Value; }
+            set { this._isShuffleActivated_BehaviorSubject.OnNext(value); }
+        }
+
+        private readonly BehaviorSubject<PlaylistBase> _queueTracksSource_BehaviorSubject;
+        public PlaylistBase QueueTracksSource
+        {
+            get { return this._queueTracksSource_BehaviorSubject.Value; }
+            set { this._queueTracksSource_BehaviorSubject.OnNext(value); }
+        }
 
         private IObservableList<Track> _tracksSource;
         private readonly ISourceList<PlaybackQueueEntry> _sourcedEntries;
