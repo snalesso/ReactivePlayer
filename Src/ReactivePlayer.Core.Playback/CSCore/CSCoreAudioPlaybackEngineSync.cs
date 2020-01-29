@@ -579,7 +579,9 @@ namespace ReactivePlayer.Core.Playback.CSCore
         protected virtual void Dispose(bool isDisposing)
         {
             if (this._isDisposed)
+            {
                 return;
+            }
 
             if (isDisposing)
             {

@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ReactivePlayer.Core.Library.Playlists;
-using ReactivePlayer.Core.Library.Tracks;
-using System;
 
 namespace ReactivePlayer.Core.Library.Json.Serializers
 {

@@ -37,18 +37,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this.EditTrackAlbumAssociationViewModel = this._editTrackAlbumAssociationViewModelFactoryMethod.Invoke(this._track.AlbumAssociation);
 
-            this.CancelAndClose = ReactiveCommand.Create(
-                () =>
-                {
-                    this.TryClose(false);
-                });
+            this.CancelAndClose = ReactiveCommand.Create(() => this.TryClose(false));
             this.CancelAndClose.DisposeWith(this._disposables);
 
-            this.ConfirmAndClose = ReactiveCommand.Create(
-                () =>
-                {
-                    this.TryClose(true);
-                });
+            this.ConfirmAndClose = ReactiveCommand.Create(() => this.TryClose(true));
             this.ConfirmAndClose.DisposeWith(this._disposables);
 
             this.DisplayName = "Edit";

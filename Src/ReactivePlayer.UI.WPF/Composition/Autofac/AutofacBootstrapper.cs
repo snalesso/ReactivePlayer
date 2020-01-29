@@ -180,12 +180,13 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
         private IEnumerable<Assembly> assemblies;
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
-            return this.assemblies ?? (this.assemblies = new[]
-            {
-                typeof(ShellViewModel).Assembly,
-                typeof(ShellView).Assembly
-            }
-            .Distinct());
+            return this.assemblies
+                ?? (this.assemblies = new[]
+                {
+                    typeof(ShellViewModel).Assembly,
+                    typeof(ShellView).Assembly
+                }
+                .Distinct());
         }
 
         protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

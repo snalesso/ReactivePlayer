@@ -13,6 +13,7 @@ namespace ReactivePlayer.Core.Library.Tracks
 {
     // https://github.com/RolandPheasant/DynamicData.Snippets/blob/master/DynamicData.Snippets/Creation/ChangeSetCreation.cs
     // https://github.com/RolandPheasant/DynamicData.Snippets/blob/master/DynamicData.Snippets/Creation/CreationFixture.cs
+    // TODO: move to root namespace
     public class LocalLibraryService : IReadLibraryService, IWriteLibraryService, IDisposable
     {
         private readonly ITracksRepository _tracksRepository;

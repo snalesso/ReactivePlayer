@@ -120,9 +120,13 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             // TODO: make selectable internal playback engine?
             if (WasapiOut.IsSupportedOnCurrentPlatform)
+            {
                 soundOut = new WasapiOut();
+            }
             else
-                soundOut = new DirectSoundOut(100); // TODO: investigate latency role
+            {
+                soundOut = new DirectSoundOut(); // TODO: investigate latency role
+            }
 
             return soundOut;
         }

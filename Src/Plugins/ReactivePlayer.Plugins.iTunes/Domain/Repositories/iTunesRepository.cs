@@ -20,7 +20,7 @@ namespace ReactivePlayer.Domain.Repositories
         private IImmutableDictionary<uint, Track> _tracks = null;
         private IImmutableList<PlaylistBase> _playlists = null;
 
-        private readonly SourceCache< Track, uint> _tracksSourceCache ;
+        //private readonly SourceCache< Track, uint> _tracksSourceCache ;
 
         public iTunesRepository()
         {

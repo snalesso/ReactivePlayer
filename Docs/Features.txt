@@ -63,6 +63,7 @@ FUNCTIONALITIES:
 	- lives (might add a tag entry, and specify in config a format to rename the file)
 	- covers (new tag: OriginalPerformer)
 	- both
+- when a media is added, if it's already in the library, [ask to] check for metadata differences
 - cache Lyrics
 - FluentValidation
 - setup different builds for x86 & x64
