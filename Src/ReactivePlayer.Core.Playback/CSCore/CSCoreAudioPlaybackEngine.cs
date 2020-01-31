@@ -76,27 +76,27 @@ namespace ReactivePlayer.Core.Playback.CSCore
             #region CAN's
 
             // can load
-            this._canLoadSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanLoadPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
+            this._canLoadSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.LoadablePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
             this.WhenCanLoadChanged = this._canLoadSubject.DistinctUntilChanged();
 
             // can play
-            this._canPlaySubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanPlayPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
+            this._canPlaySubject = new BehaviorSubject<bool>(PlaybackStatusHelper.PlayablePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
             this.WhenCanPlayChanged = this._canPlaySubject.DistinctUntilChanged();
 
             // can pause
-            this._canPauseSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanPausePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
+            this._canPauseSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.PausablePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
             this.WhenCanPauseChanged = this._canPauseSubject.DistinctUntilChanged();
 
             // can resume
-            this._canResumeSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanResumePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
+            this._canResumeSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.ResumablePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
             this.WhenCanResumeChanged = this._canResumeSubject.DistinctUntilChanged();
 
             // can stop
-            this._canStopSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanStopPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
+            this._canStopSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.StoppablePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
             this.WhenCanStopChanged = this._canStopSubject.DistinctUntilChanged();
 
             // can seek
-            this._canSeekSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.CanSeekPlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
+            this._canSeekSubject = new BehaviorSubject<bool>(PlaybackStatusHelper.SeekablePlaybackStatuses.Contains(this._statusSubject.Value)).DisposeWith(this._playerScopeDisposables);
             this.WhenCanSeekChanged = this._canSeekSubject.DistinctUntilChanged();
 
             #endregion
@@ -347,12 +347,12 @@ namespace ReactivePlayer.Core.Playback.CSCore
         {
             PlaybackStatus playbackStatus = this._statusSubject.Value;
 
-            this._canLoadSubject.OnNext(PlaybackStatusHelper.CanLoadPlaybackStatuses.Contains(playbackStatus));
-            this._canPlaySubject.OnNext(PlaybackStatusHelper.CanPlayPlaybackStatuses.Contains(playbackStatus));
-            this._canPauseSubject.OnNext(PlaybackStatusHelper.CanPausePlaybackStatuses.Contains(playbackStatus));
-            this._canResumeSubject.OnNext(PlaybackStatusHelper.CanResumePlaybackStatuses.Contains(playbackStatus));
-            this._canStopSubject.OnNext(PlaybackStatusHelper.CanStopPlaybackStatuses.Contains(playbackStatus));
-            this._canSeekSubject.OnNext(PlaybackStatusHelper.CanSeekPlaybackStatuses.Contains(playbackStatus));
+            this._canLoadSubject.OnNext(PlaybackStatusHelper.LoadablePlaybackStatuses.Contains(playbackStatus));
+            this._canPlaySubject.OnNext(PlaybackStatusHelper.PlayablePlaybackStatuses.Contains(playbackStatus));
+            this._canPauseSubject.OnNext(PlaybackStatusHelper.PausablePlaybackStatuses.Contains(playbackStatus));
+            this._canResumeSubject.OnNext(PlaybackStatusHelper.ResumablePlaybackStatuses.Contains(playbackStatus));
+            this._canStopSubject.OnNext(PlaybackStatusHelper.StoppablePlaybackStatuses.Contains(playbackStatus));
+            this._canSeekSubject.OnNext(PlaybackStatusHelper.SeekablePlaybackStatuses.Contains(playbackStatus));
         }
 
         private void UpdateDuration(bool isEnded)
