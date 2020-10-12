@@ -11,6 +11,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:System.Windows;assembly=PresentationFramework"
     xmlns:local="clr-namespace:ReactivePlayer.UI.WPF.Views"
+    Background="{StaticResource MaterialDesignPaper}"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False,
@@ -36,8 +37,6 @@
     </UserControl.InputBindings>-->
 
     <ListView
-        Behaviors:DoubleClick.Command="{Binding PlayTrack}"
-        Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}"
         BorderBrush="{x:Null}"
         BorderThickness="0"
         ItemsSource="{Binding SortedFilteredTrackViewModelsROOC}"
@@ -45,41 +44,83 @@
         VirtualizingPanel.IsVirtualizing="True"
         VirtualizingPanel.VirtualizationMode="Recycling">
 
-        <ListView.ItemContainerStyle>
-            <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="ListViewItem">
-                <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                <!--<Setter Property="Behaviors:DoubleClick.Command" Value="{Binding PlayTrack}" />
-                <Setter Property="Behaviors:DoubleClick.CommandParameter" Value="{Binding}" />-->
-            </Style>
-        </ListView.ItemContainerStyle>
-
         <ListView.ContextMenu>
             <ContextMenu>
                 <MenuItem
                     Command="{Binding PlayTrack}"
                     CommandParameter="{Binding SelectedTrackViewModel}"
-                    Header="Play" />
+                    Header="Play">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="Play" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
                 <!--<MenuItem Command="{Binding AddTrackToLibrary}" Header="Add track" />-->
-                <MenuItem Command="{Binding SelectedTrackViewModel.EditTrackTags}" Header="Edit" />
+                <MenuItem Command="{Binding SelectedTrackViewModel.EditTrackTags}" Header="Edit">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="Pencil" />
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Remove">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="CloseThick" />
+                    </MenuItem.Icon>
                     <MenuItem.Items>
                         <MenuItem
                             Command="{Binding RemoveTrackFromSubset}"
                             CommandParameter="{Binding SelectedTrackViewModel}"
                             Header="Remove from playlist"
-                            Visibility="{Binding RemoveTrackFromSubset, Converter={StaticResource ReferenceToVisibilityConverter}}" />
+                            InputGestureText="CANC"
+                            Visibility="{Binding RemoveTrackFromSubset, Converter={StaticResource ReferenceToVisibilityConverter}}">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="BookmarkRemove" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem
                             Command="{Binding RemoveTrackFromLibrary}"
                             CommandParameter="{Binding SelectedTrackViewModel}"
-                            Header="Remove from library" />
+                            Header="Remove from library"
+                            InputGestureText="SHIFT+CANC">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Delete" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Header="Remove and delete"
+                            InputGestureText="CTRL+SHIFT+CANC"
+                            IsEnabled="False">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="FileRemove" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem.Items>
                 </MenuItem>
                 <Separator />
-                <MenuItem Command="{Binding SelectedTrackViewModel.ShowInFileManager}" Header="Show in folder" />
+                <MenuItem Command="{Binding SelectedTrackViewModel.ShowInFileManager}" Header="Show in folder">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="FolderOpen" />
+                    </MenuItem.Icon>
+                </MenuItem>
             </ContextMenu>
         </ListView.ContextMenu>
 
+        <ListView.ItemContainerStyle>
+            <Style BasedOn="{StaticResource MaterialDesignGridViewItem}" TargetType="{x:Type ListViewItem}">
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                <!--<Setter Property="Behaviors:DoubleClick.Command" Value="{Binding PlayTrack}" />
+                <Setter Property="Behaviors:DoubleClick.CommandParameter" Value="{Binding}" />-->
+            </Style>
+        </ListView.ItemContainerStyle>
+
+        <!--<ListView.ItemTemplate>
+            <DataTemplate>
+                <ContentControl MouseDoubleClick="ffewafa" Behaviors:DoubleClick.Command="{Binding PlayTrack}" Behaviors:DoubleClick.CommandParameter="{Binding SelectedTrackViewModel}">
+                    <GridViewRowPresenter />
+                </ContentControl>
+            </DataTemplate>
+        </ListView.ItemTemplate>-->
 
         <ListView.View>
             <GridView>
@@ -90,7 +131,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>-->
-                <GridViewColumn Width="Auto">
+                <GridViewColumn Width="31">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <!--<Path
@@ -114,6 +155,9 @@
                             <materialDesign:PackIcon
                                 Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                                 Height="15"
+                                Margin="0"
+                                Padding="0"
+                                HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Kind="VolumeHigh"
                                 Visibility="{Binding IsLoaded, ConverterParameter=True, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
@@ -121,7 +165,7 @@
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
 
-                <GridViewColumn Width="Auto">
+                <GridViewColumn Width="31">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <!--<StackPanel Orientation="Horizontal">-->
@@ -136,6 +180,8 @@
                             <materialDesign:PackIcon
                                 Width="{Binding Height, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                                 Height="15"
+                                Padding="0"
+                                HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Foreground="Red"
                                 Kind="Heart"
@@ -145,21 +191,21 @@
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
 
-                <GridViewColumn Width="330" Header="Title">
+                <GridViewColumn Width="310" Header="Title">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
-                <GridViewColumn Width="330" Header="Performers">
+                <GridViewColumn Width="260" Header="Performers">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding PerformersNames, Converter={StaticResource StringEnumerableJoiner}}" TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
-                <GridViewColumn Width="330" Header="Album">
+                <GridViewColumn Width="260" Header="Album">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding AlbumTitle}" TextTrimming="CharacterEllipsis" />

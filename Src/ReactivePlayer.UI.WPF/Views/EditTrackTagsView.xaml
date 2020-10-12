@@ -8,110 +8,86 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:EditTrackTagsViewModel,
                                      IsDesignTimeCreatable=False}"
+    Background="{StaticResource MaterialDesignPaper}"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}"
     mc:Ignorable="d">
 
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
-            <ColumnDefinition Width="8" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="*"  />
-            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />
-            <!--<RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />-->
-            <!--<RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />-->
-            <!--<RowDefinition Height="8" />
-            <RowDefinition Height="Auto" />-->
-        </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
-            VerticalAlignment="Top"
-            Text="Title" />
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="3"
-            MinWidth="150"
-            VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Text="{Binding Title}" />
+        <GroupBox Grid.Column="0" Header="Track" >
 
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="1"
-            VerticalAlignment="Top"
-            Text="Performers" />
-        <Views:EditArtistsView
-            Grid.Row="3"
-            Grid.Column="3"
-            DataContext="{Binding EditPerformersViewModel}" />
+            <Grid Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="5"
-            Grid.Column="1"
-            VerticalAlignment="Top"
-            Text="Composers" />
-        <Views:EditArtistsView
-            Grid.Row="5"
-            Grid.Column="3"
-            DataContext="{Binding EditComposersViewModel}" />
+                <TextBlock
+                    Grid.Row="1"
+                    VerticalAlignment="Top"
+                    Text="Title" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    MinWidth="150"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Text="{Binding Title}" />
 
-        <TextBlock
-            Grid.Row="7"
-            Grid.Column="1"
-            VerticalAlignment="Top"
-            Text="Year" />
-        <TextBox
-            Grid.Row="7"
-            Grid.Column="3"
-            MinWidth="150"
-            VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Text="{Binding Year}"
-            TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="3"
+                    VerticalAlignment="Top"
+                    Text="Performers" />
+                <Views:EditArtistsView
+                    Grid.Row="3"  
+                    Grid.Column="2"
+                    DataContext="{Binding EditPerformersViewModel}" />
 
-        <Views:EditTrackAlbumAssociationView
-            Grid.Row="1"
-            Grid.RowSpan="7"
-            Grid.Column="5"
+                <TextBlock
+                    Grid.Row="5"
+                    VerticalAlignment="Top"
+                    Text="Composers" />
+                <Views:EditArtistsView
+                    Grid.Row="5"
+                    Grid.Column="2" 
+                    DataContext="{Binding EditComposersViewModel}" />
+
+                <TextBlock
+                    Grid.Row="7"
+                    VerticalAlignment="Top"
+                    Text="Year" />
+                <TextBox
+                    Grid.Row="7"
+                    Grid.Column="2"
+                    MinWidth="150"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Text="{Binding Year}"
+                    TextAlignment="Right" />
+
+            </Grid>
+        </GroupBox>
+
+        <Views:EditTrackAlbumAssociationView 
+            Grid.Row="0"
+            Grid.Column="2" 
             DataContext="{Binding EditTrackAlbumAssociationViewModel}" />
-
-        <Grid
-            Grid.Row="9"
-            Grid.Column="1"
-            Grid.ColumnSpan="5"
-            HorizontalAlignment="Right">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <Button Command="{Binding ConfirmAndClose}" Content="Apply" />
-            <Button
-                Grid.Column="2"
-                Command="{Binding CancelAndClose}"
-                Content="Cancel" />
-
-        </Grid>
 
     </Grid>
 </UserControl>

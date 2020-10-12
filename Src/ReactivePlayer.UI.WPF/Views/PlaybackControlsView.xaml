@@ -2,7 +2,7 @@
     x:Class="ReactivePlayer.UI.WPF.Views.PlaybackControlsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
+    xmlns:Daedalus_UI_Converters="clr-namespace:Daedalus.UI.Converters;assembly=Daedalus.UI"
     xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
@@ -12,15 +12,17 @@
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False,
                                      Type={x:Type DesignTimeViewModels:DesignTimePlaybackControlsViewModel}}"
     d:DesignWidth="550"
+    Background="{StaticResource MaterialDesignPaper}"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Converters:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
-        <Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
-        <Converters:BooleanInverter x:Key="BooleanInverter" />
-        <Converters:MultiBooleanAllToVisibilityConverter x:Key="MultiBooleanAllToVisibilityConverter" />
-        <Converters:MultiBooleanAllToVisibilityInverter x:Key="MultiBooleanAllToVisibilityInverter" />
+        <Daedalus_UI_Converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Daedalus_UI_Converters:BooleanToVisibilityInverter x:Key="BooleanToVisibilityInverter" />
+        <Daedalus_UI_Converters:NullableTimeSpanToStringConverter x:Key="NullableTimeSpanToStringConverter" />
+        <Daedalus_UI_Converters:BooleanInverter x:Key="BooleanInverter" />
+        <Daedalus_UI_Converters:MultiBooleanAllToVisibilityConverter x:Key="MultiBooleanAllToVisibilityConverter" />
+        <Daedalus_UI_Converters:MultiBooleanAllToVisibilityInverter x:Key="MultiBooleanAllToVisibilityInverter" />
         <!--<Converters:MultiBooleanAnyToVisibilityConverter x:Key="MultiBooleanAnyToVisibilityConverter" />-->
     </UserControl.Resources>
 
@@ -121,8 +123,11 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Text="{Binding PlaybackTimelineViewModel.Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, FallbackValue=--:--, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBlock Text=" / ">
+                <TextBlock
+                    Style="{StaticResource MaterialDesignTextBlock}"
+                    Text="{Binding PlaybackTimelineViewModel.Position, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, FallbackValue=--:--, TargetNullValue=--:--}"
+                    Visibility="{Binding PlaybackTimelineViewModel.IsPositionKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Style="{StaticResource MaterialDesignTextBlock}" Text=" / ">
                     <TextBlock.Visibility>
                         <MultiBinding Converter="{StaticResource MultiBooleanAllToVisibilityConverter}">
                             <Binding Path="PlaybackTimelineViewModel.IsDurationKnown" />
@@ -130,7 +135,10 @@
                         </MultiBinding>
                     </TextBlock.Visibility>
                 </TextBlock>
-                <TextBlock Text="{Binding PlaybackTimelineViewModel.Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, FallbackValue=--:--, TargetNullValue=--:--}" Visibility="{Binding PlaybackTimelineViewModel.IsDurationKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock
+                    Style="{StaticResource MaterialDesignTextBlock}"
+                    Text="{Binding PlaybackTimelineViewModel.Duration, Converter={StaticResource NullableTimeSpanToStringConverter}, Mode=OneWay, FallbackValue=--:--, TargetNullValue=--:--}"
+                    Visibility="{Binding PlaybackTimelineViewModel.IsDurationKnown, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
 
         </Grid>

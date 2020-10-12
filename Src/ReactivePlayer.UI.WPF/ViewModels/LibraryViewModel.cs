@@ -122,11 +122,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         public AllTracksViewModel AllTracksViewModel { get; }
 
-        private ReadOnlyObservableCollection<TracksSubsetViewModel> _tracksSubsetViewModelsROOC;
-        public ReadOnlyObservableCollection<TracksSubsetViewModel> TracksSubsetViewModelsROOC
+        private ReadOnlyObservableCollection<TracksSubsetViewModel> _playliistViewModels;
+        public ReadOnlyObservableCollection<TracksSubsetViewModel> PlayliistViewModels
         {
-            get { return this._tracksSubsetViewModelsROOC; }
-            private set { this.Set(ref this._tracksSubsetViewModelsROOC, value); }
+            get { return this._playliistViewModels; }
+            private set { this.Set(ref this._playliistViewModels, value); }
         }
 
         //private ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
@@ -167,7 +167,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .StartWithItem(this.AllTracksViewModel, 0u)
                 .Bind(out var newRooc)
                 .Subscribe();
-            this.TracksSubsetViewModelsROOC = newRooc;
+            this.PlayliistViewModels = newRooc;
         }
 
         protected override Task OnInitializeAsync(CancellationToken cancellationToken)
@@ -179,7 +179,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         protected void DisconnectPlaylists()
         {
-            this.TracksSubsetViewModelsROOC = null;
+            this.PlayliistViewModels = null;
             this._serialViewModelsChangesSubscription.Disposable = null;
         }
 

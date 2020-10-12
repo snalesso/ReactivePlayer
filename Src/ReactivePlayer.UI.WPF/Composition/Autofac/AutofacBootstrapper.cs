@@ -130,7 +130,7 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
                         track,
                         ctxInternal.Resolve<IAudioPlaybackEngine>(),
                         ctxInternal.Resolve<IDialogService>(),
-                        ctxInternal.Resolve<Func<Track, EditTrackTagsViewModel>>());
+                        ctxInternal.Resolve<Func<Track, EditTrackViewModel>>());
                 }).AsSelf().InstancePerLifetimeScope();
 
             builder.RegisterType<EditTrackTagsViewModel>().AsSelf().InstancePerDependency();

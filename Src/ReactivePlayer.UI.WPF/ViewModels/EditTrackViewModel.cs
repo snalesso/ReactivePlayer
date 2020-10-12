@@ -1,11 +1,13 @@
-﻿using ReactivePlayer.Core.Library.Tracks;
+﻿using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Tracks;
 using ReactiveUI;
 using System;
 using System.Reactive;
+using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
-    public sealed class EditTrackViewModel : ReactiveObject
+    public class EditTrackViewModel : ReactiveScreen, IDisposable
     {
         #region constants & fields
 
@@ -31,11 +33,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this.EditTrackTagsViewModel = this._editTrackTagsViewModelFactoryMethod.Invoke(this._track);
 
-            this.FakeEdit = ReactiveCommand.Create(
-                (TrackViewModel trackVM) =>
-                {
-                    throw new NotImplementedException();
-                });
+            this.CancelAndClose = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(false));
+            this.CancelAndClose.DisposeWith(this._disposables);
+
+            this.ConfirmAndClose = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(true));
+            this.ConfirmAndClose.DisposeWith(this._disposables);
+
+            this.DisplayName = "Edit";
         }
 
         #endregion
@@ -51,7 +55,43 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region commands
 
-        public ReactiveCommand<TrackViewModel, Unit> FakeEdit { get; }
+        public ReactiveCommand<Unit, Unit> CancelAndClose { get; }
+        public ReactiveCommand<Unit, Unit> ConfirmAndClose { get; }
+
+        #endregion
+
+        #region IDisposable
+
+        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private bool _isDisposed = false;
+
+        // use this in derived class
+        // protected override void Dispose(bool isDisposing)
+        // use this in non-derived class
+        protected virtual void Dispose(bool isDisposing)
+        {
+            if (this._isDisposed)
+                return;
+
+            if (isDisposing)
+            {
+                // free managed resources here
+                this._disposables.Dispose();
+            }
+
+            // free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // set large fields to null.
+
+            this._isDisposed = true;
+        }
+
+        // remove if in derived class
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool isDisposing) above.
+            this.Dispose(true);
+        }
 
         #endregion
     }

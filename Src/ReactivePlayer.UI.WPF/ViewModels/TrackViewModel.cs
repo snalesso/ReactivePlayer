@@ -20,7 +20,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         private readonly IAudioPlaybackEngine _playbackService;
         private readonly IDialogService _dialogService;
 
-        private readonly Func<Track, EditTrackTagsViewModel> _editTrackTagsViewModelFactoryMethod;
+        private readonly Func<Track, EditTrackViewModel> _editTrackViewModelFactoryMethod;
 
         #endregion
 
@@ -30,12 +30,12 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             Track track,
             IAudioPlaybackEngine playbackService,
             IDialogService dialogService,
-            Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod)
+            Func<Track, EditTrackViewModel> editTrackViewModelFactoryMethod)
         {
             this._track = track ?? throw new ArgumentNullException(nameof(track));
             this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
-            this._editTrackTagsViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
+            this._editTrackViewModelFactoryMethod = editTrackViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(editTrackViewModelFactoryMethod));
 
             this._isLoaded_OAPH = this._playbackService.WhenTrackChanged
                 .ObserveOn(RxApp.MainThreadScheduler)
@@ -66,7 +66,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.EditTrackTags = ReactiveCommand.CreateFromTask(
                 async() =>
                 {
-                    await this._dialogService.ShowDialogAsync(this._editTrackTagsViewModelFactoryMethod?.Invoke(this.Track));
+                    await this._dialogService.ShowDialogAsync(this._editTrackViewModelFactoryMethod?.Invoke(this.Track));
                 });
             this.EditTrackTags.ThrownExceptions
                 .Subscribe(ex => Debug.WriteLine(ex.Message))

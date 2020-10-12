@@ -7,6 +7,7 @@
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:EditArtistsViewModel,
                                      IsDesignTimeCreatable=False}"
@@ -27,35 +28,35 @@
 
         <StackPanel Grid.ColumnSpan="3">
 
-            <Grid Visibility="{Binding HasEditArtistViewModelSelection, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityInverter}}">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="Auto" SharedSizeGroup="buttons" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="txbNewArtistName" Text="{Binding NewArtistName, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel>
+                    <TextBox
+                        x:Name="txbNewArtistName"
+                        VerticalAlignment="Center"
+                        Text="{Binding NewArtistName, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding HasEditArtistViewModelSelection, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityInverter}}" />
+                    <TextBox
+                        x:Name="txbArtistName"
+                        VerticalAlignment="Center"
+                        Text="{Binding SelectedEditArtistViewModel.ArtistName, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding HasEditArtistViewModelSelection, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </StackPanel>
 
                 <Button
                     Grid.Column="2"
+                    VerticalAlignment="Center"
                     Command="{Binding AddNew}"
-                    Content="Add" />
-
-            </Grid>
-
-            <Grid Visibility="{Binding HasEditArtistViewModelSelection, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <!--<ColumnDefinition Width="8" />
-                    <ColumnDefinition Width="Auto" />-->
-                </Grid.ColumnDefinitions>
-
-                <TextBox x:Name="txbArtistName" Text="{Binding SelectedEditArtistViewModel.ArtistName, UpdateSourceTrigger=PropertyChanged}" />
-
-                <!--<Button
-                    Grid.Column="2"
-                    Command="{Binding SaveEdit}"
-                    Content="Save" />-->
+                    IsEnabled="{Binding HasEditArtistViewModelSelection, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityInverter}}">
+                    <Button.Content>
+                        <materialDesign:PackIcon Kind="Add" />
+                    </Button.Content>
+                </Button>
 
             </Grid>
 
@@ -91,8 +92,11 @@
                             <Button
                                 Grid.Column="2"
                                 Command="{Binding DataContext.TryRemove, ElementName=lsbArtists}"
-                                CommandParameter="{Binding}"
-                                Content="X" />
+                                CommandParameter="{Binding}">
+                                <Button.Content>
+                                    <materialDesign:PackIcon Kind="CloseThick" />
+                                </Button.Content>
+                            </Button>
 
                         </Grid>
                     </DataTemplate>
@@ -111,14 +115,20 @@
                 <Button
                     Grid.Row="0"
                     Grid.Column="2"
-                    Command="{Binding MoveSelectedUp}"
-                    Content="Up" />
+                    Command="{Binding MoveSelectedUp}">
+                    <Button.Content>
+                        <materialDesign:PackIcon Kind="ArrowUp" />
+                    </Button.Content>
+                </Button>
 
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
-                    Command="{Binding MoveSelectedDown}"
-                    Content="Down" />
+                    Command="{Binding MoveSelectedDown}">
+                    <Button.Content>
+                        <materialDesign:PackIcon Kind="ArrowDown" />
+                    </Button.Content>
+                </Button>
 
             </Grid>
 

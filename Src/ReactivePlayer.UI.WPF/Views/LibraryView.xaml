@@ -5,6 +5,8 @@
     xmlns:DesignTimeViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels.DesignTime"
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
+    Background="{StaticResource MaterialDesignPaper}"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:LibraryViewModel,
@@ -20,7 +22,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--<ListBox ItemsSource="{Binding TracksSubsetViewModelsROOC}" SelectedItem="{Binding SelectedTracksSubsetViewModel}">
+        <!--<ListBox ItemsSource="{Binding PlayliistViewModels}" SelectedItem="{Binding SelectedTracksSubsetViewModel}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding DisplayName}" />

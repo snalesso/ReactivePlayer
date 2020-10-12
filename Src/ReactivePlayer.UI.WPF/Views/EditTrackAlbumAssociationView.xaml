@@ -5,95 +5,75 @@
     xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
     xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:EditTrackAlbumAssociationViewModel,
                                      IsDesignTimeCreatable=False}"
+    Background="{StaticResource MaterialDesignPaper}"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}"
     mc:Ignorable="d">
 
+    <!--<GroupBox Header="Album Related">-->
+
     <Grid Grid.IsSharedSizeScope="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
-            <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="8" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock
+        <GroupBox
             Grid.Row="0"
-            Grid.Column="0"
-            VerticalAlignment="Top"
-            Text="Album" />
+            Grid.ColumnSpan="3"
+            Header="Album"
+            Style="{StaticResource MaterialDesignGroupBox}">
+            <Views:EditAlbumView DataContext="{Binding AlbumViewModel}" />
+        </GroupBox>
 
-        <Views:EditAlbumView
-            Grid.Row="0"
-            Grid.Column="2"
-            DataContext="{Binding AlbumViewModel}" />
-        <!--<Grid
-            Grid.Row="0"
-            Grid.Column="2"
-            VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <GroupBox Grid.Row="2" Header="Track in Album">
 
-            <Button
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                Content="New" />
-            <ComboBox
-                Grid.Column="2"
-                MinWidth="150"
-                VerticalAlignment="Center"
-                VerticalContentAlignment="Center"
-                ItemsSource="{Binding AlbumViewModels}"
-                SelectedItem="{Binding AlbumViewModel}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Title}" />
-                            <TextBlock Text="{Binding Authors}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </Grid>-->
+            <Grid Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="{x:Static Views:ViewsConstants.TagNamesColumn}" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <TextBlock
-            Grid.Row="2"
-            Grid.Column="0"
-            VerticalAlignment="Top"
-            Text="Track #" />
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="2"
-            MinWidth="150"
-            VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Text="{Binding TrackNumber}"
-            TextAlignment="Right" />
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Top"
+                    Text="Track #" />
+                <TextBox
+                    Grid.Column="2"
+                    MinWidth="150"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Text="{Binding TrackNumber}"
+                    TextAlignment="Right" />
 
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="0"
-            VerticalAlignment="Top"
-            Text="Disc #" />
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="2"
-            MinWidth="150"
-            VerticalAlignment="Center"
-            VerticalContentAlignment="Center"
-            Text="{Binding DiscNumber}"
-            TextAlignment="Right" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    VerticalAlignment="Top"
+                    Text="Disc #" />
+                <TextBox
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    MinWidth="150"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Text="{Binding DiscNumber}"
+                    TextAlignment="Right" />
+
+            </Grid>
+
+        </GroupBox>
 
     </Grid>
+
 </UserControl>

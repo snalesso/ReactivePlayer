@@ -1,9 +1,11 @@
 using ReactivePlayer.UI.WPF.ViewModels;
 using ReactiveUI;
 using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -92,5 +94,13 @@ namespace ReactivePlayer.UI.WPF.Views
         }
 
         #endregion
+
+        private async void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement fe && fe.DataContext is TrackViewModel trackViewModel)
+            {
+                await trackViewModel.PlayTrack.Execute();
+            }
+        }
     }
 }

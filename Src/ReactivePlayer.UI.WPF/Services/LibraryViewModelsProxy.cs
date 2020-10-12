@@ -74,6 +74,7 @@ namespace ReactivePlayer.UI.WPF.Services
         public IObservable<IChangeSet<TrackViewModel, uint>> TrackViewModelsChangeSets { get; }
         public IObservable<IChangeSet<PlaylistBaseViewModel, uint>> PlaylistViewModelsChanges { get; }
 
+        [Obsolete("This should not be here. Separate proxy for trakcs and playlists, and put it there or in PlaylistsViewModel")]
         public AllTracksViewModel AllTracksViewModel { get; }
 
         #endregion

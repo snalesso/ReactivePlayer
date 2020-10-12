@@ -44,6 +44,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this._serialViewModelsChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
 
+            this._areTracksLoaded = this
+                .WhenAnyValue(x => x.SortedFilteredTrackViewModelsROOC)
+                .Select(x => x != null)
+                .StartWith(this.SortedFilteredTrackViewModelsROOC != null)
+                .ToProperty(this, nameof(this.AreTracksLoaded), deferSubscription: true)
+                .DisposeWith(this._disposables);
+
             //this._tracksCount_OAPH = this
             //    .WhenAnyObservable(
             //        x => x.WhenPropertyChanged(e => e.SortedFilteredTrackViewModelsROOC, true, null)
@@ -98,11 +105,13 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         {
             //this.Disconnect();
 
-            this._serialViewModelsChangesSubscription.Disposable = this.Sort(this.Filter(this._sourceTrackViewModelsChanges))
+            this._serialViewModelsChangesSubscription.Disposable = 
+                this.Sort(
+                    this.Filter(
+                        this._sourceTrackViewModelsChanges))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out var newRooc)
-                .Subscribe();
-            this.SortedFilteredTrackViewModelsROOC = newRooc;
+                .Subscribe(x => this.SortedFilteredTrackViewModelsROOC = newRooc);
         }
 
         protected virtual void Disconnect()
@@ -124,6 +133,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region properties
+
+        private ObservableAsPropertyHelper<bool> _areTracksLoaded;
+        [Obsolete("Only says if collection is set, but doesn't know if the content is empty or stille loading.")]
+        public bool AreTracksLoaded => this._areTracksLoaded.Value;
 
         public TracksSubsetViewModel ParentTracksSubsetViewModel { get; }
 
