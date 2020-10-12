@@ -25,6 +25,7 @@ namespace ReactivePlayer.UI.WPF.Behaviors
             nameof(CommandParameter),
             typeof(object),
             typeof(DoubleClick));
+
         public static object GetCommandParameter(Control target)
         {
             return target.GetValue(CommandParameter);

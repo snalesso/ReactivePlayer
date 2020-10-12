@@ -1,13 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reactive;
-using System.Reactive.Disposables;
-using DynamicData;
+﻿using DynamicData;
 using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
+using System;
+using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -40,7 +40,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
                     try
                     {
-                        await (this._playlist as SimplePlaylist)?.Remove(trackViewModel.Id);
+                        // TODO: handle null? should not happen
+                        await this.Playlist?.Remove(trackViewModel.Id);
                     }
                     catch
                     {

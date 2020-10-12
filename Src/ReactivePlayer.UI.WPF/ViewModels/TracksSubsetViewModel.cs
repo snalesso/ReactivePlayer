@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
@@ -148,18 +150,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region methods
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
+            // TODO: review which comes first
+            await base.OnActivateAsync(cancellationToken);
 
             this.Connect();
         }
 
-        protected override void OnDeactivate(bool close)
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            base.OnDeactivate(close);
-
+            // TODO: review which comes first
             this.Disconnect();
+
+            return base.OnDeactivateAsync(close, cancellationToken);
         }
 
         #endregion

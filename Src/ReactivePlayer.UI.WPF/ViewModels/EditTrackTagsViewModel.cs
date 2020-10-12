@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Tracks;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
-using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Tracks;
-using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -37,10 +37,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
             this.EditTrackAlbumAssociationViewModel = this._editTrackAlbumAssociationViewModelFactoryMethod.Invoke(this._track.AlbumAssociation);
 
-            this.CancelAndClose = ReactiveCommand.Create(() => this.TryClose(false));
+            this.CancelAndClose = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(false));
             this.CancelAndClose.DisposeWith(this._disposables);
 
-            this.ConfirmAndClose = ReactiveCommand.Create(() => this.TryClose(true));
+            this.ConfirmAndClose = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(true));
             this.ConfirmAndClose.DisposeWith(this._disposables);
 
             this.DisplayName = "Edit";
@@ -54,7 +54,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public string Title
         {
             get => this._title;
-            set => this.RaiseAndSetIfChanged(ref this._title, value);
+            set => this.Set(ref this._title, value);
         }
 
         public EditArtistsViewModel EditPerformersViewModel { get; }
@@ -64,7 +64,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public uint? Year
         {
             get => this._year;
-            set => this.RaiseAndSetIfChanged(ref this._year, value);
+            set => this.Set(ref this._year, value);
         }
 
         public EditTrackAlbumAssociationViewModel EditTrackAlbumAssociationViewModel { get; }

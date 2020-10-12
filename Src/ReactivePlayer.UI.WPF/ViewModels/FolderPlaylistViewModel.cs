@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using DynamicData;
+﻿using DynamicData;
 using DynamicData.Binding;
 using DynamicData.PLinq;
-using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
+using System;
+using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -43,7 +42,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             // TODO: handle type conversion returns null
             (this._playlist as FolderPlaylist).Playlists
                 .Transform(
-                    playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this), 
+                    playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this),
                     new ParallelisationOptions(ParallelType.Parallelise))
                 .DisposeMany()
                 .RefCount()
@@ -51,6 +50,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                     SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name),
                     SortOptimisations.None)
                 .ObserveOn(RxApp.MainThreadScheduler)
+                //.ObserveOnDispatcher()
                 .Bind(out var newRooc)
                 .Subscribe()
                 .DisposeWith(this._disposables);
@@ -65,14 +65,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModelsROOC
         {
             get { return this._playlistViewModelsROOC; }
-            private set { this.RaiseAndSetIfChanged(ref this._playlistViewModelsROOC, value); }
+            private set { this.Set(ref this._playlistViewModelsROOC, value); }
         }
 
         private PlaylistBaseViewModel _selectedPlaylistViewModel;
         public PlaylistBaseViewModel SelectedPlaylistViewModel
         {
             get => this._selectedPlaylistViewModel;
-            set => this.RaiseAndSetIfChanged(ref this._selectedPlaylistViewModel, value);
+            set => this.Set(ref this._selectedPlaylistViewModel, value);
         }
 
         #endregion
@@ -83,7 +83,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null;
-    
+
         #endregion
 
         #region IDisposable

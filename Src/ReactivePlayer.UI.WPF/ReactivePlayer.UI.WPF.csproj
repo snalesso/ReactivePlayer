@@ -1,414 +1,45 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3127F9B6-3A88-4C5C-8AE5-F6F42FC0F016}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>ReactivePlayer.UI.WPF</RootNamespace>
-    <AssemblyName>ReactivePlayer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>ReactivePlayer.UI.WPF.EntryPoint</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Autofac, Version=4.9.3.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.9.3\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DynamicData, Version=6.13.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DynamicData.6.13.1\lib\net461\DynamicData.dll</HintPath>
-    </Reference>
-    <Reference Include="DynamicData.ReactiveUI, Version=6.11.0.2613, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DynamicData.ReactiveUI.6.11.0.2613\lib\net461\DynamicData.ReactiveUI.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignColors, Version=1.2.0.325, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MaterialDesignColors.1.2.0\lib\net45\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=2.6.0.325, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\MaterialDesignThemes.2.6.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Pharmacist.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Pharmacist.Common.1.0.118\lib\netstandard2.0\Pharmacist.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="ReactiveUI, Version=9.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveUI.9.20.1\lib\net461\ReactiveUI.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Events.WPF, Version=9.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveUI.Events.WPF.9.20.1\lib\net461\ReactiveUI.Events.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Validation, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveUI.Validation.1.2.1\lib\net461\ReactiveUI.Validation.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.WPF, Version=9.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ReactiveUI.WPF.9.20.1\lib\net461\ReactiveUI.WPF.dll</HintPath>
-    </Reference>
-    <Reference Include="Splat, Version=8.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Splat.8.2.4\lib\net461\Splat.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Drawing.Primitives.4.3.0\lib\net45\System.Drawing.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Reactive.4.1.6\lib\net46\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="..\..\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Behaviors\TreeViewTracksSubsetViewModelBehavior.cs" />
-    <Compile Include="Behaviors\BindableSelectedItemBehavior.cs" />
-    <Compile Include="Behaviors\DoubleClick.cs" />
-    <Compile Include="Behaviors\DependencyObjectExtensions.cs" />
-    <Compile Include="Controls\PathButton.cs" />
-    <Compile Include="Controls\StackPanelEx.cs" />
-    <Compile Include="Composition\Autofac\AutofacBootstrapper.cs" />
-    <Compile Include="Composition\CustomBootstrapperBase`1.cs" />
-    <Compile Include="Controls\CustomSlider.cs" />
-    <Compile Include="Controls\HorizontalSlider.cs" />
-    <Compile Include="Controls\StringListEditor.cs" />
-    <Compile Include="Converters\StringEnumerableJoiner.cs" />
-    <Compile Include="EntryPoint.cs" />
-    <Compile Include="Services\LibraryViewModelsProxy.cs" />
-    <Compile Include="Services\WaveformTimelineSoundPlayer.cs" />
-    <Compile Include="Services\WindowsDialogService.cs" />
-    <Compile Include="Services\WindowsTaskbarService.cs" />
-    <Compile Include="Themes\Tests.xaml.cs">
-      <DependentUpon>Tests.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\AddTracksViewModel.cs" />
-    <Compile Include="ViewModels\AllTracksViewModel.cs" />
-    <Compile Include="ViewModels\DialogWithResultViewModel`1.cs" />
-    <Compile Include="ViewModels\AlbumViewModel.cs" />
-    <Compile Include="ViewModels\EditAlbumViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackProgressViewModel.cs" />
-    <Compile Include="ViewModels\EditArtistViewModel.cs" />
-    <Compile Include="ViewModels\EditArtistsViewModel.cs" />
-    <Compile Include="ViewModels\FolderPlaylistViewModel.cs" />
-    <Compile Include="ViewModels\LibrarySidebarViewModel.cs" />
-    <Compile Include="ViewModels\SimplePlaylistViewModel.cs" />
-    <Compile Include="ViewModels\PlaylistViewModelBase.cs" />
-    <Compile Include="ViewModels\TrackAlbumAssociationViewModel.cs" />
-    <Compile Include="ViewModels\EditTrackAlbumAssociationViewModel.cs" />
-    <Compile Include="ViewModels\EditTrackTagsViewModel.cs" />
-    <Compile Include="ViewModels\EditTrackViewModel.cs" />
-    <Compile Include="ViewModels\LibraryViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackControlsViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackHistoryEntryViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackHistoryViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackQueueSelectorViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackQueueViewModel.cs" />
-    <Compile Include="ViewModels\ShellMenuViewModel.cs" />
-    <Compile Include="ViewModels\PlaybackTimelineViewModel.cs" />
-    <Compile Include="ViewModels\TracksSubsetViewModel.cs" />
-    <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TrackViewModel.cs" />
-    <Compile Include="ViewModels\CrashViewModel.cs" />
-    <Compile Include="Services\CustomWindowManager+WindowConductor.cs" />
-    <Compile Include="Services\CustomWindowManager.cs" />
-    <Compile Include="Composition\Autofac\Modules\EventAggregationAutoSubscriptionModule.cs" />
-    <Compile Include="ViewModels\DesignTime\DesignTimePlaybackControlsViewModel.cs" />
-    <Compile Include="Views\EditAlbumView.xaml.cs">
-      <DependentUpon>EditAlbumView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditTrackAlbumAssociationView.xaml.cs">
-      <DependentUpon>EditTrackAlbumAssociationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditTrackTagsView.xaml.cs">
-      <DependentUpon>EditTrackTagsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditTrackView.xaml.cs">
-      <DependentUpon>EditTrackView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LibraryView.xaml.cs">
-      <DependentUpon>LibraryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\NormalWindow.xaml.cs">
-      <DependentUpon>NormalWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlaybackControlsView.xaml.cs">
-      <DependentUpon>PlaybackControlsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlaybackHistoryView.xaml.cs">
-      <DependentUpon>PlaybackHistoryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PlaybackTimelineView.xaml.cs">
-      <DependentUpon>PlaybackTimelineView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LibrarySidebarView.xaml.cs">
-      <DependentUpon>LibrarySidebarView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShellMenuView.xaml.cs">
-      <DependentUpon>ShellMenuView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ShellView.xaml.cs">
-      <DependentUpon>ShellView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TracksSubsetView.xaml.cs">
-      <DependentUpon>TracksSubsetView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CrashView.xaml.cs">
-      <DependentUpon>CrashView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EditArtistsView.xaml.cs">
-      <DependentUpon>EditArtistsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ViewsConstants.cs" />
-    <Page Include="Themes\Button.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Geometries.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Tests.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditArtistsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj">
-      <Project>{3358412e-6ca8-462b-883b-0a640218a4a0}</Project>
-      <Name>Daedalus.ExtensionMethods</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Documents\Visual Studio 2017\Projects\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj">
-      <Project>{8008609e-8813-4a12-b385-431b25bcbbf1}</Project>
-      <Name>Daedalus.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj">
-      <Project>{f59e3c5e-8862-43b4-a59a-cf795b3912f3}</Project>
-      <Name>Caliburn.Micro.ReactiveUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugins\ReactivePlayer.Plugins.iTunes\ReactivePlayer.Plugins.iTunes.csproj">
-      <Project>{A45E3C4D-550F-4187-863D-C6F67E734162}</Project>
-      <Name>ReactivePlayer.Plugins.iTunes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj">
-      <Project>{61F616A4-FEB6-4582-B1A2-418FD0147C7B}</Project>
-      <Name>ReactivePlayer.Core.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.Library.Json\ReactivePlayer.Core.Library.Json.csproj">
-      <Project>{BB846D47-8B91-4793-99A6-5DB19984F6E1}</Project>
-      <Name>ReactivePlayer.Core.Library.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj">
-      <Project>{d410bfe3-22c7-4ee6-ab62-9a069f2f1566}</Project>
-      <Name>ReactivePlayer.Core.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj">
-      <Project>{d35e71ae-d254-4989-ae24-12747f3dcdc8}</Project>
-      <Name>ReactivePlayer.Core.Playback</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.UI\ReactivePlayer.UI.csproj">
-      <Project>{EF3ED4E8-E260-4557-8EC7-2FBAFB399343}</Project>
-      <Name>ReactivePlayer.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj">
-      <Project>{3f17aa7e-9965-4000-8446-9bc315f17c57}</Project>
-      <Name>ReactivePlayer.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\HorizontalSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditAlbumView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditTrackAlbumAssociationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditTrackTagsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditTrackView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LibraryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\NormalWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PlaybackControlsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PlaybackHistoryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PlaybackTimelineView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LibrarySidebarView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ShellMenuView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TracksSubsetView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CrashView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<StartupObject>ReactivePlayer.UI.WPF.EntryPoint</StartupObject>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="OAPHCreationHelpersMixins.cs" />
+	  <Compile Remove="ViewModels\TracksViewModel.cs" />
+	  <Compile Remove="Views\TracksView.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Remove="Views\TracksView.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="..\..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.0.0" />
+		<PackageReference Include="Caliburn.Micro" Version="4.0.136-rc" />
+		<PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+		<PackageReference Include="ReactiveUI" Version="11.5.35" />
+		<PackageReference Include="ReactiveUI.Events.WPF" Version="11.5.35" />
+		<PackageReference Include="ReactiveUI.WPF" Version="11.5.35" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj" />
+		<ProjectReference Include="..\..\..\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj" />
+		<ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj" />
+		<ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj" />
+		<ProjectReference Include="..\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj" />
+		<ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj" />
+		<ProjectReference Include="..\ReactivePlayer.iTunes\ReactivePlayer.iTunes.csproj" />
+		<ProjectReference Include="..\ReactivePlayer.UI\ReactivePlayer.UI.csproj" />
+	</ItemGroup>
+
 </Project>

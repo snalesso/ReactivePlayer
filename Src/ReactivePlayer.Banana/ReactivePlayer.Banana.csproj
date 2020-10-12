@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <StartupObject>ReactivePlayer.Banana.EntryPoint</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.136-rc" />
+    <PackageReference Include="DynamicData" Version="6.17.14" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <PackageReference Include="ReactiveUI" Version="11.5.35" />
+    <PackageReference Include="ReactiveUI.Events.WPF" Version="11.5.35" />
+    <PackageReference Include="ReactiveUI.WPF" Version="11.5.35" />
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Caliburn.Micro.ReactiveUI\src\Caliburn.Micro.ReactiveUI\Caliburn.Micro.ReactiveUI.csproj" />
+    <ProjectReference Include="..\..\..\Daedalus\Src\Daedalus.ExtensionMethods\Daedalus.ExtensionMethods.csproj" />
+    <ProjectReference Include="..\..\..\Daedalus\Src\Daedalus.UI\Daedalus.UI.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.Core.FileSystem\ReactivePlayer.Core.FileSystem.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.Core.Library\ReactivePlayer.Core.Library.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.Core.Playback\ReactivePlayer.Core.Playback.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.Core\ReactivePlayer.Core.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.iTunes\ReactivePlayer.iTunes.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.UI.Wpf\ReactivePlayer.UI.Wpf.csproj" />
+    <ProjectReference Include="..\ReactivePlayer.UI\ReactivePlayer.UI.csproj" />
+  </ItemGroup>
+
+</Project>

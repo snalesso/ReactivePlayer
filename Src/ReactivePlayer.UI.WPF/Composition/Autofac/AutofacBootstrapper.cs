@@ -1,18 +1,14 @@
 using Autofac;
 using Caliburn.Micro;
-using ReactivePlayer.Core.Domain.Persistence;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.FileSystem.Media.Audio.CSCore;
 using ReactivePlayer.Core.FileSystem.Media.Audio.TagLibSharp;
-using ReactivePlayer.Core.Library.Json.Serializers;
 using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
-using ReactivePlayer.Core.Playback.History;
-using ReactivePlayer.Domain.Repositories;
+using ReactivePlayer.iTunes.Domain.Persistence;
 using ReactivePlayer.UI.Services;
-using ReactivePlayer.UI.WPF.Composition.Autofac.Modules;
 using ReactivePlayer.UI.WPF.Services;
 using ReactivePlayer.UI.WPF.ViewModels;
 using ReactivePlayer.UI.WPF.Views;
@@ -68,13 +64,9 @@ namespace ReactivePlayer.UI.WPF.Composition.Autofac
         {
             base.RegisterComponents(builder);
 
-            // MODULES
-
-            builder.RegisterModule<EventAggregationAutoSubscriptionModule>(); // TODO: review: automatic behavior with no counterpart for unsubscription
-
             // CORE COMPONENTS
 
-            builder.RegisterType<CustomWindowManager>().As<IWindowManager>().InstancePerLifetimeScope();
+            builder.RegisterType<MaterialDesignWindowManager>().As<IWindowManager>().InstancePerLifetimeScope();
             builder.RegisterType<WindowsDialogService>().As<IDialogService>().InstancePerLifetimeScope();
             builder.RegisterType<CSCoreAudioFileDurationCalculator>().As<IAudioFileDurationCalculator>().InstancePerLifetimeScope();
             builder.RegisterType<TagLibSharpAudioFileTagger>().As<IAudioFileTagger>().InstancePerLifetimeScope();

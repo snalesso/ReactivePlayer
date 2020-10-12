@@ -45,7 +45,7 @@ namespace ReactivePlayer.Core.Library.Tracks
             return trackFactoryMethod(await this._serializer.GetNewIdentity());
         }
 
-        public Task<IReadOnlyList<Track>> GetAllTracksAsync()
+        public Task<IReadOnlyList<Track>> GetAllAsync()
         {
             return this._serializer.GetAllAsync();
         }

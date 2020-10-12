@@ -40,7 +40,7 @@ namespace ReactivePlayer.Core.Playback.CSCore.Codecs
         {
             get
             {
-                return this.CanSeek ? (long)(this._vorbisReader.DecodedTime.TotalSeconds * this._vorbisReader.SampleRate * this._vorbisReader.Channels) : 0;
+                return this.CanSeek ? (long)(this._vorbisReader.TimePosition.TotalSeconds * this._vorbisReader.SampleRate * this._vorbisReader.Channels) : 0;
             }
             set
             {
@@ -49,7 +49,7 @@ namespace ReactivePlayer.Core.Playback.CSCore.Codecs
                 if (value < 0 || value > this.Length)
                     throw new ArgumentOutOfRangeException("value");
 
-                this._vorbisReader.DecodedTime = TimeSpan.FromSeconds((double)value / this._vorbisReader.SampleRate / this._vorbisReader.Channels);
+                this._vorbisReader.TimePosition = TimeSpan.FromSeconds((double)value / this._vorbisReader.SampleRate / this._vorbisReader.Channels);
             }
         }
 

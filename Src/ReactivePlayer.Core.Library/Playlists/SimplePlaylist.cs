@@ -10,6 +10,7 @@ namespace ReactivePlayer.Core.Library.Playlists
 {
     public class SimplePlaylist : PlaylistBase, ITrackIdsRepository, IDisposable
     {
+        [Obsolete("Review needed: can a playlist have the notion of tracks repository?")]
         private readonly ITracksRepository _tracksRepository;
 
         #region ctors
@@ -33,16 +34,16 @@ namespace ReactivePlayer.Core.Library.Playlists
 
             this.TrackIds = this._trackIdsSourceCache.Connect();
 
-            this._tracksRepository.TracksRemoved.Subscribe(
-                removedTracks =>
-                {
-                    this._trackIdsSourceCache.Edit(
-                        updater =>
-                        {
-                            updater.RemoveKeys(removedTracks.Select(track => track.Id));
-                        });
-                })
-                .DisposeWith(this._disposables);
+            //this._tracksRepository.TracksRemoved.Subscribe(
+            //    removedTracks =>
+            //    {
+            //        this._trackIdsSourceCache.Edit(
+            //            updater =>
+            //            {
+            //                updater.RemoveKeys(removedTracks.Select(track => track.Id));
+            //            });
+            //    })
+            //    .DisposeWith(this._disposables);
         }
 
         #endregion
@@ -55,6 +56,14 @@ namespace ReactivePlayer.Core.Library.Playlists
         public IObservable<IReadOnlyList<uint>> TrackIdsAdded => throw new NotImplementedException();
 
         public IObservable<IReadOnlyList<uint>> TrackIdsRemoved => throw new NotImplementedException();
+
+        public override bool IsTrackIncluded(Track track)
+        {
+            if (track == null)
+                throw new ArgumentNullException(nameof(track));
+
+            return this._trackIdsSourceCache.Lookup(track.Id).HasValue;
+        }
 
         #endregion
 

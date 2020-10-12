@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Disposables;
+﻿using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using DynamicData.Binding;
 using DynamicData.PLinq;
-using DynamicData.ReactiveUI;
 using ReactivePlayer.Core.Playback.History;
 using ReactiveUI;
+using System;
+using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -37,15 +37,15 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             //var sorter2 = new SortExpressionComparer<PlaybackHistoryEntryViewModel>();
 
             this._playbackHistory.Entries
-                 .Connect()
-                 .Transform(phe => new PlaybackHistoryEntryViewModel(phe))
-                 .DisposeMany()
-                 .Sort(
+                .Connect()
+                .Transform(phe => new PlaybackHistoryEntryViewModel(phe))
+                .DisposeMany()
+                .Sort(
                     SortExpressionComparer<PlaybackHistoryEntryViewModel>.Descending(pheVM => pheVM.PlaybackEndedDateTime),
                     SortOptions.UseBinarySearch)
-                 .Bind(out var boundEntries)
-                 .Subscribe()
-                 .DisposeWith(this._disposables);
+                .Bind(out var boundEntries)
+                .Subscribe()
+                .DisposeWith(this._disposables);
             this.Entries = boundEntries;
             //    .WhenAudioSourceLocationChanged
             //    .ToObservableChangeSet(10)
@@ -64,7 +64,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReadOnlyObservableCollection<PlaybackHistoryEntryViewModel> Entries
         {
             get => this._entries;
-            private set => this.RaiseAndSetIfChanged(ref this._entries, value);
+            private set => this.Set(ref this._entries, value);
         }
 
         #endregion

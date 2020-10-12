@@ -1,19 +1,16 @@
-﻿using Caliburn.Micro.ReactiveUI;
+﻿
+using Caliburn.Micro;
+using Caliburn.Micro.ReactiveUI;
+using DynamicData;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Disposables;
-using System.Collections.Immutable;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReactivePlayer.UI.Collections;
-using DynamicData;
-using System.Collections.Specialized;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -159,7 +156,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public EditArtistViewModel SelectedEditArtistViewModel
         {
             get { return this._selectedEditArtistViewModel; }
-            set { this.RaiseAndSetIfChanged(ref this._selectedEditArtistViewModel, value); }
+            set { this.Set(ref this._selectedEditArtistViewModel, value); }
         }
         public IObservable<EditArtistViewModel> WhenSelectedEditArtistViewModelChanged { get; }
 
@@ -170,7 +167,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public string NewArtistName
         {
             get { return this._newArtistName; }
-            set { this.RaiseAndSetIfChanged(ref this._newArtistName, value); }
+            set { this.Set(ref this._newArtistName, value); }
         }
 
         #endregion

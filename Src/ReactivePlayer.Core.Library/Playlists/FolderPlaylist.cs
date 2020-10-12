@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,11 @@ namespace ReactivePlayer.Core.Library.Playlists
             });
 
             return Task.CompletedTask;
+        }
+
+        public override bool IsTrackIncluded(Track track)
+        {
+            return this._playlistsSourceCache.Items.Any(x => x.IsTrackIncluded(track));
         }
 
         #endregion

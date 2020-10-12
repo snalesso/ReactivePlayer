@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Caliburn.Micro.ReactiveUI;
+using ReactivePlayer.Core.Library.Playlists;
+using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
-using Caliburn.Micro.ReactiveUI;
-using ReactivePlayer.Core.Library.Playlists;
-using ReactiveUI;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -29,20 +30,20 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReadOnlyObservableCollection<PlaylistBaseViewModel<PlaylistBase>> PlaylistViewModelsROOC
         {
             get { return this._playlistViewModelsROOC; }
-            set { this.RaiseAndSetIfChanged(ref this._playlistViewModelsROOC, value); }
+            private set { this.Set(ref this._playlistViewModelsROOC, value); }
         }
 
         #endregion
 
         #region methods
 
-        protected override void OnActivate()
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
+            return base.OnActivateAsync(cancellationToken);
 
             //this.ConnectPlaylists();
         }
-        
+
         #endregion
 
         #region commands

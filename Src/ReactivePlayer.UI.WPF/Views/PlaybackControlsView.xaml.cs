@@ -1,7 +1,6 @@
 using ReactivePlayer.UI.WPF.ViewModels;
 using ReactiveUI;
 using System;
-using System.Reactive.Disposables;
 using System.Windows.Controls;
 
 namespace ReactivePlayer.UI.WPF.Views

@@ -3,7 +3,7 @@ using System;
 
 namespace ReactivePlayer.Core.Library
 {
-    public abstract class LibraryEntry : Entity<uint>
+    public abstract class LibraryEntry : Entity<uint> // TODO: make int
     {
         #region ctor
 
@@ -76,13 +76,6 @@ namespace ReactivePlayer.Core.Library
         }
 
         #region Entity
-
-        protected override void EnsureIsWellFormattedId(uint id)
-        {
-            if (id.Equals(uint.MinValue))
-                // TODO: create ad-hoc exception (e.g. InvalidIdValueException)
-                throw new ArgumentException($"{this.GetType().FullName}.{nameof(this.Id)} cannot be set to {id}.", nameof(id));
-        }
 
         #endregion
 

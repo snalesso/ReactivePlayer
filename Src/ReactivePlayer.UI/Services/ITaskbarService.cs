@@ -14,7 +14,7 @@ namespace ReactivePlayer.UI.Services
         // possible dependencies: IVisualizerService -> show animation in thumbnail
         void SetTaskbarProgressValue(double? progressPercentValue);
 
-        void SetTaskbarProgressStatus( TaskbarProgressStatus status);
+        void SetTaskbarProgressStatus(TaskbarProgressStatus status);
     }
 
     public enum TaskbarProgressStatus

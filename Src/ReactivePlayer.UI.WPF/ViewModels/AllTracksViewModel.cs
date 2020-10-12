@@ -47,7 +47,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region commands
 
         public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null;
-        
+
         #endregion
 
         #region IDisposable

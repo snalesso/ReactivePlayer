@@ -444,7 +444,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
         private void CreatePositionUpdater()
         {
             this._positionPoller = Observable
-                .Interval(this._positionUpdatesInterval, System.Reactive.Concurrency.DispatcherScheduler.Current) // TODO: use taskpool scheduler?
+                .Interval(this._positionUpdatesInterval, TaskPoolScheduler.Default) // TODO: use taskpool scheduler?
                 .Select(_ => this._soundOut?.WaveSource?.GetPosition())
                 .DistinctUntilChanged() // TODO: does .DistinctUntilChanged() filter equal value in respect to a subscription which contains a startwith like the one here below?
                 .Publish();

@@ -1,112 +1,112 @@
-using Caliburn.Micro;
-using System;
-using System.ComponentModel;
-using System.Windows;
+//using Caliburn.Micro;
+//using System; using Caliburn.Micro.ReactiveUI;
+//using System.ComponentModel;
+//using System.Windows;
 
-namespace ReactivePlayer.UI.WPF.Services
-{
-    /// <summary>
-    /// A service that manages windows.
-    /// </summary>
-    public partial class CustomWindowManager : IWindowManager
-    {
-        private class WindowConductor
-        {
-            bool deactivatingFromView;
-            bool deactivateFromViewModel;
-            bool actuallyClosing;
-            readonly Window view;
-            readonly object model;
+//namespace ReactivePlayer.UI.WPF.Services
+//{
+//    /// <summary>
+//    /// A service that manages windows.
+//    /// </summary>
+//    public partial class CustomWindowManager : IWindowManager
+//    {
+//        private class WindowConductor
+//        {
+//            bool deactivatingFromView;
+//            bool deactivateFromViewModel;
+//            bool actuallyClosing;
+//            readonly Window view;
+//            readonly object model;
 
-            public WindowConductor(object model, Window view)
-            {
-                this.model = model;
-                this.view = view;
+//            public WindowConductor(object model, Window view)
+//            {
+//                this.model = model;
+//                this.view = view;
 
-                var activatable = model as IActivate;
-                activatable?.Activate();
+//                var activatable = model as IActivate;
+//                activatable?.Activate();
 
-                if (model is IDeactivate deactivatable)
-                {
-                    view.Closed += this.Closed;
-                    deactivatable.Deactivated += this.Deactivated;
-                }
+//                if (model is IDeactivate deactivatable)
+//                {
+//                    view.Closed += this.Closed;
+//                    deactivatable.Deactivated += this.Deactivated;
+//                }
 
-                if (model is IGuardClose guard)
-                {
-                    view.Closing += this.Closing;
-                }
-            }
+//                if (model is IGuardClose guard)
+//                {
+//                    view.Closing += this.Closing;
+//                }
+//            }
 
-            private void Closed(object sender, EventArgs e)
-            {
-                this.view.Closed -= this.Closed;
-                this.view.Closing -= this.Closing;
+//            private void Closed(object sender, EventArgs e)
+//            {
+//                this.view.Closed -= this.Closed;
+//                this.view.Closing -= this.Closing;
 
-                if (this.deactivateFromViewModel)
-                    return;
+//                if (this.deactivateFromViewModel)
+//                    return;
 
-                var deactivatable = (IDeactivate)this.model;
+//                var deactivatable = (IDeactivate)this.model;
 
-                this.deactivatingFromView = true;
-                deactivatable.Deactivate(true);
-                this.deactivatingFromView = false;
-            }
+//                this.deactivatingFromView = true;
+//                deactivatable.Deactivate(true);
+//                this.deactivatingFromView = false;
+//            }
 
-            private void Deactivated(object sender, DeactivationEventArgs e)
-            {
-                if (!e.WasClosed)
-                    return;
+//            private void Deactivated(object sender, DeactivationEventArgs e)
+//            {
+//                if (!e.WasClosed)
+//                    return;
 
-                ((IDeactivate)this.model).Deactivated -= this.Deactivated;
+//                ((IDeactivate)this.model).Deactivated -= this.Deactivated;
 
-                if (this.deactivatingFromView)
-                    return;
+//                if (this.deactivatingFromView)
+//                    return;
 
-                this.deactivateFromViewModel = true;
-                this.actuallyClosing = true;
-                this.view.Close();
-                this.actuallyClosing = false;
-                this.deactivateFromViewModel = false;
-            }
+//                this.deactivateFromViewModel = true;
+//                this.actuallyClosing = true;
+//                this.view.Close();
+//                this.actuallyClosing = false;
+//                this.deactivateFromViewModel = false;
+//            }
 
-            private void Closing(object sender, CancelEventArgs e)
-            {
-                if (e.Cancel)
-                    return;
+//            private void Closing(object sender, CancelEventArgs e)
+//            {
+//                if (e.Cancel)
+//                    return;
 
-                var guard = (IGuardClose)this.model;
+//                var guard = (IGuardClose)this.model;
 
-                if (this.actuallyClosing)
-                {
-                    this.actuallyClosing = false;
-                    return;
-                }
+//                if (this.actuallyClosing)
+//                {
+//                    this.actuallyClosing = false;
+//                    return;
+//                }
 
-                bool runningAsync = false;
-                bool shouldEnd = false;
+//                bool runningAsync = false;
+//                bool shouldEnd = false;
 
-                guard.CanClose(canClose =>
-                {
-                    Execute.OnUIThread(() =>
-                    {
-                        if (runningAsync && canClose)
-                        {
-                            this.actuallyClosing = true;
-                            this.view.Close();
-                        }
-                        else
-                            e.Cancel = !canClose;
+//                guard.CanClose(canClose =>
+//                {
+//                    Execute.OnUIThread(() =>
+//                    {
+//                        if (runningAsync && canClose)
+//                        {
+//                            this.actuallyClosing = true;
+//                            this.view.Close();
+//                        }
+//                        else
+//                            e.Cancel = !canClose;
 
-                        shouldEnd = true;
-                    });
-                });
+//                        shouldEnd = true;
+//                    });
+//                });
 
-                if (shouldEnd)
-                    return;
+//                if (shouldEnd)
+//                    return;
 
-                runningAsync = e.Cancel = true;
-            }
-        }
-    }
-}
+//                runningAsync = e.Cancel = true;
+//            }
+//        }
+//    }
+//}

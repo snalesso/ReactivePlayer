@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6bb3755e-c801-4c24-8fa5-f63103cd7988</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ReactivePlayer.Core.Library.SQLite3</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Album.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AlbumAuthor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Artist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Track.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TrackComposer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TrackPerformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TrackPlayedLog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TrackStats.cs" />
+  </ItemGroup>
+</Project>

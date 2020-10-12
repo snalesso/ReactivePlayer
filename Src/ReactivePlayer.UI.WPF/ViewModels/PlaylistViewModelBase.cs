@@ -1,12 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reactive.Disposables;
-using DynamicData;
+﻿using DynamicData;
 using DynamicData.Alias;
 using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
+using System;
+using System.Diagnostics;
+using System.Reactive.Disposables;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -109,6 +109,8 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             : base(audioPlaybackEngine, writeLibraryService, dialogService, parentTracksSubsetViewModel, sourceTrackViewModelsChangesFlow, playlist)
         {
         }
+
+        protected TPlaylist Playlist => this._playlist as TPlaylist;
 
         //public uint PlaylistId => this._playlist.Id;
         //public override string Name => this._playlist.Name;

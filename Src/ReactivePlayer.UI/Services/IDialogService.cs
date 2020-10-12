@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.Services
 {
     public interface IDialogService
     {
-        DialogResult<IReadOnlyList<string>> OpenFileDialog(
+        Task<DialogResult<IReadOnlyList<string>>> OpenFileDialogAsync(
             string title,
             string initialDirectoryPath,
             bool isMultiselectAllowed,
             IReadOnlyDictionary<string, IReadOnlyCollection<string>> filters);
 
-        void ShowWindow(object dataContext);
+        Task ShowWindowAsync(object dataContext);
 
-        void ShowDialog(object dataContext);
+        Task<bool?> ShowDialogAsync(object dataContext);
     }
 }

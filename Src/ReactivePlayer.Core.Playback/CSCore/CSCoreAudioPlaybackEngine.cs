@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -361,6 +362,7 @@ namespace ReactivePlayer.Core.Playback.CSCore
 
             try
             {
+                // TODO: why would this throw?
                 if (!isEnded)
                     duration = this._soundOut?.WaveSource?.GetLength();
                 //else
@@ -463,7 +465,10 @@ namespace ReactivePlayer.Core.Playback.CSCore
         private void CreatePositionUpdater()
         {
             this._positionPoller = Observable
-                .Interval(this._positionUpdatesInterval, System.Reactive.Concurrency.DispatcherScheduler.Current) // TODO: use taskpool scheduler?
+                .Interval(this._positionUpdatesInterval,
+                //Scheduler.Default
+                TaskPoolScheduler.Default
+                ) // TODO: use taskpool scheduler?
                 .Select(_ => this._soundOut?.WaveSource?.GetPosition())
                 .DistinctUntilChanged() // TODO: does .DistinctUntilChanged() filter equal value in respect to a subscription which contains a startwith like the one here below?
                 .Publish();

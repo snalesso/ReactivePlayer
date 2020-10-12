@@ -1,5 +1,8 @@
-﻿using System;
-using Caliburn.Micro.ReactiveUI;
+﻿using Caliburn.Micro.ReactiveUI;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -19,5 +22,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public LibraryViewModel LibraryViewModel { get; }
         public AllTracksViewModel AllTracksViewModel => this.LibraryViewModel.AllTracksViewModel;
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
+
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            return base.OnActivateAsync(cancellationToken);
+        }
     }
 }

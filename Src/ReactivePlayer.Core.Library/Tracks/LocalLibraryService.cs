@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
 namespace ReactivePlayer.Core.Library.Tracks
@@ -32,23 +33,27 @@ namespace ReactivePlayer.Core.Library.Tracks
             this._playlistsRepository = playlistsRepository ?? throw new ArgumentNullException(nameof(playlistsRepository));
             this._playlistFactory = playlistFactory ?? throw new ArgumentNullException(nameof(playlistFactory));
 
+            this._playlistBaseChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
+            this._tracksChangesSubscription = new SerialDisposable().DisposeWith(this._disposables);
+
             this.TracksChanges = ObservableChangeSet.Create<Track, uint>(
                 async cache =>
                 {
-                    var items = await this._tracksRepository.GetAllTracksAsync();
-                    //var items = await Task.WhenAll(
-                    //    this._tracksRepository.GetAllTracksAsync(),
-                    //    Task.Delay(TimeSpan.FromSeconds(3)));
+                    var items = await this._tracksRepository.GetAllAsync();
                     cache.AddOrUpdate(items);
 
-                    return new CompositeDisposable(
-                        this._tracksRepository.TracksAddeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
-                        this._tracksRepository.TracksRemoved.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
-                        this._tracksRepository.TracksUpdated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
+                    //return new CompositeDisposable(
+                    //    //this._tracksRepository.TracksAddeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
+                    //    //this._tracksRepository.TracksRemoved.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
+                    //    //this._tracksRepository.TracksUpdated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems)))
+                    //    );
                 },
                 x => x.Id)
                 // TODO: add synchronization to handle multiple subscriptions?
-                .RefCount();
+                .RefCount()
+                //.Multicast(new ReplaySubject<IChangeSet<Track, uint>>())
+                //.AutoConnect(1, subscription => this._tracksChangesSubscription.Disposable = subscription)
+                ;
 
             this.PlaylistsChanges = ObservableChangeSet.Create<PlaylistBase, uint>(
                 async cache =>
@@ -57,13 +62,20 @@ namespace ReactivePlayer.Core.Library.Tracks
                     cache.AddOrUpdate(items);
 
                     //return new CompositeDisposable(
-                    //    this._playlistsRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
-                    //    this._playlistsRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
-                    //    this._playlistsRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))));
+                    ////    this._playlistsRepository.Addeded.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems))),
+                    ////    this._playlistsRepository.Removed.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.Remove(addedItems))),
+                    ////    this._playlistsRepository.Updated.Subscribe(addedItems => cache.Edit(cacheUpdater => cacheUpdater.AddOrUpdate(addedItems)))
+                    //);
                 },
                 x => x.Id)
-                .RefCount();
+                .RefCount()
+                //.Multicast(new ReplaySubject<IChangeSet<PlaylistBase, uint>>())
+                //.AutoConnect(1, subscription => this._playlistBaseChangesSubscription.Disposable = subscription)
+                ;
         }
+
+        private readonly SerialDisposable _tracksChangesSubscription;
+        private readonly SerialDisposable _playlistBaseChangesSubscription;
 
         #region IReadLibraryService
 

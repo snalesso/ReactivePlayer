@@ -12,4 +12,8 @@ namespace ReactivePlayer.Core
             return @this;
         }
     }
+    public static class OAPHHelpers
+    {
+
+    }
 }

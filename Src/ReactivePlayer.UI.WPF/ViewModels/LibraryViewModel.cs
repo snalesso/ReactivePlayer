@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+﻿using Caliburn.Micro;
 using Caliburn.Micro.ReactiveUI;
 using DynamicData;
 using ReactivePlayer.Core.FileSystem.Media.Audio;
@@ -13,6 +7,15 @@ using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactivePlayer.UI.WPF.Services;
 using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
@@ -54,7 +57,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.ShowFilePicker = ReactiveCommand.CreateFromTask(
                 async () =>
                 {
-                    var openFileDialogResult = this._dialogService.OpenFileDialog(
+                    var openFileDialogResult = await this._dialogService.OpenFileDialogAsync(
                         "Add files to library ...",
                         Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
                         true,
@@ -123,49 +126,40 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public ReadOnlyObservableCollection<TracksSubsetViewModel> TracksSubsetViewModelsROOC
         {
             get { return this._tracksSubsetViewModelsROOC; }
-            private set { this.RaiseAndSetIfChanged(ref this._tracksSubsetViewModelsROOC, value); }
+            private set { this.Set(ref this._tracksSubsetViewModelsROOC, value); }
         }
 
         //private ReadOnlyObservableCollection<PlaylistBaseViewModel> _playlistViewModelsROOC;
         //public ReadOnlyObservableCollection<PlaylistBaseViewModel> PlaylistViewModelsROOC
         //{
         //    get { return this._playlistViewModelsROOC; }
-        //    private set { this.RaiseAndSetIfChanged(ref this._playlistViewModelsROOC, value); }
+        //    private set { this.Set(ref this._playlistViewModelsROOC, value); }
         //}
 
         //private TracksSubsetViewModel _selectedTracksSubsetViewModel;
         //public TracksSubsetViewModel SelectedTracksSubsetViewModel
         //{
         //    get { return this._selectedTracksSubsetViewModel; }
-        //    set { this.RaiseAndSetIfChanged(ref this._selectedTracksSubsetViewModel, value); }
+        //    set { this.Set(ref this._selectedTracksSubsetViewModel, value); }
         //}
 
         #endregion
 
         #region methods
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
-
-            this.Connect();
-
             if (this.ActiveItem == null)
             {
-                this.ActivateItem(this.AllTracksViewModel);
+                await this.ActivateItemAsync(this.AllTracksViewModel);
             }
-        }
 
-        protected override void OnDeactivate(bool close)
-        {
-            base.OnDeactivate(close);
-
-            this.Disconnect();
+            await base.OnActivateAsync(cancellationToken);
         }
 
         private readonly SerialDisposable _serialViewModelsChangesSubscription;
 
-        protected void Connect()
+        protected void ConnectPlaylists()
         {
             this._serialViewModelsChangesSubscription.Disposable = this._libraryViewModelsProxy.PlaylistViewModelsChanges
                 .Transform(x => x as TracksSubsetViewModel)
@@ -176,7 +170,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.TracksSubsetViewModelsROOC = newRooc;
         }
 
-        protected void Disconnect()
+        protected override Task OnInitializeAsync(CancellationToken cancellationToken)
+        {
+            this.ConnectPlaylists();
+
+            return base.OnInitializeAsync(cancellationToken);
+        }
+
+        protected void DisconnectPlaylists()
         {
             this.TracksSubsetViewModelsROOC = null;
             this._serialViewModelsChangesSubscription.Disposable = null;

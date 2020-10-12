@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Tracks;
-using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +40,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._title; }
             set
             {
-                this.RaiseAndSetIfChanged(ref this._title, value);
+                this.Set(ref this._title, value);
                 this.GetAlbum();
             }
         }
@@ -54,7 +53,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._tracksCount; }
             set
             {
-                this.RaiseAndSetIfChanged(ref this._tracksCount, value);
+                this.Set(ref this._tracksCount, value);
                 this.GetAlbum();
             }
         }
@@ -65,7 +64,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             get { return this._discsCount; }
             set
             {
-                this.RaiseAndSetIfChanged(ref this._discsCount, value);
+                this.Set(ref this._discsCount, value);
                 this.GetAlbum();
             }
         }

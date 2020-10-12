@@ -63,10 +63,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
             this.PlayTrack.DisposeWith(this._disposables);
 
-            this.EditTrackTags = ReactiveCommand.Create(
-                () =>
+            this.EditTrackTags = ReactiveCommand.CreateFromTask(
+                async() =>
                 {
-                    this._dialogService.ShowDialog(this._editTrackTagsViewModelFactoryMethod?.Invoke(this.Track));
+                    await this._dialogService.ShowDialogAsync(this._editTrackTagsViewModelFactoryMethod?.Invoke(this.Track));
                 });
             this.EditTrackTags.ThrownExceptions
                 .Subscribe(ex => Debug.WriteLine(ex.Message))
@@ -77,7 +77,16 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 () =>
                 {
                     // TODO: handle exceptions
-                    Process.Start("explorer.exe", $"/select, \"{this.TrackLocation.LocalPath}\"");
+                    if (this.TrackLocation.IsFile)
+                    {
+                        Process.Start(
+                            "explorer.exe",
+                            $"/select, \"{this.TrackLocation.GetComponents(UriComponents.AbsoluteUri, UriFormat.UriEscaped)}\"");
+                    }
+                    else
+                    {
+                        Process.Start(this.TrackLocation.GetComponents(UriComponents.AbsoluteUri, UriFormat.UriEscaped));
+                    }
                 },
                 this.WhenAnyValue(x => x.TrackLocation).Select(x => x != null));
             this.ShowInFileManager.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
@@ -120,11 +129,6 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #endregion
 
         #region methods
-
-        public override void CanClose(Action<bool> callback)
-        {
-            base.CanClose(callback);
-        }
 
         #endregion
 

@@ -1,6 +1,8 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Shell;
 using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Library.Tracks;
@@ -103,10 +105,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .Subscribe(track => this.UpdateDisplayName(track))
                 .DisposeWith(this._disposables);
 
-            this.ActivateItem(this.LibraryViewModel);
-            this.ActivateItem(this.PlaybackControlsViewModel);
-            this.ActivateItem(this.PlaybackHistoryViewModel);
-            this.ActivateItem(this.ShellMenuViewModel);
+            this.Items.Add(this.LibraryViewModel);
+            this.Items.Add(this.PlaybackHistoryViewModel);
+            this.Items.Add(this.PlaybackControlsViewModel);
+            this.Items.Add(this.ShellMenuViewModel);
         }
 
         #endregion
@@ -152,10 +154,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.DisplayName = shellViewTitle;
         }
 
-        public override void CanClose(Action<bool> callback)
+        public override Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
         {
             //this._playbackService.StopAsync().Wait(); // TODO: handle special cases: playback stop/other actions before closing fail so can close should return false
-            base.CanClose(callback);
+            return base.CanCloseAsync(cancellationToken);
         }
 
         #endregion

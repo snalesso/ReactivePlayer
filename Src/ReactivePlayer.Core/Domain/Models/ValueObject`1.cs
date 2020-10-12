@@ -1,8 +1,6 @@
-using ReactivePlayer.Core.Domain.Models.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace ReactivePlayer.Core.Domain.Models
 {
@@ -10,9 +8,8 @@ namespace ReactivePlayer.Core.Domain.Models
     public abstract class ValueObject<T> : IEquatable<T>
         where T : ValueObject<T>
     {
-        public ValueObject()
+        protected ValueObject()
         {
-            this._hashCodeCache = new Lazy<int>(() => HashCodeHelper.CombineHashCodes(this.GetValueIngredients()), LazyThreadSafetyMode.PublicationOnly);
         }
 
         /// <summary>
@@ -20,17 +17,15 @@ namespace ReactivePlayer.Core.Domain.Models
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        // TODO: benchmark signature with IReadOnlyList<object>, which forces to return an array, but safer
         protected abstract IEnumerable<object> GetValueIngredients();
 
-        private readonly Lazy<int> _hashCodeCache;
         /// <summary>
         /// Provides the hashcode of the the <see cref="T"/>'s value as a <see cref="ValueObject{T}"/>.
         /// </summary>
         /// <returns></returns>
         public sealed override int GetHashCode()
         {
-            return this._hashCodeCache.Value;
+            return HashCode.Combine(this.GetValueIngredients());
         }
 
         ///// <summary>
@@ -47,10 +42,22 @@ namespace ReactivePlayer.Core.Domain.Models
         /// <returns></returns>
         public bool Equals(T other)
         {
-            return
-                !(other is null)
-                && this.GetType() == other.GetType() // TODO: does this work if I pass an inheriting class instance??
-                && this.GetValueIngredients().SequenceEqual(other.GetValueIngredients());
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (this.GetType() != other.GetType()) // TODO: does this work if I pass an inheriting class instance??
+            {
+                return false;
+            }
+
+            return this.GetValueIngredients().SequenceEqual(other.GetValueIngredients());
         }
 
         /// <summary>
@@ -72,7 +79,9 @@ namespace ReactivePlayer.Core.Domain.Models
         public static bool operator ==(ValueObject<T> left, ValueObject<T> right)
         {
             if (left is null ^ right is null)
+            {
                 return false;
+            }
 
             return left is null || left.Equals(right);
         }

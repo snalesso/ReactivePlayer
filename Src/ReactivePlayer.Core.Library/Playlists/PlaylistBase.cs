@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using ReactivePlayer.Core.Domain.Models;
+using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,13 +36,9 @@ namespace ReactivePlayer.Core.Library.Playlists
         }
 
         // TODO: consider & maybe benchmark exposing a cache, which might improve performance a lot, or consider exposing a .HasKey(uint id) method
+        [Obsolete]
         public abstract IObservable<IChangeSet<uint, uint>> TrackIds { get; }
 
-        protected override void EnsureIsWellFormattedId(uint id)
-        {
-            if (id.Equals(uint.MinValue))
-                // TODO: create ad-hoc exception (e.g. InvalidIdValueException)
-                throw new ArgumentException($"{this.GetType().FullName}.{nameof(this.Id)} cannot be set to {id}.", nameof(id));
-        }
+        public abstract bool IsTrackIncluded(Track track);
     }
 }

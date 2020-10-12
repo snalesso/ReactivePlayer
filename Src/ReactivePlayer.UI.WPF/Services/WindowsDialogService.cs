@@ -17,7 +17,7 @@ namespace ReactivePlayer.UI.WPF.Services
             this._windowManager = windowManager ?? throw new ArgumentNullException(nameof(windowManager));
         }
 
-        public DialogResult<IReadOnlyList<string>> OpenFileDialog(
+        public Task<DialogResult<IReadOnlyList<string>>> OpenFileDialogAsync(
             string title,
             string initialDirectoryPath,
             bool isMultiselectAllowed,
@@ -33,17 +33,17 @@ namespace ReactivePlayer.UI.WPF.Services
 
             var resultCode = ofd.ShowDialog();
 
-            return new DialogResult<IReadOnlyList<string>>(resultCode, resultCode == true ? ofd.FileNames : null);
+            return Task.FromResult(new DialogResult<IReadOnlyList<string>>(resultCode, resultCode == true ? ofd.FileNames : null));
         }
 
-        public void ShowDialog(object dataContext)
+        public Task<bool?> ShowDialogAsync(object dataContext)
         {
-            this._windowManager.ShowDialog(dataContext);
+            return this._windowManager.ShowDialogAsync(dataContext);
         }
 
-        public void ShowWindow(object dataContext)
+        public Task ShowWindowAsync(object dataContext)
         {
-            this._windowManager.ShowWindow(dataContext);
+            return this._windowManager.ShowWindowAsync(dataContext);
         }
     }
 }

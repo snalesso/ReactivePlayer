@@ -7,8 +7,6 @@
         <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
     </Style>
 
-    <Style TargetType="{x:Type Button}" x:Key="Button.PathButton">
-        
-    </Style>
+    <Style x:Key="Button.PathButton" TargetType="{x:Type Button}" />
 
 </ResourceDictionary>

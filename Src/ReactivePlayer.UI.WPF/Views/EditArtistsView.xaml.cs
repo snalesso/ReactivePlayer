@@ -1,11 +1,9 @@
 ﻿using ReactivePlayer.UI.WPF.ViewModels;
 using ReactiveUI;
 using System;
-using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -59,13 +57,13 @@ namespace ReactivePlayer.UI.WPF.Views
                     newViewModel.AddNew.Subscribe(_ => this.txbNewArtistName.Focus()).DisposeWith(this._viewModelSubscriptionsDisposables);
 
                     // when txt new artist name receives enter, execute the add
-                     Observable.FromEventPattern<KeyEventHandler, KeyEventArgs>(
-                        h => this.txbNewArtistName.KeyDown += h,
-                        h => this.txbNewArtistName.KeyDown -= h)
-                        .Where(key => key.EventArgs.Key == Key.Enter)
-                        .Select(_ => Unit.Default)
-                        .InvokeCommand(newViewModel, x => x.AddNew)
-                        .DisposeWith(this._viewModelSubscriptionsDisposables);
+                    Observable.FromEventPattern<KeyEventHandler, KeyEventArgs>(
+                       h => this.txbNewArtistName.KeyDown += h,
+                       h => this.txbNewArtistName.KeyDown -= h)
+                       .Where(key => key.EventArgs.Key == Key.Enter)
+                       .Select(_ => Unit.Default)
+                       .InvokeCommand(newViewModel, x => x.AddNew)
+                       .DisposeWith(this._viewModelSubscriptionsDisposables);
                 })
                 .DisposeWith(this._disposables);
 

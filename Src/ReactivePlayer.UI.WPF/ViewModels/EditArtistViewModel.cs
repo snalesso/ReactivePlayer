@@ -1,11 +1,10 @@
 ﻿using Caliburn.Micro.ReactiveUI;
-using ReactiveUI;
 
 namespace ReactivePlayer.UI.WPF.ViewModels
 {
     public class EditArtistViewModel : ReactiveScreen
-        //, IEditableObject
-        //, ISupportsValidation
+    //, IEditableObject
+    //, ISupportsValidation
     {
         #region constants & fields
 
@@ -47,7 +46,7 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         public string ArtistName
         {
             get { return this._artistName; }
-            set { this.RaiseAndSetIfChanged(ref this._artistName, value); }
+            set { this.Set(ref this._artistName, value); }
         }
 
         #endregion

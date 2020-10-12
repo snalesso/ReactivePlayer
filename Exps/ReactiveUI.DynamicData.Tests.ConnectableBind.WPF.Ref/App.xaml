@@ -1,7 +1,0 @@
-﻿<Application
-    x:Class="ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ReactiveUI.DynamicData.Tests.ConnectableBind.WPF.Ref">
-    <Application.Resources />
-</Application>

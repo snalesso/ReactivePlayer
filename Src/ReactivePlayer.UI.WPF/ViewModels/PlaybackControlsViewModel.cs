@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Playback;
 using ReactiveUI;
@@ -149,14 +151,14 @@ namespace ReactivePlayer.UI.WPF.ViewModels
 
         #region methods
 
-        public override async void CanClose(Action<bool> callback)
+        public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
         {
             // TODO: handle exceptions
             await this._audioPlaybackEngine.StopAsync()/*.ConfigureAwait(false)*/;
 
             this._disposables.Dispose();
 
-            base.CanClose(callback);
+            return await base.CanCloseAsync(cancellationToken);
         }
 
         #endregion

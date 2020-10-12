@@ -4,15 +4,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyCompany("Sergio Nalesso a.k.a. Daedalus")]
+[assembly: AssemblyCompany("Sergio Nalesso")]
 [assembly: AssemblyProduct(nameof(ReactivePlayer))]
-[assembly: AssemblyDescription("")]
-
-[assembly: AssemblyCopyright("Copyright © Daedalus 2017")]
+[assembly: AssemblyCopyright("Copyright © Sergio Nalesso 2017-2020")]
 [assembly: AssemblyTrademark("")]
 
 #if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
+[assembly: AssemblyConfiguration("Debug")] // no
 #elif RELEASE
 [assembly: AssemblyConfiguration("Release")]
 #endif
