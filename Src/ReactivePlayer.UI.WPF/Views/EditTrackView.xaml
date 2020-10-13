@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
 
         <Views:EditTrackTagsView
-            Grid.Row="1"  
+            Grid.Row="1"
             Grid.Column="1"
             DataContext="{Binding EditTrackTagsViewModel}" />
 

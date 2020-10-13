@@ -19,7 +19,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <GroupBox Grid.Column="0" Header="Track" >
+        <GroupBox Grid.Column="0" Header="Track">
 
             <Grid Grid.IsSharedSizeScope="True">
                 <Grid.ColumnDefinitions>
@@ -37,9 +37,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock
-                    VerticalAlignment="Top"
-                    Text="Title" />
+                <TextBlock VerticalAlignment="Top" Text="Title" />
                 <TextBox
                     Grid.Column="2"
                     MinWidth="150"
@@ -52,7 +50,7 @@
                     VerticalAlignment="Top"
                     Text="Performers" />
                 <Views:EditArtistsView
-                    Grid.Row="2"  
+                    Grid.Row="2"
                     Grid.Column="2"
                     DataContext="{Binding EditPerformersViewModel}" />
 
@@ -62,7 +60,7 @@
                     Text="Composers" />
                 <Views:EditArtistsView
                     Grid.Row="4"
-                    Grid.Column="2" 
+                    Grid.Column="2"
                     DataContext="{Binding EditComposersViewModel}" />
 
                 <TextBlock
@@ -81,9 +79,9 @@
             </Grid>
         </GroupBox>
 
-        <Views:EditTrackAlbumAssociationView 
+        <Views:EditTrackAlbumAssociationView
             Grid.Row="0"
-            Grid.Column="2" 
+            Grid.Column="2"
             DataContext="{Binding EditTrackAlbumAssociationViewModel}" />
 
     </Grid>
