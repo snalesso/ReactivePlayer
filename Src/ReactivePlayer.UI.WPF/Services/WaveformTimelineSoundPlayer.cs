@@ -1,4 +1,4 @@
-﻿namespace ReactivePlayer.UI.WPF.Services
+﻿namespace ReactivePlayer.UI.Wpf.Services
 {
     //public class WaveformTimelineSoundPlayer : ReactiveObject, WPFSoundVisualizationLib.IWaveformPlayer, IDisposable
     //{

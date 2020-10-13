@@ -1,7 +1,7 @@
-using ReactivePlayer.UI.WPF.Composition.Autofac;
+using ReactivePlayer.UI.Wpf.Composition.Autofac;
 using System.Windows;
 
-namespace ReactivePlayer.UI.WPF
+namespace ReactivePlayer.UI.Wpf
 {
     /// <summary>
     /// Interaction logic for App.xaml

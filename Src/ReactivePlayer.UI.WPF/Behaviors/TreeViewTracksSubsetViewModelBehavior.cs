@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xaml.Behaviors;
-using ReactivePlayer.UI.WPF.ViewModels;
+using ReactivePlayer.UI.Wpf.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ReactivePlayer.UI.WPF.Behaviors
+namespace ReactivePlayer.UI.Wpf.Behaviors
 {
     /// <summary>
     ///     Behavior that makes the <see cref="System.Windows.Controls.TreeView.SelectedItem" /> bindable.

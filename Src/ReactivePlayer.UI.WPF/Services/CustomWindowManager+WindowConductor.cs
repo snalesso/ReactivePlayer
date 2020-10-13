@@ -3,7 +3,7 @@
 //using System.ComponentModel;
 //using System.Windows;
 
-//namespace ReactivePlayer.UI.WPF.Services
+//namespace ReactivePlayer.UI.Wpf.Services
 //{
 //    /// <summary>
 //    /// A service that manages windows.

@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace ReactivePlayer.UI.WPF.Controls
+namespace ReactivePlayer.UI.Wpf.Controls
 {
     public abstract class CustomSlider : Control //RangeBase
     {

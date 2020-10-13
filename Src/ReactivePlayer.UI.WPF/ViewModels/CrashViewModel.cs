@@ -1,7 +1,7 @@
 using Caliburn.Micro.ReactiveUI;
 using System;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class CrashViewModel : ReactiveScreen
     {

@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.UI.WPF.ViewModels;
+﻿using ReactivePlayer.UI.Wpf.ViewModels;
 using ReactiveUI;
 using System;
 using System.Reactive;
@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     //// https://github.com/reactiveui/ReactiveUI/blob/master/src/ReactiveUI/Platforms/windows-common/ReactiveUserControl.cs
     //public abstract class EditArtistsViewBase : ReactiveUserControl<EditArtistsViewModel> { }

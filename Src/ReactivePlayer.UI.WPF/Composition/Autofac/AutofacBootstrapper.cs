@@ -9,9 +9,9 @@ using ReactivePlayer.Core.Playback;
 using ReactivePlayer.Core.Playback.CSCore;
 using ReactivePlayer.iTunes.Domain.Persistence;
 using ReactivePlayer.UI.Services;
-using ReactivePlayer.UI.WPF.Services;
-using ReactivePlayer.UI.WPF.ViewModels;
-using ReactivePlayer.UI.WPF.Views;
+using ReactivePlayer.UI.Wpf.Services;
+using ReactivePlayer.UI.Wpf.ViewModels;
+using ReactivePlayer.UI.Wpf.Views;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace ReactivePlayer.UI.WPF.Composition.Autofac
+namespace ReactivePlayer.UI.Wpf.Composition.Autofac
 {
     // Autofac Documentation:   http://autofac.readthedocs.org/en/latest/index.html
     // Autofac source code:     https://github.com/autofac/Autofac

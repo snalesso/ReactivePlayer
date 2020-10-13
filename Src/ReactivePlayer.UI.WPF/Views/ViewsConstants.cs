@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     public static class ViewsConstants
     {

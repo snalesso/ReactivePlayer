@@ -10,7 +10,7 @@ using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class ShellViewModel : ReactiveConductor<Caliburn.Micro.IScreen>.Collection.AllActive, IDisposable
     {

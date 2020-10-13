@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class EditAlbumViewModel : ReactiveScreen
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for LibraryView.xaml

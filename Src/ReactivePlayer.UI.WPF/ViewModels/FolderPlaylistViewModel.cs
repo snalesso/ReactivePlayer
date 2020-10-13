@@ -12,7 +12,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class FolderPlaylistViewModel : PlaylistBaseViewModel<FolderPlaylist>, IDisposable
     {

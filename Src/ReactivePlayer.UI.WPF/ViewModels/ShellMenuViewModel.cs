@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class ShellMenuViewModel : ReactiveScreen
     {

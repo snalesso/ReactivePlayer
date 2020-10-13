@@ -3,7 +3,7 @@ using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback.History;
 using System;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class PlaybackHistoryEntryViewModel : ReactiveScreen
     {

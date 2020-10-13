@@ -1,7 +1,7 @@
 ﻿using ReactivePlayer.UI.Services;
 using System;
 
-namespace ReactivePlayer.UI.WPF.Services
+namespace ReactivePlayer.UI.Wpf.Services
 {
     public class WindowsTaskbarService : ITaskbarService
     {

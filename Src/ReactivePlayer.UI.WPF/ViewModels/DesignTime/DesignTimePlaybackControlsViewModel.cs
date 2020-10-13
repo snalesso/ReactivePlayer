@@ -1,4 +1,4 @@
-namespace ReactivePlayer.UI.WPF.ViewModels.DesignTime
+namespace ReactivePlayer.UI.Wpf.ViewModels.DesignTime
 {
     internal class DesignTimePlaybackControlsViewModel : PlaybackControlsViewModel
     {

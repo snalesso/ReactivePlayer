@@ -1,4 +1,4 @@
-using ReactivePlayer.UI.WPF.ViewModels;
+using ReactivePlayer.UI.Wpf.ViewModels;
 using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
@@ -7,7 +7,7 @@ using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml

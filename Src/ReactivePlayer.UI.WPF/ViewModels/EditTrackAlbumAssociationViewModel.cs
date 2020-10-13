@@ -3,7 +3,7 @@ using ReactivePlayer.Core.Library.Tracks;
 using System;
 using System.Collections.ObjectModel;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class EditTrackAlbumAssociationViewModel : ReactiveScreen
     {

@@ -4,13 +4,13 @@ using ReactivePlayer.Core.Library.Playlists;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
-using ReactivePlayer.UI.WPF.ViewModels;
+using ReactivePlayer.UI.Wpf.ViewModels;
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace ReactivePlayer.UI.WPF.Services
+namespace ReactivePlayer.UI.Wpf.Services
 {
     public class LibraryViewModelsProxy :
         //ReactiveObject, 

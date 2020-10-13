@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace ReactivePlayer.UI.WPF.Converters
+namespace ReactivePlayer.UI.Wpf.Converters
 {
     public class StringEnumerableJoiner : IValueConverter
     {

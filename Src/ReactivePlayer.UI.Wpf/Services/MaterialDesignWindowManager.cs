@@ -1,8 +1,8 @@
 using Caliburn.Micro;
-using ReactivePlayer.UI.WPF.Views;
+using ReactivePlayer.UI.Wpf.Views;
 using System.Windows;
 
-namespace ReactivePlayer.UI.WPF.Services
+namespace ReactivePlayer.UI.Wpf.Services
 {
     //    /// <summary>
     //    /// A service that manages windows.

@@ -2,7 +2,7 @@
 using ReactivePlayer.Core.Library.Tracks;
 using System;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class TrackAlbumAssociationViewModel : ReactiveScreen
     {

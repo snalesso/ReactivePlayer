@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ReactivePlayer.UI.WPF.Behaviors
+namespace ReactivePlayer.UI.Wpf.Behaviors
 {
     /// <summary>
     ///     Extension methods for the <see cref="DependencyObject" /> type.

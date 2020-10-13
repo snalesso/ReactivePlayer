@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace ReactivePlayer.UI.WPF.Controls
+namespace ReactivePlayer.UI.Wpf.Controls
 {
     public class PathButton : Button
     {

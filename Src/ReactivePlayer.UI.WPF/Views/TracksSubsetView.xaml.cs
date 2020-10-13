@@ -1,4 +1,4 @@
-using ReactivePlayer.UI.WPF.ViewModels;
+using ReactivePlayer.UI.Wpf.ViewModels;
 using ReactiveUI;
 using System;
 using System.Reactive;
@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for TracksSubsetView.xaml
@@ -97,7 +97,10 @@ namespace ReactivePlayer.UI.WPF.Views
 
         private async void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (sender is FrameworkElement fe && fe.DataContext is TrackViewModel trackViewModel)
+            if (e.ChangedButton == MouseButton.Left
+                //&& e.ClickCount == 2
+                && sender is FrameworkElement fe
+                && fe.DataContext is TrackViewModel trackViewModel)
             {
                 await trackViewModel.PlayTrack.Execute();
             }

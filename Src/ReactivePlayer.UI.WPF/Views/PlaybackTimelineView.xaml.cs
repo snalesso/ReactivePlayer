@@ -1,4 +1,4 @@
-﻿using ReactivePlayer.UI.WPF.ViewModels;
+﻿using ReactivePlayer.UI.Wpf.ViewModels;
 using ReactiveUI;
 using System;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for PlaybackTimelineView.xaml

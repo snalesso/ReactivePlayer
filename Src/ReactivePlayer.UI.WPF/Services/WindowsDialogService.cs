@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.UI.WPF.Services
+namespace ReactivePlayer.UI.Wpf.Services
 {
     public sealed class WindowsDialogService : IDialogService
     {

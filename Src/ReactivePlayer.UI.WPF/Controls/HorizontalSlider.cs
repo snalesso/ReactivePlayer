@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace ReactivePlayer.UI.WPF.Controls
+namespace ReactivePlayer.UI.Wpf.Controls
 {
     public class HorizontalSlider : CustomSlider
     {

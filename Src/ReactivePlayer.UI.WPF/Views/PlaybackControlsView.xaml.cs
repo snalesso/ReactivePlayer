@@ -1,9 +1,9 @@
-using ReactivePlayer.UI.WPF.ViewModels;
+using ReactivePlayer.UI.Wpf.ViewModels;
 using ReactiveUI;
 using System;
 using System.Windows.Controls;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for TrackbarView.xaml

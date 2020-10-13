@@ -7,7 +7,7 @@ using System;
 using System.Reactive;
 using System.Reactive.Disposables;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public sealed class AllTracksViewModel : TracksSubsetViewModel
     {

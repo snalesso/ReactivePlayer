@@ -5,7 +5,7 @@ using ReactivePlayer.Core.FileSystem.Media.Audio;
 using ReactivePlayer.Core.Library.Tracks;
 using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
-using ReactivePlayer.UI.WPF.Services;
+using ReactivePlayer.UI.Wpf.Services;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class LibraryViewModel : ReactiveConductor<TracksSubsetViewModel>.Collection.OneActive, IDisposable
     {

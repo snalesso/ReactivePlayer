@@ -11,7 +11,7 @@ using ReactivePlayer.Core.Playback;
 using ReactivePlayer.UI.Services;
 using ReactiveUI;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class TrackViewModel : ReactiveScreen, IDisposable
     {
@@ -44,9 +44,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
                 .DisposeWith(this._disposables);
 
             // TODO: or use whenanyvalue?
-            this._isLoved_OAPH = this.Track.ObservableForProperty(x => x.IsLoved, skipInitial: false)
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Select(x => x.Value)
+            this._isLoved_OAPH =
+                //this.Track.ObservableForProperty(x => x.IsLoved, skipInitial: false)
+                this.WhenAnyValue(x => x.Track.IsLoved)
+                //.ObserveOn(RxApp.MainThreadScheduler)
+                //.Select(x => x.Value)
                 .ToProperty(this, nameof(this.IsLoved), deferSubscription: true)
                 .DisposeWith(this._disposables);
 
@@ -64,13 +66,11 @@ namespace ReactivePlayer.UI.WPF.ViewModels
             this.PlayTrack.DisposeWith(this._disposables);
 
             this.EditTrackTags = ReactiveCommand.CreateFromTask(
-                async() =>
+                async () =>
                 {
                     await this._dialogService.ShowDialogAsync(this._editTrackViewModelFactoryMethod?.Invoke(this.Track));
                 });
-            this.EditTrackTags.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
-                .DisposeWith(this._disposables);
+            this.EditTrackTags.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
             this.EditTrackTags.DisposeWith(this._disposables);
 
             this.ShowInFileManager = ReactiveCommand.Create(
@@ -98,14 +98,10 @@ namespace ReactivePlayer.UI.WPF.ViewModels
         #region properties
 
         private ObservableAsPropertyHelper<bool> _isLoaded_OAPH;
-        public bool IsLoaded
-        //{ get; }
-        => this._isLoaded_OAPH?.Value ?? default;
+        public bool IsLoaded => this._isLoaded_OAPH.Value;
 
         private ObservableAsPropertyHelper<bool> _isLoved_OAPH;
-        public bool IsLoved
-        //{ get; }
-        => this._isLoved_OAPH?.Value ?? default;
+        public bool IsLoved => this._isLoved_OAPH.Value;
 
         private readonly Track _track;
         public Track Track => this._track;

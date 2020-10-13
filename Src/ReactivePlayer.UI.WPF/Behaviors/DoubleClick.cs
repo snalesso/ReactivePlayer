@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ReactivePlayer.UI.WPF.Behaviors
+namespace ReactivePlayer.UI.Wpf.Behaviors
 {
     // TODO: check if the behavior can be called LeftDoubleClick so we have Behaviors:LeftDoubleClick Command="{}" Modifier="{}"
     public class DoubleClick : DependencyObject

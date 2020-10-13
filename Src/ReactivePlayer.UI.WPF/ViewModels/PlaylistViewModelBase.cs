@@ -8,7 +8,7 @@ using System;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public abstract class PlaylistBaseViewModel : TracksSubsetViewModel
     {

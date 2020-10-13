@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Windows;
 
-namespace ReactivePlayer.UI.WPF
+namespace ReactivePlayer.UI.Wpf
 {
     static class EntryPoint
     {

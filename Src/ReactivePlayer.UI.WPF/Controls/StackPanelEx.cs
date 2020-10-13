@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ReactivePlayer.UI.WPF.Controls
+namespace ReactivePlayer.UI.Wpf.Controls
 {
     // StackPanel source code: https://referencesource.microsoft.com/#PresentationFramework/src/Framework/System/Windows/Controls/Stack.cs,9c87817eddd701e2
     public class StackPanelEx : StackPanel

@@ -1,9 +1,9 @@
 ﻿<UserControl
-    x:Class="ReactivePlayer.UI.WPF.Views.EditTrackTagsView"
+    x:Class="ReactivePlayer.UI.Wpf.Views.EditTrackTagsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.WPF.ViewModels"
-    xmlns:Views="clr-namespace:ReactivePlayer.UI.WPF.Views"
+    xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.Wpf.ViewModels"
+    xmlns:Views="clr-namespace:ReactivePlayer.UI.Wpf.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=ViewModels:EditTrackTagsViewModel,
@@ -28,7 +28,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="8" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="8" />
                     <RowDefinition Height="Auto" />
@@ -39,11 +38,9 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock
-                    Grid.Row="1"
                     VerticalAlignment="Top"
                     Text="Title" />
                 <TextBox
-                    Grid.Row="1"
                     Grid.Column="2"
                     MinWidth="150"
                     VerticalAlignment="Center"
@@ -51,29 +48,29 @@
                     Text="{Binding Title}" />
 
                 <TextBlock
-                    Grid.Row="3"
+                    Grid.Row="2"
                     VerticalAlignment="Top"
                     Text="Performers" />
                 <Views:EditArtistsView
-                    Grid.Row="3"  
+                    Grid.Row="2"  
                     Grid.Column="2"
                     DataContext="{Binding EditPerformersViewModel}" />
 
                 <TextBlock
-                    Grid.Row="5"
+                    Grid.Row="4"
                     VerticalAlignment="Top"
                     Text="Composers" />
                 <Views:EditArtistsView
-                    Grid.Row="5"
+                    Grid.Row="4"
                     Grid.Column="2" 
                     DataContext="{Binding EditComposersViewModel}" />
 
                 <TextBlock
-                    Grid.Row="7"
+                    Grid.Row="6"
                     VerticalAlignment="Top"
                     Text="Year" />
                 <TextBox
-                    Grid.Row="7"
+                    Grid.Row="6"
                     Grid.Column="2"
                     MinWidth="150"
                     VerticalAlignment="Center"

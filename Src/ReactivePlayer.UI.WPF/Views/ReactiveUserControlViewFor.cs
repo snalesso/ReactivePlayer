@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Controls;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     public abstract class ReactiveUserControlViewFor<TViewModel> : UserControl, IViewFor<TViewModel>, IDisposable
         where TViewModel : class

@@ -9,7 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class PlaybackHistoryViewModel : ReactiveScreen, IDisposable
     {

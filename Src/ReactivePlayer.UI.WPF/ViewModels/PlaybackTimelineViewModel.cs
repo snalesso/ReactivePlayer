@@ -9,7 +9,7 @@ using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Playback;
 using ReactiveUI;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class PlaybackTimelineViewModel : ReactiveScreen, IDisposable
     {

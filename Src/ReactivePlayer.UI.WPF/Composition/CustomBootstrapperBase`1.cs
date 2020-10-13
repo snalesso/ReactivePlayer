@@ -1,12 +1,12 @@
 using Autofac;
 using Caliburn.Micro;
-using ReactivePlayer.UI.WPF.ViewModels;
-using ReactivePlayer.UI.WPF.Views;
+using ReactivePlayer.UI.Wpf.ViewModels;
+using ReactivePlayer.UI.Wpf.Views;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 
-namespace ReactivePlayer.UI.WPF.Composition
+namespace ReactivePlayer.UI.Wpf.Composition
 {
     public class CustomBootstrapperBase<TShellViewModel> : BootstrapperBase // https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/src/Caliburn.Micro.Platform/Bootstrapper.cs
         where TShellViewModel : IScreen

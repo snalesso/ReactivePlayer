@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ReactivePlayer.UI.WPF.Views
+namespace ReactivePlayer.UI.Wpf.Views
 {
     /// <summary>
     /// Interaction logic for NormalWindow.xaml

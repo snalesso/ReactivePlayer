@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro.ReactiveUI;
 
-namespace ReactivePlayer.UI.WPF.ViewModels
+namespace ReactivePlayer.UI.Wpf.ViewModels
 {
     public class EditArtistViewModel : ReactiveScreen
     //, IEditableObject
