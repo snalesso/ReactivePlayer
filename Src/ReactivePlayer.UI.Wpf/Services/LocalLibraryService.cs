@@ -12,7 +12,7 @@ using System.Reactive.Subjects;
 
 namespace ReactivePlayer.UI.Wpf.Services
 {
-    public class LibraryViewModelsProxy :
+    public sealed class LocalLibraryService :
         //ReactiveObject, 
         IDisposable
     {
@@ -24,7 +24,7 @@ namespace ReactivePlayer.UI.Wpf.Services
         private SerialDisposable _tracksSubscription;
         private SerialDisposable _playlistsSubscription;
 
-        public LibraryViewModelsProxy(
+        public LocalLibraryService(
             IReadLibraryService readLibraryService,
             IWriteLibraryService writeLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
@@ -128,7 +128,7 @@ namespace ReactivePlayer.UI.Wpf.Services
         // use this in derived class
         // protected override void Dispose(bool isDisposing)
         // use this in non-derived class
-        protected virtual void Dispose(bool isDisposing)
+        /*protected virtual*/ void Dispose(bool isDisposing)
         {
             if (this._isDisposed)
                 return;

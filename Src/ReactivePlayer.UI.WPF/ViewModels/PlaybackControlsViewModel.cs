@@ -66,35 +66,35 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
             this.PlayAll = ReactiveCommand.Create(
                 () => throw new NotImplementedException(),
-                Observable.Return(false));
-            this.PlayAll.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                Observable.Return(false))
                 .DisposeWith(this._disposables);
-            this.PlayAll.DisposeWith(this._disposables);
+            this.PlayAll.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
 
             this.Pause = ReactiveCommand.CreateFromTask(
-               () => this._audioPlaybackEngine.PauseAsync(),
-               this._audioPlaybackEngine.WhenCanPauseChanged.ObserveOn(RxApp.MainThreadScheduler));
-            this.Pause.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                () => this._audioPlaybackEngine.PauseAsync(),
+                this._audioPlaybackEngine.WhenCanPauseChanged.ObserveOn(RxApp.MainThreadScheduler))
                 .DisposeWith(this._disposables);
-            this.Pause.DisposeWith(this._disposables);
+            this.Pause.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
 
             this.Resume = ReactiveCommand.CreateFromTask(
                 () => this._audioPlaybackEngine.ResumeAsync(),
-                this._audioPlaybackEngine.WhenCanResumeChanged.ObserveOn(RxApp.MainThreadScheduler));
-            this.Resume.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                this._audioPlaybackEngine.WhenCanResumeChanged.ObserveOn(RxApp.MainThreadScheduler))
                 .DisposeWith(this._disposables);
-            this.Resume.DisposeWith(this._disposables);
+            this.Resume.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
 
             this.Stop = ReactiveCommand.CreateFromTask(
                 () => this._audioPlaybackEngine.StopAsync(),
-                this._audioPlaybackEngine.WhenCanStopChanged.ObserveOn(RxApp.MainThreadScheduler));
-            this.Stop.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                this._audioPlaybackEngine.WhenCanStopChanged.ObserveOn(RxApp.MainThreadScheduler))
                 .DisposeWith(this._disposables);
-            this.Stop.DisposeWith(this._disposables);
+            this.Stop.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
 
             //this.PlayPrevious = ReactiveCommand
             //    .CreateFromTask(async () =>

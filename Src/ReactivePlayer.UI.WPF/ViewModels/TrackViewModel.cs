@@ -61,17 +61,17 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                 Observable.CombineLatest(
                     this._playbackService.WhenCanLoadChanged,
                     this._playbackService.WhenCanPlayChanged,
-                    (canLoad, canPlay) => canLoad || canPlay));
-            this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
-            this.PlayTrack.DisposeWith(this._disposables);
+                    (canLoad, canPlay) => canLoad || canPlay))
+                .DisposeWith(this._disposables);
+            this.PlayTrack.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
 
             this.EditTrackTags = ReactiveCommand.CreateFromTask(
                 async () =>
                 {
                     await this._dialogService.ShowDialogAsync(this._editTrackViewModelFactoryMethod?.Invoke(this.Track));
-                });
-            this.EditTrackTags.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
-            this.EditTrackTags.DisposeWith(this._disposables);
+                })
+                .DisposeWith(this._disposables);
+            this.EditTrackTags.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
 
             this.ShowInFileManager = ReactiveCommand.Create(
                 () =>
@@ -88,9 +88,9 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                         Process.Start(this.TrackLocation.GetComponents(UriComponents.AbsoluteUri, UriFormat.UriEscaped));
                     }
                 },
-                this.WhenAnyValue(x => x.TrackLocation).Select(x => x != null));
-            this.ShowInFileManager.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex.Message)).DisposeWith(this._disposables);
-            this.ShowInFileManager.DisposeWith(this._disposables);
+                this.WhenAnyValue(x => x.TrackLocation).Select(x => x != null))
+                .DisposeWith(this._disposables);
+            this.ShowInFileManager.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
         }
 
         #endregion

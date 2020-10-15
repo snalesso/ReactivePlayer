@@ -86,7 +86,9 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                     this._lastSoughtTicks = null;
                     this._seekingSemaphore.Release();
                 },
-                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler));
+                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler))
+                .DisposeWith(this._disposables);
+            this.StartSeeking.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
 
             this.SeekTo = ReactiveCommand.CreateFromTask<long>(
                 async ticks =>
@@ -99,9 +101,11 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                     }
                     this._seekingSemaphore.Release();
                 },
-                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler));
+                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler))
+                .DisposeWith(this._disposables);
+            this.SeekTo.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
 
-            this.EndSeeking = 
+            this.EndSeeking =
                 //ReactiveCommand.CreateFromTask<long>(async () => { this._isSeeking = false; await this._audioPlaybackEngine.ResumeAsync(); }
                 ReactiveCommand.CreateFromTask<long>(async ticks =>
                 {
@@ -116,15 +120,9 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
                     this._seekingSemaphore.Release();
                 },
-                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler));
-
-            this.StartSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString())).DisposeWith(this._disposables);
-            this.SeekTo.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString())).DisposeWith(this._disposables);
-            this.EndSeeking.ThrownExceptions.Subscribe(x => Debug.WriteLine(x.ToString())).DisposeWith(this._disposables);
-
-            this.StartSeeking.DisposeWith(this._disposables);
-            this.SeekTo.DisposeWith(this._disposables);
-            this.EndSeeking.DisposeWith(this._disposables);
+                this._audioPlaybackEngine.WhenCanSeekChanged.ObserveOn(RxApp.MainThreadScheduler))
+                .DisposeWith(this._disposables);
+            this.EndSeeking.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
         }
 
         private readonly ObservableAsPropertyHelper<long> _positionAsTickssOAPH;

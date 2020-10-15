@@ -13,13 +13,11 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
     {
         public CloseApplicationConfirmationViewModel()
         {
-            this.ConfirmCloseApplication = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(true));
+            this.ConfirmCloseApplication = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(true)).DisposeWith(this._disposables);
             this.ConfirmCloseApplication.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
-            this.ConfirmCloseApplication.DisposeWith(this._disposables);
 
-            this.CancelCloseApplication = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(false));
+            this.CancelCloseApplication = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(false)).DisposeWith(this._disposables);
             this.CancelCloseApplication.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
-            this.CancelCloseApplication.DisposeWith(this._disposables);
         }
 
         public ReactiveCommand<Unit, Unit> ConfirmCloseApplication { get; }

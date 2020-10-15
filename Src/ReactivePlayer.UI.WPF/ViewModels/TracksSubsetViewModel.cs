@@ -71,12 +71,12 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                   this._audioPlaybackEngine.WhenCanLoadChanged,
                   this._audioPlaybackEngine.WhenCanPlayChanged,
                   this._audioPlaybackEngine.WhenCanStopChanged,
-                  (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)));
+                  (selectedTrackViewModel, canLoad, canPlay, canStop) => selectedTrackViewModel != null && (canLoad || canPlay || canStop)))
+                .DisposeWith(this._disposables);
             this.PlayTrack.ThrownExceptions
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                .Subscribe(ex => Debug.WriteLine(ex))
                 .DisposeWith(this._disposables);
-            this.PlayTrack.DisposeWith(this._disposables);
 
             this.RemoveTrackFromLibrary = ReactiveCommand.CreateFromTask(
                 async (TrackViewModel trackViewModel) =>
@@ -87,11 +87,11 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                     }
 
                     await this._writeLibraryService.RemoveTrackAsync(new RemoveTrackCommand(trackViewModel.Id));
-                });
-            this.RemoveTrackFromLibrary.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                })
                 .DisposeWith(this._disposables);
-            this.RemoveTrackFromLibrary.DisposeWith(this._disposables);
+            this.RemoveTrackFromLibrary.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
         }
 
         #endregion

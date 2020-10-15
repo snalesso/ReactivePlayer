@@ -27,7 +27,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
         private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         private readonly IDialogService _dialogService;
 
-        private readonly LibraryViewModelsProxy _libraryViewModelsProxy;
+        private readonly Services.LocalLibraryService _libraryViewModelsProxy;
 
         #region ctor
 
@@ -37,7 +37,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             IWriteLibraryService writeLibraryService,
             IAudioPlaybackEngine audioPlaybackEngine,
             IDialogService dialogService,
-            LibraryViewModelsProxy libraryViewModelsProxy
+            Services.LocalLibraryService libraryViewModelsProxy
             //Func<Track, EditTrackTagsViewModel> editTrackViewModelFactoryMethod,
             //Func<PlaylistBase, PlaylistBaseViewModel> playlistBaseViewModelFactoryMethod
             )
@@ -101,11 +101,11 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
                     //var addedTracks =
                     await this._writeLibraryService.AddTracksAsync(atc);
-                });
-            this.ShowFilePicker.ThrownExceptions
-                .Subscribe(x => Debug.WriteLine(x))
+                })
                 .DisposeWith(this._disposables);
-            this.ShowFilePicker.DisposeWith(this._disposables);
+            this.ShowFilePicker.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
 
             this.AllTracksViewModel = this._libraryViewModelsProxy.AllTracksViewModel;
 

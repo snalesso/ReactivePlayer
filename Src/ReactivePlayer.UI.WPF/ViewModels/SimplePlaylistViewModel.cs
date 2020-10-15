@@ -47,11 +47,11 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                     {
                         this.SelectedTrackViewModel = selectedItem;
                     }
-                });
-            this.RemoveTrackFromSubset.ThrownExceptions
-                .Subscribe(ex => Debug.WriteLine(ex.Message))
+                })
                 .DisposeWith(this._disposables);
-            this.RemoveTrackFromSubset.DisposeWith(this._disposables);
+            this.RemoveTrackFromSubset.ThrownExceptions
+                .Subscribe(ex => Debug.WriteLine(ex))
+                .DisposeWith(this._disposables);
         }
 
         #endregion

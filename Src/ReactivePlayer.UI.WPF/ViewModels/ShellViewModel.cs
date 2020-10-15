@@ -119,7 +119,8 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                     await this._dialogService.ShowWindowAsync(miniPlayerVM);
 
                     //this.IsVisible = true;
-                });
+                })
+                .DisposeWith(this._disposables);
 
             this.Items.Add(this.LibraryViewModel);
             this.Items.Add(this.PlaybackHistoryViewModel);
