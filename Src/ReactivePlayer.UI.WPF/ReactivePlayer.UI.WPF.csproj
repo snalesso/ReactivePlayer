@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 	  <Compile Remove="OAPHCreationHelpersMixins.cs" />
+	  <Compile Remove="ViewModels\LibrarySidebarViewModel.cs" />
 	  <Compile Remove="ViewModels\TracksViewModel.cs" />
 	  <Compile Remove="Views\TracksView.xaml.cs" />
 	</ItemGroup>

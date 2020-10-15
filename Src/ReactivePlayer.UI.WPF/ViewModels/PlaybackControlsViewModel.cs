@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro.ReactiveUI;
 using ReactivePlayer.Core.Playback;
+using ReactivePlayer.UI.Services;
 using ReactiveUI;
 
 namespace ReactivePlayer.UI.Wpf.ViewModels
@@ -21,6 +22,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
         //private readonly PlaybackQueue _playbackQueue;
         //private readonly PlaybackHistory _playbackHistory;
         //private readonly IReadLibraryService _readLibraryService;
+        private readonly IDialogService _dialogService;
 
         #endregion
 
@@ -32,7 +34,8 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             //PlaybackQueue playbackQueue,
             //PlaybackHistory playbackHistory,
             //IReadLibraryService readLibraryService
-            PlaybackTimelineViewModel playbackTimelineViewModel
+            PlaybackTimelineViewModel playbackTimelineViewModel,
+            IDialogService dialogService
             )
         {
             // TODO: log
@@ -42,7 +45,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             //this._playbackHistory = playbackHistory ?? throw new ArgumentNullException(nameof(playbackHistory));
             //this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this.PlaybackTimelineViewModel = playbackTimelineViewModel ?? throw new ArgumentNullException(nameof(playbackTimelineViewModel));
-
+            this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this._volume_OAPH = this._audioPlaybackEngine.WhenVolumeChanged
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .ToProperty(this, nameof(this.Volume))
@@ -153,12 +156,29 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
         public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
         {
-            // TODO: handle exceptions
-            await this._audioPlaybackEngine.StopAsync()/*.ConfigureAwait(false)*/;
+            if (PlaybackStatusHelper.StoppablePlaybackStatuses.Contains(this._audioPlaybackEngine.PlaybackStatus))
+            {
+                var wantToClose = await this._dialogService.ShowDialogAsync(new CloseApplicationConfirmationViewModel());
 
-            this._disposables.Dispose();
+                var shouldExit = wantToClose.HasValue && wantToClose.Value;
+                if (!shouldExit)
+                    return false;
+            }
 
             return await base.CanCloseAsync(cancellationToken);
+        }
+
+        public override async Task TryCloseAsync(bool? dialogResult = null)
+        {
+            //if (PlaybackStatusHelper.StoppablePlaybackStatuses.Contains(this._audioPlaybackEngine.PlaybackStatus))
+            //{
+            //    var result = await this._dialogService.ShowDialogAsync(new CloseApplicationConfirmationViewModel());
+            //    await base.TryCloseAsync(result);
+            //}
+
+            await this._audioPlaybackEngine.StopAsync();
+
+            await base.TryCloseAsync(dialogResult);
         }
 
         #endregion

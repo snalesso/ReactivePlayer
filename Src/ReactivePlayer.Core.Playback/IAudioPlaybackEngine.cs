@@ -47,7 +47,9 @@ namespace ReactivePlayer.Core.Playback
         TimeSpan? Duration { get; }
         IObservable<TimeSpan?> WhenDurationChanged { get; }
 
+        PlaybackStatus PlaybackStatus { get; }
         IObservable<PlaybackStatus> WhenStatusChanged { get; }
+
 
         //IObservable<byte> WhenBytesStreamChanged { get; }
     }

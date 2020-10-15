@@ -64,34 +64,6 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
         }
 
         #endregion
-
-        #region IDisposable
-
-        // https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.8
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private bool _isDisposed = false;
-
-        protected override void Dispose(bool isDisposing)
-        {
-            if (this._isDisposed)
-                return;
-
-            if (isDisposing)
-            {
-                // free managed resources here
-                this._disposables.Dispose();
-            }
-
-            // free unmanaged resources (unmanaged objects) and override a finalizer below.
-            // set large fields to null.
-
-            this._isDisposed = true;
-
-            // remove in non-derived class
-            base.Dispose(isDisposing);
-        }
-
-        #endregion
     }
 
     public abstract class PlaylistBaseViewModel<TPlaylist> : PlaylistBaseViewModel

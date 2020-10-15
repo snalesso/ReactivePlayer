@@ -2,6 +2,7 @@
 using ReactivePlayer.Core.Library.Tracks;
 using ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Disposables;
 
@@ -34,9 +35,11 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             this.EditTrackTagsViewModel = this._editTrackTagsViewModelFactoryMethod.Invoke(this._track);
 
             this.CancelAndClose = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(false));
+            this.CancelAndClose.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
             this.CancelAndClose.DisposeWith(this._disposables);
 
             this.ConfirmAndClose = ReactiveCommand.CreateFromTask(() => this.TryCloseAsync(true));
+            this.CancelAndClose.ThrownExceptions.Subscribe(ex => Debug.WriteLine(ex)).DisposeWith(this._disposables);
             this.ConfirmAndClose.DisposeWith(this._disposables);
 
             this.DisplayName = "Edit";

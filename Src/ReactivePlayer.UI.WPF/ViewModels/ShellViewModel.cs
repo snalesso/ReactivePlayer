@@ -1,4 +1,5 @@
 using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
@@ -16,27 +17,29 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
     {
         #region constancts & fields
 
-        private readonly IAudioPlaybackEngine _playbackService;
+        private readonly IAudioPlaybackEngine _audioPlaybackEngine;
         private readonly IReadLibraryService _readLibraryService;
         //private readonly IWriteLibraryService _writeLibraryService;
         //private readonly IAudioFileInfoProvider _audioFileInfoProvider;
         private readonly IDialogService _dialogService;
+        private readonly Func<MiniPlayerViewModel> miniplayerViewModelFactoryMethod;
 
         #endregion
 
         #region ctor
 
         public ShellViewModel(
-            IAudioPlaybackEngine playbackService,
+            IAudioPlaybackEngine audioPlaybackEngine,
             //IWriteLibraryService writeLibraryService,
             IReadLibraryService readLibraryService,
             IDialogService dialogService,
             LibraryViewModel libraryViewModel,
             PlaybackControlsViewModel playbackControlsViewModel,
             //PlaybackHistoryViewModel playbackHistoryViewModel,
-            ShellMenuViewModel shellMenuViewModel)
+            ShellMenuViewModel shellMenuViewModel,
+            Func<MiniPlayerViewModel> _miniplayerViewModelFactoryMethod)
         {
-            this._playbackService = playbackService ?? throw new ArgumentNullException(nameof(playbackService));
+            this._audioPlaybackEngine = audioPlaybackEngine ?? throw new ArgumentNullException(nameof(audioPlaybackEngine));
             //this._writeLibraryService = writeLibraryService ?? throw new ArgumentNullException(nameof(writeLibraryService));
             this._readLibraryService = readLibraryService ?? throw new ArgumentNullException(nameof(readLibraryService));
             this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
@@ -44,6 +47,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             this.PlaybackControlsViewModel = playbackControlsViewModel ?? throw new ArgumentNullException(nameof(playbackControlsViewModel));
             //this.PlaybackHistoryViewModel = playbackHistoryViewModel ?? throw new ArgumentNullException(nameof(playbackHistoryViewModel));
             this.ShellMenuViewModel = shellMenuViewModel ?? throw new ArgumentNullException(nameof(shellMenuViewModel));
+            this.miniplayerViewModelFactoryMethod = _miniplayerViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(_miniplayerViewModelFactoryMethod));
 
             this._isEnabled_OAPH = Observable
                 .Return(true)
@@ -51,9 +55,9 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                 .DisposeWith(this._disposables);
 
             this._taskbarProgressState_OAPH = Observable.CombineLatest(
-                    this._playbackService.WhenStatusChanged,
-                    this._playbackService.WhenDurationChanged,
-                    this._playbackService.WhenPositionChanged,
+                    this._audioPlaybackEngine.WhenStatusChanged,
+                    this._audioPlaybackEngine.WhenDurationChanged,
+                    this._audioPlaybackEngine.WhenPositionChanged,
                     (status, duration, position) =>
                     {
                         switch (status)
@@ -87,8 +91,8 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                 .DisposeWith(this._disposables);
 
             this._taskbarProgressValue_OAPH = Observable.CombineLatest(
-                    this._playbackService.WhenDurationChanged,
-                    this._playbackService.WhenPositionChanged,
+                    this._audioPlaybackEngine.WhenDurationChanged,
+                    this._audioPlaybackEngine.WhenPositionChanged,
                     (duration, position) =>
                     {
                         if (duration.HasValue && position.HasValue)
@@ -100,10 +104,22 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
                 .ToProperty(this, nameof(this.TaskbarProgressValue))
                 .DisposeWith(this._disposables);
 
-            this._playbackService.WhenTrackChanged
+            this._audioPlaybackEngine.WhenTrackChanged
                 //.ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(track => this.UpdateDisplayName(track))
                 .DisposeWith(this._disposables);
+
+            this.HideShellAndShowMiniPlayer = ReactiveCommand.CreateFromTask(
+                async () =>
+                {
+                    var miniPlayerVM = this.miniplayerViewModelFactoryMethod.Invoke();
+
+                    this.IsVisible = false;
+
+                    await this._dialogService.ShowWindowAsync(miniPlayerVM);
+
+                    //this.IsVisible = true;
+                });
 
             this.Items.Add(this.LibraryViewModel);
             this.Items.Add(this.PlaybackHistoryViewModel);
@@ -114,6 +130,13 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
         #endregion
 
         #region properties
+
+        private bool _isVisible = true;
+        public bool IsVisible
+        {
+            get => this._isVisible;
+            private set => this.SetAndNotify(ref this._isVisible, value);
+        }
 
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
         public LibraryViewModel LibraryViewModel { get; }
@@ -154,15 +177,39 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             this.DisplayName = shellViewTitle;
         }
 
-        public override Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
+        //public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
+        //{
+        //    //this._playbackService.StopAsync().Wait(); // TODO: handle special cases: playback stop/other actions before closing fail so can close should return false
+
+        //    if (this._audioPlaybackEngine.PlaybackStatus == PlaybackStatus.Playing)
+        //    {
+        //        var wantToClose = await this._dialogService.ShowDialogAsync(new CloseApplicationConfirmationViewModel());
+
+        //        var shouldExit = wantToClose.HasValue && wantToClose.Value;
+        //        if (!shouldExit)
+        //            return false;
+        //    }
+
+        //    return await base.CanCloseAsync(cancellationToken);
+        //}
+
+        public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
         {
-            //this._playbackService.StopAsync().Wait(); // TODO: handle special cases: playback stop/other actions before closing fail so can close should return false
-            return base.CanCloseAsync(cancellationToken);
+            var result = await base.CanCloseAsync(cancellationToken);
+
+            return result;
+        }
+
+        public override Task TryCloseAsync(bool? dialogResult = null)
+        {
+            return base.TryCloseAsync(dialogResult);
         }
 
         #endregion
 
         #region commands
+
+        public ReactiveCommand<Unit, Unit> HideShellAndShowMiniPlayer { get; }
 
         #endregion
 

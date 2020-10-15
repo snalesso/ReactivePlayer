@@ -506,6 +506,8 @@ namespace ReactivePlayer.Core.Playback.CSCore
         //private IConnectableObservable<EventPattern<PlaybackStoppedEventArgs>> _whenSoundOutStoppedEventSubscriber;
         private IDisposable __when_SoundOut_STOPPED_Subscription;
         private readonly BehaviorSubject<PlaybackStatus> _statusSubject;
+
+        public PlaybackStatus PlaybackStatus => this._statusSubject.Value;
         public IObservable<PlaybackStatus> WhenStatusChanged { get; }
 
         private readonly BehaviorSubject<bool> _canPlaySubject;

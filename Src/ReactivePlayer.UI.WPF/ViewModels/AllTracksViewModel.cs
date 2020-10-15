@@ -46,7 +46,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
         #region commands
 
-        public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null;
+        public override ReactiveCommand<TrackViewModel, Unit> RemoveTrackFromSubset => null; // not supported
 
         #endregion
 

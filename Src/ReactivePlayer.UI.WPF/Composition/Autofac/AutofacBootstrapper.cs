@@ -120,7 +120,8 @@ namespace ReactivePlayer.UI.Wpf.Composition.Autofac
             // ViewModels & Views
 
             builder.RegisterType<ShellViewModel>().AsSelf().InstancePerLifetimeScope();
-            builder.RegisterType<ShellView>().As<IViewFor<ShellViewModel>>().InstancePerLifetimeScope();
+            builder.RegisterType<MiniPlayerViewModel>().AsSelf().InstancePerLifetimeScope();
+            //builder.RegisterType<ShellView>().As<IViewFor<ShellViewModel>>().InstancePerLifetimeScope();
 
             builder.Register<Func<Track, TrackViewModel>>(
                 ctx =>

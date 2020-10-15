@@ -7,36 +7,32 @@ FUNCTIONALITIES:
 - adjustable playback gap (gapless supported, settings to automatically disable gap when playing a full album, in native order)
 - total time played calculator
 - refresh tags
-- dislike (bool? true/null/false)
+- dislike (bool? true/null/false) and/or some sort of "this tracks is in library for collection, but I don't want to ever listen to it if not manually"
 - audio editor (cut, insert silence, etc.)
-- taskbar playback progress
+✔ taskbar playback progress
 - screensaver
-- aquire lock on file when editing tags
+- aquire lock on file when edit tags UI is opened
 - waveform seekbar
 - distinguish special album versions (e.g. Deluxe, ...)
-- save playback track & position on app close
-- play + shift (or other modifier) plays and minimizes the player
-- play only this
+- restore last playing track & position
+- play + enter -> play selection and switch to mini player
+- play single track without enqueueing entire tracks list
 - skip &
 	- remove from playlist
 	- remove from library
 	- move to bin
 - if the currently playing track is removed from the playlist from which its playback was started, ask if stop playback
-- tracks bin that moves to recycle bin on app close but allows restore
+- library level tracks bin (moves to recycle bin on app close?)
 - tag sanitizer (configurable)
 - stop after (shedule stop, without emptying the queue)
 	- current
 	- current queue
 	- timeout
-- pause on lock
-- schedule (double seekbar with countdown?)
-	- stop
-	- app close
-	- PC power action
+- pause on PC account lock
+- schedule stop/pause/app close (with a second seekbar indicating remaining time)
 - delete
 	- after played
 - queued tracks save
-- pause on PC account lock
 - file integrity verifier
 - tag charset converter (take a look @ Foobar200's Chacon)
 - online tag calculator: gathers info, for each tag lists found options sorted by value's frequency
@@ -66,21 +62,21 @@ FUNCTIONALITIES:
 - when a media is added, if it's already in the library, [ask to] check for metadata differences
 - cache Lyrics
 - FluentValidation
-- setup different builds for x86 & x64
+- try to optimize for x86 & x64
 - UI
-	- 2 colori per lista e sidebar: es. grgio medio sidebar, scuro lista cosi sembra pi� profonda/incavata, elementi lista via di mezzo
-- colonna laterale che in base al sorting corrente mostra l'indice, es. canzoni sono ordinate per
-	- artista/titolo -> lettere
-	- data aggiunta -> anno
+	- 2 colori per lista e sidebar: es. grgio medio sidebar, scuro lista cosi sembra più profonda/incavata, elementi lista via di mezzo
+- indexed scrollbar with labeled checkpoints based on current sorting, e.g.
+	- sorted by artist/title -> alphabet scrollbar
+	- sorted by added on date -> years scrollbar
 - log criteria to track most used queries and test implementations for best perf in most used scenarios
 - servizio per controllare playback dall'esterno del PC (rete locale/globale, autenticazione?)
 - https://github.com/tjscience/audion.cscore
 - sync col telefono, files compresi
 - tray flyout
-- commenti sulla canzone/flag per ricordarsi di tagliarla
+- commenti sulla canzone/flag per ricordarsi di tagliarla o fare altri interventi
 - risultati ricerca canzone -> per ogni traccia che contiene le parole cercate visualizza anche le playlist che la contengono, in modo da poter riprodurre la traccia come inizio della riproduzione di una playlist specifica
 
-- MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile?view=netframework-4.7#remarks
+- MemoryMappedFile? https://docs.microsoft.com/en-us/dotnet/api/system.io.memorymappedfiles.memorymappedfile#remarks
 - Fody per INPC
 
 - benchmark DTOs creation using:

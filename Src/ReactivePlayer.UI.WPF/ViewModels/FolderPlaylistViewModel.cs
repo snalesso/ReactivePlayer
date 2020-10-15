@@ -11,6 +11,8 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ReactivePlayer.UI.Wpf.ViewModels
 {
@@ -36,25 +38,7 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
         {
             this._playlistViewModelFactoryMethod = playlistViewModelFactoryMethod ?? throw new ArgumentNullException(nameof(playlistViewModelFactoryMethod));
 
-            //this._serialChildrenPlaylistViewModelsSubscription = new SerialDisposable().DisposeWith(this._disposables);
-
-            // TODO: move to Expand, if can expand is known from playlist entity
-            // TODO: handle type conversion returns null
-            (this._playlist as FolderPlaylist).Playlists
-                .Transform(
-                    playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this),
-                    new ParallelisationOptions(ParallelType.Parallelise))
-                .DisposeMany()
-                .RefCount()
-                .Sort(
-                    SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name),
-                    SortOptimisations.None)
-                .ObserveOn(RxApp.MainThreadScheduler)
-                //.ObserveOnDispatcher()
-                .Bind(out var newRooc)
-                .Subscribe()
-                .DisposeWith(this._disposables);
-            this.PlaylistViewModelsROOC = newRooc;
+            this._childrenSubscription = new SerialDisposable().DisposeWith(this._disposables);
         }
 
         #endregion
@@ -77,7 +61,52 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
         #endregion
 
-        #region methods        
+        #region methods
+
+        private readonly SerialDisposable _childrenSubscription;
+
+        private void SubscribeToChildren()
+        {
+            this._childrenSubscription.Disposable = (this._playlist as FolderPlaylist)
+                .Playlists
+                .Transform(
+                    playlistBaseImpl => this._playlistViewModelFactoryMethod.Invoke(playlistBaseImpl, this),
+                    new ParallelisationOptions(ParallelType.Parallelise))
+                .DisposeMany()
+                // TODO: is this RefCount really needed?
+                .RefCount()
+                .Sort(
+                    SortExpressionComparer<PlaylistBaseViewModel>.Ascending(vm => vm.Name),
+                    SortOptimisations.None)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                //.ObserveOnDispatcher()
+                .Bind(out var newRooc)
+                .Subscribe();
+            // TODO: move to Expand, if can expand is known from playlist entity
+            // TODO: handle type conversion returns null        
+            this.PlaylistViewModelsROOC = newRooc;
+        }
+
+        private void UnsubscribeFromChildren()
+        {
+            this.PlaylistViewModelsROOC = null;
+            this._childrenSubscription.Disposable = null;
+        }
+
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            this.SubscribeToChildren();
+
+            return base.OnActivateAsync(cancellationToken);
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            this.UnsubscribeFromChildren();
+
+            return base.OnDeactivateAsync(close, cancellationToken);
+        }
+
         #endregion
 
         #region commands

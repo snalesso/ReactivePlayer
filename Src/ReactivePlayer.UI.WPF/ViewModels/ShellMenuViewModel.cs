@@ -22,10 +22,5 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
         public LibraryViewModel LibraryViewModel { get; }
         public AllTracksViewModel AllTracksViewModel => this.LibraryViewModel.AllTracksViewModel;
         public PlaybackControlsViewModel PlaybackControlsViewModel { get; }
-
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
-        {
-            return base.OnActivateAsync(cancellationToken);
-        }
     }
 }

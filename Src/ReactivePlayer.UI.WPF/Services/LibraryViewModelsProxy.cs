@@ -46,6 +46,7 @@ namespace ReactivePlayer.UI.Wpf.Services
             this.TrackViewModelsChangeSets = this._readLibraryService.TracksChanges
                 .Transform(track => this._trackViewModelFactoryMethod.Invoke(track), new ParallelisationOptions(ParallelType.Parallelise))
                 .DisposeMany()
+                // TODO: is RefCount needed with multicast+replay?
                 .Multicast(new ReplaySubject<IChangeSet<TrackViewModel, uint>>())
                 .AutoConnect(1, subscription => this._tracksSubscription.Disposable = subscription);
             //.RefCount();

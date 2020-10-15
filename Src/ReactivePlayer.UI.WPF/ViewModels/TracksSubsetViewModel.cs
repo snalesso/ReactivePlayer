@@ -165,10 +165,10 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
 
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
+            this.Connect();
+
             // TODO: review which comes first
             await base.OnActivateAsync(cancellationToken);
-
-            this.Connect();
         }
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
@@ -177,6 +177,16 @@ namespace ReactivePlayer.UI.Wpf.ViewModels
             this.Disconnect();
 
             return base.OnDeactivateAsync(close, cancellationToken);
+        }
+
+        public override Task<bool> CanCloseAsync(CancellationToken cancellationToken = default)
+        {
+            return base.CanCloseAsync(cancellationToken);
+        }
+
+        public override Task TryCloseAsync(bool? dialogResult = null)
+        {
+            return base.TryCloseAsync(dialogResult);
         }
 
         #endregion

@@ -13,14 +13,16 @@
                                      IsDesignTimeCreatable=False}"
     d:DesignHeight="380"
     d:DesignWidth="680"
-    Background="{DynamicResource MaterialDesignPaper}"
-    FontFamily="{DynamicResource MaterialDesignFont}"
+    Background="{StaticResource MaterialDesignPaper}"
+    FontFamily="{StaticResource MaterialDesignFont}"
     IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
-    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}"
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
+    UseLayoutRounding="True"
+    Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
     mc:Ignorable="d">
 
     <Window.Resources>
@@ -86,7 +88,88 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Views:ShellMenuView DataContext="{Binding ShellMenuViewModel}" />
+        <!--<Views:ShellMenuView DataContext="{Binding ShellMenuViewModel}" />-->
+
+        <Menu Padding="0" IsMainMenu="True ">
+            <Menu.Items>
+
+                <MenuItem Header="Library">
+                    <MenuItem.Items>
+                        <MenuItem
+                            Command="{Binding ShellMenuViewModel.LibraryViewModel.ShowFilePicker}"
+                            Header="Add ..."
+                            InputGestureText="CTRL+N">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="FilePlus" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem.Items>
+                </MenuItem>
+
+                <MenuItem Header="Playback">
+                    <MenuItem.Items>
+                        <MenuItem
+                            Command="{Binding ShellMenuViewModel.TracksViewModel.PlayAllFromLibrary}"
+                            Header="Play all from library"
+                            InputGestureText="CTRL+SHIFT+SPACE">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Play" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding ShellMenuViewModel.TracksViewModel.PlayAllFromCurrentTracksSubset}"
+                            Header="Play all from current list"
+                            InputGestureText="CTRL+SPACE">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Play" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem
+                            Command="{Binding ShellMenuViewModel.PlaybackControlsViewModel.Resume}"
+                            Header="Resume"
+                            InputGestureText="SPACE"
+                            Visibility="{Binding ShellMenuViewModel.PlaybackControlsViewModel.CanResume, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Play" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding ShellMenuViewModel.PlaybackControlsViewModel.Pause}"
+                            Header="Pause"
+                            InputGestureText="SPACE"
+                            Visibility="{Binding ShellMenuViewModel.PlaybackControlsViewModel.CanPause, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Pause" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem
+                            Command="{Binding ShellMenuViewModel.PlaybackControlsViewModel.Stop}"
+                            Header="Stop"
+                            InputGestureText="SHIFT+SPACE">
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Stop" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--<Separator />
+                    <MenuItem Header="Previous" />
+                    <MenuItem Header="Next" />-->
+                    </MenuItem.Items>
+                </MenuItem>
+
+                <MenuItem Header="View">
+                    <MenuItem
+                        Command="{Binding HideShellAndShowMiniPlayer}"
+                        Header="Show mini player"
+                        InputGestureText="CTRL+SHIFT+M">
+                        <MenuItem.Icon>
+                            <materialDesign:PackIcon Kind="DiscPlayer" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+
+            </Menu.Items>
+        </Menu>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
