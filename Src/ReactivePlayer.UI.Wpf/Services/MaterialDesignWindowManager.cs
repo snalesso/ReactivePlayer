@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using ReactivePlayer.UI.Wpf.Controls;
 using ReactivePlayer.UI.Wpf.Views;
 using System.Windows;
 
@@ -290,7 +291,7 @@ namespace ReactivePlayer.UI.Wpf.Services
 
             if (!(view is Window window))
             {
-                window = new NormalWindow
+                window = new MaterialDesignWindow
                 {
                     Content = view,
                     SizeToContent = SizeToContent.WidthAndHeight

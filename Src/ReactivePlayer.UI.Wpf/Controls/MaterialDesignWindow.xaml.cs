@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 
-namespace ReactivePlayer.UI.Wpf.Views
+namespace ReactivePlayer.UI.Wpf.Controls
 {
     /// <summary>
     /// Interaction logic for NormalWindow.xaml
     /// </summary>
-    public partial class NormalWindow : Window
+    public partial class MaterialDesignWindow : Window
     {
-        public NormalWindow()
+        public MaterialDesignWindow()
         {
             this.InitializeComponent();
         }

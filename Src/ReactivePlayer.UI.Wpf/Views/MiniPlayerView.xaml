@@ -1,14 +1,17 @@
 ﻿<UserControl
     x:Class="ReactivePlayer.UI.Wpf.Views.MiniPlayerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.Wpf.ViewModels"
-    xmlns:Views="clr-namespace:ReactivePlayer.UI.Wpf.Views" d:DataContext="{d:DesignInstance Type=ViewModels:MiniPlayerViewModel, IsDesignTimeCreatable=False}"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModels="clr-namespace:ReactivePlayer.UI.Wpf.ViewModels"
+    xmlns:Views="clr-namespace:ReactivePlayer.UI.Wpf.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="300"
-    MinHeight="250"
     MinWidth="250"
+    MinHeight="250"
+    d:DataContext="{d:DesignInstance Type=ViewModels:MiniPlayerViewModel,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="300"
     mc:Ignorable="d">
 
     <Grid>
@@ -23,10 +26,11 @@
         <Views:ArtworkView Grid.RowSpan="5" HorizontalAlignment="Stretch" />
 
         <Grid
-            Grid.Row="5" DataContext="{Binding PlaybackControlsViewModel}"
+            Grid.Row="5"
             Grid.Column="2"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+            VerticalAlignment="Center"
+            DataContext="{Binding PlaybackControlsViewModel}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="8" />
